@@ -1,0 +1,2 @@
+# spec
+OpenFeature specification
