@@ -1,15 +1,15 @@
 # OpenFeature specification (draft)
 
-[![Roadmap](https://img.shields.io/static/v1?label=Roadmap&message=public&color=green)](https://github.com/orgs/openfeatureflags/projects/1)
-[![Contributing](https://img.shields.io/static/v1?label=Contributing&message=guide&color=blue)](https://github.com/openfeatureflags/.github/blob/main/CONTRIBUTING.md)
-[![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/openfeatureflags/.github/blob/main/CODE_OF_CONDUCT.md)
+[![Roadmap](https://img.shields.io/static/v1?label=Roadmap&message=public&color=green)](https://github.com/orgs/open-feature/projects/1)
+[![Contributing](https://img.shields.io/static/v1?label=Contributing&message=guide&color=blue)](https://github.com/open-feature/.github/blob/main/CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/open-feature/.github/blob/main/CODE_OF_CONDUCT.md)
 
 This repository includes the high-level architecture for the project,
 and also specifications for all key interfaces and components of the project.
 
 > :warning: This is a draft version that includes key concepts.
-> More Details are coming soon!
-> See [this issue](https://github.com/openfeatureflags/spec/issues/4) for the scope of the alpha version.
+> More details are coming soon!
+> See [this issue](https://github.com/open-feature/spec/issues/4) for the scope of the alpha version.
 
 ## Key concepts
 
@@ -22,9 +22,9 @@ The OpenFeature project follows the following architecture concepts:
 - Feature Flag evaluation logic is externalized into a separate container or a service.
   Introducing new rules and evaluation logic should not require updating all the apps.
 - Feature flag configurations are stored along with the project and
-  hence managed along with the application (a.k.a "Feature Flags as Code")
+  hence managed along with the application (a.k.a "Feature Flags as Code").
 - Built-in support for observability tools tools and standards
-  like OpenTelemetry and possibly CloudEvents
+  like OpenTelemetry and possibly CloudEvents.
 
 ## Architecture
 
@@ -63,7 +63,7 @@ The OpenFeature project will include client libraries for common technology stac
 * Java
 * JavaScript/TypeScript
 
-These client libraries might be automatically based on the API of the _Feature Flag Service_,
+These client libraries might be automatically generated based on the API of the _Feature Flag Service_,
 e.g. if REST API or gRPC are chosen for this service.
 
 ## Reference implementation
