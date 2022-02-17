@@ -21,7 +21,7 @@ The OpenFeature project follows the following architecture concepts:
 - Unified API and SDK for feature flag management in different technology stacks.
 - Feature Flag evaluation logic is externalized into a separate container or a service.
   Introducing new rules and evaluation logic should not require updating all the apps.
-- Feature flag configurations are stored along with the project amd
+- Feature flag configurations are stored along with the project and
   hence managed along with the application (a.k.a "Feature Flags as Code")
 - Built-in support for observability tools tools and standards
   like OpenTelemetry and possibly CloudEvents
@@ -40,7 +40,7 @@ both are served by the control plane.
   depending on the user application architecture.
 
 There might be additional operator services inside or outside the control plane that 
-manage the system and integrate _Feature Flag Resource_ submission ith system management approaches
+manage the system and integrate _Feature Flag Resource_ submission its system management approaches
 like GitOps.
 
 Sidecar container architecture: 
