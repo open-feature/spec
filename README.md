@@ -4,7 +4,7 @@
 [![Contributing](https://img.shields.io/static/v1?label=Contributing&message=guide&color=blue)](https://github.com/openfeatureflags/.github/blob/main/CONTRIBUTING.md)
 [![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/openfeatureflags/.github/blob/main/CODE_OF_CONDUCT.md)
 
-This repository includes the top level architecture for the project,
+This repository includes the high-level architecture for the project,
 and also specifications for all key interfaces and components of the project.
 
 > :warning: This is a draft version that includes key concepts.
@@ -34,7 +34,7 @@ both are served by the control plane.
 
 * **Feature Flag Resource** is a custom CRD type that defines feature flags and evaluation logic for the system.
 * **Control Plane** includes the Feature Flag controller services, `etcd` based storage,
-  and also API services that handle external requests and CRDs.
+  and API services that handle external requests and CRDs.
 * **Feature Flag Service (_FF Service_)** provides feature flag management and evaluation to user applications.
   It can run as sidecar containers or as a standalone service,
   depending on the user application architecture.
@@ -57,11 +57,11 @@ the management and rule evaluation logic will need to be implemented only once.
 The technology specific logic will be limited to client libraries used in user apps
 to connect to their _Feature Flag Service_.
 
-The OpenFeature project will include client libraries for common technology stacks included but not limited to:
+The OpenFeature project will include client libraries for common technology stacks including, but not limited to:
 
 * Golang
 * Java
-* JavaScript
+* JavaScript/TypeScript
 
 These client libraries might be automatically based on the API of the _Feature Flag Service_,
 e.g. if REST API or gRPC are chosen for this service.
