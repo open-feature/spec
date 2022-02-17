@@ -29,7 +29,7 @@ The OpenFeature project follows the following architecture concepts:
 ## Architecture
 
 The architecture includes a control plane and also containerized Feature Flag services.
-The system is managed through Custom Resource Definitions (CRDs) or APIs,
+The system is managed through [Custom Resource Definitions (CRDs)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) or APIs,
 both are served by the control plane.
 
 * **Feature Flag Resource** is a custom CRD type that defines feature flags and evaluation logic for the system.
@@ -71,3 +71,6 @@ e.g. if REST API or gRPC are chosen for this service.
 As a part of the OpenFeature project,
 a developer-first cloud-native reference implementation
 should be created and made available within the project.
+This implementation should demonstrate usage of the OpenFeature within a realistic cloud native application.
+[Podtato-head](https://github.com/podtato-head/podtato-head), a Demo App for TAG App Delivery,
+may be used as base application for such reference implementation.
