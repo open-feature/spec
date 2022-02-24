@@ -1,4 +1,7 @@
-# Goal
+
+# Feature Flag Management - API/SDK Landscape Research
+
+## Goal
 
 The goal of this research is to document the APIs and SDKs of existing feature flag
 management tools in order to identity patterns that should be considered when
@@ -160,7 +163,7 @@ The user interface for NodeJS can be found
 [here](https://github.com/launchdarkly/node-server-sdk/blob/master/index.d.ts#L533).
 
 ### Key findings
- - There's a variationDetails method that returns evaluation and error details.
+ - There's a `variationDetails` method that returns evaluation and error details.
  - Remote debugging option captures additional evaluation details.
  - The return type from the variation method is `any` (In NodeJS).
  - Flag variation is defined during flag creation and cannot be modified later.
