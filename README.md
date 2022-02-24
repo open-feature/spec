@@ -10,7 +10,7 @@ and also specifications for all key interfaces and components of the project.
 > :warning: This is a draft version that includes key concepts.
 > More details are coming soon!
 > See [this issue](https://github.com/open-feature/spec/issues/4) for the scope of the alpha version.
-> Also see the ongoing research on SDK/APIs [here](./research/exisiting-landscape.md)
+> Also see the ongoing research on SDK/APIs [here](./research/existing-landscape.md)
 
 ## Key concepts
 
@@ -58,7 +58,7 @@ the management and rule evaluation logic will need to be implemented only once.
 The technology specific logic will be limited to client libraries used in user apps
 to connect to their _Feature Flag Service_.
 
-> :warning: See the ongoing research on SDK/APIs [here](./research/exisiting-landscape.md)
+> :warning: See the ongoing research on SDK/APIs [here](./research/existing-landscape.md)
 
 The OpenFeature project will include client libraries for common technology stacks including, but not limited to:
 
