@@ -51,6 +51,18 @@ The variant interfaces for NodeJS can be found [here](https://github.com/Unleash
   const color = colorVariant.enabled && colorVariant.payload?.value || "#0000FF";
 ```
 
+### Flag evaluation
+
+Unleash uses
+[strategies](https://github.com/Unleash/unleash-client-node/blob/main/src/strategy/strategy.ts)
+to do local flag evaluation in their server-side SDKs. A number of strategies come out of the box
+and it's possible to create custom strategies that are registered in the client
+constructor. Flag configurations are periodically polled and persisted in memory
+by default.
+
+> NOTE: Client-side SDKs require the [Unleash
+> Proxy](https://github.com/Unleash/unleash-proxy), which handles flag
+> evaluation on a server.
 ### Key findings
 
  - Evaluation logic is handled in the SDK and some clients support synchronous
@@ -97,10 +109,11 @@ Segments can be applied to a feature, allowing Flagsmith administrators to
 override default behavior. This is done by evaluating traits associated with a
 user.
 
-### Evaluation engine
+### Flag evaluation
 
-Flagsmith performs flag evaluation server-side. This service is written in
-Python and can be found [here](https://github.com/Flagsmith/flagsmith-engine).
+Flagsmith performs flag evaluation server-side and results can be cached if
+desired. This service is written in Python and can be found
+[here](https://github.com/Flagsmith/flagsmith-engine).
 
 ### Key findings
 
@@ -162,6 +175,14 @@ The user interface accepts the following properties:
 The user interface for NodeJS can be found
 [here](https://github.com/launchdarkly/node-server-sdk/blob/master/index.d.ts#L533).
 
+### Flag evaluation
+
+LaunchDarkly performs local flag evaluation in both their client and server
+SDKs. Configuration updates can be streamed using Server Sent Events (SSE) or by
+polling and persisted in memory by default
+
+> NOTE: Client-side SDKs do not subscribe to real-time updates until the
+> `.on('change')` method is called.
 ### Key findings
  - There's a `variationDetails` method that returns evaluation and error details.
  - Remote debugging option captures additional evaluation details.
@@ -170,3 +191,5 @@ The user interface for NodeJS can be found
  - Private user attributes can be [disabled from
    analytics](https://docs.launchdarkly.com/home/users/attributes#configuring-private-attribute-settings-in-your-sdk)
    while still being available for local flag evaluation.
+ - It's possible to update the `processor` used by the client to [read from a
+   file](https://docs.launchdarkly.com/sdk/features/flags-from-files).
