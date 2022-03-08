@@ -11,7 +11,7 @@ defining the OpenFeature spec.
 
 ## Unleash
 
-Unleash has documented the expected behavior of their client SDKs [here](https://github.com/Unleash/client-specification).
+Unleash has documented the expected behavior of the client SDKs [here](https://github.com/Unleash/client-specification).
 
 ```typescript
   // isEnabled(name: string, context?: Context, fallbackFunction?: FallbackFunction): boolean;
@@ -177,9 +177,9 @@ The user interface for NodeJS can be found
 
 ### Flag evaluation
 
-LaunchDarkly performs local flag evaluation in both their client and server
+LaunchDarkly performs local flag evaluation in both the client and server
 SDKs. Configuration updates can be streamed using Server Sent Events (SSE) or by
-polling and persisted in memory by default
+polling and persisted in memory by default.
 
 > NOTE: Client-side SDKs do not subscribe to real-time updates until the
 > `.on('change')` method is called.
@@ -193,3 +193,65 @@ polling and persisted in memory by default
    while still being available for local flag evaluation.
  - It's possible to update the `processor` used by the client to [read from a
    file](https://docs.launchdarkly.com/sdk/features/flags-from-files).
+
+## Split
+
+The following is an example of a basic flag evaluation. Split refers to the
+response type as a treatment and it's always a string.
+
+```typescript
+  // getTreatment(splitName: string, attributes?: Attributes): Treatment
+  // getTreatment(key: SplitKey, splitName: string, attributes?: Attributes): Treatment
+  const treatment = client.getTreatment("test-user", "test-feature");
+```
+
+It's also possible to attach a configuration to a treatment. This can be either
+a key/value pair or JSON. The following example shows how you can access the
+config associated with a treatment.
+
+```typescript
+  // getTreatmentWithConfig(splitName: string, attributes?: Attributes): TreatmentWithConfig
+  // getTreatmentWithConfig(key: SplitKey, splitName: string, attributes?: Attributes): TreatmentWithConfig
+  const treatmentWithConfig = client.getTreatmentWithConfig("test-user", "test-feature");
+  // Treatment value
+  console.log(treatmentWithConfig.treatment);
+  // Config is either a string or null
+  console.log(treatmentWithConfig.config)
+```
+
+### Treatments
+
+Treatment values are the primary response when performing a flag evaluation.
+These values are always strings and default to `on` and `off`. However, it's
+possible to create a up to 20 treatments per split (feature flag) and the
+default values can be changed.
+
+There are also [reserved words](https://help.split.io/hc/en-us/articles/360020525112-Edit-treatments#about-reserved-words) that can't be used on a treatment.
+### Attributes
+
+Attributes can be used to build targeting rules for feature flags. They are maps
+that are passed into the `getTreatment` method. Supported values are: strings,
+numbers, dates, booleans, and sets.
+
+### Flag evaluation
+
+Split performs local flag evaluation in both the client and server
+SDKs. Configuration updates can be streamed using Server Sent Events (SSE) or by
+polling and persisted in memory by default.
+
+It's also possible to use a [Split
+Evaluator](https://help.split.io/hc/en-us/articles/360020037072-Split-Evaluator)
+for languages without an official SDK. This exposes a REST API using the NodeJS SDK behind the
+scenes.
+
+### Key findings
+
+ - SDKs support a [localhost
+   mode](https://help.split.io/hc/en-us/articles/360020564931-Node-js-SDK#localhost-mode).
+ - Treatment return values are string, so string a comparison is used to
+   determine the state of the flag.
+ - Additional metrics can be collected by sending events via the `track` method.
+ - Traffic splitting is deterministic based on a hash of the user id.
+ - When a visitor is assigned a treatment for a split, an impression is
+   created. Registering a `logImpression` callback provides a detailed overview
+   of the impression, attributes, and available metadata.
