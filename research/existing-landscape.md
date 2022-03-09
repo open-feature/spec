@@ -240,7 +240,10 @@ numbers, dates, booleans, and sets.
 
 Split performs local flag evaluation in both the client and server
 SDKs. Configuration updates can be streamed using Server Sent Events (SSE) or by
-polling and persisted in memory by default.
+polling and persisted in memory by default. A
+[proxy](https://help.split.io/hc/en-us/articles/4415960499213-Split-Proxy) can
+be used to reduce the connection latency and number of connections directly
+accessing Split.
 
 It's also possible to use a [Split
 Evaluator](https://help.split.io/hc/en-us/articles/360020037072-Split-Evaluator)
