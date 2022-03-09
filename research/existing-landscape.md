@@ -177,9 +177,13 @@ The user interface for NodeJS can be found
 
 ### Flag evaluation
 
-LaunchDarkly performs local flag evaluation in both the client and server
-SDKs. Configuration updates can be streamed using Server Sent Events (SSE) or by
-polling and persisted in memory by default.
+LaunchDarkly performs local flag evaluation in the server SDKs. Configuration
+updates can be streamed using Server Sent Events (SSE) or by polling and
+persisted in memory by default.
+
+Client SDKs evaluations are performed server-side and the results are cached.
+More information can be found
+[here](https://docs.launchdarkly.com/sdk/concepts/client-side-server-side#flag-evaluations).
 
 > NOTE: Client-side SDKs do not subscribe to real-time updates until the
 > `.on('change')` method is called.
