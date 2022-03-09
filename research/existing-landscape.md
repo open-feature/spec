@@ -203,6 +203,9 @@ response type as a treatment and it's always a string.
   // getTreatment(splitName: string, attributes?: Attributes): Treatment
   // getTreatment(key: SplitKey, splitName: string, attributes?: Attributes): Treatment
   const treatment = client.getTreatment("test-user", "test-feature");
+
+  // Custom attributes can also be used during treatment evaluation
+  const treatmentUsingAttributes = client.getTreatment("test-user", "test-feature", { groups: ["internal"] });
 ```
 
 It's also possible to attach a configuration to a treatment. This can be either
