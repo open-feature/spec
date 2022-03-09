@@ -261,3 +261,8 @@ scenes.
  - When a visitor is assigned a treatment for a split, an impression is
    created. Registering a `logImpression` callback provides a detailed overview
    of the impression, attributes, and available metadata.
+ - A
+   [manager](https://help.split.io/hc/en-us/articles/360020564931-Node-js-SDK#manager)
+   can be created with the same factory used to create the client. The manager
+   contains methods that can be used to understand what flags exist and how they're
+   configured.
