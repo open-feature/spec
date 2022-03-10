@@ -207,6 +207,9 @@ response type as a treatment and it's always a string.
   // getTreatment(splitName: string, attributes?: Attributes): Treatment
   // getTreatment(key: SplitKey, splitName: string, attributes?: Attributes): Treatment
   const treatment = client.getTreatment("test-user", "test-feature");
+
+  // Custom attributes can also be used during treatment evaluation
+  const treatmentUsingAttributes = client.getTreatment("test-user", "test-feature", { groups: ["internal"] });
 ```
 
 It's also possible to attach a configuration to a treatment. This can be either
@@ -241,7 +244,10 @@ numbers, dates, booleans, and sets.
 
 Split performs local flag evaluation in both the client and server
 SDKs. Configuration updates can be streamed using Server Sent Events (SSE) or by
-polling and persisted in memory by default.
+polling and persisted in memory by default. A
+[proxy](https://help.split.io/hc/en-us/articles/4415960499213-Split-Proxy) can
+be used to reduce the connection latency and number of connections directly
+accessing Split.
 
 It's also possible to use a [Split
 Evaluator](https://help.split.io/hc/en-us/articles/360020037072-Split-Evaluator)
@@ -259,3 +265,8 @@ scenes.
  - When a visitor is assigned a treatment for a split, an impression is
    created. Registering a `logImpression` callback provides a detailed overview
    of the impression, attributes, and available metadata.
+ - A
+   [manager](https://help.split.io/hc/en-us/articles/360020564931-Node-js-SDK#manager)
+   can be created with the same factory used to create the client. The manager
+   contains methods that can be used to understand what flags exist and how they're
+   configured.
