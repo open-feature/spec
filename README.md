@@ -27,7 +27,7 @@ various technology stacks. The flag evaluation logic will **not** be handled in
 the OpenFeature SDK itself but provide a mechanism for interfacing with an
 external evaluation engine in a vendor agnostic way.
 
-> :warning: See the ongoing research on SDK/APIs [here](./research/existing-landscape.md)
+> :warning: See the ongoing research on SDK/APIs [here](https://github.com/open-feature/sdk-research)
 
 The OpenFeature project will include client libraries for common technology stacks including, but not limited to:
 
