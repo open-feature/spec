@@ -270,3 +270,58 @@ scenes.
    can be created with the same factory used to create the client. The manager
    contains methods that can be used to understand what flags exist and how they're
    configured.
+
+## CloudBees Feature Management
+
+SDK behaviour is documented [here](https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/getting-started/).
+
+```typescript
+const booleanFlag = new Rox.Flag() // Flag evaluation defaults to false
+const enabled = booleanFlag.isEnabled() 
+const colorOptions = new Rox.RoxString('White', ['White', 'Blue', 'Green', 'Yellow']) // specify a default flag value and different possible variants
+const colorVariant = colorOptions.getValue()
+```
+
+### Flag names
+
+Flag names are determined either by reflection of the variable name, or via a string parameter via the [dynamic API](https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/feature-flags/dynamic-api)
+
+```typescript
+// Use the variable name to determine the flag name
+const myBooleanFlag = new Rox.Flag()
+let enabled = myBooleanFlag.isEnabled() 
+
+// Or pass it as a string parameter
+enabled = Rox.dynamicApi.isEnabled('myBooleanFlag', false);
+```
+
+### Available types
+
+The following flag types are [available](https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/feature-flags/creating-feature-flags):
+
+* Boolean
+* String
+* Number (integer)
+
+### Context
+
+You can specify any additional evaluation context when evaluating a flag
+
+```typescript
+  const enabled = booleanFlag.isEnabled({ // any arbitrary evaluation context can be passed into the evaluation call
+   email: 'my@email.com',
+   uid: 123
+})
+```
+
+### Flag evaluation
+
+Flag evaluation is performed client-side for all SDKs. A ruleset for the given environment is downloaded by the SDK upon startup (and periodically thereafter). Any flag configuration changes are pushed to the SDK via [Server Side Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).
+
+### Key findings
+
+* All flag evaluation is performed locally within the SDK
+* Flags are created/defined in code and specify a default value. If the flag is not enabled ('targeting' is on), then the default value is returned.
+* Split flag evaluation (eg, Blue/Green flags) are deterministic based on a unique and persistent user ID for each client.
+* An arbitrary evaluation context is available for every flag evaluation
+* Flag names are either determined from the variable name (reflection) or [dynamically](https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/feature-flags/dynamic-api) from a string parameter
