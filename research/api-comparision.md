@@ -79,6 +79,87 @@ boolean boolVariation(String key, Target target, boolean defaultValue)
 
 </details>
 
+<details>
+  <summary>NodeJS</summary>
+
+```typescript
+/**
+* Unleash
+*
+* SDK Repo: https://github.com/Unleash/unleash-client-node
+*/
+isEnabled(name: string, context?: Context, fallbackFunction?: FallbackFunction): boolean;
+isEnabled(name: string, context?: Context, fallbackValue?: boolean): boolean;
+isEnabled(name: string, context: Context = {}, fallback?: FallbackFunction | boolean): boolean;
+
+/**
+* Flagsmith
+*
+* SDK Repo: https://github.com/Flagsmith/flagsmith-nodejs-client
+*/
+hasFeature(key: string): Promise<boolean>
+hasFeature(key: string, userId: string): Promise<boolean>
+
+/**
+* LaunchDarkly
+*
+* SDK Repo: https://github.com/launchdarkly/node-client-sdk
+*/
+variation(
+  key: string,
+  user: LDUser,
+  defaultValue: LDFlagValue,
+  callback?: (err: any, res: LDFlagValue) => void
+): Promise<LDFlagValue>
+// Response also contains evaluation details
+variationDetail(
+  key: string,
+  user: LDUser,
+  defaultValue: LDFlagValue,
+  callback?: (err: any, res: LDEvaluationDetail) => void
+): Promise<LDEvaluationDetail>;
+
+/**
+* Split
+*
+* SDK Repo: https://github.com/splitio/javascript-client
+*
+* NOTE: Split always returns a string but using the values "on" and "off" is a common practice.
+*
+*/
+getTreatment(key: SplitKey, splitName: string, attributes?: Attributes): Treatment
+getTreatment(splitName: string, attributes?: Attributes): Treatment
+
+/**
+* CloudBees Rollout
+*
+* SDK Repo: N/A
+*
+* NOTE: Flags are configured as code and contain default values.
+*
+*/
+const flags = {
+  videoChat: new Rox.Flag()
+};
+
+Rox.register('test-namespace', flags);
+flags.videoChat.isEnabled()
+flags.videoChat.isEnabled(context)
+
+/**
+* Harness
+*
+* SDK Repo: https://github.com/harness/ff-nodejs-server-sdk
+*/
+boolVariation(
+  identifier: string,
+  target: Target,
+  defaultValue: boolean = true,
+): Promise<boolean>
+```
+
+</details>
+
 ## String
 
 <details>
