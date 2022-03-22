@@ -1,9 +1,18 @@
 # API Comparison
 
 The goal of this research is to make it easy to quickly compare feature flag
-vendor API's in order to help define the OpenFeature spec.
+vendor SDK API's in order to help define the OpenFeature spec.
 
-## Boolean
+## Types
+
+| Provider | Unleash | Flagsmith | LaunchDarkly | Split | Cloudbees Rollout | Harness |
+| -------- | ------- | --------- | ------------ | ----- | ----------------- | ------- |
+| boolean  | :heavy_check_mark:    | :heavy_check_mark:      | :heavy_check_mark:         |       | :heavy_check_mark:              | :heavy_check_mark:    |
+| string   | :heavy_check_mark:    | :heavy_check_mark:      | :heavy_check_mark:         | :heavy_check_mark:  | :heavy_check_mark:              | :heavy_check_mark:    |
+| numeric  |         |           | :heavy_check_mark:         |       | :heavy_check_mark:              | :heavy_check_mark:    |
+| JSON     | :heavy_check_mark:    |           |              | :heavy_check_mark:  |                   | :heavy_check_mark:    |
+
+### Boolean
 
 <details>
   <summary>Java</summary>
@@ -43,12 +52,9 @@ EvaluationDetail<Boolean> boolVariationDetail(String featureKey, LDUser user, bo
 *
 * SDK Repo: https://github.com/splitio/java-client
 *
+* NOTE: Not supported
 * NOTE: Split always returns a string but using the values "on" and "off" is a common practice.
-*
 */
-String getTreatment(String key, String split)
-String getTreatment(String key, String split, Map<String, Object> attributes)
-String getTreatment(Key key, String split, Map<String, Object> attributes)
 
 /**
 * CloudBees Rollout
@@ -58,6 +64,11 @@ String getTreatment(Key key, String split, Map<String, Object> attributes)
 * NOTE: Flags are configured as code and contain default values.
 *
 */
+
+boolean isEnabled(): boolean;
+boolean isEnabled(Context context): boolean;
+
+// example usage
 public class Flags implements RoxContainer {
   public RoxFlag videoChat = new RoxFlag();
 }
@@ -104,9 +115,13 @@ hasFeature(key: string, userId: string): Promise<boolean>
 * LaunchDarkly
 *
 * SDK Repo: https://github.com/launchdarkly/node-client-sdk
+*
+* Note: TS typings assign LDFlagValue = any;
+* Note: variation values can be defined as boolean, number, or string. Documentation suggests casting: https://docs.launchdarkly.com/sdk/client-side/node-js#getting-started
 */
+
 variation(
-  key: string,
+key: string,
   user: LDUser,
   defaultValue: LDFlagValue,
   callback?: (err: any, res: LDFlagValue) => void
@@ -124,11 +139,10 @@ variationDetail(
 *
 * SDK Repo: https://github.com/splitio/javascript-client
 *
+* NOTE: Not supported
+* NOTE: TS typings assign Treatment = string;
 * NOTE: Split always returns a string but using the values "on" and "off" is a common practice.
-*
 */
-getTreatment(key: SplitKey, splitName: string, attributes?: Attributes): Treatment
-getTreatment(splitName: string, attributes?: Attributes): Treatment
 
 /**
 * CloudBees Rollout
@@ -138,6 +152,10 @@ getTreatment(splitName: string, attributes?: Attributes): Treatment
 * NOTE: Flags are configured as code and contain default values.
 *
 */
+
+isEnabled(context?: unknown): boolean;
+
+// example usage
 const flags = {
   videoChat: new Rox.Flag()
 };
@@ -160,7 +178,7 @@ boolVariation(
 
 </details>
 
-## String
+### String
 
 <details>
   <summary>Java</summary>
@@ -172,7 +190,6 @@ boolVariation(
 * SDK Repo: https://github.com/Unleash/unleash-client-java
 *
 * NOTE: Variants can contain string, csv, or JSON
-*
 */
 Variant getVariant(final String toggleName)
 Variant getVariant(final String toggleName, final UnleashContext context)
@@ -214,6 +231,11 @@ String getTreatment(Key key, String split, Map<String, Object> attributes)
 * NOTE: Flags are configured as code and contain default values.
 *
 */
+
+String getValue();
+String getValue(Context context);
+
+// example usage:
 public class Flags implements RoxContainer{
   public RoxVariant titleColors = new RoxVariant("White", new String[] {"White", "Blue", "Green", "Yellow"});
 }
@@ -238,7 +260,94 @@ String stringVariation(String key, Target target, String defaultValue)
 
 </details>
 
-## Integers and Floats
+<details>
+  <summary>NodeJS</summary>
+
+```typescript
+/**
+* Unleash
+*
+* SDK Repo: https://github.com/Unleash/unleash-client-node
+* NOTE: Variants can contain string, csv, or JSON
+*/
+getVariant(name: string, context: Context = {}, fallbackVariant?: Variant): Variant 
+
+/**
+* Flagsmith
+*
+* SDK Repo: https://github.com/Flagsmith/flagsmith-nodejs-client
+*/
+getValue(key: string): Promise<string | number | boolean>;
+getValue(key: string, userId: string): Promise<string | number | boolean>;
+
+/**
+* LaunchDarkly
+*
+* SDK Repo: https://github.com/launchdarkly/node-client-sdk
+*
+* Note: TS typings assign LDFlagValue = any;
+* Note: variation values can be defined as boolean, number, or string. Documentation suggests casting: https://docs.launchdarkly.com/sdk/client-side/node-js#getting-started
+*/
+variation(
+key: string,
+  user: LDUser,
+  defaultValue: LDFlagValue,
+  callback?: (err: any, res: LDFlagValue) => void
+): Promise<LDFlagValue>
+// Response also contains evaluation details
+variationDetail(
+  key: string,
+  user: LDUser,
+  defaultValue: LDFlagValue,
+  callback?: (err: any, res: LDEvaluationDetail) => void
+): Promise<LDEvaluationDetail>;
+
+/**
+* Split
+*
+* SDK Repo: https://github.com/splitio/javascript-client
+*
+* Note: TS typings assign Treatment = string;
+* NOTE: Split always returns a string.
+*
+*/
+getTreatment(key: SplitKey, splitName: string, attributes?: Attributes): Treatment
+getTreatment(splitName: string, attributes?: Attributes): Treatment
+
+/**
+* CloudBees Rollout
+*
+* SDK Repo: N/A
+*
+* NOTE: Flags are configured as code and contain default values.
+*
+*/
+
+getValue(context?: unknown): string;
+
+// example usage
+const flags = {
+  titleColors: new RoxString('White', ['White', 'Blue', 'Green', 'Yellow'])
+};
+
+Rox.register('test-namespace', flags);
+flags.titleColors.value();
+
+/**
+* Harness
+*
+* SDK Repo: https://github.com/harness/ff-nodejs-server-sdk
+*/
+function stringVariation(
+  identifier: string,
+  target: Target,
+  defaultValue: boolean = '',
+): Promise<string>;
+```
+
+</details>
+
+### Integers and Floats
 
 <details>
   <summary>Java</summary>
@@ -249,8 +358,7 @@ String stringVariation(String key, Target target, String defaultValue)
 *
 * SDK Repo: https://github.com/Unleash/unleash-client-java
 *
-* NOTE: Not supported
-*
+* NOTE: Not supported; strings can be parsed into numeric values
 */
 
 /**
@@ -258,8 +366,7 @@ String stringVariation(String key, Target target, String defaultValue)
 *
 * SDK Repo: https://github.com/Flagsmith/flagsmith-java-client
 *
-* NOTE: Not supported
-*
+* NOTE: Not supported; strings can be parsed into numeric values
 */
 
 /**
@@ -278,7 +385,7 @@ EvaluationDetail<Double> doubleVariationDetail(String featureKey, LDUser user, d
 *
 * SDK Repo: https://github.com/splitio/java-client
 *
-* NOTE: Not supported
+* NOTE: Not supported; strings can be parsed into numeric values
 */
 
 /**
@@ -286,14 +393,22 @@ EvaluationDetail<Double> doubleVariationDetail(String featureKey, LDUser user, d
 *
 * SDK Repo: N/A
 */
+
+int getValue();
+int getValue(Context context);
+double getValue();
+double getValue(Context context);
+
+// example usage
 public class Container implements RoxContainer {
-    public final RoxInt titleSize = new RoxInt(5, new int[]{ 8, 13 });
-    public final RoxDouble specialNumber = new RoxDouble(3.14, new double[]{ 2.71, 0.577 });
+  public final RoxInt titleSize = new RoxInt(5, new int[]{ 8, 13 });
+  public final RoxDouble specialNumber = new RoxDouble(3.14, new double[]{ 2.71, 0.577 });
 }
 
 Container flags = new Container();
 Rox.register("test-namespace", flags);
-flags.titleColors.getValue();
+flags.titleSize.getValue();
+flags.specialNumber.getValue();
 
 // Dynamic API
 Rox.dynamicApi.getNumber('ui.textSize', 12);
@@ -309,7 +424,91 @@ double numberVariation(String key, Target target, int defaultValue)
 
 </details>
 
-## JSON
+<details>
+  <summary>NodeJS</summary>
+
+```typescript
+/**
+* Unleash
+*
+* SDK Repo: https://github.com/Unleash/unleash-client-node
+*
+* NOTE: Not supported; Strings can be parsed into numeric values.
+*/
+
+/**
+* Flagsmith
+*
+* SDK Repo: https://github.com/Flagsmith/flagsmith-nodejs-client
+*/
+getValue(key: string): Promise<string | number | boolean>;
+getValue(key: string, userId: string): Promise<string | number | boolean>;
+
+/**
+* LaunchDarkly
+*
+* SDK Repo: https://github.com/launchdarkly/node-client-sdk
+*
+* Note: TS typings assign LDFlagValue = any;
+* Note: variation values can be defined as boolean, number, or string. Documentation suggests casting: https://docs.launchdarkly.com/sdk/client-side/node-js#getting-started
+*/
+variation(
+key: string,
+  user: LDUser,
+  defaultValue: LDFlagValue,
+  callback?: (err: any, res: LDFlagValue) => void
+): Promise<LDFlagValue>
+// Response also contains evaluation details
+variationDetail(
+  key: string,
+  user: LDUser,
+  defaultValue: LDFlagValue,
+  callback?: (err: any, res: LDEvaluationDetail) => void
+): Promise<LDEvaluationDetail>;
+
+/**
+* Split
+*
+* SDK Repo: https://github.com/splitio/javascript-client
+*
+* NOTE: Not supported; Strings can be parsed into numeric values.
+* NOTE: TS typings assign Treatment = string;
+*/
+
+/**
+* CloudBees Rollout
+*
+* SDK Repo: N/A
+*
+* NOTE: Flags are configured as code and contain default values.
+*
+*/
+
+getValue(context?: unknown): number;
+
+// example usage
+const flags = {
+  titleSize: new RoxNumber(12, [12, 14, 18, 24])
+};
+
+Rox.register('test-namespace', flags);
+flags.titleSize.value();
+
+/**
+* Harness
+*
+* SDK Repo: https://github.com/harness/ff-nodejs-server-sdk
+*/
+function numberVariation(
+  identifier: string,
+  target: Target,
+  defaultValue: boolean = 1.0,
+): Promise<number>;
+```
+
+</details>
+
+### JSON
 
 <details>
   <summary>Java</summary>
@@ -333,21 +532,17 @@ Variant getVariant(final String toggleName, final UnleashContext context, final 
 *
 * SDK Repo: https://github.com/Flagsmith/flagsmith-java-client
 *
-* NOTE: Variants can contain string, csv, or JSON
-*
+* NOTE: Not supported
 */
-String getFeatureFlagValue(String featureId)
-String getFeatureFlagValue(String featureId, FeatureUser user)
-String getFeatureFlagValue(String featureId, FlagsAndTraits flagsAndTraits)
 
 /**
 * LaunchDarkly
 *
 * SDK Repo: https://github.com/launchdarkly/java-server-sdk
+*
+* Note: TS typings assign LDFlagValue = any;
+* Note: variation values can be defined as boolean, number, or string; JSON structures can be encoded as strings.
 */
-boolVariation(String featureKey, LDUser user, boolean defaultValue)
-// Response also contains evaluation details
-boolVariationDetail(String featureKey, LDUser user, boolean defaultValue)
 
 /**
 * Split
@@ -358,14 +553,12 @@ SplitResult getTreatmentWithConfig(String key, String split)
 SplitResult getTreatmentWithConfig(String key, String split, Map<String, Object> attributes)
 SplitResult getTreatmentWithConfig(Key key, String split, Map<String, Object> attributes)
 
-
 /**
 * CloudBees Rollout
 *
 * SDK Repo: N/A
 *
 * NOTE: Not supported
-*
 */
 
 /**
@@ -374,6 +567,70 @@ SplitResult getTreatmentWithConfig(Key key, String split, Map<String, Object> at
 * SDK Repo: https://github.com/harness/ff-java-server-sdk
 */
 JsonObject jsonVariation(String key, Target target, JsonObject defaultValue)
+```
+
+</details>
+
+<details>
+  <summary>NodeJS</summary>
+
+```typescript
+/**
+* Unleash
+*
+* SDK Repo: https://github.com/Unleash/unleash-client-node
+*
+* NOTE: Variants support JSON, CSV, and String payloads types, but the SDK seems to only have "String" enumerated: https://github.com/Unleash/unleash-client-node/blob/5da3b2980da63bd899619a3e558cab7874c2dbe0/src/variant.ts#L7
+*/
+getVariant(name: string, context: Context, fallbackVariant?: Variant): Variant
+
+/**
+* Flagsmith
+*
+* SDK Repo: https://github.com/Flagsmith/flagsmith-nodejs-client
+*
+* NOTE: Not supported; JSON structures can be encoded as strings.
+*/
+
+/**
+* LaunchDarkly
+*
+* SDK Repo: https://github.com/launchdarkly/node-client-sdk
+*
+* Note: TS typings assign LDFlagValue = any;
+* Note: variation values can be defined as boolean, number, or string; JSON structures can be encoded as strings.
+*/
+
+/**
+* Split
+*
+* SDK Repo: https://github.com/splitio/javascript-client
+*
+* NOTE: TreatmentWithConfig contains a "config" property, which is a stringified version of the configuration JSON object
+*
+*/
+getTreatmentWithConfig(key: SplitKey, splitName: string, attributes?: Attributes): TreatmentWithConfig,
+getTreatmentWithConfig(splitName: string, attributes?: Attributes): TreatmentWithConfig,
+
+/**
+* CloudBees Rollout
+*
+* SDK Repo: N/A
+*
+* NOTE: Not supported; JSON structures can be encoded as strings.
+*
+*/
+
+/**
+* Harness
+*
+* SDK Repo: https://github.com/harness/ff-nodejs-server-sdk
+*/
+function jsonVariation(
+  identifier: string,
+  target: Target,
+  defaultValue: boolean = {},
+): Promise<Record<string, unknown>>;
 ```
 
 </details>

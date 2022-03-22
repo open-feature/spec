@@ -72,7 +72,7 @@ by default.
  - Variants do not support integer values.
  - Some SDKs, like
    [Java](https://docs.getunleash.io/sdks/java_sdk#step-4-provide-unleash-context),
-   request scoped context.
+   support injected/implicit context, for example, provided via request-scoped bean.
  - Initial synchronization can impact app start-up time.
  - Invalid flag IDs behave like a disabled feature.
  
