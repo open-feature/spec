@@ -13,8 +13,8 @@ This document defines some terms that are used across this specification.
   * [Integration Author](#integration-author)
   * [Library Author](#library-author)
 - [Common](#common)
-  * [Feature Flag API](#feature-flag-api)
   * [Feature Flag SDK](#feature-flag-sdk)
+  * [Feature Flag API](#feature-flag-api)
   * [Provider](#provider)
   * [Integration](#integration)
   * [Context](#context)
@@ -27,27 +27,27 @@ This document defines some terms that are used across this specification.
 
 ### Application Author
 
-The maintainer of an application or service which utilizes the feature flags API to manage functionality.
+The maintainer of an application or service which utilizes the feature flags SDK to manage functionality.
 
 ### Provider Author
 
-The maintainer of an SDK-compliant provider which implements the necessary interfaces required for flag evaluation.
+The maintainer of an API-compliant provider which implements the necessary interfaces required for flag evaluation.
 
 ### Integration Author
 
-The maintainer of an SDK-compliant integration which implements additional secondary functionality besides flag evaluation.
+The maintainer of an API-compliant integration which implements additional secondary functionality besides flag evaluation.
 
 ### Library Author
 
-The maintainer of a shared library which is a dependency of many applications or libraries, which utilizes the feature flags API to allow consumers to manage library functionality.
+The maintainer of a shared library which is a dependency of many applications or libraries, which utilizes the feature flags SDK to allow consumers to manage library functionality.
 
 ## Common
 
-### Feature Flag API
+### Feature Flag SDK
 
 The interfaces and abstractions used by Application Author to implement feature flags in their application or service.
 
-### Feature Flag SDK
+### Feature Flag API
 
 The interfaces and abstractions used by Provider Authors and Integration Authors to add support for their feature flag implementation or integration.
 
