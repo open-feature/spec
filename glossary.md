@@ -27,7 +27,7 @@ This document defines some terms that are used across this specification.
 
 ### Application Author
 
-The maintainer of an an application or service which utilizes the feature flags API to manage functionality.
+The maintainer of an application or service which utilizes the feature flags API to manage functionality.
 
 ### Provider Author
 
@@ -53,7 +53,7 @@ The interfaces and abstractions used by Provider Authors and Integration Authors
 
 ### Provider
 
-An SDK-compliant feature flag implementation that is abstracted by the Feature Flag API. Implementations may include popular Saas feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
+An SDK-compliant feature flag implementation that is abstracted by the Feature Flag API. Implementations may include Saas feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
 
 ### Integration
 
@@ -61,4 +61,4 @@ An SDK-compliant secondary function that is abstracted by the Feature Flag API, 
 
 ### Context
 
-The flag evaluation context, which contains information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc.
+The flag evaluation context, which may contain information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc.
