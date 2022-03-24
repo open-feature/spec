@@ -53,7 +53,7 @@ The interfaces and abstractions used by Provider Authors and Integration Authors
 
 ### Provider
 
-An SDK-compliant feature flag implementation that is abstracted by the Feature Flag API. Implementations may include Saas feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
+An SDK-compliant feature flag implementation which adheres to the Feature Flag API. Implementations may include Saas feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
 
 ### Integration
 
