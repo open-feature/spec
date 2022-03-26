@@ -27,7 +27,11 @@ This document defines some terms that are used across this specification.
 
 ### Application Author
 
-The maintainer of an application or service which utilizes the feature flags SDK to manage functionality.
+A developer of an application or service which utilizes the feature flags SDK. This person writes code which calls into the SDK to make flagging decisions.
+
+### Application Integrator
+
+A developer who is setting up or configuring an application or service to use the feature flags SDK. They would write code like "We should speak to the open source flagging service, not $vendor" or "The way the system should handle telemetry is through $library".
 
 ### Provider Author
 
