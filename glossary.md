@@ -31,7 +31,7 @@ A developer of an application or service which utilizes the feature flags SDK. T
 
 ### Application Integrator
 
-A developer who is setting up or configuring an application or service to use the feature flags SDK.
+A developer who is setting up or configuring an application or service to use the feature flags SDK. They would write code like "We should speak to the open source flagging service, not $vendor" or "The way the system should handle telemetry is through $library".
 
 ### Provider Author
 
