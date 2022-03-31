@@ -85,7 +85,7 @@ erDiagram
 Flags represent a single pivot point of logic. Flags have a type, like `string`, `boolean`, `json`, etc. Examples: `redesign_enabled` or `header-order`
 
 ### Variant
-A variant the name for a unique value for a flag. So for the `header-order` flag, we may have variants like `reverse`, `wonky` or `standard`.
+A variant is a space-constrained identifier for values. This allows us to reference these values without having to include all of the data (which may be quite large). We may use some hash of the values themselves or a string name. So for the `header-order` flag, we may have variants like `reverse`, `wonky` or `standard`.
 
 ### Values
 Individual variants have values associated with them. These values adhere to the flag's type. For the `header-order` variants, we may have values like:
