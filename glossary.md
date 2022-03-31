@@ -77,7 +77,7 @@ erDiagram
           Flag ||--|{ variant: "has many"
           variant ||--|| value: "has"
           Flag ||--o{ rule: "Has zero or many"
-          rule ||--|{ variant : "links to many"
+          rule }|--|{ variant : "links to many"
 ```
 
 ### Flag
