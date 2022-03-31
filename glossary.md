@@ -69,3 +69,33 @@ An SDK-compliant secondary function that is abstracted by the Feature Flag API, 
 ### Context
 
 The flag evaluation context, which may contain information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc.
+
+## Flagging specifics
+
+```mermaid
+erDiagram
+          Flag ||--|{ variant: "has many"
+          variant ||--|| value: "has"
+          Flag ||--o{ rule: "Has zero or many"
+          rule ||--|{ variant : "links to many"
+```
+
+### Flag
+
+Flags represent a single pivot point of logic. Flags have a type, like `string`, `boolean`, `json`, etc. Examples: `redesign_enabled` or `header-order`
+
+### Variant
+A variant the name for a unique value for a flag. So for the `header-order` flag, we may have variants like `reverse`, `wonky` or `standard`.
+
+### Values
+Individual variants have values associated with them. These values adhere to the flag's type. For the `header-order` variants, we may have values like:
+
+```
+reverse: [5,4,3,2,1]
+wonky: [3,5,2,1,4]
+standard: [1,2,3,4,5]
+```
+
+### Rule
+
+A rule is some criteria that's used to determine which variant a particular context should be mapped to.
