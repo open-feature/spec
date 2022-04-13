@@ -3,14 +3,14 @@
 The goal of this research is to make it easy to quickly compare feature flag
 vendor SDK API's in order to help define the OpenFeature spec.
 
-## Types
+## Flag Return Types
 
-| Provider | Unleash | Flagsmith | LaunchDarkly | Split | Cloudbees Rollout | Harness |
-| -------- | ------- | --------- | ------------ | ----- | ----------------- | ------- |
-| boolean  | :heavy_check_mark:    | :heavy_check_mark:      | :heavy_check_mark:         |       | :heavy_check_mark:              | :heavy_check_mark:    |
-| string   | :heavy_check_mark:    | :heavy_check_mark:      | :heavy_check_mark:         | :heavy_check_mark:  | :heavy_check_mark:              | :heavy_check_mark:    |
-| numeric  |         |           | :heavy_check_mark:         |       | :heavy_check_mark:              | :heavy_check_mark:    |
-| JSON     | :heavy_check_mark:    |           |              | :heavy_check_mark:  |                   | :heavy_check_mark:    |
+| Provider x supported types | Unleash            | Flagsmith          | LaunchDarkly       | Split              | CloudBees          | Harness            |
+| -------------------------- | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ |
+| boolean                    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    | :heavy_check_mark: | :heavy_check_mark: |
+| string                     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| numeric                    |                    |                    | :heavy_check_mark: |                    | :heavy_check_mark: | :heavy_check_mark: |
+| JSON                       | :heavy_check_mark: |                    |                    | :heavy_check_mark: |                    | :heavy_check_mark: |
 
 ### Boolean
 
@@ -270,7 +270,7 @@ String stringVariation(String key, Target target, String defaultValue)
 * SDK Repo: https://github.com/Unleash/unleash-client-node
 * NOTE: Variants can contain string, csv, or JSON
 */
-getVariant(name: string, context: Context = {}, fallbackVariant?: Variant): Variant 
+getVariant(name: string, context: Context = {}, fallbackVariant?: Variant): Variant
 
 /**
 * Flagsmith
@@ -629,8 +629,148 @@ getTreatmentWithConfig(splitName: string, attributes?: Attributes): TreatmentWit
 function jsonVariation(
   identifier: string,
   target: Target,
-  defaultValue: boolean = {},
+  defaultValue: object = {},
 ): Promise<Record<string, unknown>>;
 ```
+
+</details>
+
+## Attributes for flag evaluation
+
+Most feature flag implementations support the inclusion of contextual attributes as the basis for differential evaluation of feature flags based on rules that can be defined in the flag system. Below is a summary of how various vendors allow these attributes to be supplied in flag evaluation, the types they support, and the terminology they use.
+
+| Provider x attribute concepts | Unleash                 | Flagsmith             | LaunchDarkly                | Split                       | CloudBees             | Harness            |
+| ----------------------------- | ----------------------- | --------------------- | --------------------------- | --------------------------- | --------------------- | ------------------ |
+| nomenclature                  | "context", "properties" | "user", "traits"      | "user", "attributes"        | "attributes"                | "context"             | "target"           |
+| standard attributes           | :heavy_check_mark:      |                       | :heavy_check_mark:          |                             | :heavy_check_mark:    |                    |
+| custom attributes             | :heavy_check_mark:      | :heavy_check_mark:    |                             | :heavy_check_mark:          | :heavy_check_mark:    | :heavy_check_mark: |
+| nested custom attributes      |                         |                       |                             |                             | :heavy_check_mark:    |                    |
+| user key                      | `userId`                | `identifier`          | `key`                       | `key`\*                     | `distinct_id`         | `identifier`\*     |
+| custom attribute types        | string                  | boolean,string,number | boolean,number,string,Array | boolean,number,string,Array | boolean,number,string | number,string\*\*  |
+
+\* not a field, provided as distinct parameter in flag evaluation
+
+\*\* possibly more? Documentation is unclear
+
+<details>
+  <summary>Unleash</summary>
+
+The unleash context is an object used to store data for use in flag evaluation. A number of fields are defined by default, and additional custom fields can be specified. Some fields within the context are "static", provided at initialization, immutable for the lifetime of the application, while others are dynamic and can change with each evaluation.
+
+```
+interface Context {
+  string environment?;     // static
+  string appName?;         // static
+  Date currentTime?;
+  string userId?;
+  string sessionId?;
+  string remoteAddress?;
+  Map<string, string | undefined | number> properties?;
+}
+```
+
+see: https://docs.getunleash.io/user_guide/unleash_context
+
+</details>
+
+<details>
+  <summary>Flagsmith</summary>
+
+Flagsmith associates "traits" (attributes) on the user object using that user's userId. Traits can be booleans, numbers, or strings.
+
+### v1 SDK:
+
+```
+flagsmith.setTrait(userId, key, value);
+
+```
+
+see: https://docs.flagsmith.com/basic-features/managing-identities#identity-traits
+
+### v2-beta SDK:
+
+```
+await this.client.getIdentityFlags(
+  identifier,
+  traits // this is a "dictionary"/key-value map
+)
+```
+
+</details>
+
+<details>
+  <summary>LaunchDarkly</summary>
+
+The "user" object must be passed in every flag evaluation, and defines a key to identify a users, as well as a number of pre-defined optional properties which can be used in flag evaluation logic. Additional custom properties can be specified in the nested `custom` property.
+
+```
+interface LDUser {
+    string key;
+    string secondary?;
+    string name?;
+    string firstName?;
+    string lastName?;
+    string email?;
+    string avatar?;
+    string ip?;
+    string country;
+    boolean anonymous?;
+    Map<string, string | boolean | number | Array<string | boolean | number>> custom?
+    privateAttributeNames?: Array<string>;
+  }
+```
+
+see: https://docs.launchdarkly.com/home/users/attributes
+
+</details>
+
+<details>
+  <summary>Split</summary>
+
+Attributes are custom data that can be used in targeting rules, which can be optionally supplied during flag evaluation.
+
+Note: the user `key` identifies a user and is a distinct, required parameter in the split SDKs.
+
+see: https://help.split.io/hc/en-us/articles/360020793231-Target-with-custom-attributes
+
+</details>
+
+<details>
+  <summary>CloudBees</summary>
+
+Properties are arbitrary data which can be used in flag evaluation. Cloudbees FM defines a few standard properties (`app_release`, `language`, `platform`, `screen_height` and `screen_width`), and allows custom properties to be defined. Note that the Cloudbees SDK requires the application author to explicitly define custom attributes. The context object passed at flag evaluation time can be used to compute properties.
+
+```
+// define a new property, using the context object to set it's value.
+Rox.setCustomBooleanProperty('my-new-prop', (context) => {
+  return context.myPropValue;
+});
+```
+
+```
+// pass the context into flag evaluation:
+var context = { myPropValue = true };
+Rox.dynamicApi.isEnabled('my-flag', false, context);
+```
+
+see: https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/feature-releases/custom-properties
+
+</details>
+
+<details>
+  <summary>Harness</summary>
+
+A "target" is a conceptual user whose experience can be differentially impacted by "targeting rules". Harness defines a few standard properties (an `identifier`, a `name`, and an `anonymous` boolean), as well as a map of arbitrary custom attributes. The target is a required parameter for every flag evaluation.
+
+```
+Target {
+  string identifier;
+  string name;
+  boolean anonymous;
+  Map<string, unknown> attributes;
+}
+```
+
+see: https://ngdocs.harness.io/article/xf3hmxbaji-targeting-users-with-flags#on_request_check_for_condition_and_serve_variation
 
 </details>
