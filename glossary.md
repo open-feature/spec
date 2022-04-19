@@ -8,16 +8,16 @@ This document defines some terms that are used across this specification.
 <!-- toc -->
 
 - [User Roles](#user-roles)
-  * [Application Author](#application-author)
-  * [Provider Author](#provider-author)
-  * [Integration Author](#integration-author)
-  * [Library Author](#library-author)
+  - [Application Author](#application-author)
+  - [Provider Author](#provider-author)
+  - [Integration Author](#integration-author)
+  - [Library Author](#library-author)
 - [Common](#common)
-  * [Feature Flag SDK](#feature-flag-sdk)
-  * [Feature Flag API](#feature-flag-api)
-  * [Provider](#provider)
-  * [Integration](#integration)
-  * [Context](#context)
+  - [Feature Flag SDK](#feature-flag-sdk)
+  - [Feature Flag API](#feature-flag-api)
+  - [Provider](#provider)
+  - [Integration](#integration)
+  - [Evaluation Context](#evaluation-context)
 
 <!-- tocstop -->
 
@@ -66,9 +66,9 @@ An SDK-compliant feature flag implementation which adheres to the Feature Flag A
 
 An SDK-compliant secondary function that is abstracted by the Feature Flag API, and requires only minimal configuration by the Application Author. Examples include telemetry, tracking, custom logging and monitoring.
 
-### Context
+### Evaluation Context
 
-The flag evaluation context, which may contain information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc.
+Context object for flag evaluation, which may contain information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc. This data may be used as a basis for differential evaluation of feature flags based on rules that can be defined in the flag system. Context data may be provided by merging static global context, arguments to flag evaluation, and implicit language-dependant state propagation mechanisms (thread-local storage, promise chains, continuations, etc).
 
 ## Flagging specifics
 
@@ -85,9 +85,11 @@ erDiagram
 Flags represent a single pivot point of logic. Flags have a type, like `string`, `boolean`, `json`, etc. Examples: `redesign_enabled` or `header-order`
 
 ### Variant
+
 A variant is a space-constrained identifier for values. This allows us to reference these values without having to include all of the data (which may be quite large). We may use some hash of the values themselves or a string name. So for the `header-order` flag, we may have variants like `reverse`, `wonky` or `standard`.
 
 ### Values
+
 Individual variants have values associated with them. These values adhere to the flag's type. For the `header-order` variants, we may have values like:
 
 ```
