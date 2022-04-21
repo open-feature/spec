@@ -4,25 +4,25 @@
 
 This document outlines some of the common types and data structures defined by OpenFeature and referenced elsewhere in this specification.
 
-### boolean
+### Boolean
 
 A logical true or false, as represented idiomatically in the implementation languages.
 
-### string
+### String
 
 A UTF-8 encoded string.
 
-### number
+### Number
 
 A numeric value of unspecified type or size. Implementation languages may further differentiate between integers, floating point numbers, and other specific numeric types and provide functionality as idioms dictate.
 
-### structure
+### Structure
 
 Structured data, presented however is idiomatic in the implementation language, such as JSON or YAML.
 
-### evaluation details
+### Evaluation Details
 
-A structure containing the following fields:
+A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./flag-evaluation/flag-evaluation.md#detailed-flag-evaluation), containing the following fields:
 
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
@@ -30,7 +30,18 @@ A structure containing the following fields:
 - reason (string, optional)
 - variant (string, optional)
 
-### evaluation options
+### Resolution Details
+
+A structure which contains a subset of the fields defined in the `evaluation details`, representing the result of the provider's [flag resolution process](./glossary.md#resolving-flag-values), including:
+
+- value (boolean | string | number | structure, required)
+- error code (string, optional)
+- reason (string, optional)
+- variant (string, optional)
+
+\*NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
+
+### Evaluation Options
 
 A structure containing the following fields:
 
