@@ -58,6 +58,10 @@ The interfaces and abstractions used by authors (Application, Integration, Provi
 Provider & Integration authors adhere to the API to add support for their feature flag implementation or integration.
 Application authors use it via the Feature Flag SDK.
 
+### Evaluation API
+
+The subset of the [Feature Flag API](#feature-flag-api) that the Application Author uses to evaluate flags.
+
 ### Provider
 
 An SDK-compliant feature flag implementation which adheres to the Feature Flag API. Implementations may include Saas feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
@@ -86,7 +90,7 @@ Flags represent a single pivot point of logic. Flags have a type, like `string`,
 
 ### Variant
 
-A variant is a space-constrained identifier for values. This allows us to reference these values without having to include all of the data (which may be quite large). We may use some hash of the values themselves or a string name. So for the `header-order` flag, we may have variants like `reverse`, `wonky` or `standard`.
+A variant is a semantic identifier for a value. This allows for referral to particular values without necessarily including the value itself, which may be quite prohibitively large or otherwise unsuitable in some cases.
 
 ### Values
 
