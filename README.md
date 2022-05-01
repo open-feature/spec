@@ -4,7 +4,7 @@
 [![Contributing](https://img.shields.io/static/v1?label=Contributing&message=guide&color=blue)](https://github.com/open-feature/.github/blob/main/CONTRIBUTING.md)
 [![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/open-feature/.github/blob/main/CODE_OF_CONDUCT.md)
 
-This repository describes the the requirements and expectations for OpenFeature.
+This repository describes the requirements and expectations for OpenFeature.
 It also contains research that was considered while defining the spec.
 
 > :warning: This is a draft version that includes key concepts.
