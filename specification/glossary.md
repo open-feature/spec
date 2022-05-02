@@ -7,21 +7,33 @@ This document defines some terms that are used across this specification.
 
 <!-- toc -->
 
+- [Feature Flag](#feature-flag)
 - [User Roles](#user-roles)
   - [Application Author](#application-author)
+  - [Application Integrator](#application-integrator)
   - [Provider Author](#provider-author)
   - [Integration Author](#integration-author)
   - [Library Author](#library-author)
 - [Common](#common)
   - [Feature Flag SDK](#feature-flag-sdk)
   - [Feature Flag API](#feature-flag-api)
+  - [Evaluation API](#evaluation-api)
   - [Provider](#provider)
   - [Integration](#integration)
   - [Evaluation Context](#evaluation-context)
+- [Flagging specifics](#flagging-specifics)
+  - [Flag](#flag)
+  - [Variant](#variant)
+  - [Values](#values)
+  - [Rule](#rule)
 
 <!-- tocstop -->
 
 </details>
+
+## Feature Flag
+
+A mechanism that allows an Application Author to define alternative codepaths within a deployed piece of software, which is conditionally executed at runtime, based on a rule set.
 
 ## User Roles
 
