@@ -2,8 +2,14 @@
 
 ## Overview
 
-Hooks are a mechanism which can tie into the lifecycle of flag evaluation. They
-operate similarly to middleware in many web frameworks.
+Hooks are a mechanism whereby application developers can add arbitrary behavior
+to flag evaluation. They operate similarly to middleware in many web frameworks.
+
+### Definitions
+
+**Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the evaluation is run.
+**Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation.
+**API**: The global API singleton.
 
 ### Hook context
 
@@ -17,10 +23,27 @@ Hook context exists to provide hooks with information about the invocation.
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
+### State
+
+> State **MUST** be a map of objects.
+
+> Condition: If your language supports it, state **MUST** be immutable.
 
 ### Hook creation and parameters
 
-> Hooks **MUST** specify at least one stage: `before(HookContext, ImmutableState)`, `after(HookContext, FlagEvaluationDetails, , ImmutableState)`, `error(HookContext, Exception, ImmutableState)`, or `finally(HookContext, ImmutableState)`.
+> Hooks **MUST** specify at least one stage.
+
+> The `before` stage *MUST* run before flag evaluation occurs. It accepts a `hook context` (required) and `state` (optional) as parameters and returns either a `HookContext` or nothing.
+
+```
+HookContext|void before(HookContext, State)
+```
+
+> The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `state` (optional). It has no return value.
+
+> The `error` hook runs when errors are encountered in the `before` or `after` state or when flag evaluation errors. It accepts `hook context` (required), `exception` for what went wrong (required), and `state` (optional). It has no return value.
+
+> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `state` (optional). There is no return value.
 
 > Condition: If `finally` is a reserved word in the language, `afterAll` should be used.
 
@@ -32,28 +55,22 @@ Hook context exists to provide hooks with information about the invocation.
 
 > When an error occurs in hook evaluation, further evaluation **MUST** stop and error hook evaluation begins.
 
-> If an error is encountered in the error flow, it **MUST** not be returned to the user.
+> If an error is encountered in the error stage, it **MUST** not be returned to the user.
 
 > If an error occurs in the `before` or `after` hooks, the `error` hooks **MUST** be invoked.
 
 > If an error occurs in the `finally` hook, it **MUST** not trigger the `error` hook.
 
-### Flag evaluation options
+### [Flag evaluation options](../types.md#evaluation-options)
 
 > `Flag evalution options` must contain a list of hooks to evaluate.
 
-> `Flag evaluation options` may contain `immutable state`, a map of data to be provided to hook invocations.
+> `Flag evaluation options` may contain `state`, a map of data to be provided to hook invocations.
 
-> Immutable hook data **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation.
+> `state` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation.
 
-> The hook **MUST** not alter the `immutable state` object.
+> The hook **MUST** not alter the `state` object.
 
 ### Hook evaluation
 
-> `Immutable state` **MUST** passed between each hook.
-
-> As hooks are run, they **MUST** be added to an `evaluatedHooks` property within the `EvaluationContext`.
-
-> If a hook throws an error, it **MUST** be in `evaluatedHooks`.
-
-> The `flag evaluation details`, if returned, **must** contain a list of `evaluated hooks`.
+> `state` **MUST** passed between each hook.
