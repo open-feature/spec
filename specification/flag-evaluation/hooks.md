@@ -44,7 +44,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 > `Flag evaluation options` may contain `immutable state`, a map of data to be provided to hook invocations.
 
-> Immutable hook data **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation.
+> The `immutable state` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation.
 
 > The hook **MUST** not alter the `immutable state` object.
 
