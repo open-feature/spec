@@ -6,7 +6,7 @@
 
 The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](../provider/providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
 
-#### API Initialization and Configuration
+### API Initialization and Configuration
 
 ##### Requirement 1.1
 
@@ -62,7 +62,7 @@ OpenFeature.getClient({
 
 The name is a logical identifier for the client.
 
-#### Client Usage
+### Client Usage
 
 ##### Requirement 1.6
 
@@ -93,26 +93,28 @@ var myValue = client.getValue('my-flag', false);
 > ##### Conditional Requirement 1.8.1
 >
 > > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
->
-> > ```
-> > // example boolean flag evaluation
-> > boolean myBool =  client.getBooleanValue('bool-flag', false);
-> >
-> > // example overloaded string flag evaluation with optional params
-> > string myString = client.getStringValue('string-flag', 'N/A', evaluationContext, options);
-> >
-> > // example number flag evaluation
-> > number myNumber = client.getNumberValue('number-flag', 75);
-> >
-> > // example overloaded structure flag evaluation with optional params
-> > MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
-> > ```
->
+
+```
+// example boolean flag evaluation
+boolean myBool =  client.getBooleanValue('bool-flag', false);
+
+// example overloaded string flag evaluation with optional params
+string myString = client.getStringValue('string-flag', 'N/A', evaluationContext, options);
+
+// example number flag evaluation
+number myNumber = client.getNumberValue('number-flag', 75);
+
+// example overloaded structure flag evaluation with optional params
+MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
+```
+
 > > See [evaluation context](../evaluation-context/evaluation-context.md) for details.
 >
 > ##### Conditional Requirement 1.8.2
 >
 > > The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
+
+#### Detailed Flag Evaluation
 
 ##### Requirement 1.9
 
@@ -151,44 +153,44 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 ##### Requirement 1.13
 
-> The `evaluation details` structure's `variant` field **SHOULD** contain a identifier logically corresponding to the return flag value.
-
-For example, the flag value might be `3.14159265359`, and the variant field's value might be `"pi"`.
+> In cases of normal execution, the `evaluation details` structure's `variant` field **MUST** contain the value of the `variant` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.
 
 ##### Requirement 1.14
 
-> The `evaluation details` structure's `reason` field **SHOULD** indicate the semantic reason for the returned flag value. Possible values vary by provider, but may include `"TARGETING_MATCH"`, `"SPLIT"`, `"DISABLED"`, `"DEFAULT"`, `"UNKNOWN"` and `"ERROR"`.
+> In cases of normal execution, the `evaluation details` structure's `reason` field **MUST** contain the value of the `reason` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.
 
 ##### Requirement 1.15
 
-> In cases of normal execution, the `evaluation details` structure's `error code` field **MUST** not be set, or otherwise must contain a null or falsy value.
+> In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** identify an error occurred during flag evaluation, having possible values `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, or `"GENERAL"`.
 
 ##### Requirement 1.16
 
-> In cases of abnormal execution, the `evaluation details` structure's `error code` field **SHOULD** identify an error occurred during flag evaluation, with possible values `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, or `"GENERAL"`.
+> In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` **SHOULD** indicate an error.
 
 ##### Requirement 1.17
 
-> In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` **SHOULD** indicate an error.
-
-##### Requirement 1.18
-
-> The `evaluation options` structure's `hooks` field denotes a collection of hooks to be executed for the respective flag evaluation.
+> The `evaluation options` structure's `hooks` field denotes a collection of hooks that the client **MUST** execute for the respective flag evaluation, in addition to those already configured.
 
 See [hooks](./hooks.md) for details.
 
+##### Requirement 1.18
+
+> Methods, functions, or operations on the client **MUST NOT** throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.
+
 ##### Requirement 1.19
-
-> No methods, functions, or operations on the client should ever throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.
-
-##### Requirement 1.20
 
 > In the case of abnormal execution, the client **SHOULD** log an informative error message.
 
 Implementations may define a standard logging interface that can be supplied as an optional argument to the client creation function, which may wrap standard logging functionality of the implementation language.
 
-##### Requirement 1.21
+##### Requirement 1.20
 
 > The `client` **SHOULD** provide asynchronous or non-blocking mechanisms for flag evaluation.
 
 It's recommended to provide non-blocking mechanisms for flag evaluation, particularly in languages or environments wherein there's a single thread of execution.
+
+##### Requirement 1.21
+
+> The `client` **MUST** transform the `evaluation context` using the `provider's` `context transformer` function, before passing the result of the transformation to the provider's flag resolution functions.
+
+See [context transformation](../provider/providers.md#context-transformation) for details.
