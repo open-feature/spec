@@ -27,7 +27,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 > State **MUST** be a map of objects.
 
-> Condition: If your language supports it, state **MUST** be immutable.
+> Condition: State **MUST** be immutable, if the implementation language supports a mechanism for marking data as immutable.
 
 ### Hook creation and parameters
 
