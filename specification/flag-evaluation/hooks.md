@@ -15,7 +15,9 @@ to flag evaluation. They operate similarly to middleware in many web frameworks.
 
 Hook context exists to provide hooks with information about the invocation.
 
-> Hook context **MUST** provide: the flag key, flag type, evaluation context, default value and a list of  executed hooks by stage.
+> Hook context **MUST** provide: the flag key, evaluation context, default value and a list of  executed hooks by stage.
+
+> Condition: You **MUST** provide `flag type` if the language type system differentiates between strings, numbers, booleans, and structures.
 
 > Hook context **SHOULD** provide: provider, client
 
