@@ -109,7 +109,14 @@ try {
 
 > `Flag evaluation options` may contain `state`, a map of data to be provided to hook invocations.
 
-> `state` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation.
+> `state` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation (last wins).
+
+```python
+state = {}
+for source in [API, Client, Invocation]:
+  for key, value in source:
+    state[key] = value
+```
 
 > The hook **MUST** not alter the `state` object.
 
