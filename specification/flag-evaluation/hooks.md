@@ -51,7 +51,49 @@ HookContext|void before(HookContext, State)
 
 > The API, Client and invocation **MUST** have a method for registering hooks which accepts `flag evaluation options`
 
+```js
+OpenFeature.addHooks(new Hook1());
+
+//...
+
+Client client = OpenFeature.getClient();
+client.addHooks(new Hook2());
+
+//...
+
+client.getValue('my-flag', 'defaultValue', new Hook3());
+```
+
 > Hooks **MUST** be evaluated in the following order: API before, client before, invocation before, invocation after, client after, API after, invocation finally, client finally, API finally. If errors are present, the order is: invocation error, client error, API error.
+
+```
+// here we are using the order defined above (note if it wasn't defined, we'd have to order them somehow anyway
+Hooks[] allHooks = [ ...OpenFeature.getHooks(), ...this.getHooks(), ...evaluationOptions.hooks ]
+
+try {
+  // evaluation all our before hooks
+  for (h in allHooks) {
+    h.before(...);
+  }
+
+  provider.resolveValue(...);
+
+  // evaluation all our after hooks
+  for (h in allHooks.reverse()) {
+    h.after(...);
+  }
+} catch (Error err) {
+  // evaluation all our error hooks
+  for (h in allHooks.reverse()) {
+    h.error(...);
+  }
+} finally {
+  // evaluation all our finally hooks
+  for (h in allHooks.reverse()) {
+    h.finally(...);
+  }
+}
+```
 
 > When an error occurs in hook evaluation, further evaluation **MUST** stop and error hook evaluation begins.
 
