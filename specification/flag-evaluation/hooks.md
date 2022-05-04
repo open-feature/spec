@@ -7,6 +7,7 @@ to flag evaluation. They operate similarly to middleware in many web frameworks.
 
 ### Definitions
 
+**Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage.
 **Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the evaluation is run.
 **Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation.
 **API**: The global API singleton.
@@ -21,7 +22,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 > Hook context **SHOULD** provide: provider, client
 
-> flag key, flag type, default value properties **MUST** be immutable.
+> flag key, flag type, default value properties **MUST** be immutable. If the language does not support immutability, the hook **MUST** not modify these properties.
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
