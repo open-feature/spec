@@ -7,6 +7,9 @@ parse: clean _check_python
 clean:
 	@find ./specification -name '*.json' -delete
 
+lint:
+	@python ./tools/specification_parser/lint_json_output.py specification/
+
 _check_python:
 	@if [ $(IS_PYTHON_INSTALLED) -eq 1 ]; \
 		then echo "" \
@@ -14,7 +17,6 @@ _check_python:
 		&& echo "" \
 		&& exit 1; \
 		fi;
-
 .PHONY: markdown-toc
 markdown-toc:
 	@if ! npm ls markdown-toc; then npm install; fi
