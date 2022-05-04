@@ -44,11 +44,11 @@ HookContext|void before(HookContext, State)
 
 > The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `state` (optional). It has no return value.
 
-> The `error` hook runs when errors are encountered in the `before` or `after` state or when flag evaluation errors. It accepts `hook context` (required), `exception` for what went wrong (required), and `state` (optional). It has no return value.
+> The `error` hook runs when errors are encountered in the `before` or `after` stage or when flag evaluation errors. It accepts `hook context` (required), `exception` for what went wrong (required), and `state` (optional). It has no return value.
 
 > The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `state` (optional). There is no return value.
 
-> Condition: If `finally` is a reserved word in the language, `afterAll` should be used.
+> Condition: If `finally` is a reserved word in the language, `finallyAfter` should be used.
 
 ### Hook registration & ordering
 
@@ -67,46 +67,29 @@ client.addHooks(new Hook2());
 client.getValue('my-flag', 'defaultValue', new Hook3());
 ```
 
-> Hooks **MUST** be evaluated in the following order: API before, client before, invocation before, invocation after, client after, API after, invocation finally, client finally, API finally. If errors are present, the order is: invocation error, client error, API error.
-
-```
-// here we are using the order defined above (note if it wasn't defined, we'd have to order them somehow anyway
-Hooks[] allHooks = [ ...OpenFeature.getHooks(), ...this.getHooks(), ...evaluationOptions.hooks ]
-
-try {
-  // evaluation all our before hooks
-  for (h in allHooks) {
-    h.before(...);
-  }
-
-  provider.resolveValue(...);
-
-  // evaluation all our after hooks
-  for (h in allHooks.reverse()) {
-    h.after(...);
-  }
-} catch (Error err) {
-  // evaluation all our error hooks
-  for (h in allHooks.reverse()) {
-    h.error(...);
-  }
-} finally {
-  // evaluation all our finally hooks
-  for (h in allHooks.reverse()) {
-    h.finally(...);
-  }
-}
-```
-
-> When an error occurs in hook evaluation, further evaluation **MUST** stop and error hook evaluation begins.
-
-> If an error is encountered in the error stage, it **MUST** not be returned to the user.
+> Hooks **MUST** be evaluated in the following order:
+> - before: API, Client, Invocation
+> - after: Invocation, Client, API
+> - error (if applicable): Invocation, Client, API
+> - finally: Invocation, Client, API> If an error occurs in the `finally` hook, it **MUST** not trigger the `error` hook.
 
 > If an error occurs in the `before` or `after` hooks, the `error` hooks **MUST** be invoked.
 
-> If an error occurs in the `finally` hook, it **MUST** not trigger the `error` hook.
+> If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages **MUST** not be invoked.
+
+> If an error is encountered in the error stage, it **MUST** not be returned to the user.
+
 
 ### [Flag evaluation options](../types.md#evaluation-options)
+
+Usage might looks something like:
+
+```python
+val = client.get_boolean_value('my-key', False, evaluation_options={
+    'hooks': new MyHook(),
+    'state': {'side-item': 'onion rings'}
+})
+```
 
 > `Flag evalution options` must contain a list of hooks to evaluate.
 
