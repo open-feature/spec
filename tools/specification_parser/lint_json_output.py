@@ -25,11 +25,12 @@ def main(dir):
                     entries.append(child)
             try:
                 for entry in entries:
-                    if entry['RFC 2119 keyword'] is None:
+                    if entry.get('RFC 2119 keyword') is None and \
+                       'condition' not in entry['id'].lower():
                         print(f"{j}: Rule {entry['id']} is missing a RFC 2119 keyword", file=sys.stderr)
                         errors += 1
                     pass
-            except:
+            except Exception as k:
                 print(f"Non json-spec formatted file found: {j}", file=sys.stderr)
     sys.exit(errors)
 
