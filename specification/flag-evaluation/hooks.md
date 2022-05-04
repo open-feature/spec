@@ -26,11 +26,11 @@ Hook context exists to provide hooks with information about the invocation.
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
-### State
+### HookHints
 
-> State **MUST** be a map of objects.
+> HookHints **MUST** be a map of objects.
 
-> Condition: State **MUST** be immutable, if the implementation language supports a mechanism for marking data as immutable.
+> Condition: HookHints **MUST** be immutable, if the implementation language supports a mechanism for marking data as immutable.
 
 ### Hook creation and parameters
 
@@ -39,14 +39,14 @@ Hook context exists to provide hooks with information about the invocation.
 > The `before` stage *MUST* run before flag evaluation occurs. It accepts a `hook context` (required) and `state` (optional) as parameters and returns either a `HookContext` or nothing.
 
 ```
-HookContext|void before(HookContext, State)
+HookContext|void before(HookContext, HookHints)
 ```
 
-> The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `state` (optional). It has no return value.
+> The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.
 
-> The `error` hook runs when errors are encountered in the `before` or `after` stage or when flag evaluation errors. It accepts `hook context` (required), `exception` for what went wrong (required), and `state` (optional). It has no return value.
+> The `error` hook runs when errors are encountered in the `before` or `after` stage or when flag evaluation errors. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.
 
-> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `state` (optional). There is no return value.
+> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.
 
 > Condition: If `finally` is a reserved word in the language, `finallyAfter` should be used.
 
@@ -87,25 +87,25 @@ Usage might looks something like:
 ```python
 val = client.get_boolean_value('my-key', False, evaluation_options={
     'hooks': new MyHook(),
-    'state': {'side-item': 'onion rings'}
+    'hook_hints': {'side-item': 'onion rings'}
 })
 ```
 
 > `Flag evalution options` must contain a list of hooks to evaluate.
 
-> `Flag evaluation options` may contain `state`, a map of data to be provided to hook invocations.
+> `Flag evaluation options` may contain `HookHints`, a map of data to be provided to hook invocations.
 
-> `state` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation (last wins).
+> `HookHints` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation (last wins).
 
 ```python
-state = {}
+hook_hints = {}
 for source in [API, Client, Invocation]:
   for key, value in source:
-    state[key] = value
+    hook-hints[key] = value
 ```
 
-> The hook **MUST** not alter the `state` object.
+> The hook **MUST** not alter the `HookHints` object.
 
 ### Hook evaluation
 
-> `state` **MUST** passed between each hook.
+> `HookHints` **MUST** passed between each hook.
