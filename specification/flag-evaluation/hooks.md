@@ -16,41 +16,87 @@ to flag evaluation. They operate similarly to middleware in many web frameworks.
 
 Hook context exists to provide hooks with information about the invocation.
 
+###### Requirement 1.1
+
 > Hook context **MUST** provide: the flag key, evaluation context, default value and a list of  executed hooks by stage.
 
-> Condition: You **MUST** provide `flag type` if the language type system differentiates between strings, numbers, booleans, and structures.
+
+##### Condition 1.2
+
+> If the language type system differentiates between strings, numbers, booleans, and structures.
+>
+>##### Condition 1.2.1
+>
+> Condition: You **MUST** provide `flag type`.
+
+
+##### Requirement 1.2
 
 > Hook context **SHOULD** provide: provider, client
 
-> flag key, flag type, default value properties **MUST** be immutable. If the language does not support immutability, the hook **MUST** not modify these properties.
+
+##### Requirement 1.3
+
+> flag key, flag type, default value properties **MUST** be immutable. If the language does not support immutability, the hook **MUST NOT** modify these properties.
+
+##### Requirement 1.4
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
 ### HookHints
 
+##### Requirement 2.1
+
 > HookHints **MUST** be a map of objects.
 
-> Condition: HookHints **MUST** be immutable, if the implementation language supports a mechanism for marking data as immutable.
+
+##### Condition 2.2
+
+> The implementation language supports a mechanism for marking data as immutable.
+>
+> ##### 2.2.1
+>
+> Condition: HookHints **MUST** be immutable.
+
 
 ### Hook creation and parameters
 
+
+##### Requirement 3.1
+
 > Hooks **MUST** specify at least one stage.
 
-> The `before` stage *MUST* run before flag evaluation occurs. It accepts a `hook context` (required) and `state` (optional) as parameters and returns either a `HookContext` or nothing.
+##### Requirement 3.2
+
+> The `before` stage **MUST** run before flag evaluation occurs. It accepts a `hook context` (required) and `state` (optional) as parameters and returns either a `HookContext` or nothing.
 
 ```
 HookContext|void before(HookContext, HookHints)
 ```
 
+##### Requirement 3.3
+
 > The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.
 
-> The `error` hook runs when errors are encountered in the `before` or `after` stage or when flag evaluation errors. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.
+##### Requirement 3.4
+
+> The `error` hook **MUST** run when errors are encountered in the `before` stage, the `after` stage or during flag evaluation. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.
+
+##### Requirement 3.5
 
 > The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.
 
-> Condition: If `finally` is a reserved word in the language, `finallyAfter` should be used.
+##### Condition 3.6
+
+> `finally` is a reserved word in the language.
+>
+> ##### 3.6.1
+>
+> Condition: If `finally` is a reserved word in the language, `finallyAfter` **SHOULD** be used.
 
 ### Hook registration & ordering
+
+##### Requirement 4.1
 
 > The API, Client and invocation **MUST** have a method for registering hooks which accepts `flag evaluation options`
 
@@ -61,23 +107,31 @@ OpenFeature.addHooks(new Hook1());
 
 Client client = OpenFeature.getClient();
 client.addHooks(new Hook2());
-
+`
 //...
 
 client.getValue('my-flag', 'defaultValue', new Hook3());
 ```
 
+##### Requirement 4.2
+
 > Hooks **MUST** be evaluated in the following order:
 > - before: API, Client, Invocation
 > - after: Invocation, Client, API
 > - error (if applicable): Invocation, Client, API
-> - finally: Invocation, Client, API> If an error occurs in the `finally` hook, it **MUST** not trigger the `error` hook.
+> - finally: Invocation, Client, API> If an error occurs in the `finally` hook, it **MUST NOT** trigger the `error` hook.
+
+##### Requirement 4.3
 
 > If an error occurs in the `before` or `after` hooks, the `error` hooks **MUST** be invoked.
 
-> If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages **MUST** not be invoked.
+##### Requirement 4.4
 
-> If an error is encountered in the error stage, it **MUST** not be returned to the user.
+> If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages **MUST NOT** be invoked.
+
+##### Requirement 4.5
+
+> If an error is encountered in the error stage, it **MUST NOT** be returned to the user.
 
 
 ### [Flag evaluation options](../types.md#evaluation-options)
@@ -91,9 +145,15 @@ val = client.get_boolean_value('my-key', False, evaluation_options={
 })
 ```
 
-> `Flag evalution options` must contain a list of hooks to evaluate.
+##### Requirement 5.1
 
-> `Flag evaluation options` may contain `HookHints`, a map of data to be provided to hook invocations.
+> `Flag evalution options` **MUST** contain a list of hooks to evaluate.
+
+##### Requirement 5.2
+
+> `Flag evaluation options` **MAY** contain `HookHints`, a map of data to be provided to hook invocations.
+
+##### Requirement 5.3
 
 > `HookHints` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation (last wins).
 
@@ -104,8 +164,12 @@ for source in [API, Client, Invocation]:
     hook-hints[key] = value
 ```
 
-> The hook **MUST** not alter the `HookHints` object.
+##### Requirement 5.4
+
+> The hook **MUST NOT** alter the `HookHints` object.
 
 ### Hook evaluation
+
+##### Requirement 6.1
 
 > `HookHints` **MUST** passed between each hook.
