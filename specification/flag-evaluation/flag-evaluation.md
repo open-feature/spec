@@ -8,13 +8,13 @@ The `evaluation API` allows for the evaluation of feature flag values, independe
 
 ### API Initialization and Configuration
 
-##### Requirement 1.1
+#### Requirement 1.1
 
 > The `API`, and any state it maintains **SHOULD** exist as a global singleton, even in cases wherein multiple versions of the `API` are present at runtime.
 
 It's important that multiple instances of the `API` not be active, so that state stored therein, such as the registered `provider`, static global `evaluation context`, and globally configured `hooks` allow the `API` to behave predictably. This can be difficult in some runtimes or languages, but implementors should make their best effort to ensure that only a single instance of the `API` is used.
 
-##### Requirement 1.2
+#### Requirement 1.2
 
 > The `API` **MUST** provide a function to set the global `provider` singleton, which accepts an API-conformant `provider` implementation.
 
@@ -25,7 +25,7 @@ OpenFeature.setProvider(new MyProvider());
 
 See [provider](../provider//providers.md) for details.
 
-##### Requirement 1.3
+#### Requirement 1.3
 
 > The `API` **MUST** provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.
 
@@ -36,7 +36,7 @@ OpenFeature.addHooks([new MyHook()]);
 
 See [hooks](./hooks.md) for details.
 
-##### Requirement 1.4
+#### Requirement 1.4
 
 > The API **MUST** provide a function for retrieving the `provider` implementation.
 
@@ -47,7 +47,7 @@ OpenFeature.getProvider();
 
 See [provider](../provider/provider.md) for details.
 
-##### Requirement 1.5
+#### Requirement 1.5
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
@@ -64,7 +64,7 @@ The name is a logical identifier for the client.
 
 ### Client Usage
 
-##### Requirement 1.6
+#### Requirement 1.6
 
 > The client **MUST** provide a method to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.
 
@@ -85,14 +85,14 @@ See [hooks](./hooks.md) for details.
 // example flag evaluation
 var myValue = client.getValue('my-flag', false);
 ```
-
+gitd
 ##### Condition 1.8
 
 > The language type system differentiates between strings, numbers, booleans and structures.
->
-> ##### Conditional Requirement 1.8.1
->
-> > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
+
+###### Conditional Requirement 1.8.1
+
+> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
 
 ```
 // example boolean flag evaluation
@@ -108,11 +108,11 @@ number myNumber = client.getNumberValue('number-flag', 75);
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
 ```
 
-> > See [evaluation context](../evaluation-context/evaluation-context.md) for details.
->
-> ##### Conditional Requirement 1.8.2
->
-> > The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
+See [evaluation context](../evaluation-context/evaluation-context.md) for details.
+
+###### Conditional Requirement 1.8.2
+
+> The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
 
 #### Detailed Flag Evaluation
 
@@ -142,10 +142,10 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 ##### Condition 1.11
 
 > The language supports generics (or an equivalent feature).
->
-> ##### Conditional Requirement 1.11.1
->
-> > The `evaluation details` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
+
+###### Conditional Requirement 1.11.1
+
+> The `evaluation details` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
 ##### Requirement 1.12
 

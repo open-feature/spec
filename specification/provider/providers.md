@@ -6,7 +6,7 @@ The `provider` API defines interfaces that Provider Authors can use to abstract 
 
 ### Feature Provider Interface
 
-##### Requirement 2.1
+#### Requirement 2.1
 
 > The provider interface **MUST** define a `name` field or accessor, which identifies the provider implementation.
 
@@ -28,10 +28,10 @@ See: [flag resolution structure](../types.md#flag-resolution), [flag value resol
 ##### Condition 2.3
 
 > The implementing language type system differentiates between strings, numbers, booleans and structures.
->
-> ##### Conditional Requirement 2.3.1
->
-> > The `feature provider` interface **MUST** define methods for typed flag resolution, including boolean, numeric, string, and structure.
+
+###### Conditional Requirement 2.3.1
+
+> The `feature provider` interface **MUST** define methods for typed flag resolution, including boolean, numeric, string, and structure.
 
 ```
 // example boolean flag value resolution
@@ -78,10 +78,10 @@ The provider might throw an exception, return an error, or populate the `error c
 ##### Condition 2.9
 
 > The implementation language supports generics (or an equivalent feature).
->
-> ##### Conditional Requirement 2.9.1
->
-> > The `flag resolution` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
+
+###### Conditional Requirement 2.9.1
+
+> The `flag resolution` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
 ```
 // example boolean flag value resolution with generic argument
@@ -127,10 +127,10 @@ See [evaluation context](../evaluation-context/evaluation-context.md), [flag eva
 ##### Condition 2.11
 
 > The implementation language supports generics (or an equivalent feature).
->
-> ##### Conditional Requirement 2.11.1
->
-> > If the implementation includes a `context transformer`, the provider **SHOULD** accept a generic argument (or use an equivalent language feature) indicating the type of the transformed context.
+
+###### Conditional Requirement 2.11.1
+
+> If the implementation includes a `context transformer`, the provider **SHOULD** accept a generic argument (or use an equivalent language feature) indicating the type of the transformed context.
 >
 > If such type information is supplied, more accurate type information can be supplied in the flag resolution methods.
 
