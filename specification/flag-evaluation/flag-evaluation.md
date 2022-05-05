@@ -85,7 +85,7 @@ See [hooks](./hooks.md) for details.
 // example flag evaluation
 var myValue = client.getValue('my-flag', false);
 ```
-gitd
+
 ##### Condition 1.8
 
 > The language type system differentiates between strings, numbers, booleans and structures.
