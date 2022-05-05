@@ -68,7 +68,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 ##### Requirement 3.2
 
-> The `before` stage **MUST** run before flag evaluation occurs. It accepts a `hook context` (required) and `state` (optional) as parameters and returns either a `HookContext` or nothing.
+> The `before` stage **MUST** run before flag evaluation occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either a `HookContext` or nothing.
 
 ```
 HookContext|void before(HookContext, HookHints)
