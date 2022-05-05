@@ -108,11 +108,11 @@ def gen_node(ct):
     content = ct['content']
     keyword = find_rfc_2119_keyword(content)
 
-    req_group = re.search(r'(?P<req>(requirement|condition) [^\n]+)', headline, re.IGNORECASE)
+    req_group = re.search(r'(?P<req>(requirement|condition)[^\n]+)', headline, re.IGNORECASE)
     if req_group is None:
         return None
 
-    _id = req_group.groups()[1]
+    _id = req_group.groups()[0]
     return {
         'id': _id,
         'clean id': sub(r"[^\w]", "_", _id.lower()),
