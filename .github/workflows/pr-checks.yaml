@@ -1,15 +1,15 @@
-# This action ensures that any PR targeting the main branch has up-to-date generated JSON files.
-# It runs the parser and checks for changes in git tracked files.
-# If any changes are detected, the workflow fails
-
-name: markdown-checks
+name: checks
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
+
 jobs:
+  # This job ensures that any PR targeting the main branch has up-to-date generated JSON files.
+  # It runs the parser and checks for changes in git tracked files.
+  # If any changes are detected, the job fails
   json-synchronized:
     runs-on: ubuntu-latest
 
@@ -40,6 +40,7 @@ jobs:
       - name: Lint
         run: make lint
 
+  # Ensure all tables of contents are up to date.
   markdown-toc:
     runs-on: ubuntu-latest
     steps:
