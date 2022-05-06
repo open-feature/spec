@@ -2,7 +2,7 @@
     {
         "id": "Requirement 1.1",
         "clean id": "requirement_1_1",
-        "content": "The `API`, and any state it maintains SHOULD exist as a global singleton, even in cases wherein multiple versions of the `API` are present at runtime.",
+        "content": "The `API`, and any state it maintains SHOULD exist as a global singleton, even in cases wherein multiple versions of the `API` are present at runtime. This is a test",
         "RFC 2119 keyword": "SHOULD",
         "children": []
     },
