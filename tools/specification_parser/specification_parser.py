@@ -1,9 +1,7 @@
-from re import (
-    finditer, findall, compile as compile_, DOTALL, sub, match, search
-)
 import re
+import glob
 from json import dumps
-from os.path import curdir, abspath, join, splitext
+from os.path import curdir, abspath, join, splitext, isfile
 from os import walk
 
 rfc_2119_keywords_regexes = [
@@ -20,15 +18,51 @@ rfc_2119_keywords_regexes = [
     r"OPTIONAL",
 ]
 
+def get_ignored_path_globs(root):
+    fileName = join(root, ".specignore")
+    if not isfile(fileName):
+        return []
+
+    with open(fileName, 'r') as f:
+        # trim whitespace
+        globs = [line.strip() for line in f.readlines()]
+        
+        # remove empty lines
+        globs = [g for g in globs if g]
+
+        # remove comments
+        globs = [g for g in globs if not g.startswith('#')]
+
+        return globs
+
+def get_ignored_paths(root):
+    globs = get_ignored_path_globs(root)
+    globbed_paths = set()
+    ignored_files = set()
+
+    for g in globs:
+        globbed_paths.update(glob.glob(g, recursive=True))
+
+    for p in globbed_paths:
+        if isfile(p):
+            ignored_files.add(join(root, p))
+        else:
+            ignored_files.update(glob.glob(join(root, p, "**/*.md"), recursive=True))
+
+    return ignored_files
 
 def find_markdown_file_paths(root):
     'Finds the .md files in the root provided.'
     markdown_file_paths = []
+    ignored_paths = get_ignored_paths(root)
 
     for root_path, _, file_paths, in walk(root):
         for file_path in file_paths:
 
             absolute_file_path = join(root_path, file_path)
+
+            if absolute_file_path in ignored_paths:
+                continue
 
             _, file_extension = splitext(absolute_file_path)
 
@@ -44,26 +78,25 @@ def clean_content(content):
     content = '\n'.join([x for x in lines if x.strip() != '' and x.strip().startswith('>')])
 
     for rfc_2119_keyword_regex in rfc_2119_keywords_regexes:
-        content = sub(
+        content = re.sub(
             f"\\*\\*{rfc_2119_keyword_regex}\\*\\*",
             rfc_2119_keyword_regex,
             content
         )
-    return sub(r"\n?>\s+", "", content.strip())
+    return re.sub(r"\n?>\s+", "", content.strip())
 
 
 def find_rfc_2119_keyword(content):
     'Returns the RFC2119 keyword, if present'
     for rfc_2119_keyword_regex in rfc_2119_keywords_regexes:
 
-        if search(
+        if re.search(
             f"\\*\\*{rfc_2119_keyword_regex}\\*\\*", content
         ) is not None:
             return rfc_2119_keyword_regex
 
 def parsed_content_to_heirarchy(parsed_content):
     'Turns a bunch of headline & content pairings into a tree of requirements'
-    # content_tree = {}
     content_tree = []
     headline_stack = []
 
@@ -115,7 +148,7 @@ def gen_node(ct):
     _id = req_group.groups()[0]
     return {
         'id': _id,
-        'clean id': sub(r"[^\w]", "_", _id.lower()),
+        'clean id': re.sub(r"[^\w]", "_", _id.lower()),
         'content': clean_content(content),
         'RFC 2119 keyword': keyword,
         'children': [],
@@ -151,7 +184,7 @@ def parse(markdown_file_path):
         parsed = content_finder.findall(markdown_file.read())
         return parsed_content_to_heirarchy(parsed)
 
-def write_json_specifications(requirements, conditions):
+def write_json_specifications(requirements):
     for md_absolute_file_path, requirement_sections in requirements.items():
         with open(
             "".join([splitext(md_absolute_file_path)[0], ".json"]), "w"

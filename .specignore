@@ -1,0 +1,7 @@
+# line separated list of UNIX shell style globs of files to ignore
+
+# Ignore all README files
+**/README.md
+
+# Ignore all files in tools directory
+tools
