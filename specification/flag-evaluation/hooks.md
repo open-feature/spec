@@ -18,7 +18,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 ###### Requirement 1.1
 
-> Hook context **MUST** provide: the flag key, evaluation context, default value and a list of  executed hooks by stage.
+> Hook context **MUST** provide: the flag key, evaluation context, and the default value.
 
 
 ##### Condition 1.2
