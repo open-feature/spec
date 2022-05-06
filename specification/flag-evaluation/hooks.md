@@ -18,28 +18,18 @@ Hook context exists to provide hooks with information about the invocation.
 
 ###### Requirement 1.1
 
-> Hook context **MUST** provide: the flag key, evaluation context, and the default value.
+> Hook context **MUST** provide: the flag key, flag type, evaluation context, and the default value.
 
 
-##### Condition 1.2
-
-> If the language type system differentiates between strings, numbers, booleans, and structures.
->
->##### Condition 1.2.1
->
-> Condition: You **MUST** provide `flag type`.
-
-
-##### Requirement 1.3
+##### Requirement 1.2
 
 > Hook context **SHOULD** provide: provider (instance) and client (instance)
 
-
-##### Requirement 1.4
+##### Requirement 1.3
 
 > flag key, flag type, default value properties **MUST** be immutable. If the language does not support immutability, the hook **MUST NOT** modify these properties.
 
-##### Requirement 1.5
+##### Requirement 1.4
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
