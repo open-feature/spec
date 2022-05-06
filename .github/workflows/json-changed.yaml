@@ -35,6 +35,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
       - name: Generate ToC
         run: make markdown-toc
