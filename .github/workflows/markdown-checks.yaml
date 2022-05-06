@@ -30,7 +30,8 @@ jobs:
             echo "JSON files up to date. Looks good!"
           fi
 
-  markdown-lint:
+  # Lint JSON files. Ensures statements contain normative keywords from RFC 2119.
+  json-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
