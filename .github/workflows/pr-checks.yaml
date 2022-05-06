@@ -1,7 +1,3 @@
-# This action ensures that any PR targeting the main branch has up-to-date generated JSON files.
-# It runs the parser and checks for changes in git tracked files.
-# If any changes are detected, the workflow fails
-
 name: generated
 
 on:
@@ -9,8 +5,12 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - main
+
 jobs:
-  json:
+  # This job ensures that any PR targeting the main branch has up-to-date generated JSON files.
+  # It runs the parser and checks for changes in git tracked files.
+  # If any changes are detected, the job fails
+  json-synchronized:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v3
 
       - name: Generate JSON files
-        run: python ./tools/specification_parser/specification_parser.py
+        run: make parse
 
       - name: Check for JSON file changes
         run: |
@@ -30,6 +30,17 @@ jobs:
             echo "JSON files up to date. Looks good!"
           fi
 
+  # Lint JSON files. Ensures statements contain normative keywords from RFC 2119.
+  json-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Lint
+        run: make lint
+
+  # Ensure all tables of contents are up to date.
   markdown-toc:
     runs-on: ubuntu-latest
     steps:
