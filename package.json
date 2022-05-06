@@ -1,4 +1,6 @@
 {
+  "name": "@openfeature/specification",
+  "private": true,
   "devDependencies": {
     "markdown-toc": "^1.2.0"
   }
