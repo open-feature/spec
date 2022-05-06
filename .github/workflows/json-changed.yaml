@@ -1,0 +1,31 @@
+# This action ensures that any PR targeting the main branch has up-to-date generated JSON files.
+# It runs the parser and checks for changes in git tracked files.
+# If any changes are detected, the workflow fails
+
+name: generated
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+jobs:
+  json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Generate JSON files
+        run: python ./tools/specification_parser/specification_parser.py
+
+      - name: Check for JSON file changes
+        run: |
+          if [[ $(git diff --name-only) ]]
+          then
+            echo "JSON files out of date. Looks like you might need to run the specification parser."
+            false
+          else
+            echo "JSON files up to date. Looks good!"
+          fi
