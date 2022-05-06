@@ -2,7 +2,7 @@
 # It runs the parser and checks for changes in git tracked files.
 # If any changes are detected, the workflow fails
 
-name: generated
+name: markdown-checks
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
     branches:
       - main
 jobs:
-  json:
+  json-synchronized:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v3
 
       - name: Generate JSON files
-        run: python ./tools/specification_parser/specification_parser.py
+        run: make parse
 
       - name: Check for JSON file changes
         run: |
@@ -29,3 +29,12 @@ jobs:
           else
             echo "JSON files up to date. Looks good!"
           fi
+
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Lint
+        run: make lint
