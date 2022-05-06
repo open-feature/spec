@@ -1,0 +1,64 @@
+name: generated
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  # This job ensures that any PR targeting the main branch has up-to-date generated JSON files.
+  # It runs the parser and checks for changes in git tracked files.
+  # If any changes are detected, the job fails
+  json-synchronized:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Generate JSON files
+        run: make parse
+
+      - name: Check for JSON file changes
+        run: |
+          if [[ $(git diff --name-only) ]]
+          then
+            echo "JSON files out of date. Looks like you might need to run the specification parser."
+            false
+          else
+            echo "JSON files up to date. Looks good!"
+          fi
+
+  # Lint JSON files. Ensures statements contain normative keywords from RFC 2119.
+  json-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Lint
+        run: make lint
+
+  # Ensure all tables of contents are up to date.
+  markdown-toc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Generate ToC
+        run: make markdown-toc
+  
+      - name: Check for file changes
+        run: |
+          if [[ $(git diff --name-only) ]]
+          then
+            echo "Table of content out of date. Looks like you might need to run make markdown-toc."
+            false
+          else
+            echo "Table of contents up to date. Looks good!"
+          fi

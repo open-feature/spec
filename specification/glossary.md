@@ -7,21 +7,36 @@ This document defines some terms that are used across this specification.
 
 <!-- toc -->
 
+- [Feature Flag](#feature-flag)
 - [User Roles](#user-roles)
-  - [Application Author](#application-author)
-  - [Provider Author](#provider-author)
-  - [Integration Author](#integration-author)
-  - [Library Author](#library-author)
+  * [Application Author](#application-author)
+  * [Application Integrator](#application-integrator)
+  * [Provider Author](#provider-author)
+  * [Integration Author](#integration-author)
+  * [Library Author](#library-author)
 - [Common](#common)
-  - [Feature Flag SDK](#feature-flag-sdk)
-  - [Feature Flag API](#feature-flag-api)
-  - [Provider](#provider)
-  - [Integration](#integration)
-  - [Evaluation Context](#evaluation-context)
+  * [Feature Flag SDK](#feature-flag-sdk)
+  * [Feature Flag API](#feature-flag-api)
+  * [Evaluation API](#evaluation-api)
+  * [Flag Management System](#flag-management-system)
+  * [Provider](#provider)
+  * [Integration](#integration)
+  * [Evaluation Context](#evaluation-context)
+  * [Evaluating Flag Values](#evaluating-flag-values)
+  * [Resolving Flag Values](#resolving-flag-values)
+- [Flagging specifics](#flagging-specifics)
+  * [Flag](#flag)
+  * [Variant](#variant)
+  * [Values](#values)
+  * [Rule](#rule)
 
 <!-- tocstop -->
 
 </details>
+
+## Feature Flag
+
+A mechanism that allows an Application Author to define alternative codepaths within a deployed piece of software, which is conditionally executed at runtime, based on a rule set.
 
 ## User Roles
 
@@ -35,7 +50,7 @@ A developer who is setting up or configuring an application or service to use th
 
 ### Provider Author
 
-The maintainer of an API-compliant provider which implements the necessary interfaces required for flag evaluation.
+The maintainer of an API-compliant [provider](./provider//providers.md) which implements the necessary interfaces required for flag evaluation.
 
 ### Integration Author
 
@@ -62,9 +77,13 @@ Application authors use it via the Feature Flag SDK.
 
 The subset of the [Feature Flag API](#feature-flag-api) that the Application Author uses to evaluate flags.
 
+### Flag Management System
+
+A source-of-truth for flag values and rules. Flag management systems may include SaaS feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
+
 ### Provider
 
-An SDK-compliant feature flag implementation which adheres to the Feature Flag API. Implementations may include Saas feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
+An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./flag-evaluation/flag-evaluation.md#flag-evaluation) as an abstraction for the system in question.
 
 ### Integration
 
@@ -73,6 +92,18 @@ An SDK-compliant secondary function that is abstracted by the Feature Flag API, 
 ### Evaluation Context
 
 Context object for flag evaluation, which may contain information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc. This data may be used as a basis for differential evaluation of feature flags based on rules that can be defined in the flag system. Context data may be provided by merging static global context, arguments to flag evaluation, and implicit language-dependant state propagation mechanisms (thread-local storage, promise chains, continuations, etc).
+
+### Evaluating Flag Values
+
+The process of retrieving a feature flag value in it's entirety, including:
+
+- any effects resulting from hooks
+- resolving a flag value from a configured provider
+- falling back to a supplied default, in the case of abnormal execution
+
+### Resolving Flag Values
+
+The process of a provider retrieving a feature flag value from it's particular source-of-truth.
 
 ## Flagging specifics
 
