@@ -44,6 +44,7 @@ jobs:
   
       - name: Check for file changes
         run: |
+          git diff
           if [[ $(git diff --name-only) ]]
           then
             echo "Table of content out of date. Looks like you might need to run make markdown-toc."
