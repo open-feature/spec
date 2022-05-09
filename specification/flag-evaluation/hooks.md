@@ -109,17 +109,23 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 > - before: API, Client, Invocation
 > - after: Invocation, Client, API
 > - error (if applicable): Invocation, Client, API
-> - finally: Invocation, Client, API> If an error occurs in the `finally` hook, it **MUST NOT** trigger the `error` hook.
+> - finally: Invocation, Client, API
 
 ##### Requirement 4.3
 
-> If an error occurs in the `before` or `after` hooks, the `error` hooks **MUST** be invoked.
+> If an error occurs in the `finally` hook, it **MUST NOT** trigger the `error` hook.
+
+In practice, this means that errors that occur in the finally hook will bubble up.
 
 ##### Requirement 4.4
 
-> If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages **MUST NOT** be invoked.
+> If an error occurs in the `before` or `after` hooks, the `error` hooks **MUST** be invoked.
 
 ##### Requirement 4.5
+
+> If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages **MUST NOT** be invoked.
+
+##### Requirement 4.6
 
 > If an error is encountered in the error stage, it **MUST NOT** be returned to the user.
 
