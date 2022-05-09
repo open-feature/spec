@@ -93,27 +93,34 @@
     {
         "id": "Requirement 4.2",
         "clean id": "requirement_4_2",
-        "content": "Hooks MUST be evaluated in the following order:- before: API, Client, Invocation- after: Invocation, Client, API- error (if applicable): Invocation, Client, API- finally: Invocation, Client, APIIf an error occurs in the `finally` hook, it MUST NOT trigger the `error` hook.",
+        "content": "Hooks MUST be evaluated in the following order:- before: API, Client, Invocation- after: Invocation, Client, API- error (if applicable): Invocation, Client, API- finally: Invocation, Client, API",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
     {
         "id": "Requirement 4.3",
         "clean id": "requirement_4_3",
-        "content": "If an error occurs in the `before` or `after` hooks, the `error` hooks MUST be invoked.",
-        "RFC 2119 keyword": "MUST",
+        "content": "If an error occurs in the `finally` hook, it MUST NOT trigger the `error` hook.",
+        "RFC 2119 keyword": "MUST NOT",
         "children": []
     },
     {
         "id": "Requirement 4.4",
         "clean id": "requirement_4_4",
-        "content": "If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages MUST NOT be invoked.",
-        "RFC 2119 keyword": "MUST NOT",
+        "content": "If an error occurs in the `before` or `after` hooks, the `error` hooks MUST be invoked.",
+        "RFC 2119 keyword": "MUST",
         "children": []
     },
     {
         "id": "Requirement 4.5",
         "clean id": "requirement_4_5",
+        "content": "If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages MUST NOT be invoked.",
+        "RFC 2119 keyword": "MUST NOT",
+        "children": []
+    },
+    {
+        "id": "Requirement 4.6",
+        "clean id": "requirement_4_6",
         "content": "If an error is encountered in the error stage, it MUST NOT be returned to the user.",
         "RFC 2119 keyword": "MUST NOT",
         "children": []
