@@ -48,11 +48,11 @@ jobs:
       - uses: actions/setup-python@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Generate ToC
         run: make markdown-toc
-  
+
       - name: Check for file changes
         run: |
           if [[ $(git diff --name-only) ]]

@@ -6,8 +6,9 @@
 - [Types](./types.md)
 - [Design Principles](design-principles.md)
 - [Evaluation API](./flag-evaluation/flag-evaluation.md)
-- [Hooks](./flag-evaluation/hooks.md)
 - [Providers](./provider/providers.md)
+- [Evaluation Context](./evaluation-context/evaluation-context.md)
+- [Hooks](./flag-evaluation/hooks.md)
 
 ## Conformance
 

@@ -165,8 +165,8 @@
     {
         "id": "Requirement 1.21",
         "clean id": "requirement_1_21",
-        "content": "The `client` MUST transform the `evaluation context` using the `provider's` `context transformer` function, before passing the result of the transformation to the provider's flag resolution functions.",
-        "RFC 2119 keyword": "MUST",
+        "content": "The `client` SHOULD transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.",
+        "RFC 2119 keyword": "SHOULD",
         "children": []
     }
 ]

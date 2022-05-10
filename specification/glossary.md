@@ -28,6 +28,8 @@ This document defines some terms that are used across this specification.
   * [Flag](#flag)
   * [Variant](#variant)
   * [Values](#values)
+  * [Targeting](#targeting)
+  * [Fractional Evaluation](#fractional-evaluation)
   * [Rule](#rule)
 
 <!-- tocstop -->
@@ -132,6 +134,14 @@ reverse: [5,4,3,2,1]
 wonky: [3,5,2,1,4]
 standard: [1,2,3,4,5]
 ```
+
+### Targeting
+
+The application of rules, specific user overrides, or fractional evaluations in feature flag resolution.
+
+### Fractional Evaluation
+
+Assigning flag values randomly according to a configured proportion or percentage (ie: 50/50).
 
 ### Rule
 
