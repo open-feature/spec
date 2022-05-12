@@ -135,7 +135,7 @@
     {
         "id": "Requirement 5.3",
         "clean id": "requirement_5_3",
-        "content": "`HookHints` MUST be passed to each hook through a parameter. It is merged into the object in the precedence order API -Client -Invocation (last wins).",
+        "content": "`HookHints` MUST be passed to each hook.",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
@@ -144,13 +144,6 @@
         "clean id": "requirement_5_4",
         "content": "The hook MUST NOT alter the `HookHints` object.",
         "RFC 2119 keyword": "MUST NOT",
-        "children": []
-    },
-    {
-        "id": "Requirement 6.1",
-        "clean id": "requirement_6_1",
-        "content": "`HookHints` MUST passed between each hook.",
-        "RFC 2119 keyword": "MUST",
         "children": []
     }
 ]
