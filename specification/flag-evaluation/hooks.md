@@ -145,21 +145,8 @@ val = client.get_boolean_value('my-key', False, evaluation_options={
 
 ##### Requirement 5.3
 
-> `HookHints` **MUST** be passed to each hook through a parameter. It is merged into the object in the precedence order API -> Client -> Invocation (last wins).
-
-```python
-hook_hints = {}
-for source in [API, Client, Invocation]:
-  for key, value in source:
-    hook-hints[key] = value
-```
+> `HookHints` **MUST** be passed to each hook.
 
 ##### Requirement 5.4
 
 > The hook **MUST NOT** alter the `HookHints` object.
-
-### Hook evaluation
-
-##### Requirement 6.1
-
-> `HookHints` **MUST** passed between each hook.
