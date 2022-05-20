@@ -11,7 +11,7 @@ It also contains research that was considered while defining the spec.
 > More details are coming soon!
 > See [this issue](https://github.com/open-feature/spec/issues/4) for the scope of the alpha version.
 > Also see the ongoing research on SDK/APIs [here](./research/existing-landscape.md)
-> See the [glossary](./glossary.md) for definitions of key terminology.
+> See the [glossary](./specification/glossary.md) for definitions of key terminology.
 
 ## Design Principles
 
