@@ -1,4 +1,4 @@
-OpenFeature Specification
+# OpenFeature Specification
 
 ## Contents
 
