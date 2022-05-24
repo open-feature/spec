@@ -58,29 +58,37 @@ Hook context exists to provide hooks with information about the invocation.
 
 ##### Requirement 3.2
 
-> The `before` stage **MUST** run before flag evaluation occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either a `HookContext` or nothing.
+> The `before` stage **MUST** run before flag evaluation occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either an `EvaluationContext` or nothing.
 
 ```
-HookContext|void before(HookContext, HookHints)
+EvaluationContext|void before(HookContext, HookHints)
 ```
 
 ##### Requirement 3.3
 
-> The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.
+> Any `EvaluationContext` returned from a `before` hook **MUST** be passed to subsequent `before` hooks (via `HookContext`).
 
 ##### Requirement 3.4
 
-> The `error` hook **MUST** run when errors are encountered in the `before` stage, the `after` stage or during flag evaluation. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.
+> When `before` hooks have finished executing, the resulting optional `EvaluationContext` is merged in the following order (wherein later overwrites previous): API, client, hooks, invocation.
 
 ##### Requirement 3.5
 
+> The `after` stage **MUST** run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.
+
+##### Requirement 3.6
+
+> The `error` hook **MUST** run when errors are encountered in the `before` stage, the `after` stage or during flag evaluation. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.
+
+##### Requirement 3.7
+
 > The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.
 
-##### Condition 3.6
+##### Condition 3.8
 
 > `finally` is a reserved word in the language.
 >
-> ##### 3.6.1
+> ##### 3.8.1
 >
 > Condition: If `finally` is a reserved word in the language, `finallyAfter` **SHOULD** be used.
 
