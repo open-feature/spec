@@ -70,7 +70,7 @@ EvaluationContext|void before(HookContext, HookHints)
 
 ##### Requirement 3.4
 
-> When `before` hooks have finished executing, the resulting optional `EvaluationContext` is merged in the following order (wherein later overwrites previous): API, client, hooks, invocation.
+> When `before` hooks have finished executing, any resulting `EvaluationContext` **MUST** be merged with the invocation `EvaluationContext` wherein the invocation `EvaluationContext` win any conflicts.
 
 ##### Requirement 3.5
 
