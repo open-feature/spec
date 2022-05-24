@@ -646,7 +646,7 @@ Most feature flag implementations support the inclusion of contextual attributes
 | custom attributes             | :heavy_check_mark:      | :heavy_check_mark:    |                             | :heavy_check_mark:          | :heavy_check_mark:    | :heavy_check_mark: |
 | nested custom attributes      |                         |                       |                             |                             | :heavy_check_mark:    |                    |
 | user key                      | `userId`                | `identifier`          | `key`                       | `key`\*                     | `distinct_id`         | `identifier`\*     |
-| custom attribute types        | string                  | boolean,string,number | boolean,number,string,Array | boolean,number,string,Array | boolean,number,string | number,string\*\*  |
+| custom attribute types        | string                  | boolean,string,number | boolean,number,string,Array | boolean,number,string,Array, DateTime | boolean,number,string | number,string\*\*  |
 
 \* not a field, provided as distinct parameter in flag evaluation
 
