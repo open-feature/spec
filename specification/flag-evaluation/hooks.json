@@ -51,34 +51,48 @@
     {
         "id": "Requirement 3.2",
         "clean id": "requirement_3_2",
-        "content": "The `before` stage MUST run before flag evaluation occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either a `HookContext` or nothing.",
+        "content": "The `before` stage MUST run before flag evaluation occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either an `EvaluationContext` or nothing.",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
     {
         "id": "Requirement 3.3",
         "clean id": "requirement_3_3",
-        "content": "The `after` stage MUST run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.",
+        "content": "Any `EvaluationContext` returned from a `before` hook MUST be passed to subsequent `before` hooks (via `HookContext`).",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
     {
         "id": "Requirement 3.4",
         "clean id": "requirement_3_4",
-        "content": "The `error` hook MUST run when errors are encountered in the `before` stage, the `after` stage or during flag evaluation. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.",
+        "content": "When `before` hooks have finished executing, any resulting `EvaluationContext` MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
     {
         "id": "Requirement 3.5",
         "clean id": "requirement_3_5",
+        "content": "The `after` stage MUST run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.",
+        "RFC 2119 keyword": "MUST",
+        "children": []
+    },
+    {
+        "id": "Requirement 3.6",
+        "clean id": "requirement_3_6",
+        "content": "The `error` hook MUST run when errors are encountered in the `before` stage, the `after` stage or during flag evaluation. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.",
+        "RFC 2119 keyword": "MUST",
+        "children": []
+    },
+    {
+        "id": "Requirement 3.7",
+        "clean id": "requirement_3_7",
         "content": "The `finally` hook MUST run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
     {
-        "id": "Condition 3.6",
-        "clean id": "condition_3_6",
+        "id": "Condition 3.8",
+        "clean id": "condition_3_8",
         "content": "`finally` is a reserved word in the language.>",
         "RFC 2119 keyword": null,
         "children": []
