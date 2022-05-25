@@ -65,7 +65,7 @@
     {
         "id": "Requirement 3.4",
         "clean id": "requirement_3_4",
-        "content": "When `before` hooks have finished executing, any resulting `EvaluationContext` MUST be merged with the invocation `EvaluationContext` wherein the invocation `EvaluationContext` win any conflicts.",
+        "content": "When `before` hooks have finished executing, any resulting `EvaluationContext` MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
