@@ -7,8 +7,12 @@ parse: clean _check_python
 clean:
 	@find ./specification -name '*.json' -delete
 
-lint:
+lint: install
 	@python ./tools/specification_parser/lint_json_output.py specification/
+	./node_modules/.bin/markdownlint --ignore node_modules/ --ignore tools/ **/*.md
+
+install:
+	npm i
 
 _check_python:
 	@if [ $(IS_PYTHON_INSTALLED) -eq 1 ]; \

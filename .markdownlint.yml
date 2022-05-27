@@ -1,3 +1,10 @@
 default: true
 MD013:
   code_blocks: false
+  tables: false
+MD033:
+  allowed_elements:
+    - summary
+    - details
+MD024:
+  siblings_only: true
