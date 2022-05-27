@@ -14,8 +14,7 @@ Some content.
 
 ##### Requirement Another requirement-name
 
-> This **SHOULD** be done
-> in a certain way.
+> This **SHOULD** be done in a certain way.
 
 ##### Condition 1
 
