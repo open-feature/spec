@@ -10,6 +10,7 @@ clean:
 lint: install
 	@python ./tools/specification_parser/lint_json_output.py specification/
 	./node_modules/.bin/markdownlint --ignore node_modules/ --ignore tools/ **/*.md
+	markdown-link-check -c .markdown-link-check-config.json README.md specification/**/*.md research/**/*.md
 
 install:
 	npm i

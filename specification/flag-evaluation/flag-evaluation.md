@@ -45,7 +45,7 @@ See [hooks](./hooks.md) for details.
 OpenFeature.getProvider();
 ```
 
-See [provider](../provider/provider.md) for details.
+See [provider](../provider/providers.md) for details.
 
 #### Requirement 1.5
 
