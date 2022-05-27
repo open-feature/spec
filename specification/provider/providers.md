@@ -23,7 +23,7 @@ The `provider` API defines interfaces that Provider Authors can use to abstract 
 resolveBooleanValue(flagKey, defaultValue, context, options);
 ```
 
-See: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
+see: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
 
 ##### Condition 2.3
 

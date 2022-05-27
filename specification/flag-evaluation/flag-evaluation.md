@@ -191,6 +191,6 @@ It's recommended to provide non-blocking mechanisms for flag evaluation, particu
 
 ##### Requirement 1.21
 
-> The `client` **MUST** transform the `evaluation context` using the `provider's` `context transformer` function, before passing the result of the transformation to the provider's flag resolution functions.
+> The `client` **SHOULD** transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.
 
 See [context transformation](../provider/providers.md#context-transformation) for details.

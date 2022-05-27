@@ -20,6 +20,10 @@ A numeric value of unspecified type or size. Implementation languages may furthe
 
 Structured data, presented however is idiomatic in the implementation language, such as JSON or YAML.
 
+### Datetime
+
+A language primitive for representing a date and time, including timezone information.
+
 ### Evaluation Details
 
 A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./flag-evaluation/flag-evaluation.md#detailed-flag-evaluation), containing the following fields:
