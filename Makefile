@@ -16,7 +16,7 @@ fix: install
 	prettier -w **/*.md
 
 install:
-	npm i
+	npm ci
 
 _check_python:
 	@if [ $(IS_PYTHON_INSTALLED) -eq 1 ]; \
@@ -26,12 +26,12 @@ _check_python:
 		&& exit 1; \
 		fi;
 .PHONY: markdown-toc
-markdown-toc:
+markdown-toc: install
 	@if ! npm ls markdown-toc; then npm ci; fi
 	@for f in $(ALL_DOCS); do \
 		if grep -q '<!-- tocstop -->' $$f; then \
 			echo markdown-toc: processing $$f; \
-			npx --no -- markdown-toc --no-first-h1 --no-stripHeadingTags -i $$f || exit 1; \
+			npx --no -- markdown-toc --bullets="-" --no-first-h1 --no-stripHeadingTags -i $$f || exit 1; \
 		else \
 			echo markdown-toc: no TOC markers, skipping $$f; \
 		fi; \
