@@ -94,7 +94,7 @@
             {
                 "id": "Conditional Requirement 2.11.1",
                 "clean id": "conditional_requirement_2_11_1",
-                "content": "If the implementation includes a `context transformer`, the provider SHOULD accept a generic argument (or use an equivalent language feature) indicating the type of the transformed context.If such type information is supplied, more accurate type information can be supplied in the flag resolution methods.",
+                "content": "If the implementation includes a `context transformer`, the provider SHOULD accept a generic argument (or use an equivalent language feature) indicating the type of the transformed context.  If such type information is supplied, more accurate type information can be supplied in the flag resolution methods.",
                 "RFC 2119 keyword": "SHOULD",
                 "children": []
             }

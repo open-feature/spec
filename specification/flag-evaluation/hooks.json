@@ -37,7 +37,7 @@
     {
         "id": "Condition 2.2",
         "clean id": "condition_2_2",
-        "content": "The implementation language supports a mechanism for marking data as immutable.>",
+        "content": "The implementation language supports a mechanism for marking data as immutable.",
         "RFC 2119 keyword": null,
         "children": []
     },
@@ -93,7 +93,7 @@
     {
         "id": "Condition 3.8",
         "clean id": "condition_3_8",
-        "content": "`finally` is a reserved word in the language.>",
+        "content": "`finally` is a reserved word in the language.",
         "RFC 2119 keyword": null,
         "children": []
     },
@@ -107,7 +107,7 @@
     {
         "id": "Requirement 4.2",
         "clean id": "requirement_4_2",
-        "content": "Hooks MUST be evaluated in the following order:- before: API, Client, Invocation- after: Invocation, Client, API- error (if applicable): Invocation, Client, API- finally: Invocation, Client, API",
+        "content": "Hooks MUST be evaluated in the following order:  - before: API, Client, Invocation - after: Invocation, Client, API - error (if applicable): Invocation, Client, API - finally: Invocation, Client, API",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
