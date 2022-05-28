@@ -83,7 +83,7 @@ def clean_content(content):
             rfc_2119_keyword_regex,
             content
         )
-    return re.sub(r"\n?>\s+", "", content.strip())
+    return re.sub(r"\n?>\s*", " ", content.strip()).strip()
 
 
 def find_rfc_2119_keyword(content):

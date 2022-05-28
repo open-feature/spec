@@ -30,7 +30,7 @@
     {
         "id": "Requirement 1.5",
         "clean id": "requirement_1_5",
-        "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:- name (optional): A logical string identifier for the client.",
+        "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - name (optional): A logical string identifier for the client.",
         "RFC 2119 keyword": "MUST",
         "children": []
     },
