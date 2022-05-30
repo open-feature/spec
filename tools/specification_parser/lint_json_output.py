@@ -4,38 +4,26 @@ import json
 import sys
 
 
-def main(dir):
-    jsons = []
-    for root_path, _, file_paths, in walk(dir):
-        for file_path in file_paths:
-            absolute_file_path = join(root_path, file_path)
-
-            _, file_extension = splitext(absolute_file_path)
-
-            if file_extension == ".json":
-                jsons.append(absolute_file_path)
-
+def main(f):
     errors = 0
-    for j in jsons:
-        with open(j) as jfile:
-            spec = json.load(jfile)
-            entries = spec;
-            for entry in spec:
-                for child in entry.get('children', []):
-                    entries.append(child)
-            try:
-                for entry in entries:
-                    if entry.get('RFC 2119 keyword') is None and \
-                       'condition' not in entry['id'].lower():
-                        print(f"{j}: Rule {entry['id']} is missing a RFC 2119 keyword", file=sys.stderr)
-                        errors += 1
-                    pass
-            except Exception as k:
-                print(f"Non json-spec formatted file found: {j}", file=sys.stderr)
-    sys.exit(errors)
+    with open(f) as jsonfile:
+        spec = json.load(jsonfile)
+        entries = [];
+        for entry in spec['rules']:
+            entries.append(entry)
+            for child in entry.get('children', []):
+                entries.append(child)
+        try:
+            for entry in entries:
+                if entry.get('RFC 2119 keyword') is None and \
+                   'condition' not in entry['id'].lower():
+                    print(f"{j}: Rule {entry['id']} is missing a RFC 2119 keyword", file=sys.stderr)
+                    errors += 1
+                pass
+        except Exception as k:
+            print(f"Non json-spec formatted file found: {j}", file=sys.stderr)
 
-def has_errors(entry):
-    pass
+    sys.exit(errors)
 
 if __name__ == '__main__':
     main(sys.argv[1])
