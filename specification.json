@@ -1,70 +1,70 @@
 {
     "rules": [
         {
-            "id": "Requirement 1.1",
-            "machine_id": "requirement_1_1",
+            "id": "Requirement 1.1.1",
+            "machine_id": "requirement_1_1_1",
             "content": "The `API`, and any state it maintains SHOULD exist as a global singleton, even in cases wherein multiple versions of the `API` are present at runtime.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
-            "id": "Requirement 1.2",
-            "machine_id": "requirement_1_2",
+            "id": "Requirement 1.1.2",
+            "machine_id": "requirement_1_1_2",
             "content": "The `API` MUST provide a function to set the global `provider` singleton, which accepts an API-conformant `provider` implementation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.3",
-            "machine_id": "requirement_1_3",
+            "id": "Requirement 1.1.3",
+            "machine_id": "requirement_1_1_3",
             "content": "The `API` MUST provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.4",
-            "machine_id": "requirement_1_4",
+            "id": "Requirement 1.1.4",
+            "machine_id": "requirement_1_1_4",
             "content": "The API MUST provide a function for retrieving the `provider` implementation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.5",
-            "machine_id": "requirement_1_5",
+            "id": "Requirement 1.1.5",
+            "machine_id": "requirement_1_1_5",
             "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - name (optional): A logical string identifier for the client.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.6",
-            "machine_id": "requirement_1_6",
+            "id": "Requirement 1.2.1",
+            "machine_id": "requirement_1_2_1",
             "content": "The client MUST provide a method to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.7",
-            "machine_id": "requirement_1_7",
+            "id": "Requirement 1.3.1",
+            "machine_id": "requirement_1_3_1",
             "content": "The `client` MUST provide methods for flag evaluation, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Condition 1.8",
-            "machine_id": "condition_1_8",
+            "id": "Condition 1.3.2",
+            "machine_id": "condition_1_3_2",
             "content": "The language type system differentiates between strings, numbers, booleans and structures.",
             "RFC 2119 keyword": null,
             "children": [
                 {
-                    "id": "Conditional Requirement 1.8.1",
-                    "machine_id": "conditional_requirement_1_8_1",
+                    "id": "Conditional Requirement 1.3.2.1",
+                    "machine_id": "conditional_requirement_1_3_2_1",
                     "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
-                    "id": "Conditional Requirement 1.8.2",
-                    "machine_id": "conditional_requirement_1_8_2",
+                    "id": "Conditional Requirement 1.3.3",
+                    "machine_id": "conditional_requirement_1_3_3",
                     "content": "The `client` SHOULD guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
@@ -72,28 +72,28 @@
             ]
         },
         {
-            "id": "Requirement 1.9",
-            "machine_id": "requirement_1_9",
+            "id": "Requirement 1.4.1",
+            "machine_id": "requirement_1_4_1",
             "content": "The `client` MUST provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns an `evaluation details` structure.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.10",
-            "machine_id": "requirement_1_10",
+            "id": "Requirement 1.4.2",
+            "machine_id": "requirement_1_4_2",
             "content": "The `evaluation details` structure's `value` field MUST contain the evaluated flag value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Condition 1.11",
-            "machine_id": "condition_1_11",
+            "id": "Condition 1.4.3",
+            "machine_id": "condition_1_4_3",
             "content": "The language supports generics (or an equivalent feature).",
             "RFC 2119 keyword": null,
             "children": [
                 {
-                    "id": "Conditional Requirement 1.11.1",
-                    "machine_id": "conditional_requirement_1_11_1",
+                    "id": "Conditional Requirement 1.4.3.1",
+                    "machine_id": "conditional_requirement_1_4_3_1",
                     "content": "The `evaluation details` structure SHOULD accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
@@ -101,71 +101,71 @@
             ]
         },
         {
-            "id": "Requirement 1.12",
-            "machine_id": "requirement_1_12",
+            "id": "Requirement 1.4.4",
+            "machine_id": "requirement_1_4_4",
             "content": "The `evaluation details` structure's `flag key` field MUST contain the `flag key` argument passed to the detailed flag evaluation method.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.13",
-            "machine_id": "requirement_1_13",
+            "id": "Requirement 1.4.5",
+            "machine_id": "requirement_1_4_5",
             "content": "In cases of normal execution, the `evaluation details` structure's `variant` field MUST contain the value of the `variant` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.14",
-            "machine_id": "requirement_1_14",
+            "id": "Requirement 1.4.6",
+            "machine_id": "requirement_1_4_6",
             "content": "In cases of normal execution, the `evaluation details` structure's `reason` field MUST contain the value of the `reason` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.15",
-            "machine_id": "requirement_1_15",
+            "id": "Requirement 1.4.7",
+            "machine_id": "requirement_1_4_7",
             "content": "In cases of abnormal execution, the `evaluation details` structure's `error code` field MUST identify an error occurred during flag evaluation, having possible values `\"PROVIDER_NOT_READY\"`, `\"FLAG_NOT_FOUND\"`, `\"PARSE_ERROR\"`, `\"TYPE_MISMATCH\"`, or `\"GENERAL\"`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.16",
-            "machine_id": "requirement_1_16",
+            "id": "Requirement 1.4.8",
+            "machine_id": "requirement_1_4_8",
             "content": "In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` SHOULD indicate an error.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
-            "id": "Requirement 1.17",
-            "machine_id": "requirement_1_17",
-            "content": "The `evaluation options` structure's `hooks` field denotes a collection of hooks that the client MUST execute for the respective flag evaluation, in addition to those already configured.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.18",
-            "machine_id": "requirement_1_18",
-            "content": "Methods, functions, or operations on the client MUST NOT throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.",
+            "id": "Requirement 1.4.9",
+            "machine_id": "requirement_1_4_9",
+            "content": "Methods, functions, or operations on the client MUST NOT throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup, and user-defined code such as hooks.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
         {
-            "id": "Requirement 1.19",
-            "machine_id": "requirement_1_19",
+            "id": "Requirement 1.4.10",
+            "machine_id": "requirement_1_4_10",
             "content": "In the case of abnormal execution, the client SHOULD log an informative error message.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
-            "id": "Requirement 1.20",
-            "machine_id": "requirement_1_20",
+            "id": "Requirement 1.4.11",
+            "machine_id": "requirement_1_4_11",
             "content": "The `client` SHOULD provide asynchronous or non-blocking mechanisms for flag evaluation.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
-            "id": "Requirement 1.21",
-            "machine_id": "requirement_1_21",
+            "id": "Requirement 1.5.1",
+            "machine_id": "requirement_1_5_1",
+            "content": "The `evaluation options` structure's `hooks` field denotes a collection of hooks that the client MUST execute for the respective flag evaluation, in addition to those already configured.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.6.1",
+            "machine_id": "requirement_1_6_1",
             "content": "The `client` SHOULD transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
@@ -286,16 +286,9 @@
             "children": []
         },
         {
-            "id": "Condition 3.8",
-            "machine_id": "condition_3_8",
-            "content": "`finally` is a reserved word in the language.",
-            "RFC 2119 keyword": null,
-            "children": []
-        },
-        {
             "id": "Requirement 4.1.1",
             "machine_id": "requirement_4_1_1",
-            "content": "Hook context MUST provide: the flag key, flag type, evaluation context, and the default value.",
+            "content": "Hook context MUST provide: the `flag key`, `flag value type`, `evaluation context`, and the `default value`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -309,7 +302,7 @@
         {
             "id": "Requirement 4.1.3",
             "machine_id": "requirement_4_1_3",
-            "content": "flag key, flag type, default value properties MUST be immutable. If the language does not support immutability, the hook MUST NOT modify these properties.",
+            "content": "The `flag key`, `flag type`, and `default value` properties MUST be immutable. If the language does not support immutability, the hook **MUST NOT** modify these properties.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -323,7 +316,7 @@
         {
             "id": "Requirement 4.2.1",
             "machine_id": "requirement_4_2_1",
-            "content": "HookHints MUST be a map of objects.",
+            "content": "HookHints MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -344,7 +337,7 @@
         {
             "id": "Requirement 4.3.2",
             "machine_id": "requirement_4_3_2",
-            "content": "The `before` stage MUST run before flag evaluation occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either an `EvaluationContext` or nothing.",
+            "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either an `EvaluationContext` or nothing.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -358,21 +351,21 @@
         {
             "id": "Requirement 4.3.4",
             "machine_id": "requirement_4_3_4",
-            "content": "When `before` hooks have finished executing, any resulting `EvaluationContext` MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
+            "content": "When `before` hooks have finished executing, any resulting `EvaluationContext`  MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.5",
             "machine_id": "requirement_4_3_5",
-            "content": "The `after` stage MUST run after flag evaluation occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.",
+            "content": "The `after` stage MUST run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.6",
             "machine_id": "requirement_4_3_6",
-            "content": "The `error` hook MUST run when errors are encountered in the `before` stage, the `after` stage or during flag evaluation. It accepts `hook context` (required), `exception` for what went wrong (required), and `HookHints` (optional). It has no return value.",
+            "content": "The `error` hook MUST run when errors are encountered in the `before` stage, the `after` stage or during flag resolution. It accepts `hook context (required), `exception`for what went wrong (required), and`HookHints` (optional). It has no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -381,6 +374,13 @@
             "machine_id": "requirement_4_3_7",
             "content": "The `finally` hook MUST run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.",
             "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Condition 4.3.8",
+            "machine_id": "condition_4_3_8",
+            "content": "`finally` is a reserved word in the language.",
+            "RFC 2119 keyword": null,
             "children": []
         },
         {
@@ -407,49 +407,42 @@
         {
             "id": "Requirement 4.4.4",
             "machine_id": "requirement_4_4_4",
-            "content": "If an error occurs in the `before` or `after` hooks, the `error` hooks MUST be invoked.",
+            "content": "If an error is encountered in `error` stage, it MUST be returned to the application author.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.4.5",
             "machine_id": "requirement_4_4_5",
-            "content": "If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages MUST NOT be invoked.",
-            "RFC 2119 keyword": "MUST NOT",
+            "content": "If an error occurs in the `before` or `after` hooks, the `error` hooks MUST be invoked.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.4.6",
             "machine_id": "requirement_4_4_6",
-            "content": "If an error is encountered in the error stage, it MUST NOT be returned to the user.",
+            "content": "If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages MUST NOT be invoked.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
         {
             "id": "Requirement 4.5.1",
             "machine_id": "requirement_4_5_1",
-            "content": "`Flag evalution options` MUST contain a list of hooks to evaluate.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 4.5.2",
-            "machine_id": "requirement_4_5_2",
             "content": "`Flag evaluation options` MAY contain `HookHints`, a map of data to be provided to hook invocations.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
         {
-            "id": "Requirement 4.5.3",
-            "machine_id": "requirement_4_5_3",
+            "id": "Requirement 4.5.2",
+            "machine_id": "requirement_4_5_2",
             "content": "`HookHints` MUST be passed to each hook.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 4.5.4",
-            "machine_id": "requirement_4_5_4",
-            "content": "The hook MUST NOT alter the `HookHints` object.",
+            "id": "Requirement 4.5.3",
+            "machine_id": "requirement_4_5_3",
+            "content": "The hook MUST NOT alter the `HookHints` structure.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         }
