@@ -1,6 +1,6 @@
 import re
 import glob
-from json import dumps
+import json
 from os.path import curdir, abspath, join, splitext, isfile
 from os import walk
 
@@ -148,11 +148,12 @@ def gen_node(ct):
     _id = req_group.groups()[0]
     return {
         'id': _id,
-        'clean id': re.sub(r"[^\w]", "_", _id.lower()),
+        'machine_id': re.sub(r"[^\w]", "_", _id.lower()),
         'content': clean_content(content),
         'RFC 2119 keyword': keyword,
         'children': [],
     }
+
 def content_tree_to_spec(ct):
     current = gen_node(ct)
     children_grouped = [content_tree_to_spec(x) for x in ct['children']]
@@ -189,18 +190,18 @@ def write_json_specifications(requirements):
         with open(
             "".join([splitext(md_absolute_file_path)[0], ".json"]), "w"
         ) as json_file:
-            json_file.write(dumps(requirement_sections, indent=4))
+            json_file.write(json.dumps(requirement_sections, indent=4))
 
 
 if __name__ == "__main__":
+    combined = {"rules": []}
     for markdown_file_path in find_markdown_file_paths(
         join(abspath(curdir))
     ):
         result = parse(markdown_file_path)
-
         if result:
-            with open(
-                "".join([splitext(markdown_file_path)[0], ".json"]), "w"
-            ) as json_file:
-                json_file.write(dumps(result, indent=4))
+            combined['rules'].extend(result)
 
+    combined['rules'] = sorted(combined['rules'], key=lambda x: [int(x) for x in x['id'].split(' ')[-1].split('.')])
+    with open('./specification.json', 'w') as f:
+        json.dump(combined, f, indent=4)

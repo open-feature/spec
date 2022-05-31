@@ -8,7 +8,7 @@ clean:
 	@find ./specification -name '*.json' -delete
 
 lint: install
-	@python ./tools/specification_parser/lint_json_output.py specification/
+	@python ./tools/specification_parser/lint_json_output.py specification.json
 	./node_modules/.bin/markdownlint --ignore node_modules/ --ignore tools/ **/*.md
 	./node_modules/.bin/markdown-link-check -c .markdown-link-check-config.json README.md specification/**/*.md
 
