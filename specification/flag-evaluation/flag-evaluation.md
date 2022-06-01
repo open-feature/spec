@@ -169,9 +169,9 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 ##### Requirement 1.4.9
 
-> Methods, functions, or operations on the client **MUST NOT** throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup, and user-defined code such as hooks.
+> Methods, functions, or operations on the client **MUST NOT** throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.
 
-User-defined code in `error` and `finally` hooks may throw or otherwise abnormally terminate. This has the benefit of providing a means of making errors optionally "loud" for debugging purposes (errors can be re-thrown in `error` hooks, for instance).
+Configuration code includes code to set the provider, instantiate providers, and configure the global API object.
 
 ##### Requirement 1.4.10
 

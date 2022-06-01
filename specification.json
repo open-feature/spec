@@ -138,7 +138,7 @@
         {
             "id": "Requirement 1.4.9",
             "machine_id": "requirement_1_4_9",
-            "content": "Methods, functions, or operations on the client MUST NOT throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup, and user-defined code such as hooks.",
+            "content": "Methods, functions, or operations on the client MUST NOT throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
@@ -337,42 +337,42 @@
         {
             "id": "Requirement 4.3.2",
             "machine_id": "requirement_4_3_2",
-            "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either an `EvaluationContext` or nothing.",
+            "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.3",
             "machine_id": "requirement_4_3_3",
-            "content": "Any `EvaluationContext` returned from a `before` hook MUST be passed to subsequent `before` hooks (via `HookContext`).",
+            "content": "Any `evaluation context` returned from a `before` hook MUST be passed to subsequent `before` hooks (via `HookContext`).",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.4",
             "machine_id": "requirement_4_3_4",
-            "content": "When `before` hooks have finished executing, any resulting `EvaluationContext` MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
+            "content": "When `before` hooks have finished executing, any resulting `evaluation context` MUST be merged with the invocation `evaluation context` with the invocation `evaluation context` taking precedence in the case of any conflicts.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.5",
             "machine_id": "requirement_4_3_5",
-            "content": "The `after` stage MUST run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.",
+            "content": "The `after` stage MUST run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `hook hints` (optional). It has no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.6",
             "machine_id": "requirement_4_3_6",
-            "content": "The `error` hook MUST run when errors are encountered in the `before` stage, the `after` stage or during flag resolution. It accepts `hook context (required), `exception`for what went wrong (required), and`HookHints` (optional). It has no return value.",
+            "content": "The `error` hook MUST run when errors are encountered in the `before` stage, the `after` stage or during flag resolution. It accepts `hook context` (required), `exception` representing what went wrong (required), and `hook hints` (optional). It has no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.3.7",
             "machine_id": "requirement_4_3_7",
-            "content": "The `finally` hook MUST run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.",
+            "content": "The `finally` hook MUST run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `hook hints` (optional). There is no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -408,15 +408,15 @@
         {
             "id": "Requirement 4.4.3",
             "machine_id": "requirement_4_4_3",
-            "content": "If an error occurs in the `finally` hook, it MUST NOT trigger the `error` hook.",
-            "RFC 2119 keyword": "MUST NOT",
+            "content": "If a `finally` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `finally` hooks.",
+            "RFC 2119 keyword": null,
             "children": []
         },
         {
             "id": "Requirement 4.4.4",
             "machine_id": "requirement_4_4_4",
-            "content": "If an error is encountered in `error` stage, it MUST be returned to the application author.",
-            "RFC 2119 keyword": "MUST",
+            "content": "If an `error` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `error` hooks.",
+            "RFC 2119 keyword": null,
             "children": []
         },
         {
@@ -436,21 +436,21 @@
         {
             "id": "Requirement 4.5.1",
             "machine_id": "requirement_4_5_1",
-            "content": "`Flag evaluation options` MAY contain `HookHints`, a map of data to be provided to hook invocations.",
+            "content": "`Flag evaluation options` MAY contain `hook hints`, a map of data to be provided to hook invocations.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
         {
             "id": "Requirement 4.5.2",
             "machine_id": "requirement_4_5_2",
-            "content": "`HookHints` MUST be passed to each hook.",
+            "content": "`hook hints` MUST be passed to each hook.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.5.3",
             "machine_id": "requirement_4_5_3",
-            "content": "The hook MUST NOT alter the `HookHints` structure.",
+            "content": "The hook MUST NOT alter the `hook hints` structure.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         }

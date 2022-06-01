@@ -50,7 +50,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 ##### Requirement 4.3.2
 
-> The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `HookHints` (optional) as parameters and returns either an `EvaluationContext` or nothing.
+> The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.
 
 ```
 EvaluationContext|void before(HookContext, HookHints)
@@ -58,23 +58,23 @@ EvaluationContext|void before(HookContext, HookHints)
 
 ##### Requirement 4.3.3
 
-> Any `EvaluationContext` returned from a `before` hook **MUST** be passed to subsequent `before` hooks (via `HookContext`).
+> Any `evaluation context` returned from a `before` hook **MUST** be passed to subsequent `before` hooks (via `HookContext`).
 
 ##### Requirement 4.3.4
 
-> When `before` hooks have finished executing, any resulting `EvaluationContext` **MUST** be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.
+> When `before` hooks have finished executing, any resulting `evaluation context` **MUST** be merged with the invocation `evaluation context` with the invocation `evaluation context` taking precedence in the case of any conflicts.
 
 ##### Requirement 4.3.5
 
-> The `after` stage **MUST** run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `HookHints` (optional). It has no return value.
+> The `after` stage **MUST** run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `hook hints` (optional). It has no return value.
 
 ##### Requirement 4.3.6
 
-> The `error` hook **MUST** run when errors are encountered in the `before` stage, the `after` stage or during flag resolution. It accepts `hook context (required), `exception`for what went wrong (required), and`HookHints` (optional). It has no return value.
+> The `error` hook **MUST** run when errors are encountered in the `before` stage, the `after` stage or during flag resolution. It accepts `hook context` (required), `exception` representing what went wrong (required), and `hook hints` (optional). It has no return value.
 
 ##### Requirement 4.3.7
 
-> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `HookHints` (optional). There is no return value.
+> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `hook hints` (optional). There is no return value.
 
 ##### Condition 4.3.8
 
@@ -114,15 +114,15 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 ##### Requirement 4.4.3
 
-> If an error occurs in the `finally` hook, it **MUST NOT** trigger the `error` hook.
+> If a `finally` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `finally` hooks.
 
-In practice, this means that abnormal termination in the finally hook will be exposed to the application author.
+In languages with try/catch semantics, this means that exceptions thrown in `finally` hooks should be caught, and not propagated up the call stack.
 
 ##### Requirement 4.4.4
 
-> If an error is encountered in `error` stage, it **MUST** be returned to the application author.
+> If an `error` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `error` hooks.
 
-In practice, this means that abnormal termination in the error hook will be exposed to the application author.
+In languages with try/catch semantics, this means that exceptions thrown in `error` hooks should be caught, and not propagated up the call stack.
 
 ##### Requirement 4.4.5
 
@@ -147,12 +147,12 @@ See: [Flag evaluation options](../flag-evaluation/flag-evaluation.md#)
 
 ##### Requirement 4.5.1
 
-> `Flag evaluation options` **MAY** contain `HookHints`, a map of data to be provided to hook invocations.
+> `Flag evaluation options` **MAY** contain `hook hints`, a map of data to be provided to hook invocations.
 
 ##### Requirement 4.5.2
 
-> `HookHints` **MUST** be passed to each hook.
+> `hook hints` **MUST** be passed to each hook.
 
 ##### Requirement 4.5.3
 
-> The hook **MUST NOT** alter the `HookHints` structure.
+> The hook **MUST NOT** alter the `hook hints` structure.
