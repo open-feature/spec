@@ -114,13 +114,13 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 ##### Requirement 4.4.3
 
-> If a `finally` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `finally` hooks.
+> If a `finally` hook abnormally terminates, evaluation **MUST** proceed normally, including the execution of any remaining `finally` hooks.
 
 In languages with try/catch semantics, this means that exceptions thrown in `finally` hooks should be caught, and not propagated up the call stack.
 
 ##### Requirement 4.4.4
 
-> If an `error` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `error` hooks.
+> If an `error` hook abnormally terminates, evaluation **MUST** proceed normally, including the execution of any remaining `error` hooks.
 
 In languages with try/catch semantics, this means that exceptions thrown in `error` hooks should be caught, and not propagated up the call stack.
 

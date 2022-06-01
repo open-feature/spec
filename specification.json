@@ -408,15 +408,15 @@
         {
             "id": "Requirement 4.4.3",
             "machine_id": "requirement_4_4_3",
-            "content": "If a `finally` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `finally` hooks.",
-            "RFC 2119 keyword": null,
+            "content": "If a `finally` hook abnormally terminates, evaluation MUST proceed normally, including the execution of any remaining `finally` hooks.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 4.4.4",
             "machine_id": "requirement_4_4_4",
-            "content": "If an `error` hook abnormally terminates, evaluation should proceed normally, including the execution of any remaining `error` hooks.",
-            "RFC 2119 keyword": null,
+            "content": "If an `error` hook abnormally terminates, evaluation MUST proceed normally, including the execution of any remaining `error` hooks.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {

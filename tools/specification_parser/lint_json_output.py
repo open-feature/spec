@@ -24,11 +24,11 @@ def main(f):
             for entry in entries:
                 if entry.get('RFC 2119 keyword') is None and \
                    'condition' not in entry['id'].lower():
-                    print(f"{j}: Rule {entry['id']} is missing a RFC 2119 keyword", file=sys.stderr)
+                    print(f"{jsonfile.name}: Rule {entry['id']} is missing a RFC 2119 keyword", file=sys.stderr)
                     errors += 1
                 pass
         except Exception as k:
-            print(f"Non json-spec formatted file found: {j}", file=sys.stderr)
+            print(f"Non json-spec formatted file found: {jsonfile.name}", file=sys.stderr)
 
     sys.exit(errors)
 
