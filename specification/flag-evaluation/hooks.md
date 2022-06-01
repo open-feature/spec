@@ -62,7 +62,7 @@ EvaluationContext|void before(HookContext, HookHints)
 
 ##### Requirement 4.3.4
 
-> When `before` hooks have finished executing, any resulting `EvaluationContext` > **MUST** be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.
+> When `before` hooks have finished executing, any resulting `EvaluationContext` **MUST** be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.
 
 ##### Requirement 4.3.5
 
@@ -79,10 +79,10 @@ EvaluationContext|void before(HookContext, HookHints)
 ##### Condition 4.3.8
 
 > `finally` is a reserved word in the language.
->
-> ##### 4.3.8.1
->
-> Condition: If `finally` is a reserved word in the language, `finallyAfter` > **SHOULD** be used.
+
+###### Conditional Requirement 4.3.8.1
+
+> Instead of `finally`, `finallyAfter` **SHOULD** be used.
 
 ### Hook registration & ordering
 

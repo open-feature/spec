@@ -189,7 +189,7 @@ It's recommended to provide non-blocking mechanisms for flag evaluation, particu
 
 ##### Requirement 1.5.1
 
-> The `evaluation options` structure's `hooks` field denotes a collection of hooks that the client **MUST** execute for the respective flag evaluation, in addition to those already configured.
+> The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client **MUST** execute for the respective flag evaluation, in addition to those already configured.
 
 See [hooks](./hooks.md) for details.
 

@@ -159,7 +159,7 @@
         {
             "id": "Requirement 1.5.1",
             "machine_id": "requirement_1_5_1",
-            "content": "The `evaluation options` structure's `hooks` field denotes a collection of hooks that the client MUST execute for the respective flag evaluation, in addition to those already configured.",
+            "content": "The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client MUST execute for the respective flag evaluation, in addition to those already configured.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -351,7 +351,7 @@
         {
             "id": "Requirement 4.3.4",
             "machine_id": "requirement_4_3_4",
-            "content": "When `before` hooks have finished executing, any resulting `EvaluationContext`  MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
+            "content": "When `before` hooks have finished executing, any resulting `EvaluationContext` MUST be merged with the invocation `EvaluationContext` with the invocation `EvaluationContext` taking precedence in the case of any conflicts.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -381,7 +381,15 @@
             "machine_id": "condition_4_3_8",
             "content": "`finally` is a reserved word in the language.",
             "RFC 2119 keyword": null,
-            "children": []
+            "children": [
+                {
+                    "id": "Conditional Requirement 4.3.8.1",
+                    "machine_id": "conditional_requirement_4_3_8_1",
+                    "content": "Instead of `finally`, `finallyAfter` SHOULD be used.",
+                    "RFC 2119 keyword": "SHOULD",
+                    "children": []
+                }
+            ]
         },
         {
             "id": "Requirement 4.4.1",
