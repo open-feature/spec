@@ -1,0 +1,234 @@
+openapi: "3.0.2"
+info:
+  title: OpenFeature Provider REST API
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+
+components:
+  parameters:
+    flagKey:
+      name: flag-key
+      description: "A logical identifier for the flag."
+      in: path
+      required: true
+      schema:
+        type: string
+
+  responses:
+    "400":
+      description: "Invalid flag resolution request"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/resolutionDetailsWithError"
+
+    "404":
+      description: "Flag not found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/resolutionDetailsWithError"
+
+    "500":
+      description: "Unhandled error during flag evaluation"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/resolutionDetailsWithError"
+
+  schemas:
+    context: # context object for inclusion of attributes for rule-based evaluation
+      type: object
+      description: "A logical identifier for the subject (end-user, service) of this flag evaluation."
+      properties:
+        targetingKey:
+          type: string
+      additionalProperties: true
+
+    resolutionDetails: # response body for a successful flag evaluation
+      description: "The resolution details of the flag resolution operation."
+      type: object
+      properties:
+        variant:
+          type: string
+        reason:
+          type: string
+      additionalProperties: false
+
+    resolutionDetailsBoolean:
+      allOf: # extend the "#/components/schemas/resolutionDetail" details with an errorCode
+        - $ref: "#/components/schemas/resolutionDetails"
+        - type: object
+          properties:
+            value:
+              type: boolean
+
+    resolutionDetailsString:
+      allOf: # extend the "#/components/schemas/resolutionDetail" details with an errorCode
+        - $ref: "#/components/schemas/resolutionDetails"
+        - type: object
+          properties:
+            value:
+              type: string
+
+    resolutionDetailsNumber:
+      allOf: # extend the "#/components/schemas/resolutionDetail" details with an errorCode
+        - $ref: "#/components/schemas/resolutionDetails"
+        - type: object
+          properties:
+            value:
+              type: number
+
+    resolutionDetailsObject:
+      allOf: # extend the "#/components/schemas/resolutionDetail" details with an errorCode
+        - $ref: "#/components/schemas/resolutionDetails"
+        - type: object
+          properties:
+            value:
+              type: object
+              additionalProperties: true
+
+    resolutionDetailsWithError: # response body for an unsuccessful flag evaluation
+      allOf: # extend the "#/components/schemas/resolutionDetail" details with an errorCode
+        - $ref: "#/components/schemas/resolutionDetails"
+        - type: object
+          properties:
+            errorCode:
+              type: string
+
+paths:
+  /flags/{flag-key}/resolve/boolean:
+    post:
+      tags:
+        - Boolean flag Resolution
+      description: "Resolve a flag value"
+      operationId: "resolve-boolean"
+      parameters:
+        - $ref: "#/components/parameters/flagKey"
+        - name: default-value
+          description: "The value that will be resolved in case of any error, or if the flag is not defined in the flag management system."
+          in: query
+          required: true
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/context"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resolutionDetailsBoolean"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /flags/{flag-key}/resolve/string:
+    post:
+      tags:
+        - String flag Resolution
+      description: "Resolve a flag value"
+      operationId: "resolve-string"
+      parameters:
+        - $ref: "#/components/parameters/flagKey"
+        - name: default-value
+          description: "The value that will be resolved in case of any error, or if the flag is not defined in the flag management system."
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/context"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resolutionDetailsString"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /flags/{flag-key}/resolve/number:
+    post:
+      tags:
+        - Numeric flag Resolution
+      description: "Resolve a flag value"
+      operationId: "resolve-number"
+      parameters:
+        - $ref: "#/components/parameters/flagKey"
+        - name: default-value
+          description: "The value that will be resolved in case of any error, or if the flag is not defined in the flag management system."
+          in: query
+          required: true
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/context"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resolutionDetailsNumber"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /flags/{flag-key}/resolve/object:
+    post:
+      tags:
+        - Object flag Resolution
+      description: "Resolve a flag value"
+      operationId: "resolve-object"
+      parameters:
+        - $ref: "#/components/parameters/flagKey"
+        - name: default-value
+          description: "The value that will be resolved in case of any error, or if the flag is not defined in the flag management system."
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: object
+            additionalProperties: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/context"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resolutionDetailsObject"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
