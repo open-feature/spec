@@ -161,7 +161,9 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 ##### Requirement 1.4.7
 
-> In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** identify an error occurred during flag evaluation, having possible values `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, or `"GENERAL"`.
+> In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain a string identifying an error occurred during flag evaluation, and the nature of the error.
+
+Some example error codes include: `"TARGETING_KEY_MISSING"`, `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, or `"GENERAL"`.
 
 ##### Requirement 1.4.8
 
