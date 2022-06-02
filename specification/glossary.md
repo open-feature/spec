@@ -26,9 +26,11 @@ This document defines some terms that are used across this specification.
   - [Resolving Flag Values](#resolving-flag-values)
 - [Flagging specifics](#flagging-specifics)
   - [Flag](#flag)
+  - [Flag Key](#flag-key)
   - [Variant](#variant)
   - [Values](#values)
   - [Targeting](#targeting)
+  - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
 
