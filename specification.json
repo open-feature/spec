@@ -124,7 +124,7 @@
         {
             "id": "Requirement 1.4.7",
             "machine_id": "requirement_1_4_7",
-            "content": "In cases of abnormal execution, the `evaluation details` structure's `error code` field MUST contain a string identifying an error occurred during flag evaluation, and the nature of the error.",
+            "content": "In cases of abnormal execution, the `evaluation details` structure's `error code` field MUST contain a string identifying an error occurred during flag evaluation and the nature of the error.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
