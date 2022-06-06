@@ -26,9 +26,11 @@ This document defines some terms that are used across this specification.
   - [Resolving Flag Values](#resolving-flag-values)
 - [Flagging specifics](#flagging-specifics)
   - [Flag](#flag)
+  - [Flag Key](#flag-key)
   - [Variant](#variant)
   - [Values](#values)
   - [Targeting](#targeting)
+  - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
 
@@ -120,6 +122,10 @@ erDiagram
 
 Flags represent a single pivot point of logic. Flags have a type, like `string`, `boolean`, `json`, etc. Examples: `redesign_enabled` or `header-order`
 
+### Flag Key
+
+A string logically identifying a particular flag.
+
 ### Variant
 
 A variant is a semantic identifier for a value. This allows for referral to particular values without necessarily including the value itself, which may be quite prohibitively large or otherwise unsuitable in some cases.
@@ -137,6 +143,10 @@ standard: [1,2,3,4,5]
 ### Targeting
 
 The application of rules, specific user overrides, or fractional evaluations in feature flag resolution.
+
+### Targeting Key
+
+A string logically identifying the subject of evaluation (end-user, service, etc).
 
 ### Fractional Evaluation
 
