@@ -38,11 +38,11 @@ See [hooks](./hooks.md) for details.
 
 #### Requirement 1.1.4
 
-> The API **MUST** provide a function for retrieving the `provider` implementation.
+> The API **MUST** provide a function for retrieving the metadata field of the configured `provider`.
 
 ```
 // example provider accessor
-OpenFeature.getProvider();
+OpenFeature.getProviderMetadata();
 ```
 
 See [provider](../provider/providers.md) for details.
@@ -74,6 +74,14 @@ client.addHooks([new MyHook()]);
 ```
 
 See [hooks](./hooks.md) for details.
+
+#### Requirement 1.2.2
+
+> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.
+
+```
+client.getMetadata().getName() // "my-client"
+```
 
 #### Flag Evaluation
 

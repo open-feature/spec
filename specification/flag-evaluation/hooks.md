@@ -18,7 +18,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 ##### Requirement 4.1.2
 
-> Hook context **SHOULD** provide: provider (instance) and client (instance)
+> The `hook context` **SHOULD** provide: access to the `client metadata` and the `provider metadata` fields.
 
 ##### Requirement 4.1.3
 
@@ -28,19 +28,27 @@ Hook context exists to provide hooks with information about the invocation.
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
-### HookHints
+### Hook Hints
 
 ##### Requirement 4.2.1
 
-> HookHints **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..
+> `hook hints` **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..
 
 ##### Condition 4.2.2
 
 > The implementation language supports a mechanism for marking data as immutable.
 
-> ##### 2.2.1
->
-> Condition: HookHints **MUST** be immutable.
+###### Conditional Requirement 4.2.2.1
+
+> Condition: `Hook hints` **MUST** be immutable.
+
+###### Conditional Requirement 4.2.2.2
+
+> Condition: The client `metadata` field in the `hook context` **MUST** be immutable.
+
+###### Conditional Requirement 4.2.2.3
+
+> Condition: The provider `metadata` field in the `hook context` **MUST** be immutable.
 
 ### Hook creation and parameters
 

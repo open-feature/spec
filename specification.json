@@ -24,7 +24,7 @@
         {
             "id": "Requirement 1.1.4",
             "machine_id": "requirement_1_1_4",
-            "content": "The API MUST provide a function for retrieving the `provider` implementation.",
+            "content": "The API MUST provide a function for retrieving the metadata field of the configured `provider`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -39,6 +39,13 @@
             "id": "Requirement 1.2.1",
             "machine_id": "requirement_1_2_1",
             "content": "The client MUST provide a method to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.2.2",
+            "machine_id": "requirement_1_2_2",
+            "content": "The client interface MUST define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -173,7 +180,7 @@
         {
             "id": "Requirement 2.1",
             "machine_id": "requirement_2_1",
-            "content": "The provider interface MUST define a `name` field or accessor, which identifies the provider implementation.",
+            "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -295,7 +302,7 @@
         {
             "id": "Requirement 4.1.2",
             "machine_id": "requirement_4_1_2",
-            "content": "Hook context SHOULD provide: provider (instance) and client (instance)",
+            "content": "The `hook context` SHOULD provide: access to the `client metadata` and the `provider metadata` fields.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
@@ -316,7 +323,7 @@
         {
             "id": "Requirement 4.2.1",
             "machine_id": "requirement_4_2_1",
-            "content": "HookHints MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..",
+            "content": "`hook hints` MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -325,7 +332,29 @@
             "machine_id": "condition_4_2_2",
             "content": "The implementation language supports a mechanism for marking data as immutable.",
             "RFC 2119 keyword": null,
-            "children": []
+            "children": [
+                {
+                    "id": "Conditional Requirement 4.2.2.1",
+                    "machine_id": "conditional_requirement_4_2_2_1",
+                    "content": "Condition: `Hook hints` MUST be immutable.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 4.2.2.2",
+                    "machine_id": "conditional_requirement_4_2_2_2",
+                    "content": "Condition: The client `metadata` field in the `hook context` MUST be immutable.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 4.2.2.3",
+                    "machine_id": "conditional_requirement_4_2_2_3",
+                    "content": "Condition: The provider `metadata` field in the `hook context` MUST be immutable.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
         },
         {
             "id": "Requirement 4.3.1",
