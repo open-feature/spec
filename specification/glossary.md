@@ -54,7 +54,7 @@ A developer who is setting up or configuring an application or service to use th
 
 ### Provider Author
 
-The maintainer of an API-compliant [provider](./provider//providers.md) which implements the necessary interfaces required for flag evaluation.
+The maintainer of an API-compliant [provider](./providers.md) which implements the necessary interfaces required for flag evaluation.
 
 ### Integration Author
 
@@ -86,7 +86,7 @@ A source-of-truth for flag values and rules. Flag management systems may include
 
 ### Provider
 
-An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./flag-evaluation/flag-evaluation.md#flag-evaluation) as an abstraction for the system in question.
+An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./flag-evaluation.md#flag-evaluation) as an abstraction for the system in question.
 
 ### Integration
 

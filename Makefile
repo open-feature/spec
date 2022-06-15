@@ -10,7 +10,7 @@ clean:
 lint: node_modules
 	@python ./tools/specification_parser/lint_json_output.py specification.json
 	./node_modules/.bin/markdownlint --ignore node_modules/ --ignore tools/ **/*.md
-	./node_modules/.bin/markdown-link-check -c .markdown-link-check-config.json README.md specification/**/*.md
+	./node_modules/.bin/markdown-link-check -c .markdown-link-check-config.json README.md specification/*.md
 
 fix: node_modules
 	prettier -w **/*.md

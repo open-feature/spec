@@ -26,7 +26,7 @@ A language primitive for representing a date and time, including timezone inform
 
 ### Evaluation Details
 
-A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./flag-evaluation/flag-evaluation.md#detailed-flag-evaluation), containing the following fields:
+A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./flag-evaluation.md#detailed-flag-evaluation), containing the following fields:
 
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
@@ -49,4 +49,4 @@ A structure which contains a subset of the fields defined in the `evaluation det
 
 A structure containing the following fields:
 
-- hooks (one or more [hooks](./flag-evaluation/hooks.md), optional)
+- hooks (one or more [hooks](./hooks.md), optional)

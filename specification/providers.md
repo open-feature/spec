@@ -10,7 +10,7 @@ The `provider` API defines interfaces that Provider Authors can use to abstract 
 
 > The provider interface **MUST** define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.
 
-```
+```typescript
 provider.getMetadata().getName() // "my-custom-provider"
 ```
 
@@ -22,12 +22,12 @@ provider.getMetadata().getName() // "my-custom-provider"
 
 > The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns a `flag resolution` structure.
 
-```
+```typescript
 // example flag resolution function
 resolveBooleanValue(flagKey, defaultValue, context, options);
 ```
 
-see: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
+see: [flag resolution structure](./types.md#flag-resolution), [flag value resolution](./glossary.md#flag-value-resolution)
 
 ##### Condition 2.3
 
@@ -37,7 +37,7 @@ see: [flag resolution structure](../types.md#flag-resolution), [flag value resol
 
 > The `feature provider` interface **MUST** define methods for typed flag resolution, including boolean, numeric, string, and structure.
 
-```
+```typescript
 // example boolean flag value resolution
 ResolutionDetails resolveBooleanValue(string flagKey, boolean defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
 
@@ -87,7 +87,7 @@ The provider might throw an exception, return an error, or populate the `error c
 
 > The `flag resolution` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
-```
+```typescript
 // example boolean flag value resolution with generic argument
 ResolutionDetails<boolean> resolveBooleanValue(string flagKey, boolean defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
 
@@ -105,7 +105,7 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 Feature flag management systems often define structures representing arbitrary contextual data pertaining to the runtime, user, or application. The context transformer defines a simple interface to transform the OpenFeature `evaluation context` to such a structure, mapping values appropriately.
 
-See [evaluation context](../evaluation-context/evaluation-context.md).
+See [evaluation context](./evaluation-context.md).
 
 ##### Requirement 2.10
 
@@ -113,7 +113,7 @@ See [evaluation context](../evaluation-context/evaluation-context.md).
 
 The OpenFeature `client` might apply the transformer function before passing the returned value (the `transformed context`) to the provider resolution methods, thus allowing the provider implementation to avoid implementing and calling such transformation logic repeatedly in flag value resolution methods.
 
-```
+```typescript
 class MyProvider implements Provider {
   //...
 
@@ -126,7 +126,7 @@ class MyProvider implements Provider {
 }
 ```
 
-See [evaluation context](../evaluation-context/evaluation-context.md), [flag evaluation](./../flag-evaluation/flag-evaluation.md#flag-evaluation).
+See [evaluation context](./evaluation-context.md), [flag evaluation](./flag-evaluation.md#flag-evaluation).
 
 ##### Condition 2.11
 
@@ -138,7 +138,7 @@ See [evaluation context](../evaluation-context/evaluation-context.md), [flag eva
 >
 > If such type information is supplied, more accurate type information can be supplied in the flag resolution methods.
 
-```
+```typescript
 // an example implementation in a language supporting interfaces, classes, and generics
 // T represents a generic argument for the type of the transformed context
 interface Provider<T> {
