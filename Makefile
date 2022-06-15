@@ -7,15 +7,15 @@ parse: clean _check_python
 clean:
 	@find ./specification -name '*.json' -delete
 
-lint: install
+lint: node_modules
 	@python ./tools/specification_parser/lint_json_output.py specification.json
 	./node_modules/.bin/markdownlint --ignore node_modules/ --ignore tools/ **/*.md
 	./node_modules/.bin/markdown-link-check -c .markdown-link-check-config.json README.md specification/**/*.md
 
-fix: install
+fix: node_modules
 	prettier -w **/*.md
 
-install:
+node_modules:
 	npm ci
 
 _check_python:
