@@ -1,10 +1,10 @@
 # Flag Evaluation API
 
-**Status**: [Experimental](../README.md#document-statuses)
+**Status**: [Experimental](./README.md#document-statuses)
 
 ## Overview
 
-The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](../provider/providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
+The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](./providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
 
 ### API Initialization and Configuration
 
@@ -18,18 +18,18 @@ It's important that multiple instances of the `API` not be active, so that state
 
 > The `API` **MUST** provide a function to set the global `provider` singleton, which accepts an API-conformant `provider` implementation.
 
-```
+```typescript
 // example provider mutator
 OpenFeature.setProvider(new MyProvider());
 ```
 
-See [provider](../provider//providers.md) for details.
+See [provider](./providers.md) for details.
 
 #### Requirement 1.1.3
 
 > The `API` **MUST** provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.
 
-```
+```typescript
 // example hook attachment
 OpenFeature.addHooks([new MyHook()]);
 ```
@@ -40,12 +40,12 @@ See [hooks](./hooks.md) for details.
 
 > The API **MUST** provide a function for retrieving the metadata field of the configured `provider`.
 
-```
+```typescript
 // example provider accessor
 OpenFeature.getProviderMetadata();
 ```
 
-See [provider](../provider/providers.md) for details.
+See [provider](./providers.md) for details.
 
 #### Requirement 1.1.5
 
@@ -53,7 +53,7 @@ See [provider](../provider/providers.md) for details.
 >
 > - name (optional): A logical string identifier for the client.
 
-```
+```typescript
 // example client creation and retrieval
 OpenFeature.getClient({
   name: 'my-openfeature-client'
@@ -74,7 +74,7 @@ Clients may be created in critical code paths, and even per-request in server-si
 
 > The client **MUST** provide a method to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.
 
-```
+```typescript
 // example hook attachment
 client.addHooks([new MyHook()]);
 ```
@@ -85,7 +85,7 @@ See [hooks](./hooks.md) for details.
 
 > The client interface **MUST** define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.
 
-```
+```typescript
 client.getMetadata().getName() // "my-client"
 ```
 
@@ -95,7 +95,7 @@ client.getMetadata().getName() // "my-client"
 
 > The `client` **MUST** provide methods for flag evaluation, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
 
-```
+```typescript
 // example flag evaluation
 var myValue = client.getValue('my-flag', false);
 ```
@@ -108,7 +108,7 @@ var myValue = client.getValue('my-flag', false);
 
 > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
 
-```
+```typescript
 // example boolean flag evaluation
 boolean myBool =  client.getBooleanValue('bool-flag', false);
 
@@ -122,7 +122,7 @@ number myNumber = client.getNumberValue('number-flag', 75);
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
 ```
 
-See [evaluation context](../evaluation-context/evaluation-context.md) for details.
+See [evaluation context](./evaluation-context.md) for details.
 
 ###### Conditional Requirement 1.3.3
 
@@ -134,7 +134,7 @@ See [evaluation context](../evaluation-context/evaluation-context.md) for detail
 
 > The `client` **MUST** provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns an `evaluation details` structure.
 
-```
+```typescript
 // example detailed boolean flag evaluation
 FlagEvaluationDetails<boolean> myBoolDetails = client.getBooleanDetails('bool-flag', false);
 
@@ -215,4 +215,4 @@ See [hooks](./hooks.md) for details.
 
 > The `client` **SHOULD** transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.
 
-See [context transformation](../provider/providers.md#context-transformation) for details.
+See [context transformation](./providers.md#context-transformation) for details.
