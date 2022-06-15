@@ -26,7 +26,7 @@ _check_python:
 		&& exit 1; \
 		fi;
 .PHONY: markdown-toc
-markdown-toc: install
+markdown-toc: node_modules
 	@if ! npm ls markdown-toc; then npm ci; fi
 	@for f in $(ALL_DOCS); do \
 		if grep -q '<!-- tocstop -->' $$f; then \
