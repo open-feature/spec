@@ -157,3 +157,15 @@ interface Provider<T> {
 
 }
 ```
+#### Event Tracking
+
+Feature flag management systems often have functionality to allow sending custom track events related to a user, or application.
+
+##### Requirement 2.2
+
+> The `feature provider` interface **MUST** define a method to emit a event but if the solution provider doesn't support tracking events this can be a no-op.
+
+```typescript
+// example track event function
+trackEvent(eventName, attributes, context);
+```

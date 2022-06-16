@@ -45,6 +45,11 @@ A structure which contains a subset of the fields defined in the `evaluation det
 
 \*NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
 
+### Event Track Attributes
+
+A structure which contains a set of extranous felds that should be associated
+with the Tracking Event.
+
 ### Evaluation Options
 
 A structure containing the following fields:
