@@ -124,7 +124,7 @@ Flags represent a single pivot point of logic. Flags have a type, like `string`,
 
 ### Flag Key
 
-A string logically identifying a particular flag.
+A string logically identifies a particular flag.
 
 ### Variant
 
