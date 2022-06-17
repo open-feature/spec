@@ -66,7 +66,7 @@ The name is a logical identifier for the client.
 
 > The client creation function **MUST NOT** throw, or otherwise abnormally terminate.
 
-Clients may be created in critical code paths, and even per-request in server-side HTTP contexts. Therefor, in keeping with the principle that OpenFeature should never cause abnormal execution of the first party application, this function should never throw. Abnormal execution in initialization should instead occur during provider registration.
+Clients may be created in critical code paths, and even per-request in server-side HTTP contexts. Therefore, in keeping with the principle that OpenFeature should never cause abnormal execution of the first party application, this function should never throw. Abnormal execution in initialization should instead occur during provider registration.
 
 ### Client Usage
 
