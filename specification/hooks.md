@@ -142,7 +142,7 @@ In languages with try/catch semantics, this means that exceptions thrown in `err
 
 ### [Flag evaluation options](./types.md#evaluation-options)
 
-Usage might looks something like:
+Usage might look something like:
 
 ```python
 val = client.get_boolean_value('my-key', False, evaluation_options={

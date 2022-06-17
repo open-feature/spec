@@ -36,7 +36,7 @@ stacks including, but not limited to:
 
 This specification complies with
 [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) and seeks to conform
-to the [W3C QA Framework Guildlines](https://www.w3.org/TR/qaframe-spec/).
+to the [W3C QA Framework Guidelines](https://www.w3.org/TR/qaframe-spec/).
 
 In accordance with this, some basic tooling (donated graciously by
 [Diego Hurtado](https://github.com/ocelotl)) has been employed to parse the
