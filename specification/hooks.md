@@ -2,7 +2,18 @@
 
 ## Overview
 
-Hooks are a mechanism whereby application developers can add arbitrary behavior to flag evaluation. They operate similarly to middleware in many web frameworks.
+`Hooks` are a mechanism whereby application developers can add arbitrary behavior to flag evaluation. They operate similarly to middleware in many web frameworks.
+
+Hooks add their logic at any of four specific stages of flag evaluation:
+
+- `before`, immediately before flag evaluation
+- `after`, immediately after successful flag evaluation
+- `error`, immediately after an unsuccessful during flag evaluation
+- `finally` unconditionally after flag evaluation
+
+![Flag evaluation life cycle](./assets/images/life-cycle.png)
+
+Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
 
 ### Definitions
 
@@ -61,7 +72,7 @@ Hook context exists to provide hooks with information about the invocation.
 > The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.
 
 ```typescript
-EvaluationContext|void before(HookContext, HookHints)
+EvaluationContext | void before(HookContext, HookHints);
 ```
 
 #### Requirement 4.3.3

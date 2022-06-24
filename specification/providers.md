@@ -4,6 +4,10 @@
 
 The `provider` API defines interfaces that Provider Authors can use to abstract a particular flag management system, thus enabling the use of the `evaluation API` by Application Authors.
 
+Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags. At a minimum, providers should implement some basic evaluation methods which return flag values of the expected type. In addition, providers may transform the [evaluation context](evaluation-context.md) appropriately in order to be used in dynamic evaluation of their associated flag management system, provide insight into why evaluation proceeded the way it did, and expose configuration options for their associated flag management system. Hypothetical provider implementations might wrap a vendor SDK, embed an REST client, or read flags from a local file.
+
+![Provider](./assets/images/provider.png)
+
 ### Feature Provider Interface
 
 #### Requirement 2.1
@@ -11,7 +15,7 @@ The `provider` API defines interfaces that Provider Authors can use to abstract 
 > The provider interface **MUST** define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.
 
 ```typescript
-provider.getMetadata().getName() // "my-custom-provider"
+provider.getMetadata().getName(); // "my-custom-provider"
 ```
 
 #### Flag Value Resolution

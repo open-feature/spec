@@ -56,7 +56,7 @@ See [provider](./providers.md) for details.
 ```typescript
 // example client creation and retrieval
 OpenFeature.getClient({
-  name: 'my-openfeature-client'
+  name: "my-openfeature-client",
 });
 ```
 
@@ -86,7 +86,7 @@ See [hooks](./hooks.md) for details.
 > The client interface **MUST** define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.
 
 ```typescript
-client.getMetadata().getName() // "my-client"
+client.getMetadata().getName(); // "my-client"
 ```
 
 #### Flag Evaluation
@@ -97,7 +97,7 @@ client.getMetadata().getName() // "my-client"
 
 ```typescript
 // example flag evaluation
-var myValue = client.getValue('my-flag', false);
+var myValue = client.getValue("my-flag", false);
 ```
 
 ##### Condition 1.3.2
