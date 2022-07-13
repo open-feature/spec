@@ -1,8 +1,9 @@
 {
   "name": "@openfeature/specification",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.5",
     "@changesets/cli": "^2.23.1",
     "markdown-link-check": "^3.10.2",
     "markdown-toc": "^1.2.0",
