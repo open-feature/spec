@@ -470,6 +470,13 @@
             "children": []
         },
         {
+            "id": "Requirement 4.4.7",
+            "machine_id": "requirement_4_4_7",
+            "content": "If an error occurs in the `before` hooks, the default value MUST be returned.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Requirement 4.5.1",
             "machine_id": "requirement_4_5_1",
             "content": "`Flag evaluation options` MAY contain `hook hints`, a map of data to be provided to hook invocations.",

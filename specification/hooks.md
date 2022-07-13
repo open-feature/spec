@@ -151,6 +151,12 @@ In languages with try/catch semantics, this means that exceptions thrown in `err
 
 > If an error occurs during the evaluation of `before` or `after` hooks, any remaining hooks in the `before` or `after` stages **MUST NOT** be invoked.
 
+#### Requirement 4.4.7
+
+> If an error occurs in the `before` hooks, the default value **MUST** be returned.
+
+Before hooks can impact evaluation by various means, such as mutating the `evaluation context`. Therefore, an error in the `before` hooks is considered abnormal execution, and the default should be returned.
+
 ### [Flag evaluation options](./types.md#evaluation-options)
 
 Usage might look something like:
