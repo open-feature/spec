@@ -1,7 +1,9 @@
 {
   "name": "@openfeature/specification",
+  "version": "0.0.0",
   "private": true,
   "devDependencies": {
+    "@changesets/cli": "^2.23.1",
     "markdown-link-check": "^3.10.2",
     "markdown-toc": "^1.2.0",
     "markdownlint-cli": "^0.31.1",
