@@ -93,19 +93,6 @@ client.getMetadata().getName(); // "my-client"
 
 ##### Requirement 1.3.1
 
-> The `client` **MUST** provide methods for flag evaluation, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
-
-```typescript
-// example flag evaluation
-var myValue = client.getValue("my-flag", false);
-```
-
-##### Condition 1.3.2
-
-> The language type system differentiates between strings, numbers, booleans and structures.
-
-###### Conditional Requirement 1.3.2.1
-
 > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
 
 ```typescript
@@ -123,6 +110,17 @@ MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: '
 ```
 
 See [evaluation context](./evaluation-context.md) for details.
+
+###### Conditional Requirement 1.3.2.1
+
+> If languages differentiate between floats/ints, they **SHOULD** provide functions for both, consistent with language idioms.
+
+```go
+// example in GO
+GetIntValue(flag string, defaultValue int64, evalCtx EvaluationContext, options ...EvaluationOption) (int64, error)
+
+GetFloatValue(flag string, defaultValue float64, evalCtx EvaluationContext, options ...EvaluationOption) (float64, error)
+```
 
 ###### Conditional Requirement 1.3.3
 
