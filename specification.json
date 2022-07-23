@@ -59,21 +59,14 @@
         {
             "id": "Requirement 1.3.1",
             "machine_id": "requirement_1_3_1",
-            "content": "The `client` MUST provide methods for flag evaluation, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.",
+            "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure.",
             "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Condition 1.3.2",
-            "machine_id": "condition_1_3_2",
-            "content": "The language type system differentiates between strings, numbers, booleans and structures.",
-            "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 1.3.2.1",
                     "machine_id": "conditional_requirement_1_3_2_1",
-                    "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure.",
-                    "RFC 2119 keyword": "MUST",
+                    "content": "If languages differentiate between floats/ints, they SHOULD provide functions for both, consistent with language idioms.",
+                    "RFC 2119 keyword": "SHOULD",
                     "children": []
                 },
                 {
