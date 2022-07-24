@@ -110,6 +110,7 @@ MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: '
 ```
 
 See [evaluation context](./evaluation-context.md) for details.
+
 ##### Condition 1.3.2
 
 > The implementation language differentiate between floats/ints.
