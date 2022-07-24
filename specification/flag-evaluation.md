@@ -93,7 +93,7 @@ client.getMetadata().getName(); // "my-client"
 
 ##### Requirement 1.3.1
 
-> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
+> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
 
 ```typescript
 // example boolean flag evaluation
@@ -110,10 +110,13 @@ MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: '
 ```
 
 See [evaluation context](./evaluation-context.md) for details.
+##### Condition 1.3.2
+
+> The implementation language differentiate between floats/ints.
 
 ###### Conditional Requirement 1.3.2.1
 
-> If languages differentiate between floats/ints, they **SHOULD** provide functions for both, consistent with language idioms.
+> The client **SHOULD** provide functions for all types, consistent with language idioms.
 
 ```go
 // example in GO
@@ -122,7 +125,7 @@ GetIntValue(flag string, defaultValue int64, evalCtx EvaluationContext, options 
 GetFloatValue(flag string, defaultValue float64, evalCtx EvaluationContext, options ...EvaluationOption) (float64, error)
 ```
 
-###### Conditional Requirement 1.3.3
+##### Requirement 1.3.3
 
 > The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
 
