@@ -117,7 +117,7 @@ See [evaluation context](./evaluation-context.md) for details.
 
 ###### Conditional Requirement 1.3.2.1
 
-> The client **SHOULD** provide functions for all types, consistent with language idioms.
+> The client **SHOULD** provide functions for strings, numbers, booleans and structures, consistent with language idioms.
 
 ```go
 // example in GO
@@ -125,6 +125,8 @@ GetIntValue(flag string, defaultValue int64, evalCtx EvaluationContext, options 
 
 GetFloatValue(flag string, defaultValue float64, evalCtx EvaluationContext, options ...EvaluationOption) (float64, error)
 ```
+
+See [types](./types.md) for details.
 
 ##### Requirement 1.3.3
 
