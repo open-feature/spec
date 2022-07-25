@@ -113,7 +113,7 @@ See [evaluation context](./evaluation-context.md) for details.
 
 ##### Condition 1.3.2
 
-> The implementation language differentiate between floats/ints.
+> The implementation language differentiates between floating-point numbers and integers.
 
 ###### Conditional Requirement 1.3.2.1
 

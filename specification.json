@@ -66,7 +66,7 @@
         {
             "id": "Condition 1.3.2",
             "machine_id": "condition_1_3_2",
-            "content": "The implementation language differentiate between floats/ints.",
+            "content": "The implementation language differentiates between floating-point numbers and integers.",
             "RFC 2119 keyword": null,
             "children": [
                 {
