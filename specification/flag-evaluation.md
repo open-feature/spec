@@ -117,7 +117,7 @@ See [evaluation context](./evaluation-context.md) for details.
 
 ###### Conditional Requirement 1.3.2.1
 
-> The client **SHOULD** provide functions for strings, numbers, booleans and structures, consistent with language idioms.
+> The client **SHOULD** provide functions for floating-point numbers and integers, consistent with language idioms.
 
 ```go
 // example in GO

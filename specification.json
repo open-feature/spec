@@ -72,7 +72,7 @@
                 {
                     "id": "Conditional Requirement 1.3.2.1",
                     "machine_id": "conditional_requirement_1_3_2_1",
-                    "content": "The client SHOULD provide functions for strings, numbers, booleans and structures, consistent with language idioms.",
+                    "content": "The client SHOULD provide functions for floating-point numbers and integers, consistent with language idioms.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
                 }
