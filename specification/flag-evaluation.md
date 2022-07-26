@@ -93,20 +93,7 @@ client.getMetadata().getName(); // "my-client"
 
 ##### Requirement 1.3.1
 
-> The `client` **MUST** provide methods for flag evaluation, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
-
-```typescript
-// example flag evaluation
-var myValue = client.getValue("my-flag", false);
-```
-
-##### Condition 1.3.2
-
-> The language type system differentiates between strings, numbers, booleans and structures.
-
-###### Conditional Requirement 1.3.2.1
-
-> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure.
+> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
 
 ```typescript
 // example boolean flag evaluation
@@ -124,7 +111,24 @@ MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: '
 
 See [evaluation context](./evaluation-context.md) for details.
 
-###### Conditional Requirement 1.3.3
+##### Condition 1.3.2
+
+> The implementation language differentiates between floating-point numbers and integers.
+
+###### Conditional Requirement 1.3.2.1
+
+> The client **SHOULD** provide functions for floating-point numbers and integers, consistent with language idioms.
+
+```go
+// example in GO
+GetIntValue(flag string, defaultValue int64, evalCtx EvaluationContext, options ...EvaluationOption) (int64, error)
+
+GetFloatValue(flag string, defaultValue float64, evalCtx EvaluationContext, options ...EvaluationOption) (float64, error)
+```
+
+See [types](./types.md) for details.
+
+##### Requirement 1.3.3
 
 > The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
 

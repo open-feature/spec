@@ -59,31 +59,31 @@
         {
             "id": "Requirement 1.3.1",
             "machine_id": "requirement_1_3_1",
-            "content": "The `client` MUST provide methods for flag evaluation, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.",
+            "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Condition 1.3.2",
             "machine_id": "condition_1_3_2",
-            "content": "The language type system differentiates between strings, numbers, booleans and structures.",
+            "content": "The implementation language differentiates between floating-point numbers and integers.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 1.3.2.1",
                     "machine_id": "conditional_requirement_1_3_2_1",
-                    "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure.",
-                    "RFC 2119 keyword": "MUST",
-                    "children": []
-                },
-                {
-                    "id": "Conditional Requirement 1.3.3",
-                    "machine_id": "conditional_requirement_1_3_3",
-                    "content": "The `client` SHOULD guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.",
+                    "content": "The client SHOULD provide functions for floating-point numbers and integers, consistent with language idioms.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 1.3.3",
+            "machine_id": "requirement_1_3_3",
+            "content": "The `client` SHOULD guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
         },
         {
             "id": "Requirement 1.4.1",
