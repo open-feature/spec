@@ -286,16 +286,30 @@
             ]
         },
         {
-            "id": "Requirement 3.1",
-            "machine_id": "requirement_3_1",
+            "id": "Requirement 3.1.1",
+            "machine_id": "requirement_3_1_1",
             "content": "The `evaluation context` structure MUST define an optional `targeting key` field of type string, identifying the subject of the flag evaluation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 3.2",
-            "machine_id": "requirement_3_2",
+            "id": "Requirement 3.1.2",
+            "machine_id": "requirement_3_1_2",
             "content": "The evaluation context MUST support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | datetime | structure`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 3.2.1",
+            "machine_id": "requirement_3_2_1",
+            "content": "The API, Client and invocation MUST have a method for supplying `evaluation context`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 3.2.2",
+            "machine_id": "requirement_3_2_2",
+            "content": "Evaluation context MUST be merged in the order: API (global) - client - invocation, with duplicate values being overwritten.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
