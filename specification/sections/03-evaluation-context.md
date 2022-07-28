@@ -38,7 +38,7 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 > The API, Client and invocation **MUST** have a method for supplying `evaluation context`.
 
-API (global) `evaluation context` can be used to supply data static data to flag evaluation, such as an application identifier, compute region, or hostname. Client and invocation `evaluation context` are ideal for dynamic data, such as end-user attributes.
+API (global) `evaluation context` can be used to supply static data to flag evaluation, such as an application identifier, compute region, or hostname. Client and invocation `evaluation context` are ideal for dynamic data, such as end-user attributes.
 
 #### Requirement 3.2.2
 
