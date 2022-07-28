@@ -1,11 +1,8 @@
 IS_PYTHON_INSTALLED = $(shell which python >> /dev/null 2>&1; echo $$?)
 ALL_DOCS := $(shell find . -type f -name '*.md' -not -path './.github/*' -not -path './node_modules/*' | sort)
 
-parse: clean _check_python
+parse: _check_python
 	@python ./tools/specification_parser/specification_parser.py
-
-clean:
-	@find ./specification -name '*.json' -delete
 
 lint: node_modules
 	@python ./tools/specification_parser/lint_json_output.py specification.json
