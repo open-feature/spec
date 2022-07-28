@@ -1,3 +1,9 @@
+---
+title: Hooks
+description: The specification that defines the expectations and life cycle of hooks.
+toc_max_heading_level: 4
+---
+
 # Hooks
 
 ## Overview
@@ -11,13 +17,13 @@ Hooks add their logic at any of four specific stages of flag evaluation:
 - `error`, immediately after an unsuccessful during flag evaluation
 - `finally` unconditionally after flag evaluation
 
-![Flag evaluation life cycle](./assets/images/life-cycle.png)
+![Flag evaluation life cycle](../assets/images/life-cycle.png)
 
-Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
+Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./03-evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
 
 ### Definitions
 
-**Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage. **Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](./glossary.md#resolving-flag-values) is run. **Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation. **API**: The global API singleton.
+**Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage. **Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](../glossary.md#resolving-flag-values) is run. **Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation. **API**: The global API singleton.
 
 ### Hook context
 
@@ -157,7 +163,7 @@ In languages with try/catch semantics, this means that exceptions thrown in `err
 
 Before hooks can impact evaluation by various means, such as mutating the `evaluation context`. Therefore, an error in the `before` hooks is considered abnormal execution, and the default should be returned.
 
-### [Flag evaluation options](./types.md#evaluation-options)
+### [Flag evaluation options](../types.md#evaluation-options)
 
 Usage might look something like:
 
@@ -168,7 +174,7 @@ val = client.get_boolean_value('my-key', False, evaluation_options={
 })
 ```
 
-See: [Flag evaluation options](./flag-evaluation.md#)
+See: [Flag evaluation options](./01-flag-evaluation.md#)
 
 #### Requirement 4.5.1
 

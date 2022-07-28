@@ -1,10 +1,16 @@
+---
+title: Flag Evaluation API
+description: The specification that defines the developer facing feature flag evaluation API.
+toc_max_heading_level: 4
+---
+
 # Flag Evaluation API
 
-**Status**: [Experimental](./README.md#document-statuses)
+**Status**: [Experimental](../README.md#document-statuses)
 
 ## Overview
 
-The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](./providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
+The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](./02-providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
 
 ### API Initialization and Configuration
 
@@ -23,7 +29,7 @@ It's important that multiple instances of the `API` not be active, so that state
 OpenFeature.setProvider(new MyProvider());
 ```
 
-See [provider](./providers.md) for details.
+See [provider](./02-providers.md) for details.
 
 #### Requirement 1.1.3
 
@@ -34,7 +40,7 @@ See [provider](./providers.md) for details.
 OpenFeature.addHooks([new MyHook()]);
 ```
 
-See [hooks](./hooks.md) for details.
+See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.1.4
 
@@ -45,7 +51,7 @@ See [hooks](./hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
-See [provider](./providers.md) for details.
+See [provider](./02-providers.md) for details.
 
 #### Requirement 1.1.5
 
@@ -79,7 +85,7 @@ Clients may be created in critical code paths, and even per-request in server-si
 client.addHooks([new MyHook()]);
 ```
 
-See [hooks](./hooks.md) for details.
+See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.2.2
 
@@ -109,7 +115,7 @@ number myNumber = client.getNumberValue('number-flag', 75);
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
 ```
 
-See [evaluation context](./evaluation-context.md) for details.
+See [evaluation context](./03-evaluation-context.md) for details.
 
 ##### Condition 1.3.2
 
@@ -126,7 +132,7 @@ GetIntValue(flag string, defaultValue int64, evalCtx EvaluationContext, options 
 GetFloatValue(flag string, defaultValue float64, evalCtx EvaluationContext, options ...EvaluationOption) (float64, error)
 ```
 
-See [types](./types.md) for details.
+See [types](../types.md) for details.
 
 ##### Requirement 1.3.3
 
@@ -211,7 +217,7 @@ It's recommended to provide non-blocking mechanisms for flag evaluation, particu
 
 > The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client **MUST** execute for the respective flag evaluation, in addition to those already configured.
 
-See [hooks](./hooks.md) for details.
+See [hooks](./04-hooks.md) for details.
 
 #### Context Transformation
 
@@ -219,4 +225,4 @@ See [hooks](./hooks.md) for details.
 
 > The `client` **SHOULD** transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.
 
-See [context transformation](./providers.md#context-transformation) for details.
+See [context transformation](./02-providers.md#context-transformation) for details.

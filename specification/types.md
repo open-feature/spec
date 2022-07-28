@@ -1,3 +1,9 @@
+---
+title: Types and Data Structures
+description: A description of types and data structures used within the OpenFeature specification.
+sidebar_position: 2
+---
+
 # Types and Data Structures
 
 ## Overview
@@ -26,7 +32,7 @@ A language primitive for representing a date and time, including timezone inform
 
 ### Evaluation Details
 
-A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./flag-evaluation.md#detailed-flag-evaluation), containing the following fields:
+A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./sections/01-flag-evaluation.md#detailed-flag-evaluation), containing the following fields:
 
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
@@ -43,10 +49,10 @@ A structure which contains a subset of the fields defined in the `evaluation det
 - reason (string, optional)
 - variant (string, optional)
 
-\*NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
+> NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
 
 ### Evaluation Options
 
 A structure containing the following fields:
 
-- hooks (one or more [hooks](./hooks.md), optional)
+- hooks (one or more [hooks](./sections/04-hooks.md), optional)
