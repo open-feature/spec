@@ -1,3 +1,9 @@
+---
+title: Glossary
+description: A list of terms used within the OpenFeature specification.
+sidebar_position: 1
+---
+
 # Glossary
 
 This document defines some terms that are used across this specification.
@@ -54,7 +60,7 @@ A developer who is setting up or configuring an application or service to use th
 
 ### Provider Author
 
-The maintainer of an API-compliant [provider](./providers.md) which implements the necessary interfaces required for flag evaluation.
+The maintainer of an API-compliant [provider](./sections/02-providers.md) which implements the necessary interfaces required for flag evaluation.
 
 ### Integration Author
 
@@ -86,7 +92,7 @@ A source-of-truth for flag values and rules. Flag management systems may include
 
 ### Provider
 
-An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./flag-evaluation.md#flag-evaluation) as an abstraction for the system in question.
+An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./sections/01-flag-evaluation.md#flag-evaluation) as an abstraction for the system in question.
 
 ### Integration
 

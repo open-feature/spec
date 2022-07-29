@@ -1,12 +1,18 @@
+---
+title: Provider
+description: The specification that defines the responsibilities and behaviors of a provider.
+toc_max_heading_level: 4
+---
+
 # Provider
 
 ## Overview
 
 The `provider` API defines interfaces that Provider Authors can use to abstract a particular flag management system, thus enabling the use of the `evaluation API` by Application Authors.
 
-Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags. At a minimum, providers should implement some basic evaluation methods which return flag values of the expected type. In addition, providers may transform the [evaluation context](evaluation-context.md) appropriately in order to be used in dynamic evaluation of their associated flag management system, provide insight into why evaluation proceeded the way it did, and expose configuration options for their associated flag management system. Hypothetical provider implementations might wrap a vendor SDK, embed an REST client, or read flags from a local file.
+Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags. At a minimum, providers should implement some basic evaluation methods which return flag values of the expected type. In addition, providers may transform the [evaluation context](./03-evaluation-context.md) appropriately in order to be used in dynamic evaluation of their associated flag management system, provide insight into why evaluation proceeded the way it did, and expose configuration options for their associated flag management system. Hypothetical provider implementations might wrap a vendor SDK, embed an REST client, or read flags from a local file.
 
-![Provider](./assets/images/provider.png)
+![Provider](../assets/images/provider.png)
 
 ### Feature Provider Interface
 
@@ -31,7 +37,7 @@ provider.getMetadata().getName(); // "my-custom-provider"
 resolveBooleanValue(flagKey, defaultValue, context, options);
 ```
 
-see: [flag resolution structure](./types.md#flag-resolution), [flag value resolution](./glossary.md#flag-value-resolution)
+see: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
 
 ##### Condition 2.3
 
@@ -109,7 +115,7 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 Feature flag management systems often define structures representing arbitrary contextual data pertaining to the runtime, user, or application. The context transformer defines a simple interface to transform the OpenFeature `evaluation context` to such a structure, mapping values appropriately.
 
-See [evaluation context](./evaluation-context.md).
+See [evaluation context](./03-evaluation-context.md).
 
 ##### Requirement 2.10
 
@@ -130,7 +136,7 @@ class MyProvider implements Provider {
 }
 ```
 
-See [evaluation context](./evaluation-context.md), [flag evaluation](./flag-evaluation.md#flag-evaluation).
+See [evaluation context](./03-evaluation-context.md), [flag evaluation](./01-flag-evaluation.md#flag-evaluation).
 
 ##### Condition 2.11
 

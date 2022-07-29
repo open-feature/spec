@@ -1,13 +1,20 @@
+---
+id: intro
+title: Intro
+description: An intro to the OpenFeature specification.
+sidebar_position: 0
+---
+
 # OpenFeature Specification
 
 ## Contents
 
 - [Glossary](./glossary.md)
 - [Types](./types.md)
-- [Evaluation API](./flag-evaluation.md)
-- [Providers](./providers.md)
-- [Evaluation Context](./evaluation-context.md)
-- [Hooks](./hooks.md)
+- [Evaluation API](./sections/01-flag-evaluation.md)
+- [Providers](./sections//02-providers.md)
+- [Evaluation Context](./sections/03-evaluation-context.md)
+- [Hooks](./sections/04-hooks.md)
 
 ## Conformance
 
