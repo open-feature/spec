@@ -132,10 +132,10 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 > Hooks **MUST** be evaluated in the following order:
 >
-> - before: API, Client, Invocation
-> - after: Invocation, Client, API
-> - error (if applicable): Invocation, Client, API
-> - finally: Invocation, Client, API
+> - before: API, Client, Invocation, Provider
+> - after: Provider, Invocation, Client, API
+> - error (if applicable): Provider, Invocation, Client, API
+> - finally: Provider, Invocation, Client, API
 
 #### Requirement 4.4.3
 

@@ -266,24 +266,9 @@
         {
             "id": "Requirement 2.10",
             "machine_id": "requirement_2_10",
-            "content": "The provider interface MAY define a `context transformer` method or function, which can be optionally implemented in order to transform the `evaluation context` prior to flag value resolution.",
+            "content": "The provider interface MAY define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.",
             "RFC 2119 keyword": "MAY",
             "children": []
-        },
-        {
-            "id": "Condition 2.11",
-            "machine_id": "condition_2_11",
-            "content": "The implementation language supports generics (or an equivalent feature).",
-            "RFC 2119 keyword": null,
-            "children": [
-                {
-                    "id": "Conditional Requirement 2.11.1",
-                    "machine_id": "conditional_requirement_2_11_1",
-                    "content": "If the implementation includes a `context transformer`, the provider SHOULD accept a generic argument (or use an equivalent language feature) indicating the type of the transformed context.  If such type information is supplied, more accurate type information can be supplied in the flag resolution methods.",
-                    "RFC 2119 keyword": "SHOULD",
-                    "children": []
-                }
-            ]
         },
         {
             "id": "Requirement 3.1.1",
@@ -465,7 +450,7 @@
         {
             "id": "Requirement 4.4.2",
             "machine_id": "requirement_4_4_2",
-            "content": "Hooks MUST be evaluated in the following order:  - before: API, Client, Invocation - after: Invocation, Client, API - error (if applicable): Invocation, Client, API - finally: Invocation, Client, API",
+            "content": "Hooks MUST be evaluated in the following order:  - before: API, Client, Invocation, Provider - after: Provider, Invocation, Client, API - error (if applicable): Provider, Invocation, Client, API - finally: Provider, Invocation, Client, API",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
