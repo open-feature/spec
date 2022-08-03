@@ -36,6 +36,12 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 > The evaluation context **MUST** support fetching the custom fields by key and also fetching all key value pairs.
 
+#### Requirement 3.1.4
+
+> The evaluation context fields **MUST** have an unique key.
+
+The key uniquely identifies a field in the `evaluation context` and it should be unique accross all types to avoid any collision when marshelling the `evaluation context` by the provider.
+
 ### Merging Context
 
 #### Requirement 3.2.1
