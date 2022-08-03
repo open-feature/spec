@@ -30,9 +30,13 @@ The targeting key uniquely identifies the subject (end-user, or client service) 
 
 > The evaluation context **MUST** support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | datetime | structure`.
 
-Each key should be unique.
-
 see: [structure](../types.md#structure), [datetime](../types.md#datetime)
+
+#### Requirement 3.1.4
+
+> The evaluation context fields **MUST** have a unique key.
+
+ The field key uniquely identifies any the field in the `evaluation context` and it should be unique accross all types to avoid any collision when marshelling the `evaluation context` by the provider.
 
 ### Merging Context
 
