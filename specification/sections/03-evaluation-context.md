@@ -34,9 +34,9 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 #### Requirement 3.1.4
 
-> The evaluation context fields **MUST** have a unique key.
+> The evaluation context fields **MUST** have an unique key.
 
- The field key uniquely identifies any the field in the `evaluation context` and it should be unique accross all types to avoid any collision when marshelling the `evaluation context` by the provider.
+ The key uniquely identifies any the field in the `evaluation context` and it should be unique accross all types to avoid any collision when marshelling the `evaluation context` by the provider.
 
 ### Merging Context
 
