@@ -266,8 +266,8 @@
         {
             "id": "Requirement 2.10",
             "machine_id": "requirement_2_10",
-            "content": "The provider interface MAY define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.",
-            "RFC 2119 keyword": "MAY",
+            "content": "The provider interface MUST define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
@@ -443,7 +443,7 @@
         {
             "id": "Requirement 4.4.1",
             "machine_id": "requirement_4_4_1",
-            "content": "The API, Client and invocation MUST have a method for registering hooks which accepts `flag evaluation options`",
+            "content": "The API, Client, Provider, and invocation MUST have a method for registering hooks.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

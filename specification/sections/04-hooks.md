@@ -113,7 +113,7 @@ EvaluationContext | void before(HookContext, HookHints);
 
 #### Requirement 4.4.1
 
-> The API, Client and invocation **MUST** have a method for registering hooks which accepts `flag evaluation options`
+> The API, Client, Provider, and invocation **MUST** have a method for registering hooks.
 
 ```js
 OpenFeature.addHooks(new Hook1());

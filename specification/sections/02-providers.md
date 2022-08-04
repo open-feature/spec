@@ -113,11 +113,11 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 #### Provider hooks
 
-Feature flag management systems often need to transform the context structures the user provides or generally address lifecycle concerns. A `provider hook` exposes a mechanism for providers to register [`Hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle.
+A `provider hook` exposes a mechanism for `providers` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. As one example, feature flag management systems often need to transform the context structures the user provides.
 
 ##### Requirement 2.10
 
-> The provider interface **MAY** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.
+> The provider interface **MUST** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.
 
 ```
 class MyProvider implements Provider {
