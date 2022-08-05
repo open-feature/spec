@@ -266,7 +266,7 @@
         {
             "id": "Requirement 2.10",
             "machine_id": "requirement_2_10",
-            "content": "The provider interface MUST define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.",
+            "content": "The provider interface MUST define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

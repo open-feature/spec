@@ -117,7 +117,7 @@ A `provider hook` exposes a mechanism for `providers` to register [`hooks`](./04
 
 ##### Requirement 2.10
 
-> The provider interface **MUST** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the client.
+> The provider interface **MUST** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.
 
 ```
 class MyProvider implements Provider {
