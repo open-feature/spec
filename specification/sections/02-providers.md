@@ -111,59 +111,25 @@ ResolutionDetails<number> resolveNumberValue(string flagKey, number defaultValue
 ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
 ```
 
-#### Context Transformation
+#### Provider hooks
 
-Feature flag management systems often define structures representing arbitrary contextual data pertaining to the runtime, user, or application. The context transformer defines a simple interface to transform the OpenFeature `evaluation context` to such a structure, mapping values appropriately.
-
-See [evaluation context](./03-evaluation-context.md).
+A `provider hook` exposes a mechanism for `providers` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. As one example, feature flag management systems often need to transform the context structures the user provides.
 
 ##### Requirement 2.10
 
-> The provider interface **MAY** define a `context transformer` method or function, which can be optionally implemented in order to transform the `evaluation context` prior to flag value resolution.
+> The provider interface **MUST** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.
 
-The OpenFeature `client` might apply the transformer function before passing the returned value (the `transformed context`) to the provider resolution methods, thus allowing the provider implementation to avoid implementing and calling such transformation logic repeatedly in flag value resolution methods.
-
-```typescript
+```
 class MyProvider implements Provider {
   //...
 
-  // implementation of context transformer
-  MyProviderContext transformContext(EvaluationContext context) {
-    return new MyProviderContext(context.email, context.ip, context.httpMethod);
+  private readonly hooks: Hook[] = [new MyProviderHook()];
+
+  // ..or alternatively..
+  getProviderHooks(): Hook[]  {
+    return [new MyProviderHook()];
   }
 
   //...
-}
-```
-
-See [evaluation context](./03-evaluation-context.md), [flag evaluation](./01-flag-evaluation.md#flag-evaluation).
-
-##### Condition 2.11
-
-> The implementation language supports generics (or an equivalent feature).
-
-###### Conditional Requirement 2.11.1
-
-> If the implementation includes a `context transformer`, the provider **SHOULD** accept a generic argument (or use an equivalent language feature) indicating the type of the transformed context.
->
-> If such type information is supplied, more accurate type information can be supplied in the flag resolution methods.
-
-```typescript
-// an example implementation in a language supporting interfaces, classes, and generics
-// T represents a generic argument for the type of the transformed context
-interface Provider<T> {
-
-  //...
-
-  // context transformer signature
-  T transformContext(EvaluationContext context);
-
-  //...
-
-  // flag resolution methods context parameter type corresponds to class-generic
-  boolean resolveBooleanValue (string flagKey, boolean defaultValue, T transformedContext, EvaluationOptions options);
-
-  //...
-
 }
 ```
