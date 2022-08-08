@@ -87,7 +87,7 @@ EvaluationContext | void before(HookContext, HookHints);
 
 #### Requirement 4.3.4
 
-> When `before` hooks have finished executing, any resulting `evaluation context` **MUST** be merged with the other `evaluation context`s with the following order: invocation (highest precedence), before-hook, client, api (lowest precedence).
+> When `before` hooks have finished executing, any resulting `evaluation context` **MUST** be merged with the existing `evaluation context` in the following order: invocation (highest precedence), before-hook, client, api (lowest precedence).
 
 #### Requirement 4.3.5
 

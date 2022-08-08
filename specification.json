@@ -400,7 +400,7 @@
         {
             "id": "Requirement 4.3.4",
             "machine_id": "requirement_4_3_4",
-            "content": "When `before` hooks have finished executing, any resulting `evaluation context` MUST be merged with the other `evaluation context`s with the following order: invocation (highest precedence), before-hook, client, api (lowest precedence).",
+            "content": "When `before` hooks have finished executing, any resulting `evaluation context` MUST be merged with the existing `evaluation context` in the following order: invocation (highest precedence), before-hook, client, api (lowest precedence).",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
