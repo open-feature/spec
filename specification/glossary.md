@@ -156,7 +156,7 @@ A string logically identifying the subject of evaluation (end-user, service, etc
 
 ### Fractional Evaluation
 
-Assigning flag values randomly according to a configured proportion or percentage (ie: 50/50).
+Pseudorandomly resolve flag values using a context property, such as a targeting key, based on a configured proportion or percentage (ie: 50/50).
 
 ### Rule
 
