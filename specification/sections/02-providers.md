@@ -113,7 +113,7 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 #### Provider hooks
 
-A `provider hook` exposes a mechanism for `providers authors` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. These hooks can be used to perform side effects and mutate the context for purposes of the provider. Provider hooks are not configured or controlled by the `application author`.
+A `provider hook` exposes a mechanism for `provider authors` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. These hooks can be used to perform side effects and mutate the context for purposes of the provider. Provider hooks are not configured or controlled by the `application author`.
 
 ##### Requirement 2.10
 
