@@ -218,11 +218,3 @@ It's recommended to provide non-blocking mechanisms for flag evaluation, particu
 > The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client **MUST** execute for the respective flag evaluation, in addition to those already configured.
 
 See [hooks](./04-hooks.md) for details.
-
-#### Context Transformation
-
-##### Requirement 1.6.1
-
-> The `client` **SHOULD** transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.
-
-See [context transformation](./02-providers.md#context-transformation) for details.
