@@ -178,13 +178,6 @@
             "children": []
         },
         {
-            "id": "Requirement 1.6.1",
-            "machine_id": "requirement_1_6_1",
-            "content": "The `client` SHOULD transform the `evaluation context` using the `provider's` `context transformer` function if one is defined, before passing the result of the transformation to the provider's flag resolution functions.",
-            "RFC 2119 keyword": "SHOULD",
-            "children": []
-        },
-        {
             "id": "Requirement 2.1",
             "machine_id": "requirement_2_1",
             "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
