@@ -1,7 +1,7 @@
 ---
 id: intro
-title: Intro
-description: An intro to the OpenFeature specification.
+title: Introduction
+description: An introduction to the OpenFeature specification.
 sidebar_position: 0
 ---
 
