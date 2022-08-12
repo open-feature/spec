@@ -301,7 +301,7 @@
         {
             "id": "Requirement 3.2.2",
             "machine_id": "requirement_3_2_2",
-            "content": "Evaluation context MUST be merged in the order: API (global) - client - invocation, with duplicate values being overwritten.",
+            "content": "Evaluation context MUST be merged in the order: API (global) - client - invocation - before hooks, with duplicate values being overwritten.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -393,7 +393,7 @@
         {
             "id": "Requirement 4.3.4",
             "machine_id": "requirement_4_3_4",
-            "content": "When `before` hooks have finished executing, any resulting `evaluation context` MUST be merged with the existing `evaluation context` in the following order: before-hook (highest precedence), invocation, client, api (lowest precedence).",
+            "content": "When `before` hooks have finished executing, any resulting `evaluation context` MUST be merged with the existing `evaluation context`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
