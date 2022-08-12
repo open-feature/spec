@@ -52,6 +52,17 @@ API (global) `evaluation context` can be used to supply static data to flag eval
 
 #### Requirement 3.2.2
 
-> Evaluation context **MUST** be merged in the order: API (global) -> client -> invocation, with duplicate values being overwritten.
+> Evaluation context **MUST** be merged in the order: API (global) -> client -> invocation -> before hooks, with duplicate values being overwritten.
 
-Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined in the globally or on the client.
+Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined globally or on the client. Any resulting `evaluation context` from a [before hook](./04-hooks.md#requirement-434) will overwrite duplicate fields defined globally, on the client, or in the invocation.
+
+```mermaid
+flowchart LR
+  global("API (global)")
+  client("Client")
+  invocation("Invocation")
+  hook("Before Hooks")
+  global --> client
+  client --> invocation
+  invocation --> hook
+```
