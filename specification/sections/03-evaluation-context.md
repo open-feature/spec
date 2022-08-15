@@ -40,7 +40,7 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 > The evaluation context fields **MUST** have an unique key.
 
-The key uniquely identifies a field in the `evaluation context` and it should be unique accross all types to avoid any collision when marshelling the `evaluation context` by the provider.
+The key uniquely identifies a field in the `evaluation context` and it should be unique across all types to avoid any collision when marshalling the `evaluation context` by the provider.
 
 ### Merging Context
 
@@ -52,6 +52,17 @@ API (global) `evaluation context` can be used to supply static data to flag eval
 
 #### Requirement 3.2.2
 
-> Evaluation context **MUST** be merged in the order: API (global) -> client -> invocation, with duplicate values being overwritten.
+> Evaluation context **MUST** be merged in the order: API (global; lowest precedence) -> client -> invocation -> before hooks (highest precedence), with duplicate values being overwritten.
 
-Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined in the globally or on the client.
+Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined globally or on the client. Any resulting `evaluation context` from a [before hook](./04-hooks.md#requirement-434) will overwrite duplicate fields defined globally, on the client, or in the invocation.
+
+```mermaid
+flowchart LR
+  global("API (global)")
+  client("Client")
+  invocation("Invocation")
+  hook("Before Hooks")
+  global --> client
+  client --> invocation
+  invocation --> hook
+```
