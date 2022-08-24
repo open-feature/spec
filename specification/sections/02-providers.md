@@ -30,11 +30,11 @@ provider.getMetadata().getName(); // "my-custom-provider"
 
 ##### Requirement 2.2
 
-> The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns a `flag resolution` structure.
+> The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `flag resolution` structure.
 
 ```typescript
 // example flag resolution function
-resolveBooleanValue(flagKey, defaultValue, context, options);
+resolveBooleanValue(flagKey, defaultValue, context);
 ```
 
 see: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
@@ -49,16 +49,16 @@ see: [flag resolution structure](../types.md#flag-resolution), [flag value resol
 
 ```typescript
 // example boolean flag value resolution
-ResolutionDetails resolveBooleanValue(string flagKey, boolean defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails resolveBooleanValue(string flagKey, boolean defaultValue, context: EvaluationContext);
 
 // example string flag value resolution
-ResolutionDetails resolveStringValue(string flagKey, string defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails resolveStringValue(string flagKey, string defaultValue, context: EvaluationContext);
 
 // example number flag value resolution
-ResolutionDetails resolveNumberValue(string flagKey, number defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails resolveNumberValue(string flagKey, number defaultValue, context: EvaluationContext);
 
 // example structure flag value resolution
-ResolutionDetails resolveStructureValue(string flagKey, JsonObject defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails resolveStructureValue(string flagKey, JsonObject defaultValue, context: EvaluationContext);
 ```
 
 ##### Requirement 2.4
@@ -99,16 +99,16 @@ The provider might throw an exception, return an error, or populate the `error c
 
 ```typescript
 // example boolean flag value resolution with generic argument
-ResolutionDetails<boolean> resolveBooleanValue(string flagKey, boolean defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails<boolean> resolveBooleanValue(string flagKey, boolean defaultValue, context: EvaluationContext);
 
 // example string flag value resolution with generic argument
-ResolutionDetails<string> resolveStringValue(string flagKey, string defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails<string> resolveStringValue(string flagKey, string defaultValue, context: EvaluationContext);
 
 // example number flag value resolution with generic argument
-ResolutionDetails<number> resolveNumberValue(string flagKey, number defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails<number> resolveNumberValue(string flagKey, number defaultValue, context: EvaluationContext);
 
 // example structure flag value resolution with generic argument
-ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defaultValue, context: EvaluationContext, options: FlagEvaluationOptions);
+ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defaultValue, context: EvaluationContext);
 ```
 
 #### Provider hooks
