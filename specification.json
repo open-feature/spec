@@ -187,7 +187,7 @@
         {
             "id": "Requirement 2.2",
             "machine_id": "requirement_2_2",
-            "content": "The `feature provider` interface MUST define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns a `flag resolution` structure.",
+            "content": "The `feature provider` interface MUST define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `flag resolution` structure.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
