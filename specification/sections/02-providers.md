@@ -123,7 +123,7 @@ A `provider hook` exposes a mechanism for `provider authors` to register [`hooks
 class MyProvider implements Provider {
   //...
 
-  private readonly hooks: Hook[] = [new MyProviderHook()];
+  readonly hooks: Hook[] = [new MyProviderHook()];
 
   // ..or alternatively..
   getProviderHooks(): Hook[]  {
