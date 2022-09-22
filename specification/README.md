@@ -35,7 +35,24 @@ An implementation is not compliant if it fails to satisfy one or more of the "MU
 
 ## Document Statuses
 
-| Status               | Explanation                   |
-| -------------------- | ----------------------------- |
-| No Explicit "Status" | Equivalent to Experimental.   |
-| Experimental         | Breaking changes are allowed. |
+Documents and subsections within the specification are marked with statuses indicating their stability level. Functionality described in the specification graduates through these statuses with increasing stability. Stability levels apply only to normative sections within the specification; editorial changes to examples and explanations are exempt from these constraints.
+
+Possible statuses are described below:
+
+### Experimental
+
+Specification documents that are marked as `Experimental` contain functionality under active development. Breaking changes are allowed and may be made without deprecation notices or warnings with minor version updates.
+
+### Hardening
+
+Documents marked as `Hardening` describe functionality with an emphasis on stabilizing existing requirements. Breaking changes require consensus by the [Technical Steering Committee](https://github.com/open-feature/community/blob/main/governance-charter.md#tsc-members) but may still be made with minor version updates.
+
+### Stable
+
+Sections marked as `Stable` do not allow breaking changes without a major version update.
+
+### Mixed
+
+Specification documents marked as `Mixed` contain subsections of varying statuses specified above.
+
+NOTE: No explicit status = `Experimental`
