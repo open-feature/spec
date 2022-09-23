@@ -60,7 +60,7 @@ A set of pre-defined reasons is enumerated below:
 | UNKNOWN         | The reason for the resolved value could not be determined.                                            |
 | ERROR           | The resolved value was the result of an error.                                                        |
 
-> NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.                                                   |
+> NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
 
 ### Error Code
 
