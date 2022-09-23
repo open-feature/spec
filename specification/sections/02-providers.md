@@ -89,7 +89,7 @@ As indicated in the definition of the [`flag resolution`](../types.md#resolution
 
 The provider might throw an exception, return an error, or populate the `error code` object on the returned `flag resolution` structure to indicate a problem during flag value resolution.
 
-See [error codes](../types.md#error-code) for details.
+See [error code](../types.md#error-code) for details.
 
 ##### Condition 2.9
 

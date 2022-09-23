@@ -187,7 +187,7 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 > In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain a string identifying an error occurred during flag evaluation and the nature of the error.
 
-See [error codes](../types.md#error-code) for details.
+See [error code](../types.md#error-code) for details.
 
 ##### Requirement 1.4.8
 
