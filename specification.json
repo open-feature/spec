@@ -223,7 +223,7 @@
         {
             "id": "Requirement 2.6",
             "machine_id": "requirement_2_6",
-            "content": "The `provider` SHOULD populate the `flag resolution` structure's `reason` field with a string indicating the semantic reason for the returned flag value.",
+            "content": "The `provider` SHOULD populate the `flag resolution` structure's `reason` field with `\"DEFAULT\",` `\"TARGETING_MATCH\"`, `\"SPLIT\"`, `\"DISABLED\"`, `\"UNKNOWN\"`, `\"ERROR\"` or some other string indicating the semantic reason for the returned flag value.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
