@@ -85,9 +85,11 @@ As indicated in the definition of the [`flag resolution`](../types.md#resolution
 
 ##### Requirement 2.8
 
-> In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated error code having possible values `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, `"INVALID_CONTEXT"`, or `"GENERAL"`.
+> In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated error code having possible values `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, `"TARGETING_KEY_MISSING"`, `"INVALID_CONTEXT"`, or `"GENERAL"`.
 
 The provider might throw an exception, return an error, or populate the `error code` object on the returned `flag resolution` structure to indicate a problem during flag value resolution.
+
+See [error codes](../types.md#error-code) for details.
 
 ##### Condition 2.9
 

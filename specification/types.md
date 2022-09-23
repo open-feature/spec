@@ -45,7 +45,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 A structure which contains a subset of the fields defined in the `evaluation details`, representing the result of the provider's [flag resolution process](./glossary.md#resolving-flag-values), including:
 
 - value (boolean | string | number | structure, required)
-- error code (string, optional)
+- error code ([error code](#error-code), optional)
 - reason (string, optional)
 - variant (string, optional)
 
@@ -58,9 +58,23 @@ A set of pre-defined reasons is enumerated below:
 | SPLIT           | The resolved value was the result of pseudorandom assignment.                                         |
 | DISABLED        | The resolved value was the result of the flag being disabled in the management system.                |
 | UNKNOWN         | The reason for the resolved value could not be determined.                                            |
-| ERROR           | The resolved value was the result of an error.                                                        |
+| ERROR           | The resolved value was the result of an error.     
 
-> NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
+> NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.                                                   |
+
+### Error Code
+
+An enumerated error code represented idiomatically in the implementation language.
+
+| Error Code            | Explanation                                                                                 |
+|-----------------------|---------------------------------------------------------------------------------------------|
+| PROVIDER_NOT_READY    | The value was resolved before the provider was ready.                                       |
+| FLAG_NOT_FOUND        | The flag could not be found.                                                                |
+| PARSE_ERROR           | An error was encountered parsing data, such as a flag configuration.                        |
+| TYPE_MISMATCH         | The type of the flag value does not match the expected type.                                |
+| TARGETING_KEY_MISSING | The provider requires a targeting key and one was not provided in the `evaluation context`. |
+| INVALID_CONTEXT       | The `evaluation context` does not meet provider requirements.                               |
+| GENERAL               | The error was for a reason not enumerated above.                                            |
 
 ### Evaluation Options
 
