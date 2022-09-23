@@ -58,7 +58,7 @@ A set of pre-defined reasons is enumerated below:
 | SPLIT           | The resolved value was the result of pseudorandom assignment.                                         |
 | DISABLED        | The resolved value was the result of the flag being disabled in the management system.                |
 | UNKNOWN         | The reason for the resolved value could not be determined.                                            |
-| ERROR           | The resolved value was the result of an error.     
+| ERROR           | The resolved value was the result of an error.                                                        |
 
 > NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.                                                   |
 
