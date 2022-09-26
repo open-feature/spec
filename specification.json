@@ -171,6 +171,13 @@
             "children": []
         },
         {
+            "id": "Requirement 1.4.12",
+            "machine_id": "requirement_1_4_12",
+            "content": "In cases of abnormal execution, the `evaluation details` structure's `error message` field MAY contain a string containing additional detail about the nature of the error.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
             "id": "Requirement 1.5.1",
             "machine_id": "requirement_1_5_1",
             "content": "The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client MUST execute for the respective flag evaluation, in addition to those already configured.",
@@ -261,6 +268,20 @@
             "machine_id": "requirement_2_10",
             "content": "The provider interface MUST define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.",
             "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.11",
+            "machine_id": "requirement_2_11",
+            "content": "In cases of normal execution, the `provider` MUST NOT populate the `flag resolution` structure's `error message` field, or otherwise must populate it with a null or falsy value.",
+            "RFC 2119 keyword": "MUST NOT",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.12",
+            "machine_id": "requirement_2_12",
+            "content": "In cases of abnormal execution, the `evaluation details` structure's `error message` field MAY contain a string containing additional detail about the nature of the error.",
+            "RFC 2119 keyword": "MAY",
             "children": []
         },
         {

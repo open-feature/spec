@@ -211,6 +211,10 @@ Implementations may define a standard logging interface that can be supplied as 
 
 It's recommended to provide non-blocking mechanisms for flag evaluation, particularly in languages or environments wherein there's a single thread of execution.
 
+##### Requirement 1.4.12
+
+> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
+
 #### Evaluation Options
 
 ##### Requirement 1.5.1

@@ -37,6 +37,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
 - error code ([error code](#error-code), optional)
+- error message (string, optional)
 - reason (string, optional)
 - variant (string, optional)
 
@@ -46,6 +47,7 @@ A structure which contains a subset of the fields defined in the `evaluation det
 
 - value (boolean | string | number | structure, required)
 - error code ([error code](#error-code), optional)
+- error message (string, optional)
 - reason (string, optional)
 - variant (string, optional)
 

@@ -135,3 +135,11 @@ class MyProvider implements Provider {
   //...
 }
 ```
+
+#### Requirement 2.11
+
+> In cases of normal execution, the `provider` **MUST NOT** populate the `flag resolution` structure's `error message` field, or otherwise must populate it with a null or falsy value.
+
+#### Requirement 2.12
+
+> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
