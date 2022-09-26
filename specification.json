@@ -173,7 +173,7 @@
         {
             "id": "Requirement 1.4.12",
             "machine_id": "requirement_1_4_12",
-            "content": "In cases of abnormal execution, the `evaluation details` structure's `error message` field MAY contain a string containing additional detail about the nature of the error.",
+            "content": "In cases of abnormal execution, the `evaluation details` structure's `error message` field MAY contain a string containing additional details about the nature of the error.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
@@ -244,7 +244,7 @@
         {
             "id": "Requirement 2.8",
             "machine_id": "requirement_2_8",
-            "content": "In cases of abnormal execution, the `provider` MUST indicate an error using the idioms of the implementation language, with an associated `error code`.",
+            "content": "In cases of abnormal execution, the `provider` MUST indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
