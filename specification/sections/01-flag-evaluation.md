@@ -213,7 +213,7 @@ It's recommended to provide non-blocking mechanisms for flag evaluation, particu
 
 ##### Requirement 1.4.12
 
-> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
+> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional details about the nature of the error.
 
 #### Evaluation Options
 
