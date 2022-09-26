@@ -36,7 +36,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
-- error code (string, optional)
+- error code ([error code](#error-code), optional)
 - reason (string, optional)
 - variant (string, optional)
 
