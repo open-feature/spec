@@ -237,7 +237,7 @@
         {
             "id": "Requirement 2.8",
             "machine_id": "requirement_2_8",
-            "content": "In cases of abnormal execution, the `provider` MUST indicate an error using the idioms of the implementation language, with an associated error code having possible values `\"PROVIDER_NOT_READY\"`, `\"FLAG_NOT_FOUND\"`, `\"PARSE_ERROR\"`, `\"TYPE_MISMATCH\"`, `\"TARGETING_KEY_MISSING\"`, `\"INVALID_CONTEXT\"`, or `\"GENERAL\"`.",
+            "content": "In cases of abnormal execution, the `provider` MUST indicate an error using the idioms of the implementation language, with an associated `error code`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
