@@ -91,6 +91,11 @@ The provider might throw an exception, return an error, or populate the `error c
 
 See [error code](../types.md#error-code) for details.
 
+```typescript
+// example throwing an exception with an error code and optional error message.
+throw new ProviderError(ErrorCode.INVALID_CONTEXT, "The 'foo' attribute must be a string.");
+```
+
 ##### Condition 2.9
 
 > The implementation language supports generics (or an equivalent feature).
