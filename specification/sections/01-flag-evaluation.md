@@ -185,9 +185,9 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 ##### Requirement 1.4.7
 
-> In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain a string identifying an error occurred during flag evaluation and the nature of the error.
+> In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain an `error code`.
 
-Some example error codes include: `"TARGETING_KEY_MISSING"`, `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, or `"GENERAL"`.
+See [error code](../types.md#error-code) for details.
 
 ##### Requirement 1.4.8
 
@@ -210,6 +210,10 @@ Implementations may define a standard logging interface that can be supplied as 
 > The `client` **SHOULD** provide asynchronous or non-blocking mechanisms for flag evaluation.
 
 It's recommended to provide non-blocking mechanisms for flag evaluation, particularly in languages or environments wherein there's a single thread of execution.
+
+##### Requirement 1.4.12
+
+> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional details about the nature of the error.
 
 #### Evaluation Options
 

@@ -85,9 +85,16 @@ As indicated in the definition of the [`flag resolution`](../types.md#resolution
 
 ##### Requirement 2.8
 
-> In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated error code having possible values `"PROVIDER_NOT_READY"`, `"FLAG_NOT_FOUND"`, `"PARSE_ERROR"`, `"TYPE_MISMATCH"`, or `"GENERAL"`.
+> In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
 The provider might throw an exception, return an error, or populate the `error code` object on the returned `flag resolution` structure to indicate a problem during flag value resolution.
+
+See [error code](../types.md#error-code) for details.
+
+```typescript
+// example throwing an exception with an error code and optional error message.
+throw new ProviderError(ErrorCode.INVALID_CONTEXT, "The 'foo' attribute must be a string.");
+```
 
 ##### Condition 2.9
 
@@ -133,3 +140,11 @@ class MyProvider implements Provider {
   //...
 }
 ```
+
+#### Requirement 2.11
+
+> In cases of normal execution, the `provider` **MUST NOT** populate the `flag resolution` structure's `error message` field, or otherwise must populate it with a null or falsy value.
+
+#### Requirement 2.12
+
+> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
