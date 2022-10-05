@@ -60,7 +60,7 @@ Put simply:
 
 ### Stable
 
-Sections marked as `Stable` do not allow breaking changes without a major version update.
+Sections marked as `Stable` do not allow breaking changes without a major version update. They can be used in production with a high degree of confidence.
 
 Put simply: 
 
