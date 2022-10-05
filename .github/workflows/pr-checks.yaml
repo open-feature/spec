@@ -27,7 +27,7 @@ jobs:
             echo "JSON files out of date. Looks like you might need to run the specification parser."
             false
           else
-            echo "JSON files up to date. Looks good!"
+            echo "JSON files up to date. Looks good!!"
           fi
 
   # Lint JSON files. Ensures statements contain normative keywords from RFC 2119.
