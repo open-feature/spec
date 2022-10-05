@@ -83,7 +83,7 @@ EvaluationContext | void before(HookContext, HookHints);
 
 #### Requirement 4.3.3
 
-> Any `evaluation context` returned from a `before` hook **MUST** be passed to subsequent `before` hooks (via `HookContext`).
+> Any `evaluation context` rssseturned from a `before` hook **MUST** be passed to subsequent `before` hooks (via `HookContext`).
 
 #### Requirement 4.3.4
 
