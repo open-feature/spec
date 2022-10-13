@@ -4,7 +4,7 @@ description: The specification that defines the expectations and life cycle of h
 toc_max_heading_level: 4
 ---
 
-# Hooks
+# 4. Hooks
 
 ## Overview
 
@@ -25,7 +25,7 @@ Hooks can be configured to run globally (impacting all flag evaluations), per cl
 
 **Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage. **Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](../glossary.md#resolving-flag-values) is run. **Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation. **API**: The global API singleton.
 
-### Hook context
+### 4.1. Hook context
 
 Hook context exists to provide hooks with information about the invocation.
 
@@ -45,7 +45,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
-### Hook Hints
+### 4.2. Hook Hints
 
 #### Requirement 4.2.1
 
@@ -67,7 +67,7 @@ Hook context exists to provide hooks with information about the invocation.
 
 > Condition: The provider `metadata` field in the `hook context` **MUST** be immutable.
 
-### Hook creation and parameters
+### 4.3. Hook creation and parameters
 
 #### Requirement 4.3.1
 
@@ -111,7 +111,7 @@ Evaluation context merge order is defined in [Requirement 3.2.2](./03-evaluation
 
 > Instead of `finally`, `finallyAfter` **SHOULD** be used.
 
-### Hook registration & ordering
+### 4.4. Hook registration & ordering
 
 #### Requirement 4.4.1
 

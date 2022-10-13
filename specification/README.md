@@ -44,7 +44,7 @@ Possible statuses are described below:
 
 ### Experimental
 
-[![Status](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
 Specification sections that are marked as `Experimental` contain functionality under active development. Breaking changes are allowed and may be made without deprecation notices or warnings with minor version updates. We recommend you use these features in experimental environments and not in production.
 
@@ -54,7 +54,7 @@ Put simply:
 
 ### Hardening
 
-[![Status](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 Sections marked as `Hardening` describe functionality with an emphasis on stabilizing existing requirements. Breaking changes require consensus by the [Technical Steering Committee](https://github.com/open-feature/community/blob/main/governance-charter.md#tsc-members) but may still be made with minor version updates. These features are suitable for use in production environments. Feedback is encouraged.
 
@@ -64,7 +64,7 @@ Put simply:
 
 ### Stable
 
-[![Status](https://img.shields.io/static/v1?label=Status&message=stable&color=green)](https://github.com/open-feature/spec/tree/main/specification#stable)
+[![stable](https://img.shields.io/static/v1?label=Status&message=stable&color=green)](https://github.com/open-feature/spec/tree/main/specification#stable)
 
 Sections marked as `Stable` do not allow breaking changes without a major version update. They can be used in production with a high degree of confidence.
 

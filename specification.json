@@ -185,28 +185,28 @@
             "children": []
         },
         {
-            "id": "Requirement 2.1",
-            "machine_id": "requirement_2_1",
+            "id": "Requirement 2.1.1",
+            "machine_id": "requirement_2_1_1",
             "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 2.2",
-            "machine_id": "requirement_2_2",
+            "id": "Requirement 2.2.2",
+            "machine_id": "requirement_2_2_2",
             "content": "The `feature provider` interface MUST define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `flag resolution` structure.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Condition 2.3",
-            "machine_id": "condition_2_3",
+            "id": "Condition 2.2.3",
+            "machine_id": "condition_2_2_3",
             "content": "The implementing language type system differentiates between strings, numbers, booleans and structures.",
             "RFC 2119 keyword": null,
             "children": [
                 {
-                    "id": "Conditional Requirement 2.3.1",
-                    "machine_id": "conditional_requirement_2_3_1",
+                    "id": "Conditional Requirement 2.2.3.1",
+                    "machine_id": "conditional_requirement_2_2_3_1",
                     "content": "The `feature provider` interface MUST define methods for typed flag resolution, including boolean, numeric, string, and structure.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
@@ -214,49 +214,49 @@
             ]
         },
         {
-            "id": "Requirement 2.4",
-            "machine_id": "requirement_2_4",
+            "id": "Requirement 2.2.4",
+            "machine_id": "requirement_2_2_4",
             "content": "In cases of normal execution, the `provider` MUST populate the `flag resolution` structure's `value` field with the resolved flag value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 2.5",
-            "machine_id": "requirement_2_5",
+            "id": "Requirement 2.2.5",
+            "machine_id": "requirement_2_2_5",
             "content": "In cases of normal execution, the `provider` SHOULD populate the `flag resolution` structure's `variant` field with a string identifier corresponding to the returned flag value.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
-            "id": "Requirement 2.6",
-            "machine_id": "requirement_2_6",
+            "id": "Requirement 2.2.6",
+            "machine_id": "requirement_2_2_6",
             "content": "The `provider` SHOULD populate the `flag resolution` structure's `reason` field with `\"DEFAULT\",` `\"TARGETING_MATCH\"`, `\"SPLIT\"`, `\"DISABLED\"`, `\"UNKNOWN\"`, `\"ERROR\"` or some other string indicating the semantic reason for the returned flag value.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
-            "id": "Requirement 2.7",
-            "machine_id": "requirement_2_7",
+            "id": "Requirement 2.2.7",
+            "machine_id": "requirement_2_2_7",
             "content": "In cases of normal execution, the `provider` MUST NOT populate the `flag resolution` structure's `error code` field, or otherwise must populate it with a null or falsy value.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
         {
-            "id": "Requirement 2.8",
-            "machine_id": "requirement_2_8",
+            "id": "Requirement 2.2.8",
+            "machine_id": "requirement_2_2_8",
             "content": "In cases of abnormal execution, the `provider` MUST indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Condition 2.9",
-            "machine_id": "condition_2_9",
+            "id": "Condition 2.2.9",
+            "machine_id": "condition_2_2_9",
             "content": "The implementation language supports generics (or an equivalent feature).",
             "RFC 2119 keyword": null,
             "children": [
                 {
-                    "id": "Conditional Requirement 2.9.1",
-                    "machine_id": "conditional_requirement_2_9_1",
+                    "id": "Conditional Requirement 2.2.9.1",
+                    "machine_id": "conditional_requirement_2_2_9_1",
                     "content": "The `flag resolution` structure SHOULD accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
@@ -264,22 +264,22 @@
             ]
         },
         {
-            "id": "Requirement 2.10",
-            "machine_id": "requirement_2_10",
+            "id": "Requirement 2.3.1",
+            "machine_id": "requirement_2_3_1",
             "content": "The provider interface MUST define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 2.11",
-            "machine_id": "requirement_2_11",
+            "id": "Requirement 2.3.2",
+            "machine_id": "requirement_2_3_2",
             "content": "In cases of normal execution, the `provider` MUST NOT populate the `flag resolution` structure's `error message` field, or otherwise must populate it with a null or falsy value.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
         {
-            "id": "Requirement 2.12",
-            "machine_id": "requirement_2_12",
+            "id": "Requirement 2.3.3",
+            "machine_id": "requirement_2_3_3",
             "content": "In cases of abnormal execution, the `evaluation details` structure's `error message` field MAY contain a string containing additional detail about the nature of the error.",
             "RFC 2119 keyword": "MAY",
             "children": []
