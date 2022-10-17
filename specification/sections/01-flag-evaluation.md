@@ -4,15 +4,15 @@ description: The specification that defines the developer facing feature flag ev
 toc_max_heading_level: 4
 ---
 
-# Flag Evaluation API
+# 1. Flag Evaluation API
 
-**Status**: [Experimental](../README.md#document-statuses)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ## Overview
 
 The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](./02-providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
 
-### API Initialization and Configuration
+### 1.1. API Initialization and Configuration
 
 #### Requirement 1.1.1
 
@@ -74,7 +74,7 @@ The name is a logical identifier for the client.
 
 Clients may be created in critical code paths, and even per-request in server-side HTTP contexts. Therefore, in keeping with the principle that OpenFeature should never cause abnormal execution of the first party application, this function should never throw. Abnormal execution in initialization should instead occur during provider registration.
 
-### Client Usage
+### 1.2. Client Usage
 
 #### Requirement 1.2.1
 
@@ -95,7 +95,9 @@ See [hooks](./04-hooks.md) for details.
 client.getMetadata().getName(); // "my-client"
 ```
 
-#### Flag Evaluation
+#### 1.3. Flag Evaluation
+
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ##### Requirement 1.3.1
 
@@ -138,7 +140,9 @@ See [types](../types.md) for details.
 
 > The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
 
-#### Detailed Flag Evaluation
+#### 1.4. Detailed Flag Evaluation
+
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ##### Requirement 1.4.1
 

@@ -4,7 +4,7 @@ description: The specification that defines the structure and expectations of ev
 toc_max_heading_level: 4
 ---
 
-# Evaluation Context
+# 3. Evaluation Context
 
 **Status**: [Experimental](../README.md#document-statuses)
 
@@ -14,7 +14,7 @@ The `evaluation context` provides ambient information for the purposes of flag e
 
 The context might contain information about the end-user, the application, the host, or any other ambient data that might be useful in flag evaluation. For example, a flag system might define rules that return a specific value based on the user's email address, locale, or the time of day. The context provides this information. The context can be optionally provided at evaluation, and mutated in [before hooks](./04-hooks.md).
 
-### Fields
+### 3.1 Fields
 
 NOTE: Field casing is not specified, and should be chosen in accordance with language idioms.
 
@@ -42,7 +42,7 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 The key uniquely identifies a field in the `evaluation context` and it should be unique across all types to avoid any collision when marshalling the `evaluation context` by the provider.
 
-### Merging Context
+### 3.2 Merging Context
 
 #### Requirement 3.2.1
 

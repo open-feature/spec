@@ -4,7 +4,9 @@ description: The specification that defines the responsibilities and behaviors o
 toc_max_heading_level: 4
 ---
 
-# Provider
+# 2. Provider
+
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ## Overview
 
@@ -14,9 +16,9 @@ Providers are the "translator" between the flag evaluation calls made in applica
 
 ![Provider](../assets/images/provider.png)
 
-### Feature Provider Interface
+### 2.1. Feature Provider Interface
 
-#### Requirement 2.1
+#### Requirement 2.1.1
 
 > The provider interface **MUST** define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.
 
@@ -24,11 +26,11 @@ Providers are the "translator" between the flag evaluation calls made in applica
 provider.getMetadata().getName(); // "my-custom-provider"
 ```
 
-#### Flag Value Resolution
+### 2.2 Flag Value Resolution
 
 `Providers` are implementations of the `feature provider` interface, which may wrap vendor SDKs, REST API clients, or otherwise resolve flag values from the runtime environment.
 
-##### Requirement 2.2
+##### Requirement 2.2.1
 
 > The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `flag resolution` structure.
 
@@ -39,11 +41,11 @@ resolveBooleanValue(flagKey, defaultValue, context);
 
 see: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
 
-##### Condition 2.3
+##### Condition 2.2.2
 
 > The implementing language type system differentiates between strings, numbers, booleans and structures.
 
-###### Conditional Requirement 2.3.1
+###### Conditional Requirement 2.2.2.1
 
 > The `feature provider` interface **MUST** define methods for typed flag resolution, including boolean, numeric, string, and structure.
 
@@ -61,11 +63,11 @@ ResolutionDetails resolveNumberValue(string flagKey, number defaultValue, contex
 ResolutionDetails resolveStructureValue(string flagKey, JsonObject defaultValue, context: EvaluationContext);
 ```
 
-##### Requirement 2.4
+##### Requirement 2.2.3
 
 > In cases of normal execution, the `provider` **MUST** populate the `flag resolution` structure's `value` field with the resolved flag value.
 
-##### Requirement 2.5
+##### Requirement 2.2.4
 
 > In cases of normal execution, the `provider` **SHOULD** populate the `flag resolution` structure's `variant` field with a string identifier corresponding to the returned flag value.
 
@@ -73,17 +75,17 @@ For example, the flag value might be `3.14159265359`, and the variant field's va
 
 The value of the variant field might only be meaningful in the context of the flag management system associated with the provider. For example, the variant may be a UUID corresponding to the variant in the flag management system, or an index corresponding to the variant in the flag management system.
 
-##### Requirement 2.6
+##### Requirement 2.2.5
 
 > The `provider` **SHOULD** populate the `flag resolution` structure's `reason` field with `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
 
 As indicated in the definition of the [`flag resolution`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
-##### Requirement 2.7
+##### Requirement 2.2.6
 
 > In cases of normal execution, the `provider` **MUST NOT** populate the `flag resolution` structure's `error code` field, or otherwise must populate it with a null or falsy value.
 
-##### Requirement 2.8
+##### Requirement 2.2.7
 
 > In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
@@ -96,11 +98,11 @@ See [error code](../types.md#error-code) for details.
 throw new ProviderError(ErrorCode.INVALID_CONTEXT, "The 'foo' attribute must be a string.");
 ```
 
-##### Condition 2.9
+##### Condition 2.2.8
 
 > The implementation language supports generics (or an equivalent feature).
 
-###### Conditional Requirement 2.9.1
+###### Conditional Requirement 2.2.8.1
 
 > The `flag resolution` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
@@ -118,11 +120,11 @@ ResolutionDetails<number> resolveNumberValue(string flagKey, number defaultValue
 ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defaultValue, context: EvaluationContext);
 ```
 
-#### Provider hooks
+#### 2.3. Provider hooks
 
 A `provider hook` exposes a mechanism for `provider authors` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. These hooks can be used to perform side effects and mutate the context for purposes of the provider. Provider hooks are not configured or controlled by the `application author`.
 
-##### Requirement 2.10
+##### Requirement 2.3.1
 
 > The provider interface **MUST** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.
 
@@ -141,10 +143,10 @@ class MyProvider implements Provider {
 }
 ```
 
-#### Requirement 2.11
+#### Requirement 2.3.2
 
 > In cases of normal execution, the `provider` **MUST NOT** populate the `flag resolution` structure's `error message` field, or otherwise must populate it with a null or falsy value.
 
-#### Requirement 2.12
+#### Requirement 2.3.3
 
 > In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
