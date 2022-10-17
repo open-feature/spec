@@ -28,7 +28,7 @@ Structured data, presented however is idiomatic in the implementation language, 
 
 ### Datetime
 
-A language primitive for representing a date and time, including timezone information.
+A language primitive for representing a date and time, optionally including timezone information.
 
 ### Evaluation Details
 
