@@ -2,7 +2,7 @@
   "name": "@openfeature/specification",
   "private": true,
   "devDependencies": {
-    "markdown-link-check": "^3.10.2",
+    "markdown-link-check": "3.10.3",
     "markdown-toc": "^1.2.0",
     "markdownlint-cli": "^0.31.1",
     "prettier": "^2.6.2"
