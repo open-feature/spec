@@ -74,7 +74,7 @@ The maintainer of a shared library which is a dependency of many applications or
 
 ### Feature Flag SDK
 
-The libraries used by Application Author to implement feature flags in their application or service. The interfaces defined in these libraries adhere to the Feature Flag API.
+The libraries used by the Application Author to implement feature flags in their application or service. The interfaces defined in these libraries adhere to the Feature Flag API.
 
 ### Feature Flag API
 
@@ -130,7 +130,7 @@ Flags represent a single pivot point of logic. Flags have a type, like `string`,
 
 ### Flag Key
 
-A string logically identifies a particular flag.
+A string that logically identifies a particular flag.
 
 ### Variant
 
