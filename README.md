@@ -17,7 +17,10 @@ This repository describes the requirements and expectations for OpenFeature.
 
 ### SDKs and Client Libraries
 
-The project aims to provide a unified API and SDK for feature flag management in various technology stacks. The flag evaluation logic will **not** be handled in the OpenFeature SDK itself but provide a mechanism for interfacing with an external evaluation engine in a vendor agnostic way.
+The project aims to provide a unified API and SDK for feature flag management in various technology stacks.
+The OpenFeature SDK provides a mechanism for interfacing
+with an external evaluation engine in a vendor agnostic way;
+it does **not** itself handle the flag evaluation logic.
 
 The OpenFeature project will include client libraries for common technology stacks including, but not limited to:
 
