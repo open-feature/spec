@@ -32,14 +32,14 @@ provider.getMetadata().getName(); // "my-custom-provider"
 
 ##### Requirement 2.2.1
 
-> The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `flag resolution` structure.
+> The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `resolution details` structure.
 
 ```typescript
 // example flag resolution function
 resolveBooleanValue(flagKey, defaultValue, context);
 ```
 
-see: [flag resolution structure](../types.md#flag-resolution), [flag value resolution](../glossary.md#flag-value-resolution)
+see: [flag resolution structure](../types.md#resolution-details), [flag value resolution](../glossary.md#flag-value-resolution)
 
 ##### Condition 2.2.2
 
@@ -65,11 +65,11 @@ ResolutionDetails resolveStructureValue(string flagKey, JsonObject defaultValue,
 
 ##### Requirement 2.2.3
 
-> In cases of normal execution, the `provider` **MUST** populate the `flag resolution` structure's `value` field with the resolved flag value.
+> In cases of normal execution, the `provider` **MUST** populate the `resolution details` structure's `value` field with the resolved flag value.
 
 ##### Requirement 2.2.4
 
-> In cases of normal execution, the `provider` **SHOULD** populate the `flag resolution` structure's `variant` field with a string identifier corresponding to the returned flag value.
+> In cases of normal execution, the `provider` **SHOULD** populate the `resolution details` structure's `variant` field with a string identifier corresponding to the returned flag value.
 
 For example, the flag value might be `3.14159265359`, and the variant field's value might be `"pi"`.
 
@@ -77,19 +77,19 @@ The value of the variant field might only be meaningful in the context of the fl
 
 ##### Requirement 2.2.5
 
-> The `provider` **SHOULD** populate the `flag resolution` structure's `reason` field with `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
+> The `provider` **SHOULD** populate the `resolution details` structure's `reason` field with `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
 
-As indicated in the definition of the [`flag resolution`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
+As indicated in the definition of the [`resolution details`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
 ##### Requirement 2.2.6
 
-> In cases of normal execution, the `provider` **MUST NOT** populate the `flag resolution` structure's `error code` field, or otherwise must populate it with a null or falsy value.
+> In cases of normal execution, the `provider` **MUST NOT** populate the `resolution details` structure's `error code` field, or otherwise must populate it with a null or falsy value.
 
 ##### Requirement 2.2.7
 
 > In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
-The provider might throw an exception, return an error, or populate the `error code` object on the returned `flag resolution` structure to indicate a problem during flag value resolution.
+The provider might throw an exception, return an error, or populate the `error code` object on the returned `resolution details` structure to indicate a problem during flag value resolution.
 
 See [error code](../types.md#error-code) for details.
 
@@ -104,7 +104,7 @@ throw new ProviderError(ErrorCode.INVALID_CONTEXT, "The 'foo' attribute must be 
 
 ###### Conditional Requirement 2.2.8.1
 
-> The `flag resolution` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
+> The `resolution details` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
 ```typescript
 // example boolean flag value resolution with generic argument
@@ -145,8 +145,8 @@ class MyProvider implements Provider {
 
 #### Requirement 2.3.2
 
-> In cases of normal execution, the `provider` **MUST NOT** populate the `flag resolution` structure's `error message` field, or otherwise must populate it with a null or falsy value.
+> In cases of normal execution, the `provider` **MUST NOT** populate the `resolution details` structure's `error message` field, or otherwise must populate it with a null or falsy value.
 
 #### Requirement 2.3.3
 
-> In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
+> In cases of abnormal execution, the `resolution details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
