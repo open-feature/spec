@@ -230,7 +230,7 @@
         {
             "id": "Requirement 2.2.5",
             "machine_id": "requirement_2_2_5",
-            "content": "The `provider` SHOULD populate the `resolution details` structure's `reason` field with `\"DEFAULT\",` `\"TARGETING_MATCH\"`, `\"SPLIT\"`, `\"DISABLED\"`, `\"UNKNOWN\"`, `\"ERROR\"` or some other string indicating the semantic reason for the returned flag value.",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `reason` field with `\"STATIC\"`, `\"DEFAULT\",` `\"TARGETING_MATCH\"`, `\"SPLIT\"`, `\"CACHED\"`, `\"DISABLED\"`, `\"UNKNOWN\"`, `\"ERROR\"` or some other string indicating the semantic reason for the returned flag value.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },

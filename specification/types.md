@@ -54,10 +54,12 @@ A structure which contains a subset of the fields defined in the `evaluation det
 A set of pre-defined reasons is enumerated below:
 
 | Reason          | Explanation                                                                                           |
-| --------------- | ----------------------------------------------------------------------------------------------------- |
-| DEFAULT         | The resolved value was configured statically, or otherwise fell back to a pre-configured value.       |
+| --------------- |-------------------------------------------------------------------------------------------------------|
+| STATIC          | The resolved value is static (no dynamic evaluation).                                                 |
+| DEFAULT         | The resolved value fell back to a pre-configured value (dynamic evaluation yielded no result).        |
 | TARGETING_MATCH | The resolved value was the result of a dynamic evaluation, such as a rule or specific user-targeting. |
 | SPLIT           | The resolved value was the result of pseudorandom assignment.                                         |
+| CACHED          | The resolved value was retrieved from cache.                                                          |
 | DISABLED        | The resolved value was the result of the flag being disabled in the management system.                |
 | UNKNOWN         | The reason for the resolved value could not be determined.                                            |
 | ERROR           | The resolved value was the result of an error.                                                        |
