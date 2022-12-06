@@ -56,7 +56,7 @@ A set of pre-defined reasons is enumerated below:
 | Reason          | Explanation                                                                                           |
 | --------------- |-------------------------------------------------------------------------------------------------------|
 | STATIC          | The resolved value is static (no dynamic evaluation).                                                 |
-| DEFAULT         | The resolved value fell back to a pre-configured value (dynamic evaluation yielded no result).        |
+| DEFAULT         | The resolved value fell back to a pre-configured value (no dynamic evaluation occurred or dynamic evaluation yielded no result).        |
 | TARGETING_MATCH | The resolved value was the result of a dynamic evaluation, such as a rule or specific user-targeting. |
 | SPLIT           | The resolved value was the result of pseudorandom assignment.                                         |
 | CACHED          | The resolved value was retrieved from cache.                                                          |
