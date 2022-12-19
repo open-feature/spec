@@ -77,7 +77,7 @@ The value of the variant field might only be meaningful in the context of the fl
 
 ##### Requirement 2.2.5
 
-> The `provider` **SHOULD** populate the `resolution details` structure's `reason` field with `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
+> The `provider` **SHOULD** populate the `resolution details` structure's `reason` field with `"STATIC"`, `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"CACHED"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
 
 As indicated in the definition of the [`resolution details`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
