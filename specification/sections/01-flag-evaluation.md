@@ -187,6 +187,18 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 > In cases of normal execution, the `evaluation details` structure's `reason` field **MUST** contain the value of the `reason` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.
 
+##### Requirement 1.4.X
+
+> If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field **MUST** contain that value. Otherwise, it **MUST** contain an empty record.
+
+#### Condition X.
+
+> The implementation language supports a mechanism for marking data as immutable.
+
+##### Conditional Requirement X.
+
+> Condition: `Flag metadata` **MUST** be immutable.
+  
 ##### Requirement 1.4.7
 
 > In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain an `error code`.

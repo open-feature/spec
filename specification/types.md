@@ -40,6 +40,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 - error message (string, optional)
 - reason (string, optional)
 - variant (string, optional)
+- flag metadata (Record<string,boolean | string | number>)
 
 ### Resolution Details
 
@@ -50,6 +51,7 @@ A structure which contains a subset of the fields defined in the `evaluation det
 - error message (string, optional)
 - reason (string, optional)
 - variant (string, optional)
+- flag metadata (Record<string,boolean | string | number>, optional)
 
 A set of pre-defined reasons is enumerated below:
 

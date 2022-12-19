@@ -81,6 +81,12 @@ The value of the variant field might only be meaningful in the context of the fl
 
 As indicated in the definition of the [`resolution details`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
+##### Requirement 2.2.X
+
+> The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field. 
+
+> `flag metadata` **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.
+
 ##### Requirement 2.2.6
 
 > In cases of normal execution, the `provider` **MUST NOT** populate the `resolution details` structure's `error code` field, or otherwise must populate it with a null or falsy value.
