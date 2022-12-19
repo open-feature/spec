@@ -138,41 +138,63 @@
         {
             "id": "Requirement 1.4.7",
             "machine_id": "requirement_1_4_7",
+            "content": "If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field MUST contain that value. Otherwise, it MUST contain an empty record.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Condition 1.4.8",
+            "machine_id": "condition_1_4_8",
+            "content": "The implementation language supports a mechanism for marking data as immutable.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 1.4.8.1",
+                    "machine_id": "conditional_requirement_1_4_8_1",
+                    "content": "Condition: `Flag metadata` MUST be immutable.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Requirement 1.4.9",
+            "machine_id": "requirement_1_4_9",
             "content": "In cases of abnormal execution, the `evaluation details` structure's `error code` field MUST contain an `error code`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 1.4.8",
-            "machine_id": "requirement_1_4_8",
-            "content": "In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` SHOULD indicate an error.",
-            "RFC 2119 keyword": "SHOULD",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.4.9",
-            "machine_id": "requirement_1_4_9",
-            "content": "Methods, functions, or operations on the client MUST NOT throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.",
-            "RFC 2119 keyword": "MUST NOT",
-            "children": []
-        },
-        {
             "id": "Requirement 1.4.10",
             "machine_id": "requirement_1_4_10",
-            "content": "In the case of abnormal execution, the client SHOULD log an informative error message.",
+            "content": "In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` SHOULD indicate an error.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
             "id": "Requirement 1.4.11",
             "machine_id": "requirement_1_4_11",
-            "content": "The `client` SHOULD provide asynchronous or non-blocking mechanisms for flag evaluation.",
-            "RFC 2119 keyword": "SHOULD",
+            "content": "Methods, functions, or operations on the client MUST NOT throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.",
+            "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
         {
             "id": "Requirement 1.4.12",
             "machine_id": "requirement_1_4_12",
+            "content": "In the case of abnormal execution, the client SHOULD log an informative error message.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.4.13",
+            "machine_id": "requirement_1_4_13",
+            "content": "The `client` SHOULD provide asynchronous or non-blocking mechanisms for flag evaluation.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.4.14",
+            "machine_id": "requirement_1_4_14",
             "content": "In cases of abnormal execution, the `evaluation details` structure's `error message` field MAY contain a string containing additional details about the nature of the error.",
             "RFC 2119 keyword": "MAY",
             "children": []
@@ -237,26 +259,33 @@
         {
             "id": "Requirement 2.2.6",
             "machine_id": "requirement_2_2_6",
-            "content": "In cases of normal execution, the `provider` MUST NOT populate the `resolution details` structure's `error code` field, or otherwise must populate it with a null or falsy value.",
-            "RFC 2119 keyword": "MUST NOT",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.  `flag metadata` MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 2.2.7",
             "machine_id": "requirement_2_2_7",
+            "content": "In cases of normal execution, the `provider` MUST NOT populate the `resolution details` structure's `error code` field, or otherwise must populate it with a null or falsy value.",
+            "RFC 2119 keyword": "MUST NOT",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.2.8",
+            "machine_id": "requirement_2_2_8",
             "content": "In cases of abnormal execution, the `provider` MUST indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Condition 2.2.8",
-            "machine_id": "condition_2_2_8",
+            "id": "Condition 2.2.9",
+            "machine_id": "condition_2_2_9",
             "content": "The implementation language supports generics (or an equivalent feature).",
             "RFC 2119 keyword": null,
             "children": [
                 {
-                    "id": "Conditional Requirement 2.2.8.1",
-                    "machine_id": "conditional_requirement_2_2_8_1",
+                    "id": "Conditional Requirement 2.2.9.1",
+                    "machine_id": "conditional_requirement_2_2_9_1",
                     "content": "The `resolution details` structure SHOULD accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
