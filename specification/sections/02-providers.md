@@ -81,17 +81,17 @@ The value of the variant field might only be meaningful in the context of the fl
 
 As indicated in the definition of the [`resolution details`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
-##### Requirement 2.2.X
+##### Requirement 2.2.6
 
 > The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field. 
 
 > `flag metadata` **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.
 
-##### Requirement 2.2.6
+##### Requirement 2.2.7
 
 > In cases of normal execution, the `provider` **MUST NOT** populate the `resolution details` structure's `error code` field, or otherwise must populate it with a null or falsy value.
 
-##### Requirement 2.2.7
+##### Requirement 2.2.8
 
 > In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
@@ -104,11 +104,11 @@ See [error code](../types.md#error-code) for details.
 throw new ProviderError(ErrorCode.INVALID_CONTEXT, "The 'foo' attribute must be a string.");
 ```
 
-##### Condition 2.2.8
+##### Condition 2.2.9
 
 > The implementation language supports generics (or an equivalent feature).
 
-###### Conditional Requirement 2.2.8.1
+###### Conditional Requirement 2.2.9.1
 
 > The `resolution details` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
