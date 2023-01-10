@@ -619,7 +619,11 @@
         {
             "id": "Condition 4.3.3",
             "machine_id": "condition_4_3_3",
+<<<<<<< HEAD
             "content": "The implementation uses the dynamic-context paradigm.",
+=======
+            "content": "The implementation uses the multi-context paradigm.",
+>>>>>>> a6996aa (fixup: add links to context-paradigms)
             "RFC 2119 keyword": null,
             "children": [
                 {

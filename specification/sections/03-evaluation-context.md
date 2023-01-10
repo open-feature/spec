@@ -52,6 +52,8 @@ The key uniquely identifies a field in the `evaluation context` and it should be
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
+see: [single-context paradigm](../glossary.md#single-context-paradigm)
+
 ##### Conditional Requirement 3.2.1.1
 
 > The API **MUST** have a method for supplying `evaluation context`.
@@ -69,6 +71,8 @@ In the static-context paradigm, context is global. The client and invocation can
 > The implementation uses the dynamic-context paradigm.
 
 see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+see: [multi-context paradigm](../glossary.md#multi-context-paradigm)
 
 ##### Conditional Requirement 3.2.2.1
 

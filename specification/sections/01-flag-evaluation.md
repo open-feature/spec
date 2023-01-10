@@ -138,6 +138,8 @@ client.getMetadata().getName(); // "my-client"
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
+see: [single-context paradigm](../glossary.md#single-context-paradigm)
+
 ##### Conditional Requirement 1.3.1.1
 
 > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns the flag value.
@@ -163,6 +165,8 @@ See [evaluation context](./03-evaluation-context.md) for details.
 > The implementation uses the dynamic-context paradigm.
 
 see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+see: [multi-context paradigm](../glossary.md#multi-context-paradigm)
 
 ##### Conditional Requirement 1.3.2.1
 
@@ -216,6 +220,8 @@ See [types](../types.md) for details.
 > The implementation uses the static-context paradigm.
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+see: [single-context paradigm](../glossary.md#single-context-paradigm)
 
 ##### Conditional Requirement 1.4.1.1
 
