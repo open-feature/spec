@@ -40,8 +40,13 @@ This document defines some terms that are used across this specification.
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
 - [SDK Paradigms](#sdk-paradigms)
+<<<<<<< HEAD
   - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
   - [Static-Context Paradigm](#static-context-paradigm)
+=======
+  - [Multi-Context Paradigm](#multi-context-paradigm)
+  - [Single-Context Paradigm](#single-context-paradigm)
+>>>>>>> 66bb575 (fixup: update TOC)
 
 <!-- tocstop -->
 
