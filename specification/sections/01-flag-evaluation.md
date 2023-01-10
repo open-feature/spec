@@ -130,7 +130,41 @@ client.getMetadata().getName(); // "my-client"
 
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
-#### Requirement 1.3.1
+#### Condition 1.3.1
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 1.3.1.1
+
+> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns the flag value.
+
+```typescript
+// example boolean flag evaluation
+boolean myBool =  client.getBooleanValue('bool-flag', false);
+
+// example overloaded string flag evaluation with optional params
+string myString = client.getStringValue('string-flag', 'N/A', options);
+
+// example number flag evaluation
+number myNumber = client.getNumberValue('number-flag', 75);
+
+// example overloaded structure flag evaluation with optional params
+MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
+```
+
+See [evaluation context](./03-evaluation-context.md) for details.
+
+#### Condition 1.3.2
+
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 1.3.2.1
 
 > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
 
@@ -150,15 +184,15 @@ MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: '
 
 See [evaluation context](./03-evaluation-context.md) for details.
 
-#### Condition 1.3.2
+#### Condition 1.3.3
 
 > The implementation language differentiates between floating-point numbers and integers.
 
-##### Conditional Requirement 1.3.2.1
+##### Conditional Requirement 1.3.3.1
 
 > The client **SHOULD** provide functions for floating-point numbers and integers, consistent with language idioms.
 
-```java
+```
 int getIntValue(String flag, int defaultValue);
 
 long getFloatValue(String flag, long defaultValue);
@@ -166,7 +200,7 @@ long getFloatValue(String flag, long defaultValue);
 
 See [types](../types.md) for details.
 
-#### Requirement 1.3.3
+#### Requirement 1.3.4
 
 > The `client` **SHOULD** guarantee the returned value of any typed flag evaluation method is of the expected type. If the value returned by the underlying provider implementation does not match the expected type, it's to be considered abnormal execution, and the supplied `default value` should be returned.
 
@@ -174,7 +208,41 @@ See [types](../types.md) for details.
 
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
-#### Requirement 1.4.1
+
+#### Condition 1.4.1
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 1.4.1.1
+
+> The `client` **MUST** provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns an `evaluation details` structure.
+
+```typescript
+// example detailed boolean flag evaluation
+FlagEvaluationDetails<boolean> myBoolDetails = client.getBooleanDetails('bool-flag', false);
+
+// example detailed string flag evaluation
+FlagEvaluationDetails<string> myStringDetails = client.getStringDetails('string-flag', 'N/A', options);
+
+// example detailed number flag evaluation
+FlagEvaluationDetails<number> myNumberDetails = client.getNumberDetails('number-flag', 75);
+
+// example detailed structure flag evaluation
+FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
+
+```
+
+#### Condition 1.4.2
+
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 1.4.2.1
 
 > The `client` **MUST** provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns an `evaluation details` structure.
 
@@ -193,69 +261,69 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 ```
 
-#### Requirement 1.4.2
+#### Requirement 1.4.3
 
 > The `evaluation details` structure's `value` field **MUST** contain the evaluated flag value.
 
-#### Condition 1.4.3
+#### Condition 1.4.4
 
 > The language supports generics (or an equivalent feature).
 
-##### Conditional Requirement 1.4.3.1
+##### Conditional Requirement 1.4.4.1
 
 > The `evaluation details` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
-#### Requirement 1.4.4
+#### Requirement 1.4.5
 
 > The `evaluation details` structure's `flag key` field **MUST** contain the `flag key` argument passed to the detailed flag evaluation method.
 
-#### Requirement 1.4.5
+#### Requirement 1.4.6
 
 > In cases of normal execution, the `evaluation details` structure's `variant` field **MUST** contain the value of the `variant` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.
 
-#### Requirement 1.4.6
+#### Requirement 1.4.7
 
 > In cases of normal execution, the `evaluation details` structure's `reason` field **MUST** contain the value of the `reason` field in the `flag resolution` structure returned by the configured `provider`, if the field is set.
 
-#### Requirement 1.4.7
+#### Requirement 1.4.8
 
 > In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain an `error code`.
 
 See [error code](../types.md#error-code) for details.
 
-#### Requirement 1.4.8
+#### Requirement 1.4.9
 
 > In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` **SHOULD** indicate an error.
 
-#### Requirement 1.4.9
+#### Requirement 1.4.10
 
 > Methods, functions, or operations on the client **MUST NOT** throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.
 
 Configuration code includes code to set the provider, instantiate providers, and configure the global API object.
 
-#### Requirement 1.4.10
+#### Requirement 1.4.11
 
 > In the case of abnormal execution, the client **SHOULD** log an informative error message.
 
 Implementations may define a standard logging interface that can be supplied as an optional argument to the client creation function, which may wrap standard logging functionality of the implementation language.
 
-#### Requirement 1.4.11
+#### Requirement 1.4.12
 
 > The `client` **SHOULD** provide asynchronous or non-blocking mechanisms for flag evaluation.
 
 It's recommended to provide non-blocking mechanisms for flag evaluation, particularly in languages or environments wherein there's a single thread of execution.
 
-#### Requirement 1.4.12
+#### Requirement 1.4.13
 
 > In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional details about the nature of the error.
 
-#### Requirement 1.4.13
+#### Requirement 1.4.14
 
 > If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field **MUST** contain that value. Otherwise, it **MUST** contain an empty record.
 
 This `flag metadata` field is intended as a mechanism for providers to surface additional information about a feature flag (or its evaluation) beyond what is defined within the OpenFeature spec itself. The primary consumer of this information is a provider-specific hook.
 
-#### Condition 1.4.14
+#### Condition 1.4.15
 
 > The implementation language supports a mechanism for marking data as immutable.
 

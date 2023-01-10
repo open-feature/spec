@@ -245,8 +245,24 @@ class MyProvider implements Provider, AutoDisposable {
   void dispose() {
     // close connections, terminate threads or timers, etc...
   }
-  //...
-}
+```
+
+### 2.6. Provider context reconciliation
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+Client-focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on-context-set` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
+
+#### Requirement 2.6.1
+
+> The provider interface **MUST** define an `on context changed` handler, which takes a argument for the previous context, and the newly set context, and which can be optionally implemented to reconcile any stored state pertaining to the global evaluation context.
+
+Especially in static-context implementations, providers and underlying SDKs my maintain a cache of evaluated flags for a particular context.
+The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
+
+```
+  // run the myOnReadyHandler function when the 
+  this.client.addHandler(ProviderEvents.Ready, myOnReadyHandler);
 ```
 
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.

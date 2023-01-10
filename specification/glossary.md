@@ -39,6 +39,9 @@ This document defines some terms that are used across this specification.
   - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
+- [SDK Paradigms](#sdk-paradigms)
+  - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
+  - [Static-Context Paradigm](#static-context-paradigm)
 
 <!-- tocstop -->
 
@@ -163,3 +166,25 @@ Pseudorandomly resolve flag values using a context property, such as a targeting
 ### Rule
 
 A rule is some criteria that's used to determine which variant a particular context should be mapped to.
+
+## SDK Paradigms
+
+Feature flag frameworks tend to come in two categories: those designed for use with a single user client application, and those designed for multi-user applications, such as web server applications. Some parts of the OpenFeature specification diverge depending on which paradigm the implementation seeks to adhere to.
+
+### Dynamic-Context Paradigm
+
+Server-side use cases typically perform flag evaluations on behalf of many users, with each request or event being associated with a particular user or client. For this reason, server frameworks typically operate something like this:
+
+- the application is initialized with some static context (geography, service name, hostname, etc)
+- with each request or event, relevant dynamic context (for example, user session data) is provided to flag evaluations
+
+### Static-Context Paradigm
+
+In contrast with server-side or other service-type applications, client side applications typically operate in the context of a single user. Most feature flagging libraries for these applications have been designed with this in mind. Frequently, Client/web libraries operate something like this:
+
+- an initialization occurs, which fetches evaluated flags in bulk for a given context (user)
+- the evaluated flags are cached in the library
+- flag evaluations take place against this cache, without a need to provide context (context was already used to evaluate flags in bulk)
+- Functions are exposed on the libraries that signal the cache is no longer valid, and must be reconciled based on a context change. This frequently involves a network request or I/O operation.
+
+Not all client libraries work this way, but generally, libraries that accept dynamic context per evaluation can build providers which conform to this model with relative ease, while the reverse is not true.
