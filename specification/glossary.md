@@ -13,7 +13,6 @@ This document defines some terms that are used across this specification.
 
 <!-- toc -->
 
-<<<<<<< HEAD
 - [Feature Flag](#feature-flag)
 - [User Roles](#user-roles)
   - [Application Author](#application-author)
@@ -41,45 +40,8 @@ This document defines some terms that are used across this specification.
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
 - [SDK Paradigms](#sdk-paradigms)
-<<<<<<< HEAD
   - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
   - [Static-Context Paradigm](#static-context-paradigm)
-=======
-  - [Multi-Context Paradigm](#multi-context-paradigm)
-  - [Single-Context Paradigm](#single-context-paradigm)
->>>>>>> 66bb575 (fixup: update TOC)
-=======
-- [Glossary](#glossary)
-  - [Feature Flag](#feature-flag)
-  - [User Roles](#user-roles)
-    - [Application Author](#application-author)
-    - [Application Integrator](#application-integrator)
-    - [Provider Author](#provider-author)
-    - [Integration Author](#integration-author)
-    - [Library Author](#library-author)
-  - [Common](#common)
-    - [Feature Flag SDK](#feature-flag-sdk)
-    - [Feature Flag API](#feature-flag-api)
-    - [Evaluation API](#evaluation-api)
-    - [Flag Management System](#flag-management-system)
-    - [Provider](#provider)
-    - [Integration](#integration)
-    - [Evaluation Context](#evaluation-context)
-    - [Evaluating Flag Values](#evaluating-flag-values)
-    - [Resolving Flag Values](#resolving-flag-values)
-  - [Flagging specifics](#flagging-specifics)
-    - [Flag](#flag)
-    - [Flag Key](#flag-key)
-    - [Variant](#variant)
-    - [Values](#values)
-    - [Targeting](#targeting)
-    - [Targeting Key](#targeting-key)
-    - [Fractional Evaluation](#fractional-evaluation)
-    - [Rule](#rule)
-  - [SDK Paradigms](#sdk-paradigms)
-    - [Multi-Context Paradigm](#multi-context-paradigm)
-    - [Single-Context Paradigm](#single-context-paradigm)
->>>>>>> 7610f5a (fixup: correct examples, grammer)
 
 <!-- tocstop -->
 
