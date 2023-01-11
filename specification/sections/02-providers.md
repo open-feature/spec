@@ -260,9 +260,17 @@ Single-context focused providers may need a mechanism to understand when their c
 Especially in static-context implementations, providers and underlying SDKs my maintain a cache of evaluated flags for a particular context.
 The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
 
-```
-  // run the myOnReadyHandler function when the 
-  this.client.addHandler(ProviderEvents.Ready, myOnReadyHandler);
+```java
+// MyProvider implementation of the onContextSet function defined in Provider
+class MyProvider implements Provider {
+  //...
+
+  onContextSet(EvaluationContext oldContext, EvaluationContext newContext): void {
+    // update context-sensitive cached flags, or otherwise react to the change in the global context 
+  }
+
+  //...
+}
 ```
 
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.

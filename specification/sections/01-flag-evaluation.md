@@ -200,7 +200,7 @@ See [evaluation context](./03-evaluation-context.md) for details.
 
 > The client **SHOULD** provide functions for floating-point numbers and integers, consistent with language idioms.
 
-```
+```java
 int getIntValue(String flag, int defaultValue);
 
 long getFloatValue(String flag, long defaultValue);
