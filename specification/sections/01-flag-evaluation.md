@@ -24,7 +24,11 @@ It's important that multiple instances of the `API` not be active, so that state
 
 #### Requirement 1.1.2.1
 
+<<<<<<< HEAD
 > The `API` **MUST** define a `provider mutator`, a function to set the default `provider`, which accepts an API-conformant `provider` implementation.
+=======
+> The `API` **MUST** expose a `provider mutator`, a function to set the global `provider` singleton, which accepts an API-conformant `provider` implementation.
+>>>>>>> 46c03b2 (Update specification/sections/01-flag-evaluation.md)
 
 ```typescript
 // example provider mutator
