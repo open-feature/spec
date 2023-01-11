@@ -189,47 +189,47 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 ##### Requirement 1.4.7
 
-> If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field **MUST** contain that value. Otherwise, it **MUST** contain an empty record.
-
-##### Condition 1.4.8
-
-> The implementation language supports a mechanism for marking data as immutable.
-
-###### Conditional Requirement 1.4.8.1
-
-> Condition: `Flag metadata` **MUST** be immutable.
-  
-##### Requirement 1.4.9
-
 > In cases of abnormal execution, the `evaluation details` structure's `error code` field **MUST** contain an `error code`.
 
 See [error code](../types.md#error-code) for details.
 
-##### Requirement 1.4.10
+##### Requirement 1.4.8
 
 > In cases of abnormal execution (network failure, unhandled error, etc) the `reason` field in the `evaluation details` **SHOULD** indicate an error.
 
-##### Requirement 1.4.11
+##### Requirement 1.4.9
 
 > Methods, functions, or operations on the client **MUST NOT** throw exceptions, or otherwise abnormally terminate. Flag evaluation calls must always return the `default value` in the event of abnormal execution. Exceptions include functions or methods for the purposes for configuration or setup.
 
 Configuration code includes code to set the provider, instantiate providers, and configure the global API object.
 
-##### Requirement 1.4.12
+##### Requirement 1.4.10
 
 > In the case of abnormal execution, the client **SHOULD** log an informative error message.
 
 Implementations may define a standard logging interface that can be supplied as an optional argument to the client creation function, which may wrap standard logging functionality of the implementation language.
 
-##### Requirement 1.4.13
+##### Requirement 1.4.11
 
 > The `client` **SHOULD** provide asynchronous or non-blocking mechanisms for flag evaluation.
 
 It's recommended to provide non-blocking mechanisms for flag evaluation, particularly in languages or environments wherein there's a single thread of execution.
 
-##### Requirement 1.4.14
+##### Requirement 1.4.12
 
 > In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional details about the nature of the error.
+
+##### Requirement 1.4.13
+
+> If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field **MUST** contain that value. Otherwise, it **MUST** contain an empty record.
+
+##### Condition 1.4.14
+
+> The implementation language supports a mechanism for marking data as immutable.
+
+###### Conditional Requirement 1.4.14.1
+
+> Condition: `Flag metadata` **MUST** be immutable.
 
 #### Evaluation Options
 
