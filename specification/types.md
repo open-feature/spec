@@ -40,7 +40,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 - error message (string, optional)
 - reason (string, optional)
 - variant (string, optional)
-- flag metadata (Record<string,boolean | string | number>)
+- flag metadata ([flag metadata](#flag-metadata))
 
 ### Resolution Details
 
@@ -51,7 +51,7 @@ A structure which contains a subset of the fields defined in the `evaluation det
 - error message (string, optional)
 - reason (string, optional)
 - variant (string, optional)
-- flag metadata (Record<string,boolean | string | number>, optional)
+- flag metadata ([flag metadata](#flag-metadata), optional)
 
 A set of pre-defined reasons is enumerated below:
 
@@ -87,3 +87,9 @@ An enumerated error code represented idiomatically in the implementation languag
 A structure containing the following fields:
 
 - hooks (one or more [hooks](./sections/04-hooks.md), optional)
+
+### Flag Metadata
+
+A structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`. 
+
+This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) (via the [Evaluation API](./glossary.md#evaluation-api)) or an [Application Integrator](./glossary.md#application-integrator) (via [hooks](./sections/04-hooks.md)).

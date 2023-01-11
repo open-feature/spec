@@ -288,7 +288,7 @@
         {
             "id": "Requirement 2.2.9",
             "machine_id": "requirement_2_2_9",
-            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.  `flag metadata` MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.  `flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
