@@ -58,7 +58,7 @@ see: [single-context paradigm](../glossary.md#single-context-paradigm)
 
 > The API **MUST** have a method for supplying `evaluation context`.
 
-API (global) `evaluation context` can be used to supply data to flag evaluation, such as user name, email, or shopping cart items.
+API (global) `evaluation context` can be used to supply data to flag evaluation, such as (but not limited to) user name, email, or shopping cart items.
 
 ##### Conditional Requirement 3.2.1.2
 
