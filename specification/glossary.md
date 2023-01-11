@@ -185,7 +185,7 @@ Server-side use cases typically perform flag evaluations on behalf of many users
 
 ### Static-Context Paradigm
 
-In contrast with server-side or other service-type applications, client side applications typically operate in the context of a single user. Most feature flagging libraries for these applications have been designed with this in mind. Frequently, Client/web libraries operate something like this:
+In contrast to server-side or other service-type applications, client side applications typically operate in the context of a single user. Most feature flagging libraries for these applications have been designed with this in mind. Frequently, Client/web libraries operate similarly to this:
 
 - an initialization occurs, which fetches evaluated flags in bulk for a given context (user)
 - the evaluated flags are cached in the library
