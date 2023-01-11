@@ -178,7 +178,7 @@ Feature flag frameworks tend to come in two categories: those designed for use w
 
 ### Dynamic-Context Paradigm
 
-Server-side use cases typically perform flag evaluations on behalf of many users, with each request or event being associated with a particular user or client. For this reason, server frameworks typically operate something like this:
+Server-side use cases typically perform flag evaluations on behalf of many users, with each request or event being associated with a particular user or client. For this reason, server frameworks typically operate similarly to this:
 
 - the application is initialized with some static context (geography, service name, hostname, etc)
 - with each request or event, relevant dynamic context (for example, user session data) is provided to flag evaluations
