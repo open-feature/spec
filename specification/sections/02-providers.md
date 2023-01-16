@@ -39,7 +39,7 @@ provider.getMetadata().getName(); // "my-custom-provider"
 resolveBooleanValue(flagKey, defaultValue, context);
 ```
 
-see: [flag resolution structure](../types.md#resolution-details), [flag value resolution](../glossary.md#flag-value-resolution)
+see: [flag resolution structure](../types.md#resolution-details), [flag value resolution](../glossary.md#resolving-flag-values)
 
 ##### Condition 2.2.2
 
