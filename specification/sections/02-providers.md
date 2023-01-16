@@ -123,6 +123,8 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 > The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field. 
 
+##### Requirement 2.2.10
+
 > `flag metadata` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.
 
 #### 2.3. Provider hooks
