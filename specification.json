@@ -178,6 +178,28 @@
             "children": []
         },
         {
+            "id": "Requirement 1.4.13",
+            "machine_id": "requirement_1_4_13",
+            "content": "If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field MUST contain that value. Otherwise, it MUST contain an empty record.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Condition 1.4.14",
+            "machine_id": "condition_1_4_14",
+            "content": "The implementation language supports a mechanism for marking data as immutable.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 1.4.14.1",
+                    "machine_id": "conditional_requirement_1_4_14_1",
+                    "content": "Condition: `Flag metadata` MUST be immutable.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
             "id": "Requirement 1.5.1",
             "machine_id": "requirement_1_5_1",
             "content": "The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client MUST execute for the respective flag evaluation, in addition to those already configured.",
@@ -262,6 +284,20 @@
                     "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 2.2.9",
+            "machine_id": "requirement_2_2_9",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.2.10",
+            "machine_id": "requirement_2_2_10",
+            "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         },
         {
             "id": "Requirement 2.3.1",

@@ -219,6 +219,20 @@ It's recommended to provide non-blocking mechanisms for flag evaluation, particu
 
 > In cases of abnormal execution, the `evaluation details` structure's `error message` field **MAY** contain a string containing additional details about the nature of the error.
 
+##### Requirement 1.4.13
+
+> If the `flag metadata` field in the `flag resolution` structure returned by the configured `provider` is set, the `evaluation details` structure's `flag metadata` field **MUST** contain that value. Otherwise, it **MUST** contain an empty record.
+
+This `flag metadata` field is intended as a mechanism for providers to surface additional information about a feature flag (or its evaluation) beyond what is defined within the OpenFeature spec itself. The primary consumer of this information is a provider-specific hook.
+
+##### Condition 1.4.14
+
+> The implementation language supports a mechanism for marking data as immutable.
+
+###### Conditional Requirement 1.4.14.1
+
+> Condition: `Flag metadata` **MUST** be immutable.
+
 #### Evaluation Options
 
 ##### Requirement 1.5.1
