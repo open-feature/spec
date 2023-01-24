@@ -251,7 +251,7 @@ class MyProvider implements Provider, AutoDisposable {
 
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
-Single-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on-context-set` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
+Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on-context-set` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
 
 #### Requirement 2.6.1
 

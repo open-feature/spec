@@ -81,8 +81,6 @@ Hook context exists to provide hooks with information about the invocation.
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
-see: [single-context paradigm](../glossary.md#single-context-paradigm)
-
 ##### Conditional Requirement 4.3.2.1
 
 > The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters. It has no return value.
