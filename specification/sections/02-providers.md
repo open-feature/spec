@@ -257,7 +257,7 @@ Static-context focused providers may need a mechanism to understand when their c
 
 > The provider interface **MUST** define an `on context changed` handler, which takes an argument for the previous context, and the newly set context, and which can be optionally implemented to reconcile any stored state pertaining to the global evaluation context.
 
-Especially in static-context implementations, providers and underlying SDKs my maintain a cache of evaluated flags for a particular context.
+Especially in static-context implementations, providers and underlying SDKs may maintain a cache of evaluated flags for a particular context.
 The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
 
 ```java
@@ -265,7 +265,7 @@ The `on context changed` handler provides a mechanism to update this state, ofte
 class MyProvider implements Provider {
   //...
 
-  onContextSet(EvaluationContext oldContext, EvaluationContext newContext): void {
+  onContextChanged(EvaluationContext oldContext, EvaluationContext newContext): void {
     // update context-sensitive cached flags, or otherwise react to the change in the global context 
   }
 
