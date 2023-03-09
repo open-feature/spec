@@ -255,7 +255,7 @@ Static-context focused providers may need a mechanism to understand when their c
 
 #### Requirement 2.6.1
 
-> The provider interface **MUST** define an `on context changed` handler, which takes an argument for the previous context, and the newly set context, and which can be optionally implemented to reconcile any stored state pertaining to the global evaluation context.
+> The provider **MAY** define an `on context changed` handler, which takes an argument for the previous context and the newly set context, and reconciles any stored state pertaining to the global evaluation context.
 
 Especially in static-context implementations, providers and underlying SDKs may maintain a cache of evaluated flags for a particular context.
 The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
