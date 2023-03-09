@@ -169,7 +169,7 @@ A rule is some criteria that's used to determine which variant a particular cont
 
 ## SDK Paradigms
 
-Feature flag frameworks have SDKs which operate in two distinct paradigms: those designed for use with a single user client application, and those designed for multi-user applications, such as web server applications. Some parts of the OpenFeature specification diverge depending on which paradigm the implementation seeks to adhere to.
+Feature flag frameworks have SDKs which operate in two distinct paradigms: those designed for use with a single user client application (e.g. mobile phones), and those designed for multi-user applications, such as web server applications. Some parts of the OpenFeature specification diverge depending on the paradigm.
 
 ### Dynamic-Context Paradigm
 
