@@ -181,7 +181,7 @@ def content_tree_to_spec(ct):
 
 def parse(markdown_file_path):
     with open(markdown_file_path, "r") as markdown_file:
-        content_finder = re.compile(r'^(?P<level>#+)(?P<headline>[^\n]+)(?P<rest>[^#]*)', re.MULTILINE)
+        content_finder = re.compile(r'^(?P<level>####+)(?P<headline>[^\n]+)\n+?.*?\n+?(?P<rest>>\s[^#?]*)', re.MULTILINE)
         parsed = content_finder.findall(markdown_file.read())
         return parsed_content_to_heirarchy(parsed)
 
