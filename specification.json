@@ -629,6 +629,48 @@
             "content": "The hook MUST NOT alter the `hook hints` structure.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
+        },
+        {
+            "id": "Requirement 5.1.1",
+            "machine_id": "requirement_5_1_1",
+            "content": "The provider MAY define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_SHUTDOWN`.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.1",
+            "machine_id": "requirement_5_2_1",
+            "content": "The `client` MUST provide an `addHandler` function for attaching callbacks to `provider events`, which accepts event type(s) and a function to run when the associated event(s) occur.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.2",
+            "machine_id": "requirement_5_2_2",
+            "content": "If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.3",
+            "machine_id": "requirement_5_2_3",
+            "content": "If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.3",
+            "machine_id": "requirement_5_2_3",
+            "content": "`PROVIDER_READY` handlers added after the provider is already in a ready state MUST run immediately.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.4",
+            "machine_id": "requirement_5_2_4",
+            "content": "Event handlers MUST persist across `provider` changes.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         }
     ]
 }

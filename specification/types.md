@@ -103,3 +103,13 @@ An enumeration of possible provider states.
 | NOT_READY | The provider has not been initialized.                                          |
 | READY     | The provider has been initialized, and is able to reliably resolve flag values. |
 | ERROR     | The provider is initialized but is not able to reliably resolve flag values.    |
+
+### Provider Events
+
+An enumeration of provider events.
+
+| Event                          | Explanation                                                                                 |
+| ------------------------------ | ------------------------------------------------------------------------------------------- |
+| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                          |
+| PROVIDER_ERROR                 | The provider signalled an error.                                                            |
+| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                        |
