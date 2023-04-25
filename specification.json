@@ -659,15 +659,15 @@
             "children": []
         },
         {
-            "id": "Requirement 5.2.3",
-            "machine_id": "requirement_5_2_3",
+            "id": "Requirement 5.2.4",
+            "machine_id": "requirement_5_2_4",
             "content": "`PROVIDER_READY` handlers added after the provider is already in a ready state MUST run immediately.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 5.2.4",
-            "machine_id": "requirement_5_2_4",
+            "id": "Requirement 5.2.5",
+            "machine_id": "requirement_5_2_5",
             "content": "Event handlers MUST persist across `provider` changes.",
             "RFC 2119 keyword": "MUST",
             "children": []
