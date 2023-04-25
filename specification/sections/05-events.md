@@ -47,13 +47,13 @@ See [provider initialization](./02-providers.md#24-initialization) and [setting 
 
 See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
 
-#### Requirement 5.2.3
+#### Requirement 5.2.4
 
 > `PROVIDER_READY` handlers added after the provider is already in a ready state **MUST** run immediately.
 
 See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
 
-#### Requirement 5.2.4
+#### Requirement 5.2.5
 
 > Event handlers **MUST** persist across `provider` changes.
 
