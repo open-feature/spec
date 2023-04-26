@@ -188,6 +188,18 @@ class MyProvider implements Provider {
 }
 ```
 
+#### Requirement 2.4.2
+
+> The `provider` **MAY** define a mutable boolean `ready` member which indicates the readiness of the provider.
+
+Providers without this member can be assumed to be ready immediately.
+
+#### Requirement 2.4.3
+
+> If the `initialize` function terminates normally, the provider's `ready` member **MUST** be set to `true`.
+
+After the initialization completes, the sets this field, indicating that the provider is initialized and flag evaluation can proceed.
+
 ### 2.5. Shutdown
 
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
