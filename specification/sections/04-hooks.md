@@ -176,7 +176,7 @@ val = client.get_boolean_value('my-key', False, evaluation_options={
 })
 ```
 
-See: [Flag evaluation options](./01-flag-evaluation.md#)
+see: [Flag evaluation options](./01-flag-evaluation.md#)
 
 #### Requirement 4.5.1
 

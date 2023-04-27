@@ -16,17 +16,33 @@ toc_max_heading_level: 4
 
 #### Requirement 5.1.1
 
-> The provider **MAY** define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR` and `PROVIDER_CONFIGURATION_CHANGED`.
+> The `provider` **MAY** define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `event metadata` payload. 
 
 If available, native event-emitter or observable/observer language constructs can be used.
 
-see: [provider event types](./../types.md#provider-events)
+see: [provider event types](../types.md#provider-events), [`event metadata`](../types.md#event-metadata).
+
+#### Requirement 5.1.2
+
+> When the `provider` signals the occurrence of a particular `event`, the associated `client` `event handlers` **MUST** run. 
+
+If available, native event-emitter or observable/observer language constructs can be used.
+
+see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
+
+#### Requirement 5.2.3
+
+> `PROVIDER_ERROR` events **SHOULD** populate the `event metadata`'s `error message` field.
+
+The error message field should contain an informative message as to the nature of the error.
+
+See [event metadata](../types.md#event-metadata)
 
 ### 5.2. Event handlers
 
 #### Requirement 5.2.1
 
-> The `client` **MUST** provide an `addHandler` function for attaching callbacks to `provider events`, which accepts event type(s) and a function to run when the associated event(s) occur.
+> The `client` **MUST** provide an `addHandler` function for attaching callbacks to `provider events`, which accepts event type(s) and a `event handler function`.
 
 ```java
   // run the myOnReadyHandler function when the PROVIDER_READY event is fired
@@ -37,23 +53,29 @@ see: [provider events](#51-provider-events)
 
 #### Requirement 5.2.2
 
-> If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers **MUST** run.
+> The `event handler` function **MAY** accept a `event metadata` parameter.
 
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+see: [`event metadata`](../types.md#event-metadata)
 
 #### Requirement 5.2.3
 
-> If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
+> If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers **MUST** run.
 
 See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
 
 #### Requirement 5.2.4
 
-> `PROVIDER_READY` handlers added after the provider is already in a ready state **MUST** run immediately.
+> If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
 
 See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
 
 #### Requirement 5.2.5
+
+> `PROVIDER_READY` handlers added after the provider is already in a ready state **MUST** run immediately.
+
+See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+
+#### Requirement 5.2.6
 
 > Event handlers **MUST** persist across `provider` changes.
 

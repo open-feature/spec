@@ -104,12 +104,19 @@ An enumeration of possible provider states.
 | READY     | The provider has been initialized, and is able to reliably resolve flag values. |
 | ERROR     | The provider is initialized but is not able to reliably resolve flag values.    |
 
+### Event Metadata
+
+A structure supporting the addition of arbitrary event data.
+It supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
+It defines an `error message` field with a value of type `string`.
+
 ### Provider Events
 
 An enumeration of provider events.
 
-| Event                          | Explanation                                                                                 |
-| ------------------------------ | ------------------------------------------------------------------------------------------- |
-| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                          |
-| PROVIDER_ERROR                 | The provider signalled an error.                                                            |
-| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                        |
+| Event                          | Explanation                                                                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                                  |
+| PROVIDER_ERROR                 | The provider signalled an error.                                                                    |
+| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                |
+| PROVIDER_STALE                 | The provider's cached state is not longer valid and may not be up-to-date with the source of truth. |
