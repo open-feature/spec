@@ -108,7 +108,10 @@ An enumeration of possible provider states.
 
 A structure supporting the addition of arbitrary event data.
 It supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
-It defines an `error message` field with a value of type `string`.
+
+### Error Event Metadata
+
+An extension of the [`event metadata`](#event-metadata) type which defines an `error message` field with a value of type `string`.
 
 ### Provider Events
 

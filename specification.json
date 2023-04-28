@@ -654,14 +654,14 @@
         {
             "id": "Requirement 5.2.2",
             "machine_id": "requirement_5_2_2",
-            "content": "The `event handler` function MAY accept a `event metadata` parameter.",
+            "content": "The `event handler` function MAY accept a `event metadata` or `error event metadata` parameter.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
         {
             "id": "Requirement 5.2.3",
             "machine_id": "requirement_5_2_3",
-            "content": "`PROVIDER_ERROR` events SHOULD populate the `event metadata`'s `error message` field.",
+            "content": "`PROVIDER_ERROR` events SHOULD populate the `error event metadata`'s `error message` field.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },

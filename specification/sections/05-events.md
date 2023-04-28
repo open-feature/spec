@@ -32,11 +32,11 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 
 #### Requirement 5.2.3
 
-> `PROVIDER_ERROR` events **SHOULD** populate the `event metadata`'s `error message` field.
+> `PROVIDER_ERROR` events **SHOULD** populate the `error event metadata`'s `error message` field.
 
 The error message field should contain an informative message as to the nature of the error.
 
-See [event metadata](../types.md#event-metadata)
+See [event metadata](../types.md#error-event-metadata)
 
 ### 5.2. Event handlers
 
@@ -53,9 +53,9 @@ see: [provider events](#51-provider-events)
 
 #### Requirement 5.2.2
 
-> The `event handler` function **MAY** accept a `event metadata` parameter.
+> The `event handler` function **MAY** accept a `event metadata` or `error event metadata` parameter.
 
-see: [`event metadata`](../types.md#event-metadata)
+see: [`event metadata`](../types.md#event-metadata), [`error event metadata`](../types.md#error-event-metadata)
 
 #### Requirement 5.2.3
 
