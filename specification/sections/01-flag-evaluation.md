@@ -29,11 +29,13 @@ It's important that multiple instances of the `API` not be active, so that state
 OpenFeature.setProvider(new MyProvider());
 ```
 
+This provider is used if there is not a more specific client name binding. (see later requirements).
+
 See [provider](./02-providers.md) for details.
 
 #### Requirement 1.1.3
 
-> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s.
+> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.
 
 ```java
 OpenFeature.setProvider("client-name", new MyProvider());
