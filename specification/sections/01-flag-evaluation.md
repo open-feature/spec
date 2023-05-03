@@ -22,16 +22,26 @@ It's important that multiple instances of the `API` not be active, so that state
 
 #### Requirement 1.1.2
 
-> The `API` **MUST** provide a function to set the global `provider` singleton, which accepts an API-conformant `provider` implementation.
+> The `API` **MUST** provide a function to set the default `provider`, which accepts an API-conformant `provider` implementation.
 
 ```typescript
 // example provider mutator
 OpenFeature.setProvider(new MyProvider());
 ```
 
+This provider is used if there is not a more specific client name binding. (see later requirements).
+
 See [provider](./02-providers.md) for details.
 
 #### Requirement 1.1.3
+
+> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.
+
+```java
+OpenFeature.setProvider("client-name", new MyProvider());
+```
+
+#### Requirement 1.1.4
 
 > The `API` **MUST** provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.
 
@@ -42,7 +52,7 @@ OpenFeature.addHooks([new MyHook()]);
 
 See [hooks](./04-hooks.md) for details.
 
-#### Requirement 1.1.4
+#### Requirement 1.1.5
 
 > The API **MUST** provide a function for retrieving the metadata field of the configured `provider`.
 
@@ -53,7 +63,7 @@ OpenFeature.getProviderMetadata();
 
 See [provider](./02-providers.md) for details.
 
-#### Requirement 1.1.5
+#### Requirement 1.1.6
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
@@ -68,7 +78,7 @@ OpenFeature.getClient({
 
 The name is a logical identifier for the client.
 
-#### Requirement 1.1.6
+#### Requirement 1.1.7
 
 > The client creation function **MUST NOT** throw, or otherwise abnormally terminate.
 
