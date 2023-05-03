@@ -190,7 +190,7 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.2
 
-> The `provider` **MAY** define a mutable boolean `ready` field which indicates the readiness of the provider.
+> The `provider` **MAY** define a mutable boolean `ready` field/accessor which indicates the readiness of the provider.
 
 Providers without this field can be assumed to be ready immediately.
 
