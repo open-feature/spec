@@ -39,7 +39,7 @@ See [provider](./02-providers.md) for details.
 
 > The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
 
-The `provider's` readiness can state can be determined from it's `ready` member/accessor.
+The `provider's` readiness can state can be determined from it's `status` member/accessor.
 
 See [provider initialization](./02-providers.md#24-initialization).
 

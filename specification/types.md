@@ -73,8 +73,8 @@ A set of pre-defined reasons is enumerated below:
 An enumerated error code represented idiomatically in the implementation language.
 
 | Error Code            | Explanation                                                                                 |
-|-----------------------|---------------------------------------------------------------------------------------------|
-| PROVIDER_NOT_READY    | The value was resolved before the provider was ready.                                       |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| PROVIDER_NOT_READY    | The value was resolved before the provider was initialized.                                 |
 | FLAG_NOT_FOUND        | The flag could not be found.                                                                |
 | PARSE_ERROR           | An error was encountered parsing data, such as a flag configuration.                        |
 | TYPE_MISMATCH         | The type of the flag value does not match the expected type.                                |

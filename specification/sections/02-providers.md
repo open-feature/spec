@@ -190,17 +190,23 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.2
 
-> The `provider` **MAY** define a mutable boolean `ready` field/accessor which indicates the readiness of the provider.
+> The `provider` **MAY** define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, or `ERROR`.
 
 Providers without this field can be assumed to be ready immediately.
 
 #### Requirement 2.4.3
 
-> The provider **MUST** set its `ready` field if its `initialize` function terminates normally.
+> The provider **MUST** set its `status` field/accessor to `READY` if its `initialize` function terminates normally.
 
-After the initialization completes, the provider sets this field, indicating that the provider is initialized and flag evaluation can proceed.
+If the provider supports the `status` field/accessor and initialization succeeds, setting the `status` to `READY` indicates that the provider is initialized and flag evaluation is proceeding normally.
 
 #### Requirement 2.4.4
+
+> The provider **MUST** set its `status` field to `ERROR` if its `initialize` function terminates abnormally.
+
+If the provider supports the `status` field/accessor and initialization fails, setting the `status` to `ERROR` indicates the provider is in an error state. If the error is transient in nature (ex: a connectivity failure of some kind) the provider can attempt to resolve this state automatically.
+
+#### Requirement 2.4.5
 
 > The provider **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
 
