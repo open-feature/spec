@@ -190,15 +190,23 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.2
 
-> The `provider` **MAY** define a mutable boolean `ready` member which indicates the readiness of the provider.
+> The `provider` **MAY** define a mutable boolean `ready` field which indicates the readiness of the provider.
 
-Providers without this member can be assumed to be ready immediately.
+Providers without this field can be assumed to be ready immediately.
 
 #### Requirement 2.4.3
 
-> If the `initialize` function terminates normally, the provider's `ready` member **MUST** be set to `true`.
+> The provider **MUST** set its `ready` field if its `initialize` function terminates normally.
 
-After the initialization completes, the sets this field, indicating that the provider is initialized and flag evaluation can proceed.
+After the initialization completes, the provider sets this field, indicating that the provider is initialized and flag evaluation can proceed.
+
+#### Requirement 2.4.4
+
+> The provider **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
+
+It's recommended to set an informative `error code`, such as `PROVIDER_NOT_READY` if evaluation in attempted before the provider is initialized.
+
+see: [error codes](https://openfeature.dev/specification/types#error-code)
 
 ### 2.5. Shutdown
 

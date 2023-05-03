@@ -358,15 +358,22 @@
         {
             "id": "Requirement 2.4.2",
             "machine_id": "requirement_2_4_2",
-            "content": "The `provider` MAY define a mutable boolean `ready` member which indicates the readiness of the provider.",
+            "content": "The `provider` MAY define a mutable boolean `ready` field which indicates the readiness of the provider.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
         {
             "id": "Requirement 2.4.3",
             "machine_id": "requirement_2_4_3",
-            "content": "If the `initialize` function terminates normally, the provider's `ready` member MUST be set to `true`.",
+            "content": "The provider MUST set its `ready` field if its `initialize` function terminates normally.",
             "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.4.4",
+            "machine_id": "requirement_2_4_4",
+            "content": "The provider SHOULD indicate an error if flag resolution is attempted before the provider is ready.",
+            "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
