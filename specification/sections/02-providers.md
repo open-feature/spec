@@ -194,6 +194,22 @@ class MyProvider implements Provider {
 
 Providers without this field can be assumed to be ready immediately.
 
+The diagram below illustrates the possible states and transitions of the `status` fields.
+
+```mermaid
+---
+title: Provider State
+---
+stateDiagram-v2
+    direction LR
+    [*] --> NOT_READY
+    NOT_READY --> READY
+    READY --> ERROR
+    ERROR --> READY
+```
+
+see [provider status](../types.md#provider-status)
+
 #### Requirement 2.4.3
 
 > The provider **MUST** set its `status` field/accessor to `READY` if its `initialize` function terminates normally.
