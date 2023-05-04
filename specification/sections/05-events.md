@@ -30,7 +30,7 @@ If available, native event-emitter or observable/observer language constructs ca
 
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
-#### Requirement 5.2.3
+#### Requirement 5.1.3
 
 > `PROVIDER_ERROR` events **SHOULD** populate the `error event metadata`'s `error message` field.
 
