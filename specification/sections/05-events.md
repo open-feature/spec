@@ -24,7 +24,7 @@ see: [provider event types](../types.md#provider-events), [`event metadata`](../
 
 #### Requirement 5.1.2
 
-> When the `provider` signals the occurrence of a particular `event`, the associated `client` `event handlers` **MUST** run. 
+> When the `provider` signals the occurrence of a particular `event`, the associated `client` `event handlers` **MUST** run.
 
 If available, native event-emitter or observable/observer language constructs can be used.
 
@@ -37,6 +37,10 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 The error message field should contain an informative message as to the nature of the error.
 
 See [event metadata](../types.md#error-event-metadata)
+
+#### Requirement 5.1.4
+
+> If a `handler functions` terminates abnormally, other event handlers **MUST** run.
 
 ### 5.2. Event handlers
 
@@ -53,7 +57,7 @@ see: [provider events](#51-provider-events)
 
 #### Requirement 5.2.2
 
-> The `event handler` function **MAY** accept a `event metadata` or `error event metadata` parameter.
+> The `event handler` function **MUST** accept a `event metadata` or `error event metadata` parameter.
 
 see: [`event metadata`](../types.md#event-metadata), [`error event metadata`](../types.md#error-event-metadata)
 

@@ -652,6 +652,13 @@
             "children": []
         },
         {
+            "id": "Requirement 5.1.4",
+            "machine_id": "requirement_5_1_4",
+            "content": "If a `handler functions` terminates abnormally, other event handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Requirement 5.2.1",
             "machine_id": "requirement_5_2_1",
             "content": "The `client` MUST provide an `addHandler` function for attaching callbacks to `provider events`, which accepts event type(s) and a `event handler function`.",
@@ -661,8 +668,8 @@
         {
             "id": "Requirement 5.2.2",
             "machine_id": "requirement_5_2_2",
-            "content": "The `event handler` function MAY accept a `event metadata` or `error event metadata` parameter.",
-            "RFC 2119 keyword": "MAY",
+            "content": "The `event handler` function MUST accept a `event metadata` or `error event metadata` parameter.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
