@@ -94,6 +94,8 @@ A source-of-truth for flag values and rules. Flag management systems may include
 
 An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./sections/01-flag-evaluation.md#13-flag-evaluation) as an abstraction for the system in question.
 
+Providers can be used in two ways. Client-specific providers are active for specific clients, based on their name. The default provider is used if there are no client-specific mappings setup.
+
 ### Integration
 
 An SDK-compliant secondary function that is abstracted by the Feature Flag API, and requires only minimal configuration by the Application Author. Examples include telemetry, tracking, custom logging and monitoring.
