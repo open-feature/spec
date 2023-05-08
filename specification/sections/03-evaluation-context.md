@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 3. Evaluation Context
 
-**Status**: [Experimental](../README.md#document-statuses)
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
 ## Overview
 
@@ -42,7 +42,7 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 The key uniquely identifies a field in the `evaluation context` and it should be unique across all types to avoid any collision when marshalling the `evaluation context` by the provider.
 
-### 3.2 Merging Context
+### 3.2 Context levels and merging
 
 #### Requirement 3.2.1
 

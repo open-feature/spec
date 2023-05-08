@@ -73,8 +73,8 @@ A set of pre-defined reasons is enumerated below:
 An enumerated error code represented idiomatically in the implementation language.
 
 | Error Code            | Explanation                                                                                 |
-|-----------------------|---------------------------------------------------------------------------------------------|
-| PROVIDER_NOT_READY    | The value was resolved before the provider was ready.                                       |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| PROVIDER_NOT_READY    | The value was resolved before the provider was initialized.                                 |
 | FLAG_NOT_FOUND        | The flag could not be found.                                                                |
 | PARSE_ERROR           | An error was encountered parsing data, such as a flag configuration.                        |
 | TYPE_MISMATCH         | The type of the flag value does not match the expected type.                                |
@@ -93,3 +93,13 @@ A structure containing the following fields:
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
 
 This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) (via the [Evaluation API](./glossary.md#evaluation-api)) or an [Application Integrator](./glossary.md#application-integrator) (via [hooks](./sections/04-hooks.md)).
+
+### Provider Status
+
+An enumeration of possible provider states.
+
+| Status    | Explanation                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| NOT_READY | The provider has not been initialized.                                          |
+| READY     | The provider has been initialized, and is able to reliably resolve flag values. |
+| ERROR     | The provider is initialized but is not able to reliably resolve flag values.    |

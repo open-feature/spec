@@ -1,6 +1,6 @@
 ---
 title: Provider
-description: The specification that defines the responsibilities and behaviors of a provider.
+description: The specification that defines the interfaces, behaviors and responsibilities of providers.
 toc_max_heading_level: 4
 ---
 
@@ -30,7 +30,7 @@ provider.getMetadata().getName(); // "my-custom-provider"
 
 `Providers` are implementations of the `feature provider` interface, which may wrap vendor SDKs, REST API clients, or otherwise resolve flag values from the runtime environment.
 
-##### Requirement 2.2.1
+#### Requirement 2.2.1
 
 > The `feature provider` interface **MUST** define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `resolution details` structure.
 
@@ -41,11 +41,11 @@ resolveBooleanValue(flagKey, defaultValue, context);
 
 see: [flag resolution structure](../types.md#resolution-details), [flag value resolution](../glossary.md#resolving-flag-values)
 
-##### Condition 2.2.2
+#### Condition 2.2.2
 
 > The implementing language type system differentiates between strings, numbers, booleans and structures.
 
-###### Conditional Requirement 2.2.2.1
+##### Conditional Requirement 2.2.2.1
 
 > The `feature provider` interface **MUST** define methods for typed flag resolution, including boolean, numeric, string, and structure.
 
@@ -63,11 +63,11 @@ ResolutionDetails resolveNumberValue(string flagKey, number defaultValue, contex
 ResolutionDetails resolveStructureValue(string flagKey, JsonObject defaultValue, context: EvaluationContext);
 ```
 
-##### Requirement 2.2.3
+#### Requirement 2.2.3
 
 > In cases of normal execution, the `provider` **MUST** populate the `resolution details` structure's `value` field with the resolved flag value.
 
-##### Requirement 2.2.4
+#### Requirement 2.2.4
 
 > In cases of normal execution, the `provider` **SHOULD** populate the `resolution details` structure's `variant` field with a string identifier corresponding to the returned flag value.
 
@@ -75,17 +75,17 @@ For example, the flag value might be `3.14159265359`, and the variant field's va
 
 The value of the variant field might only be meaningful in the context of the flag management system associated with the provider. For example, the variant may be a UUID corresponding to the variant in the flag management system, or an index corresponding to the variant in the flag management system.
 
-##### Requirement 2.2.5
+#### Requirement 2.2.5
 
 > The `provider` **SHOULD** populate the `resolution details` structure's `reason` field with `"STATIC"`, `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"CACHED"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
 
 As indicated in the definition of the [`resolution details`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
-##### Requirement 2.2.6
+#### Requirement 2.2.6
 
 > In cases of normal execution, the `provider` **MUST NOT** populate the `resolution details` structure's `error code` field, or otherwise must populate it with a null or falsy value.
 
-##### Requirement 2.2.7
+#### Requirement 2.2.7
 
 > In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
@@ -98,11 +98,11 @@ See [error code](../types.md#error-code) for details.
 throw new ProviderError(ErrorCode.INVALID_CONTEXT, "The 'foo' attribute must be a string.");
 ```
 
-##### Condition 2.2.8
+#### Condition 2.2.8
 
 > The implementation language supports generics (or an equivalent feature).
 
-###### Conditional Requirement 2.2.8.1
+##### Conditional Requirement 2.2.8.1
 
 > The `resolution details` structure **SHOULD** accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.
 
@@ -127,15 +127,15 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 > `flag metadata` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.
 
-#### 2.3. Provider hooks
+### 2.3. Provider hooks
 
 A `provider hook` exposes a mechanism for `provider authors` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. These hooks can be used to perform side effects and mutate the context for purposes of the provider. Provider hooks are not configured or controlled by the `application author`.
 
-##### Requirement 2.3.1
+#### Requirement 2.3.1
 
 > The provider interface **MUST** define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.
 
-```
+```java
 class MyProvider implements Provider {
   //...
 
@@ -157,3 +157,98 @@ class MyProvider implements Provider {
 #### Requirement 2.3.3
 
 > In cases of abnormal execution, the `resolution details` structure's `error message` field **MAY** contain a string containing additional detail about the nature of the error.
+
+### 2.4 Initialization
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+#### Requirement 2.4.1
+
+> The `provider` **MAY** define an `initialize` function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.
+
+Many feature flag frameworks or SDKs require some initialization before they can be used.
+They might require the completion of an HTTP request, establishing persistent connections, or starting timers or worker threads.
+The `initialization` function is an ideal place for such logic.
+
+```java
+// MyProvider implementation of the initialize function defined in Provider
+class MyProvider implements Provider {
+  //...
+
+  // the global context is passed to the initialization function
+  void initialize(EvaluationContext initialContext) {
+    /*
+      A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
+    */
+    this.flagCache = this.restClient.bulkEvaluate(initialContext);
+    this.startPolling();
+  }
+
+  //...
+}
+```
+
+#### Requirement 2.4.2
+
+> The `provider` **MAY** define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, or `ERROR`.
+
+Providers without this field can be assumed to be ready immediately.
+
+The diagram below illustrates the possible states and transitions of the `status` fields.
+
+```mermaid
+---
+title: Provider State
+---
+stateDiagram-v2
+    direction LR
+    [*] --> NOT_READY
+    NOT_READY --> READY
+    READY --> ERROR
+    ERROR --> READY
+```
+
+see [provider status](../types.md#provider-status)
+
+#### Requirement 2.4.3
+
+> The provider **MUST** set its `status` field/accessor to `READY` if its `initialize` function terminates normally.
+
+If the provider supports the `status` field/accessor and initialization succeeds, setting the `status` to `READY` indicates that the provider is initialized and flag evaluation is proceeding normally.
+
+#### Requirement 2.4.4
+
+> The provider **MUST** set its `status` field to `ERROR` if its `initialize` function terminates abnormally.
+
+If the provider supports the `status` field/accessor and initialization fails, setting the `status` to `ERROR` indicates the provider is in an error state. If the error is transient in nature (ex: a connectivity failure of some kind) the provider can attempt to resolve this state automatically.
+
+#### Requirement 2.4.5
+
+> The provider **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
+
+It's recommended to set an informative `error code`, such as `PROVIDER_NOT_READY` if evaluation in attempted before the provider is initialized.
+
+see: [error codes](https://openfeature.dev/specification/types#error-code)
+
+### 2.5. Shutdown
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+#### Requirement 2.5.1
+
+> The provider **MAY** define a `shutdown` function to perform whatever cleanup is necessary for the implementation.
+```java
+// MyProvider implementation of the dispose function defined in Provider
+class MyProvider implements Provider, AutoDisposable {
+  //...
+  void dispose() {
+    // close connections, terminate threads or timers, etc...
+  }
+  //...
+}
+```
+
+Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.
+Provider authors may implement the `shutdown` function to perform relevant clean-up actions.
+The precise name of this function is not prescribed by this specification, but should be defined be the SDK.
+Relevant language idioms should be considered when choosing the name for this function, in accordance with the resource-disposal semantics of the language in question.

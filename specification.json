@@ -8,9 +8,23 @@
             "children": []
         },
         {
-            "id": "Requirement 1.1.2",
-            "machine_id": "requirement_1_1_2",
-            "content": "The `API` MUST provide a function to set the default `provider`, which accepts an API-conformant `provider` implementation.",
+            "id": "Requirement 1.1.2.1",
+            "machine_id": "requirement_1_1_2_1",
+            "content": "The `API` MUST define a `provider mutator`, a function to set the default `provider`, which accepts an API-conformant `provider` implementation.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.1.2.2",
+            "machine_id": "requirement_1_1_2_2",
+            "content": "The `provider mutator` function MUST invoke the `initialize` function on the newly registered provider before using it to resolve flag values.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.1.2.3",
+            "machine_id": "requirement_1_1_2_3",
+            "content": "The `provider mutator` function MUST invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -214,6 +228,13 @@
             "children": []
         },
         {
+            "id": "Requirement 1.6.1",
+            "machine_id": "requirement_1_6_1",
+            "content": "The API MUST define a `shutdown` function, which, when called, must call the respective `shutdown` function on the active provider.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Requirement 2.1.1",
             "machine_id": "requirement_2_1_1",
             "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
@@ -289,22 +310,22 @@
                     "content": "The `resolution details` structure SHOULD accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
+                },
+                {
+                    "id": "Requirement 2.2.9",
+                    "machine_id": "requirement_2_2_9",
+                    "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
+                    "RFC 2119 keyword": "SHOULD",
+                    "children": []
+                },
+                {
+                    "id": "Requirement 2.2.10",
+                    "machine_id": "requirement_2_2_10",
+                    "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
                 }
             ]
-        },
-        {
-            "id": "Requirement 2.2.9",
-            "machine_id": "requirement_2_2_9",
-            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
-            "RFC 2119 keyword": "SHOULD",
-            "children": []
-        },
-        {
-            "id": "Requirement 2.2.10",
-            "machine_id": "requirement_2_2_10",
-            "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
         },
         {
             "id": "Requirement 2.3.1",
@@ -324,6 +345,48 @@
             "id": "Requirement 2.3.3",
             "machine_id": "requirement_2_3_3",
             "content": "In cases of abnormal execution, the `resolution details` structure's `error message` field MAY contain a string containing additional detail about the nature of the error.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.4.1",
+            "machine_id": "requirement_2_4_1",
+            "content": "The `provider` MAY define an `initialize` function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.4.2",
+            "machine_id": "requirement_2_4_2",
+            "content": "The `provider` MAY define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, or `ERROR`.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.4.3",
+            "machine_id": "requirement_2_4_3",
+            "content": "The provider MUST set its `status` field/accessor to `READY` if its `initialize` function terminates normally.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.4.4",
+            "machine_id": "requirement_2_4_4",
+            "content": "The provider MUST set its `status` field to `ERROR` if its `initialize` function terminates abnormally.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.4.5",
+            "machine_id": "requirement_2_4_5",
+            "content": "The provider SHOULD indicate an error if flag resolution is attempted before the provider is ready.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.5.1",
+            "machine_id": "requirement_2_5_1",
+            "content": "The provider MAY define a `shutdown` function to perform whatever cleanup is necessary for the implementation.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
