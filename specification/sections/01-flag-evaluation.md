@@ -72,7 +72,7 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.1.5
 
-> The API **MUST** provide a function for retrieving the metadata field of the configured `provider`.
+> The `API` **MUST** provide a function for retrieving the metadata field of the configured `provider`.
 
 ```typescript
 // example provider accessor

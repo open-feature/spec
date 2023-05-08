@@ -45,7 +45,7 @@
         {
             "id": "Requirement 1.1.5",
             "machine_id": "requirement_1_1_5",
-            "content": "The API MUST provide a function for retrieving the metadata field of the configured `provider`.",
+            "content": "The `API` MUST provide a function for retrieving the metadata field of the configured `provider`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -633,69 +633,83 @@
         {
             "id": "Requirement 5.1.1",
             "machine_id": "requirement_5_1_1",
-            "content": "The `provider` MAY define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `event metadata` payload.",
+            "content": "The `provider` MAY define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `provider event details` payload.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
         {
             "id": "Requirement 5.1.2",
             "machine_id": "requirement_5_1_2",
-            "content": "When the `provider` signals the occurrence of a particular `event`, the associated `client` `event handlers` MUST run.",
+            "content": "When the `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers` MUST run.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.1.3",
             "machine_id": "requirement_5_1_3",
-            "content": "`PROVIDER_ERROR` events SHOULD populate the `error event metadata`'s `error message` field.",
+            "content": "`PROVIDER_ERROR` events SHOULD populate the `provider event details`'s `error message` field.",
             "RFC 2119 keyword": "SHOULD",
-            "children": []
-        },
-        {
-            "id": "Requirement 5.1.4",
-            "machine_id": "requirement_5_1_4",
-            "content": "If a `handler functions` terminates abnormally, other event handlers MUST run.",
-            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.1",
             "machine_id": "requirement_5_2_1",
-            "content": "The `client` MUST provide an `addHandler` function for attaching callbacks to `provider events`, which accepts event type(s) and a `event handler function`.",
+            "content": "The `client` MUST provide an `addHandler` function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.2",
             "machine_id": "requirement_5_2_2",
-            "content": "The `event handler` function MUST accept a `event metadata` or `error event metadata` parameter.",
+            "content": "The `API` MUST provide an `addHandler` function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.3",
             "machine_id": "requirement_5_2_3",
-            "content": "If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers MUST run.",
+            "content": "The `event details` MUST contain the `client name` associated with the event.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.4",
             "machine_id": "requirement_5_2_4",
-            "content": "If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers MUST run.",
+            "content": "The `event handler` function MUST accept a `event details` or `error event metadata` parameter.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.5",
             "machine_id": "requirement_5_2_5",
-            "content": "`PROVIDER_READY` handlers added after the provider is already in a ready state MUST run immediately.",
+            "content": "If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers MUST run.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.6",
             "machine_id": "requirement_5_2_6",
+            "content": "If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.7",
+            "machine_id": "requirement_5_2_7",
+            "content": "`PROVIDER_READY` handlers added after the provider is already in a ready state MUST run immediately.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.8",
+            "machine_id": "requirement_5_2_8",
+            "content": "If a `handler functions` terminates abnormally, other event handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.9",
+            "machine_id": "requirement_5_2_9",
             "content": "Event handlers MUST persist across `provider` changes.",
             "RFC 2119 keyword": "MUST",
             "children": []

@@ -104,14 +104,40 @@ An enumeration of possible provider states.
 | READY     | The provider has been initialized, and is able to reliably resolve flag values. |
 | ERROR     | The provider is initialized but is not able to reliably resolve flag values.    |
 
+### Provider Event Details
+
+A structure defining a provider event payload, including:
+
+- flags changed (string[], optional)
+- event metadata ([event metadata](#event-metadata))
+
+### Provider Error Event Details
+
+A structure defining a provider error event payload, including:
+
+- error message (string, required)
+- event metadata ([flag metadata](#event-metadata))
+
+### Event Details
+
+A structure defining an event payload, including:
+
+- client name (string, required)
+- flags changed (string[], optional)
+- event metadata ([event metadata](#event-metadata))
+
+### Error Event Details
+
+A structure defining an error event payload, including:
+
+- client name (string, required)
+- error message (string, required)
+- event metadata ([flag metadata](#event-metadata))
+
 ### Event Metadata
 
 A structure supporting the addition of arbitrary event data.
 It supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
-
-### Error Event Metadata
-
-An extension of the [`event metadata`](#event-metadata) type which defines an `error message` field with a value of type `string`.
 
 ### Provider Events
 
