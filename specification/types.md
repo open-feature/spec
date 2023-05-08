@@ -102,4 +102,4 @@ An enumeration of possible provider states.
 | --------- | ------------------------------------------------------------------------------- |
 | NOT_READY | The provider has not been initialized.                                          |
 | READY     | The provider has been initialized, and is able to reliably resolve flag values. |
-| ERROR     | The provider is initialized but is not able to reliably resolve flag values.      |
+| ERROR     | The provider is initialized but is not able to reliably resolve flag values.    |
