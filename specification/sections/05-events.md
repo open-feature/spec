@@ -16,7 +16,7 @@ toc_max_heading_level: 4
 
 #### Requirement 5.1.1
 
-> The `provider` **MAY** define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `provider event details` payload. 
+> The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `provider event details` payload. 
 
 If available, native event-emitter or observable/observer language constructs can be used.
 

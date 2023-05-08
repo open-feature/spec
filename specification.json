@@ -633,7 +633,7 @@
         {
             "id": "Requirement 5.1.1",
             "machine_id": "requirement_5_1_1",
-            "content": "The `provider` MAY define a mechanism for signalling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `provider event details` payload.",
+            "content": "The `provider` MAY define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `provider event details` payload.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
