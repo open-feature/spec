@@ -39,7 +39,7 @@ See [provider](./02-providers.md) for details.
 
 > The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
 
-The `provider's` readiness can state can be determined from it's `status` member/accessor.
+The `provider's` readiness can state can be determined from its `status` member/accessor.
 
 See [provider initialization](./02-providers.md#24-initialization).
 
@@ -47,7 +47,7 @@ See [provider initialization](./02-providers.md#24-initialization).
 
 >  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
-Setting a new provider means the previous provider is no longer in use, and should therefore be disposed of using it's `shutdown` function.
+Setting a new provider means the previous provider is no longer in use, and should therefore be disposed of using its `shutdown` function.
 
 see: [shutdown](./02-providers.md#26-shutdown), [setting a provider](#setting-a-provider)
 
