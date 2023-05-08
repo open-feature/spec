@@ -250,5 +250,5 @@ class MyProvider implements Provider, AutoDisposable {
 
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.
 Provider authors may implement the `shutdown` function to perform relevant clean-up actions.
-The precise name of this function is not prescribed by this specification.
+The precise name of this function is not prescribed by this specification, but should be defined be the SDK.
 Relevant language idioms should be considered when choosing the name for this function, in accordance with the resource-disposal semantics of the language in question.

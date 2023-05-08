@@ -47,7 +47,7 @@ See [provider initialization](./02-providers.md#24-initialization).
 
 >  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
-Setting a new provider means the previous provider is no longer in use, and should therefor be disposed of using it's `shutdown` function.
+Setting a new provider means the previous provider is no longer in use, and should therefore be disposed of using it's `shutdown` function.
 
 see: [shutdown](./02-providers.md#26-shutdown), [setting a provider](#setting-a-provider)
 
@@ -276,7 +276,7 @@ See [hooks](./04-hooks.md) for details.
 
 > The API **MUST** define a `shutdown` function, which, when called, must call the respective `shutdown` function on the active provider.
 
-The precise name of this function is not prescribed by this specification.
+The precise name of this function is not prescribed by this specification, but should be defined be the SDK.
 Relevant language idioms should be considered when choosing the name for this function, in accordance with the resource-disposal semantics of the language in question.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)
