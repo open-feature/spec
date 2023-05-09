@@ -682,35 +682,35 @@
         {
             "id": "Requirement 5.2.5",
             "machine_id": "requirement_5_2_5",
-            "content": "If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers MUST run.",
+            "content": "If a `handler functions` terminates abnormally, other event handlers MUST run.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.6",
             "machine_id": "requirement_5_2_6",
+            "content": "Event handlers MUST persist across `provider` changes.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.3.1",
+            "machine_id": "requirement_5_3_1",
+            "content": "If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.3.2",
+            "machine_id": "requirement_5_3_2",
             "content": "If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers MUST run.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
-            "id": "Requirement 5.2.7",
-            "machine_id": "requirement_5_2_7",
-            "content": "`PROVIDER_READY` handlers added after the provider is already in a ready state MUST run immediately.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 5.2.8",
-            "machine_id": "requirement_5_2_8",
-            "content": "If a `handler functions` terminates abnormally, other event handlers MUST run.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 5.2.9",
-            "machine_id": "requirement_5_2_9",
-            "content": "Event handlers MUST persist across `provider` changes.",
+            "id": "Requirement 5.3.3",
+            "machine_id": "requirement_5_3_3",
+            "content": "`PROVIDER_READY` handlers attached after the provider is already in a ready state MUST run immediately.",
             "RFC 2119 keyword": "MUST",
             "children": []
         }

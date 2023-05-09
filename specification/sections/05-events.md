@@ -12,6 +12,8 @@ toc_max_heading_level: 4
 
 `Events` allow consumers (_application integrator_, _application author_, _integration author_) to react to state changes in the provider or underlying flag management system, such as flag definition changes, provider readiness, or error conditions. A provider may emit events or run a callback indicating that it received a certain event, optionally providing data associated with that event. Handlers registered on the client are then invoked with this data.
 
+The data that providers supply in event payloads may include a list of `flag keys` changed, error messages, and possibly updated flag values.
+
 ### 5.1. Provider events
 
 #### Requirement 5.1.1
@@ -75,28 +77,37 @@ see: [`event details`](../types.md#event-details), [`error event metadata`](../t
 
 #### Requirement 5.2.5
 
-> If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers **MUST** run.
-
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
-
-#### Requirement 5.2.6
-
-> If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
-
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
-
-#### Requirement 5.2.7
-
-> `PROVIDER_READY` handlers added after the provider is already in a ready state **MUST** run immediately.
-
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
-
-#### Requirement 5.2.8
-
 > If a `handler functions` terminates abnormally, other event handlers **MUST** run.
 
-#### Requirement 5.2.9
+#### Requirement 5.2.6
 
 > Event handlers **MUST** persist across `provider` changes.
 
 Behavior of event handlers should be independent of the order of handler addition and provider configuration.
+
+### Event handlers and initialization
+
+Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
+_Application authors_ and _application integrators_ use these events to wait for proper initialization of the SDK and provider and to do basic monitoring.
+
+#### Requirement 5.3.1
+
+> If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers **MUST** run.
+
+See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+
+#### Requirement 5.3.2
+
+> If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
+
+A failed initialization could represent an unrecoverable error, such as bad credentials or a missing file. 
+If a failed initialization could also represent a transient error.
+A provider which maintains a persistent connection to a remote `flag management system` may attempt to reconnect, and emit `PROVIDER_READY` after a failed initialization.
+
+See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+
+#### Requirement 5.3.3
+
+> `PROVIDER_READY` handlers attached after the provider is already in a ready state **MUST** run immediately.
+
+See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
