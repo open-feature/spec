@@ -17,7 +17,7 @@ The data that providers supply in event payloads may include a list of `flag key
 ```mermaid
 graph
     P(Provider) -->|emit event| A[API]
-    A -->|run handlers| AH(API event handlers)
+    A -->|run handlers| AH("API (global) event handlers")
     A --> C[Client]
     C -->|run handlers| CH(Client event handlers)
 ```
