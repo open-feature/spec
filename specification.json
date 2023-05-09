@@ -230,7 +230,14 @@
         {
             "id": "Requirement 1.6.1",
             "machine_id": "requirement_1_6_1",
-            "content": "The API MUST define a `shutdown` function, which, when called, must call the respective `shutdown` function on the active provider.",
+            "content": "The API MUST define a `shutdown` function which, when called, must call the respective `shutdown` function on the active provider.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.6.2",
+            "machine_id": "requirement_1_6_2",
+            "content": "The client MUST define a `shutdown` function which, when called, removes all the event handlers associated with that client.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
