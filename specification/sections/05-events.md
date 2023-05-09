@@ -10,7 +10,7 @@ toc_max_heading_level: 4
 
 ## Overview
 
-`Events` allow consumers (_application integrator_, _application author_, _integration author_) to react to state changes in the provider or underlying flag management system, such as flag definition changes, provider readiness, or error conditions. A provider may emit events or run a callback indicating that it received a certain event, optionally providing data associated with that event. Handlers registered on the client are then invoked with this data.
+`Events` allow consumers (_application integrator_, _application author_, _integration author_) to react to state changes in the provider or underlying flag management system, such as flag definition changes, provider readiness, or error conditions. A provider may emit events or run a callback indicating that it received a certain event, optionally providing data associated with that event. Handlers registered on the `client` or the global `API` are then invoked with this data.
 
 The data that providers supply in event payloads may include a list of `flag keys` changed, error messages, and possibly updated flag values.
 
@@ -26,11 +26,19 @@ see: [provider event types](../types.md#provider-events), [`event details`](../t
 
 #### Requirement 5.1.2
 
-> When the `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers` **MUST** run.
+> When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` `event handlers` **MUST** run.
 
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
 #### Requirement 5.1.3
+
+> When a `provider` signals the occurrence of a particular `event`, `event handlers` on clients which are not associated with that provider **MUST NOT** run.
+
+Providers bound to a named client constitute their own scope events scope.
+
+see: [setting a provider](./01-flag-evaluation.md#setting-a-provider)
+
+#### Requirement 5.1.4
 
 > `PROVIDER_ERROR` events **SHOULD** populate the `provider event details`'s `error message` field.
 
