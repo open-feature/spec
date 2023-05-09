@@ -71,9 +71,9 @@ This is particularly relevant for `event handler functions` which are attached t
 
 #### Requirement 5.2.4
 
-> The `event handler` function **MUST** accept a `event details` or `error event metadata` parameter.
+> The `event handler` function **MUST** accept a `event details` parameter.
 
-see: [`event details`](../types.md#event-details), [`error event metadata`](../types.md#error-event-details)
+see: [`event details`](../types.md#event-details)
 
 #### Requirement 5.2.5
 

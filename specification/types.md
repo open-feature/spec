@@ -109,14 +109,8 @@ An enumeration of possible provider states.
 A structure defining a provider event payload, including:
 
 - flags changed (string[], optional)
+- message (string, optional)
 - event metadata ([event metadata](#event-metadata))
-
-### Provider Error Event Details
-
-A structure defining a provider error event payload, including:
-
-- error message (string, required)
-- event metadata ([flag metadata](#event-metadata))
 
 ### Event Details
 
@@ -124,14 +118,7 @@ A structure defining an event payload, including:
 
 - client name (string, required)
 - flags changed (string[], optional)
-- event metadata ([event metadata](#event-metadata))
-
-### Error Event Details
-
-A structure defining an error event payload, including:
-
-- client name (string, required)
-- error message (string, required)
+- message (string, optional)
 - event metadata ([event metadata](#event-metadata))
 
 ### Event Metadata
