@@ -132,7 +132,7 @@ A structure defining an error event payload, including:
 
 - client name (string, required)
 - error message (string, required)
-- event metadata ([flag metadata](#event-metadata))
+- event metadata ([event metadata](#event-metadata))
 
 ### Event Metadata
 
