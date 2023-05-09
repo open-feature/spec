@@ -14,6 +14,14 @@ toc_max_heading_level: 4
 
 The data that providers supply in event payloads may include a list of `flag keys` changed, error messages, and possibly updated flag values.
 
+```mermaid
+graph
+    P(Provider) -->|emit event| A[API]
+    A -->|run handlers| AH(API event handlers)
+    A --> C[Client]
+    C -->|run handlers| CH(Client event handlers)
+```
+
 ### 5.1. Provider events
 
 #### Requirement 5.1.1
