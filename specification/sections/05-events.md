@@ -104,7 +104,7 @@ Behavior of event handlers should be independent of the order of handler additio
 ### Event handlers and initialization
 
 Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
-_Application authors_ and _application integrators_ use these events to wait for proper initialization of the SDK and provider and to do basic monitoring.
+_Application authors_ and _application integrators_ use these events to wait for proper initialization of the SDK and provider and to do basic monitoring and error handling.
 
 #### Requirement 5.3.1
 
