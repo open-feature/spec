@@ -136,3 +136,8 @@ An enumeration of provider events.
 | PROVIDER_ERROR                 | The provider signalled an error.                                                                    |
 | PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                |
 | PROVIDER_STALE                 | The provider's cached state is not longer valid and may not be up-to-date with the source of truth. |
+
+### Handler Functions
+
+A function or method which can be associated with a `provider event`, and runs when that event occurs.
+It declares an `event details` parameter.

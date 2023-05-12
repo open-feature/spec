@@ -26,7 +26,7 @@ graph
 
 #### Requirement 5.1.1
 
-> The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with an `provider event details` payload. 
+> The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload. 
 
 If available, native event-emitter or observable/observer language constructs can be used.
 
@@ -34,15 +34,15 @@ see: [provider event types](../types.md#provider-events), [`event details`](../t
 
 #### Requirement 5.1.2
 
-> When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` `event handlers` **MUST** run.
+> When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers **MUST** run.
 
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
 #### Requirement 5.1.3
 
-> When a `provider` signals the occurrence of a particular `event`, `event handlers` on clients which are not associated with that provider **MUST NOT** run.
+> When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
-Providers bound to a named client constitute their own scope events scope.
+Providers bound to a named client constitute their own "events scope".
 
 see: [setting a provider](./01-flag-evaluation.md#setting-a-provider)
 
@@ -58,22 +58,22 @@ See [event metadata](../types.md#error-event-details)
 
 #### Requirement 5.2.1
 
-> The `client` **MUST** provide a function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.
+> The `client` **MUST** provide a function for associating `handler functions` with a particular `provider event type`.
 
 ```java
   // run the myClientOnReadyHandler function when the PROVIDER_READY event is fired
-  client.addHandler(ProviderEvents.Ready, MyClass::myClientOnReadyHandler);
+  client.addHandler(ProviderEvents.Ready, myClientOnReadyHandler);
 ```
 
-see: [provider events](#51-provider-events)
+see: [provider events](#51-provider-events), [`provider event types`](../types.md#provider-events)
 
 #### Requirement 5.2.2
 
-> The `API` **MUST** provide a function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.
+> The `API` **MUST** provide a function for associating `handler functions` with a particular `provider event type`.
 
 ```java
   // run the myGlobalErrorHandler function when the PROVIDER_READY event is fired
-  OpenFeature.addHandler(ProviderEvents.Error, MyClass::myGlobalErrorHandler);
+  OpenFeature.addHandler(ProviderEvents.Error, myGlobalErrorHandler);
 ```
 
 see: [provider events](#51-provider-events), [`provider event types`](../types.md#provider-events)
@@ -82,24 +82,25 @@ see: [provider events](#51-provider-events), [`provider event types`](../types.m
 
 > The `event details` **MUST** contain the `client name` associated with the event.
 
-The `client name` indicates the client/provider with which the event is associated.
-This is particularly relevant for `event handler functions` which are attached to the `API`, not a particular client.
+The `client name` indicates the client/provider pair with which the event is associated.
+This is especially relevant for event handlers which are attached to the `API`, not a particular client.
 
 #### Requirement 5.2.4
 
-> The `event handler` function **MUST** accept a `event details` parameter.
+> The `handler function` **MUST** accept a `event details` parameter.
 
 see: [`event details`](../types.md#event-details)
 
 #### Requirement 5.2.5
 
-> If a `handler functions` terminates abnormally, other event handlers **MUST** run.
+> If a `handler function` terminates abnormally, other `handler functions` **MUST** run.
 
 #### Requirement 5.2.6
 
 > Event handlers **MUST** persist across `provider` changes.
 
-Behavior of event handlers should be independent of the order of handler addition and provider configuration.
+If a provider is changed, existing event handlers will still fire.
+This means that the order of provider configuration and event handler addition is independent.
 
 #### Requirement 5.2.7
 
@@ -108,7 +109,7 @@ Behavior of event handlers should be independent of the order of handler additio
 ### Event handlers and initialization
 
 Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
-_Application authors_ and _application integrators_ use these events to wait for proper initialization of the SDK and provider and to do basic monitoring and error handling.
+_Application authors_ and _application integrators_ use these events to wait for proper initialization of the provider and to do basic monitoring and error handling.
 
 #### Requirement 5.3.1
 
