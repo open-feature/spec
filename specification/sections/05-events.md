@@ -106,6 +106,11 @@ This means that the order of provider configuration and event handler addition i
 
 > The `API` and `client` **MUST** provide a function allowing the removal of event handlers.
 
+```java
+  // remove an existing handler for a PROVIDER_CONFIGURATION_CHANGED event
+  client.removeHandler(ProviderEvents.ConfigurationChanged, myClientOnChangedHandler);
+```
+
 ### Event handlers and initialization
 
 Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
