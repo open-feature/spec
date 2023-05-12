@@ -235,13 +235,6 @@
             "children": []
         },
         {
-            "id": "Requirement 1.6.2",
-            "machine_id": "requirement_1_6_2",
-            "content": "The client MUST define a `shutdown` function which, when called, removes all the event handlers associated with that client.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
             "id": "Requirement 2.1.1",
             "machine_id": "requirement_2_1_1",
             "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
@@ -704,6 +697,13 @@
             "id": "Requirement 5.2.6",
             "machine_id": "requirement_5_2_6",
             "content": "Event handlers MUST persist across `provider` changes.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.2.7",
+            "machine_id": "requirement_5_2_7",
+            "content": "The `API` and `client` MUST provide a function allowing the removal of event handlers.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

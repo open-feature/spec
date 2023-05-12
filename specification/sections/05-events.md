@@ -101,6 +101,10 @@ see: [`event details`](../types.md#event-details)
 
 Behavior of event handlers should be independent of the order of handler addition and provider configuration.
 
+#### Requirement 5.2.7
+
+> The `API` and `client` **MUST** provide a function allowing the removal of event handlers.
+
 ### Event handlers and initialization
 
 Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
