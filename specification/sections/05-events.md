@@ -58,7 +58,7 @@ See [event metadata](../types.md#error-event-details)
 
 #### Requirement 5.2.1
 
-> The `client` **MUST** provide an `addHandler` function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.
+> The `client` **MUST** provide a function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.
 
 ```java
   // run the myClientOnReadyHandler function when the PROVIDER_READY event is fired
@@ -69,7 +69,7 @@ see: [provider events](#51-provider-events)
 
 #### Requirement 5.2.2
 
-> The `API` **MUST** provide an `addHandler` function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.
+> The `API` **MUST** provide a function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.
 
 ```java
   // run the myGlobalErrorHandler function when the PROVIDER_READY event is fired

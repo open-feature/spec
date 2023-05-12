@@ -668,14 +668,14 @@
         {
             "id": "Requirement 5.2.1",
             "machine_id": "requirement_5_2_1",
-            "content": "The `client` MUST provide an `addHandler` function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.",
+            "content": "The `client` MUST provide a function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 5.2.2",
             "machine_id": "requirement_5_2_2",
-            "content": "The `API` MUST provide an `addHandler` function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.",
+            "content": "The `API` MUST provide a function for associating callbacks with `provider events`, which accepts an `event type` and a `event handler function`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
