@@ -72,7 +72,7 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.1.5
 
-> The API **MUST** provide a function for retrieving the metadata field of the configured `provider`.
+> The `API` **MUST** provide a function for retrieving the metadata field of the configured `provider`.
 
 ```typescript
 // example provider accessor
@@ -274,7 +274,7 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.6.1
 
-> The API **MUST** define a `shutdown` function, which, when called, must call the respective `shutdown` function on the active provider.
+> The API **MUST** define a `shutdown` function which, when called, must call the respective `shutdown` function on the active provider.
 
 The precise name of this function is not prescribed by this specification, but should be defined be the SDK.
 Relevant language idioms should be considered when choosing the name for this function, in accordance with the resource-disposal semantics of the language in question.
