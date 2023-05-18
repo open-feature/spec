@@ -8,8 +8,6 @@
             "children": []
         },
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
             "id": "Requirement 1.1.2.1",
             "machine_id": "requirement_1_1_2_1",
             "content": "The `API` MUST define a `provider mutator`, a function to set the default `provider`, which accepts an API-conformant `provider` implementation.",
@@ -27,51 +25,34 @@
             "id": "Requirement 1.1.2.3",
             "machine_id": "requirement_1_1_2_3",
             "content": "The `provider mutator` function MUST invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.",
-=======
-            "id": "Requirement 1.1.2",
-            "machine_id": "requirement_1_1_2",
-=======
-            "id": "Requirement 1.1.2.1",
-            "machine_id": "requirement_1_1_2_1",
->>>>>>> f2b30ad (fixup: reduce number thrashing in 1.1)
-            "content": "The `API` MUST expose a `provider mutator`, a function to set the global `provider` singleton, which accepts an API-conformant `provider` implementation.",
->>>>>>> 7610f5a (fixup: correct examples, grammer)
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.1.2.2",
-            "machine_id": "requirement_1_1_2_2",
-            "content": "The `provider mutator` function MUST run the `initialize` function on the newly registered provider.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.1.3",
             "machine_id": "requirement_1_1_3",
-<<<<<<< HEAD
             "content": "The `API` MUST provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.",
-=======
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.1.3",
+            "machine_id": "requirement_1_1_3",
             "content": "The `API` MUST provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
->>>>>>> f2b30ad (fixup: reduce number thrashing in 1.1)
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.1.4",
             "machine_id": "requirement_1_1_4",
-            "content": "The API MUST provide a function for retrieving the metadata field of the configured `provider`.",
+            "content": "The `API` MUST provide a function for retrieving the metadata field of the configured `provider`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.1.5",
             "machine_id": "requirement_1_1_5",
-<<<<<<< HEAD
-            "content": "The `API` MUST provide a function for retrieving the metadata field of the configured `provider`.",
-=======
             "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - name (optional): A logical string identifier for the client.",
->>>>>>> f2b30ad (fixup: reduce number thrashing in 1.1)
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -295,18 +276,7 @@
         {
             "id": "Requirement 1.6.1",
             "machine_id": "requirement_1_6_1",
-<<<<<<< HEAD
             "content": "The API MUST define a `shutdown` function which, when called, must call the respective `shutdown` function on the active provider.",
-=======
-            "content": "The API MUST define a `shutdown` or `dispose` function, which, when called, must call the respective `shutdown`/`dispose` function on the active provider.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.6.2",
-            "machine_id": "requirement_1_6_2",
-            "content": "When the API's `provider mutator` is invoked, the `shutdown`/`dispose` function on the active provider MUST run, if defined.",
->>>>>>> bab5359 (fixup: pr feedback)
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -356,7 +326,7 @@
         {
             "id": "Requirement 2.2.5",
             "machine_id": "requirement_2_2_5",
-            "content": "The `provider` SHOULD populate the `resolution details` structure's `reason` field with `\"STATIC\"`, `\"DEFAULT\",` `\"TARGETING_MATCH\"`, `\"SPLIT\"`, `\"CACHED\"`, `\"DISABLED\"`, `\"UNKNOWN\"`, `\"ERROR\"` or some other string indicating the semantic reason for the returned flag value.",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `reason` field with `\"STATIC\"`, `\"DEFAULT\",` `\"TARGETING_MATCH\"`, `\"SPLIT\"`, `\"CACHED\"`, `\"DISABLED\"`, `\"UNKNOWN\"`, `\"STALE\"`, `\"ERROR\"` or some other string indicating the semantic reason for the returned flag value.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
@@ -427,8 +397,6 @@
         {
             "id": "Requirement 2.4.1",
             "machine_id": "requirement_2_4_1",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "content": "The `provider` MAY define an `initialize` function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.",
             "RFC 2119 keyword": "MAY",
             "children": []
@@ -444,12 +412,6 @@
             "id": "Requirement 2.4.3",
             "machine_id": "requirement_2_4_3",
             "content": "The provider MUST set its `status` field/accessor to `READY` if its `initialize` function terminates normally.",
-=======
-            "content": "The `provider` interface MUST define an `initialize` function which accepts the global `evaluation context` as a argument, and which can be optionally implemented to perform initialization logic relevant to the provider.",
->>>>>>> 534aa3b (fixup: add more non-normative info on init)
-=======
-            "content": "The `provider` interface MUST define an optional `initialize` function, which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.",
->>>>>>> bab5359 (fixup: pr feedback)
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -470,20 +432,15 @@
         {
             "id": "Requirement 2.5.1",
             "machine_id": "requirement_2_5_1",
-<<<<<<< HEAD
             "content": "The provider MAY define a `shutdown` function to perform whatever cleanup is necessary for the implementation.",
             "RFC 2119 keyword": "MAY",
-=======
-            "content": "The provider interface MUST define an `on context set` handler, which takes an argument for the previous context, and the newly set context, and which can be optionally implemented to reconcile any stored state pertaining to the global evaluation context.",
-            "RFC 2119 keyword": "MUST",
->>>>>>> 7610f5a (fixup: correct examples, grammer)
             "children": []
         },
         {
             "id": "Requirement 2.6.1",
             "machine_id": "requirement_2_6_1",
-            "content": "The provider interface MUST define an `on context changed` handler, which takes a argument for the previous context, and the newly set context, and which can be optionally implemented to reconcile any stored state pertaining to the global evaluation context.",
-            "RFC 2119 keyword": "MUST",
+            "content": "The provider MAY define an `on context changed` handler, which takes an argument for the previous context and the newly set context, and reconciles any stored state pertaining to the global evaluation context.",
+            "RFC 2119 keyword": "MAY",
             "children": []
         },
         {
@@ -662,15 +619,7 @@
         {
             "id": "Condition 4.3.3",
             "machine_id": "condition_4_3_3",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "content": "The implementation uses the dynamic-context paradigm.",
-=======
-            "content": "The implementation uses the multi-context paradigm.",
->>>>>>> a6996aa (fixup: add links to context-paradigms)
-=======
-            "content": "The implementation uses the dynamic-context paradigm.",
->>>>>>> bab5359 (fixup: pr feedback)
             "RFC 2119 keyword": null,
             "children": [
                 {
@@ -805,7 +754,6 @@
         {
             "id": "Requirement 5.1.1",
             "machine_id": "requirement_5_1_1",
-<<<<<<< HEAD
             "content": "The `provider` MAY define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload.",
             "RFC 2119 keyword": "MAY",
             "children": []
@@ -814,9 +762,6 @@
             "id": "Requirement 5.1.2",
             "machine_id": "requirement_5_1_2",
             "content": "When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers MUST run.",
-=======
-            "content": "The provider MUST define a mechanism for signalling the occurrence of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_SHUTDOWN`.",
->>>>>>> 7610f5a (fixup: correct examples, grammer)
             "RFC 2119 keyword": "MUST",
             "children": []
         },
