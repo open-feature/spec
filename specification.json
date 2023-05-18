@@ -36,29 +36,29 @@
             "children": []
         },
         {
-            "id": "Requirement 1.1.3",
-            "machine_id": "requirement_1_1_3",
-            "content": "The `API` MUST provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
             "id": "Requirement 1.1.4",
             "machine_id": "requirement_1_1_4",
-            "content": "The `API` MUST provide a function for retrieving the metadata field of the configured `provider`.",
+            "content": "The `API` MUST provide a function to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.1.5",
             "machine_id": "requirement_1_1_5",
-            "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - name (optional): A logical string identifier for the client.",
+            "content": "The `API` MUST provide a function for retrieving the metadata field of the configured `provider`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.1.6",
             "machine_id": "requirement_1_1_6",
+            "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - name (optional): A logical string identifier for the client.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.1.7",
+            "machine_id": "requirement_1_1_7",
             "content": "The client creation function MUST NOT throw, or otherwise abnormally terminate.",
             "RFC 2119 keyword": "MUST NOT",
             "children": []
