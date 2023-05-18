@@ -52,7 +52,7 @@ see: [setting a provider](./01-flag-evaluation.md#setting-a-provider)
 
 The error message field should contain an informative message as to the nature of the error.
 
-See [event metadata](../types.md#error-event-details)
+See [event metadata](../types.md#provider-event-details)
 
 ### 5.2. Event handlers
 

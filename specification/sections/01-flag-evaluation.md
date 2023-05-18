@@ -49,7 +49,7 @@ See [provider initialization](./02-providers.md#24-initialization).
 
 Setting a new provider means the previous provider is no longer in use, and should therefore be disposed of using its `shutdown` function.
 
-see: [shutdown](./02-providers.md#26-shutdown), [setting a provider](#setting-a-provider)
+see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider)
 
 #### Requirement 1.1.3
 
