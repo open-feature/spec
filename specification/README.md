@@ -15,6 +15,7 @@ sidebar_position: 0
 - [Providers](./sections//02-providers.md)
 - [Evaluation Context](./sections/03-evaluation-context.md)
 - [Hooks](./sections/04-hooks.md)
+- [Events](./sections/05-events.md)
 
 ## Conformance
 
