@@ -132,39 +132,11 @@ client.getMetadata().getName(); // "my-client"
 
 #### Condition 1.3.1
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
-
-> The implementation uses the static-context paradigm.
-
-see: [static-context paradigm](../glossary.md#static-context-paradigm)
-
-##### Conditional Requirement 1.3.1.1
-
-> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns the flag value.
-
-```typescript
-// example boolean flag evaluation
-boolean myBool =  client.getBooleanValue('bool-flag', false);
-
-// example overloaded string flag evaluation with optional params
-string myString = client.getStringValue('string-flag', 'N/A', options);
-
-// example number flag evaluation
-number myNumber = client.getNumberValue('number-flag', 75);
-
-// example overloaded structure flag evaluation with optional params
-MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
-```
-
-See [evaluation context](./03-evaluation-context.md) for details.
-
-#### Condition 1.3.2
-
 > The implementation uses the dynamic-context paradigm.
 
 see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 
-##### Conditional Requirement 1.3.2.1
+##### Conditional Requirement 1.3.1.1
 
 > The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.
 
@@ -180,6 +152,34 @@ number myNumber = client.getNumberValue('number-flag', 75);
 
 // example overloaded structure flag evaluation with optional params
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
+```
+
+See [evaluation context](./03-evaluation-context.md) for details.
+
+#### Condition 1.3.2
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 1.3.2.1
+
+> The `client` **MUST** provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns the flag value.
+
+```typescript
+// example boolean flag evaluation
+boolean myBool =  client.getBooleanValue('bool-flag', false);
+
+// example overloaded string flag evaluation with optional params
+string myString = client.getStringValue('string-flag', 'N/A', options);
+
+// example number flag evaluation
+number myNumber = client.getNumberValue('number-flag', 75);
+
+// example overloaded structure flag evaluation with optional params
+MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
 ```
 
 See [evaluation context](./03-evaluation-context.md) for details.
@@ -208,41 +208,13 @@ See [types](../types.md) for details.
 
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
-
 #### Condition 1.4.1
-
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
-
-> The implementation uses the static-context paradigm.
-
-see: [static-context paradigm](../glossary.md#static-context-paradigm)
-
-##### Conditional Requirement 1.4.1.1
-
-> The `client` **MUST** provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns an `evaluation details` structure.
-
-```typescript
-// example detailed boolean flag evaluation
-FlagEvaluationDetails<boolean> myBoolDetails = client.getBooleanDetails('bool-flag', false);
-
-// example detailed string flag evaluation
-FlagEvaluationDetails<string> myStringDetails = client.getStringDetails('string-flag', 'N/A', options);
-
-// example detailed number flag evaluation
-FlagEvaluationDetails<number> myNumberDetails = client.getNumberDetails('number-flag', 75);
-
-// example detailed structure flag evaluation
-FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
-
-```
-
-#### Condition 1.4.2
 
 > The implementation uses the dynamic-context paradigm.
 
 see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 
-##### Conditional Requirement 1.4.2.1
+##### Conditional Requirement 1.4.1.1
 
 > The `client` **MUST** provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns an `evaluation details` structure.
 
@@ -258,6 +230,33 @@ FlagEvaluationDetails<number> myNumberDetails = client.getNumberDetails('number-
 
 // example detailed structure flag evaluation
 FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
+
+```
+
+#### Condition 1.4.2
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 1.4.2.1
+
+> The `client` **MUST** provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns an `evaluation details` structure.
+
+```typescript
+// example detailed boolean flag evaluation
+FlagEvaluationDetails<boolean> myBoolDetails = client.getBooleanDetails('bool-flag', false);
+
+// example detailed string flag evaluation
+FlagEvaluationDetails<string> myStringDetails = client.getStringDetails('string-flag', 'N/A', options);
+
+// example detailed number flag evaluation
+FlagEvaluationDetails<number> myNumberDetails = client.getNumberDetails('number-flag', 75);
+
+// example detailed structure flag evaluation
+FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
 
 ```
 

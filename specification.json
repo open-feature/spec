@@ -80,13 +80,13 @@
         {
             "id": "Condition 1.3.1",
             "machine_id": "condition_1_3_1",
-            "content": "The implementation uses the static-context paradigm.",
+            "content": "The implementation uses the dynamic-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 1.3.1.1",
                     "machine_id": "conditional_requirement_1_3_1_1",
-                    "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns the flag value.",
+                    "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -95,13 +95,13 @@
         {
             "id": "Condition 1.3.2",
             "machine_id": "condition_1_3_2",
-            "content": "The implementation uses the dynamic-context paradigm.",
+            "content": "The implementation uses the static-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 1.3.2.1",
                     "machine_id": "conditional_requirement_1_3_2_1",
-                    "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns the flag value.",
+                    "content": "The `client` MUST provide methods for typed flag evaluation, including boolean, numeric, string, and structure, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns the flag value.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -132,13 +132,13 @@
         {
             "id": "Condition 1.4.1",
             "machine_id": "condition_1_4_1",
-            "content": "The implementation uses the static-context paradigm.",
+            "content": "The implementation uses the dynamic-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 1.4.1.1",
                     "machine_id": "conditional_requirement_1_4_1_1",
-                    "content": "The `client` MUST provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns an `evaluation details` structure.",
+                    "content": "The `client` MUST provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns an `evaluation details` structure.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -147,13 +147,13 @@
         {
             "id": "Condition 1.4.2",
             "machine_id": "condition_1_4_2",
-            "content": "The implementation uses the dynamic-context paradigm.",
+            "content": "The implementation uses the static-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 1.4.2.1",
                     "machine_id": "conditional_requirement_1_4_2_1",
-                    "content": "The `client` MUST provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), `evaluation context` (optional), and `evaluation options` (optional), which returns an `evaluation details` structure.",
+                    "content": "The `client` MUST provide methods for detailed flag value evaluation with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required), and `evaluation options` (optional), which returns an `evaluation details` structure.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -474,21 +474,14 @@
         {
             "id": "Condition 3.2.1",
             "machine_id": "condition_3_2_1",
-            "content": "The implementation uses the static-context paradigm.",
+            "content": "The implementation uses the dynamic-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 3.2.1.1",
                     "machine_id": "conditional_requirement_3_2_1_1",
-                    "content": "The API MUST have a method for supplying `evaluation context`.",
+                    "content": "The API, Client and invocation MUST have a method for supplying `evaluation context`.",
                     "RFC 2119 keyword": "MUST",
-                    "children": []
-                },
-                {
-                    "id": "Conditional Requirement 3.2.1.2",
-                    "machine_id": "conditional_requirement_3_2_1_2",
-                    "content": "The Client and invocation MUST NOT have a method for supplying `evaluation context`.",
-                    "RFC 2119 keyword": "MUST NOT",
                     "children": []
                 }
             ]
@@ -496,14 +489,21 @@
         {
             "id": "Condition 3.2.2",
             "machine_id": "condition_3_2_2",
-            "content": "The implementation uses the dynamic-context paradigm.",
+            "content": "The implementation uses the static-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 3.2.2.1",
                     "machine_id": "conditional_requirement_3_2_2_1",
-                    "content": "The API, Client and invocation MUST have a method for supplying `evaluation context`.",
+                    "content": "The API MUST have a method for supplying `evaluation context`.",
                     "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 3.2.2.2",
+                    "machine_id": "conditional_requirement_3_2_2_2",
+                    "content": "The Client and invocation MUST NOT have a method for supplying `evaluation context`.",
+                    "RFC 2119 keyword": "MUST NOT",
                     "children": []
                 }
             ]
@@ -604,13 +604,13 @@
         {
             "id": "Condition 4.3.2",
             "machine_id": "condition_4_3_2",
-            "content": "The implementation uses the static-context paradigm.",
+            "content": "The implementation uses the dynamic-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 4.3.2.1",
                     "machine_id": "conditional_requirement_4_3_2_1",
-                    "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters. It has no return value.",
+                    "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -619,13 +619,13 @@
         {
             "id": "Condition 4.3.3",
             "machine_id": "condition_4_3_3",
-            "content": "The implementation uses the dynamic-context paradigm.",
+            "content": "The implementation uses the static-context paradigm.",
             "RFC 2119 keyword": null,
             "children": [
                 {
                     "id": "Conditional Requirement 4.3.3.1",
                     "machine_id": "conditional_requirement_4_3_3_1",
-                    "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.",
+                    "content": "The `before` stage MUST run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters. It has no return value.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }

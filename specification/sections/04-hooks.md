@@ -75,32 +75,32 @@ Hook context exists to provide hooks with information about the invocation.
 
 #### Condition 4.3.2
 
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 4.3.2.1
+
+> The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.
+
+```java
+EvaluationContext | void before(HookContext hookContext, HookHints hints);
+```
+
+#### Condition 4.3.3
+
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
 > The implementation uses the static-context paradigm.
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
-##### Conditional Requirement 4.3.2.1
+##### Conditional Requirement 4.3.3.1
 
 > The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters. It has no return value.
 
-```typescript
-void before(HookContext, HookHints);
-```
-
-#### Condition 4.3.3
-
-> The implementation uses the dynamic-context paradigm.
-
-see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
-
-##### Conditional Requirement 4.3.3.1
-
-> The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.
-
-```typescript
-EvaluationContext | void before(HookContext, HookHints);
+```java
+void before(HookContext hookContext, HookHints hints);
 ```
 
 #### Requirement 4.3.4

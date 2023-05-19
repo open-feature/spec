@@ -46,35 +46,35 @@ The key uniquely identifies a field in the `evaluation context` and it should be
 
 #### Condition 3.2.1
 
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 3.2.1.1
+
+> The API, Client and invocation **MUST** have a method for supplying `evaluation context`.
+
+API (global) `evaluation context` can be used to supply static data to flag evaluation, such as an application identifier, compute region, or hostname. Client and invocation `evaluation context` are ideal for dynamic data, such as end-user attributes.
+
+#### Condition 3.2.2
+
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
 > The implementation uses the static-context paradigm.
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
-##### Conditional Requirement 3.2.1.1
+##### Conditional Requirement 3.2.2.1
 
 > The API **MUST** have a method for supplying `evaluation context`.
 
 API (global) `evaluation context` can be used to supply data to flag evaluation, such as (but not limited to) user name, email, or shopping cart items.
 
-##### Conditional Requirement 3.2.1.2
+##### Conditional Requirement 3.2.2.2
 
 > The Client and invocation **MUST NOT** have a method for supplying `evaluation context`.
 
 In the static-context paradigm, context is global. The client and invocation cannot supply evaluation context. 
-
-#### Condition 3.2.2
-
-> The implementation uses the dynamic-context paradigm.
-
-see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
-
-##### Conditional Requirement 3.2.2.1
-
-> The API, Client and invocation **MUST** have a method for supplying `evaluation context`.
-
-API (global) `evaluation context` can be used to supply static data to flag evaluation, such as an application identifier, compute region, or hostname. Client and invocation `evaluation context` are ideal for dynamic data, such as end-user attributes.
 
 #### Requirement 3.2.3
 
