@@ -251,7 +251,7 @@ class MyProvider implements Provider, AutoDisposable {
 
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
-Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on-context-set` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
+Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on context changed` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
 
 #### Requirement 2.6.1
 
@@ -261,7 +261,7 @@ Especially in static-context implementations, providers and underlying SDKs may 
 The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
 
 ```java
-// MyProvider implementation of the onContextSet function defined in Provider
+// MyProvider implementation of the onContextChanged function defined in Provider
 class MyProvider implements Provider {
   //...
 
