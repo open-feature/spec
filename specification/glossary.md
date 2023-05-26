@@ -185,6 +185,6 @@ In contrast to server-side or other service-type applications, client side appli
 - an initialization occurs, which fetches evaluated flags in bulk for a given context (user)
 - the evaluated flags are cached in the library
 - flag evaluations take place against this cache, without a need to provide context (context was already used to evaluate flags in bulk)
-- functions are exposed on the libraries that signal the cache is no longer valid, and must be reconciled based on a context change, frequently involving a network request or I/O operation
+- libraries provide a mechanism to update context (e.g. if a user logs in), meaning cached evaluations are no longer valid and must be re-evaluated, frequently involving a network request or I/O operation
 
 Not all client libraries work this way, but generally, libraries that accept dynamic context per evaluation can build providers which conform to this model with relative ease, while the reverse is not true.
