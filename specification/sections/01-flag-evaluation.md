@@ -37,9 +37,10 @@ See [provider](./02-providers.md) for details.
 
 #### Requirement 1.1.2.2
 
-> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
+> The `provider mutator` function **MUST** await the termination `initialize` function on the newly registered provider before using it to resolve flag values.
 
 The `provider's` readiness can state can be determined from its `status` member/accessor.
+Provider instances which are already active (because they have been bound to other `names` or otherwise) need not be initialized again.
 
 See [provider initialization](./02-providers.md#24-initialization).
 
@@ -47,7 +48,8 @@ See [provider initialization](./02-providers.md#24-initialization).
 
 >  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
-Setting a new provider means the previous provider is no longer in use, and should therefore be disposed of using its `shutdown` function.
+When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
+Provider instances which are bound to multiple names won't be shut down until the last binding is removed.
 
 see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider)
 
@@ -274,9 +276,9 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.6.1
 
-> The API **MUST** define a `shutdown` function which, when called, must call the respective `shutdown` function on the active provider.
+> The API **MUST** define a mechanism to propagate a shutdown request to active providers.
 
-The precise name of this function is not prescribed by this specification, but should be defined be the SDK.
-Relevant language idioms should be considered when choosing the name for this function, in accordance with the resource-disposal semantics of the language in question.
+The global API object might expose a `shutdown` function, which will call the respective `shutdown` function on the registered providers.
+Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)

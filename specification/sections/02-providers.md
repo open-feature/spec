@@ -236,7 +236,8 @@ see: [error codes](https://openfeature.dev/specification/types#error-code)
 
 #### Requirement 2.5.1
 
-> The provider **MAY** define a `shutdown` function to perform whatever cleanup is necessary for the implementation.
+> The provider **MAY** define a mechanism to gracefully shutdown and dispose of resources.
+
 ```java
 // MyProvider implementation of the dispose function defined in Provider
 class MyProvider implements Provider, AutoDisposable {
@@ -249,6 +250,5 @@ class MyProvider implements Provider, AutoDisposable {
 ```
 
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.
-Provider authors may implement the `shutdown` function to perform relevant clean-up actions.
-The precise name of this function is not prescribed by this specification, but should be defined be the SDK.
-Relevant language idioms should be considered when choosing the name for this function, in accordance with the resource-disposal semantics of the language in question.
+Provider authors may implement a `shutdown` function to perform relevant clean-up actions.
+Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
