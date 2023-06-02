@@ -17,7 +17,7 @@
         {
             "id": "Requirement 1.1.2.2",
             "machine_id": "requirement_1_1_2_2",
-            "content": "The `provider mutator` function MUST await the termination of the `initialize` function on the newly registered provider before using it to resolve flag values.",
+            "content": "The `provider mutator` function MUST invoke the `initialize` function on the newly registered provider before using it to resolve flag values.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

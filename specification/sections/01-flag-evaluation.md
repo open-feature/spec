@@ -37,12 +37,13 @@ See [provider](./02-providers.md) for details.
 
 #### Requirement 1.1.2.2
 
-> The `provider mutator` function **MUST** await the termination of the `initialize` function on the newly registered provider before using it to resolve flag values.
+> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
 
-The `provider's` readiness can state can be determined from its `status` member/accessor.
+Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
 Provider instances which are already active (because they have been bound to other `names` or otherwise) need not be initialized again.
+The `provider's` readiness can state can be determined from its `status` member/accessor.
 
-See [provider initialization](./02-providers.md#24-initialization).
+See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization).
 
 #### Requirement 1.1.2.3
 
