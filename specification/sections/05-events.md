@@ -1,5 +1,5 @@
 ---
-title: Events Extensions
+title: Events
 description: Specification defining event semantics
 toc_max_heading_level: 4
 ---
@@ -80,10 +80,12 @@ see: [provider events](#51-provider-events), [`provider event types`](../types.m
 
 #### Requirement 5.2.3
 
-> The `event details` **MUST** contain the `client name` associated with the event.
+> The `event details` **MUST** contain the `provider name` associated with the event.
 
-The `client name` indicates the client/provider pair with which the event is associated.
-This is especially relevant for event handlers which are attached to the `API`, not a particular client.
+The `provider name` indicates the provider from which the event originated.
+This is especially relevant for global event handlers used for general monitoring, such as alerting on provider errors. 
+
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [creating clients](./01-flag-evaluation.md#creating-clients). 
 
 #### Requirement 5.2.4
 
@@ -99,7 +101,7 @@ see: [`event details`](../types.md#event-details)
 
 > Event handlers **MUST** persist across `provider` changes.
 
-If a provider is changed, existing event handlers will still fire.
+If the underlying provider is changed, existing client and API event handlers will still fire.
 This means that the order of provider configuration and event handler addition is independent.
 
 #### Requirement 5.2.7
@@ -134,6 +136,10 @@ See [provider initialization](./02-providers.md#24-initialization) and [setting 
 
 #### Requirement 5.3.3
 
-> `PROVIDER_READY` handlers attached after the provider is already in a ready state **MUST** run immediately.
+> Client `PROVIDER_READY` handlers attached after the provider is in a ready state **MUST** run immediately.
 
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+_Application authors_ may attach readiness handlers to be confident that system is ready to evaluate flags.
+If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
+API (global) handlers have no such requirement, as they are potentially bound to multiple providers and are used primarily for diagnostic purposes.
+
+See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).

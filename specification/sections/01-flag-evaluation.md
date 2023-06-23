@@ -31,9 +31,9 @@ It's important that multiple instances of the `API` not be active, so that state
 OpenFeature.setProvider(new MyProvider());
 ```
 
-This provider is used if there is not a more specific client name binding. (see later requirements).
+This provider is used if a client is not bound to a specific provider through its name.
 
-See [provider](./02-providers.md) for details.
+See [provider](./02-providers.md), [creating clients](#creating-clients).
 
 #### Requirement 1.1.2.2
 
@@ -56,11 +56,15 @@ see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-
 
 #### Requirement 1.1.3
 
-> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.
+> The `API` **MUST** provide a function to bind a given `provider` to a client `name`. If the client-name already has a bound provider, it is overwritten with the new mapping.
 
 ```java
 OpenFeature.setProvider("client-name", new MyProvider());
 ```
+
+Named clients can be associated with a particular provider by supplying a matching name when the provider is set.
+
+See [creating clients](#creating-clients).
 
 #### Requirement 1.1.4
 
@@ -84,20 +88,23 @@ OpenFeature.getProviderMetadata();
 
 See [provider](./02-providers.md) for details.
 
+### Creating clients
+
 #### Requirement 1.1.6
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
 > - name (optional): A logical string identifier for the client.
 
-```typescript
+```java
 // example client creation and retrieval
-OpenFeature.getClient({
-  name: "my-openfeature-client",
-});
+OpenFeature.getClient(name: "my-named-client");
 ```
 
-The name is a logical identifier for the client.
+The name is a logical identifier for the client which may be associated with a particular provider.
+If a client name is not bound to a particular provider, the client is associated with the default provider.
+
+See [setting a provider](#setting-a-provider) for details.
 
 #### Requirement 1.1.7
 
