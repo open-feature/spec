@@ -98,7 +98,7 @@ See [provider](./02-providers.md) for details.
 
 ```java
 // example client creation and retrieval
-OpenFeature.getClient(name: "my-named-client");
+OpenFeature.getClient("my-named-client");
 ```
 
 The name is a logical identifier for the client which may be associated with a particular provider by the application integrator.
