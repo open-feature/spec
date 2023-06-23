@@ -101,7 +101,7 @@ See [provider](./02-providers.md) for details.
 OpenFeature.getClient(name: "my-named-client");
 ```
 
-The name is a logical identifier for the client which may be associated with a particular provider.
+The name is a logical identifier for the client which may be associated with a particular provider by the application integrator.
 If a client name is not bound to a particular provider, the client is associated with the default provider.
 
 See [setting a provider](#setting-a-provider) for details.
