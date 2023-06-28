@@ -31,7 +31,7 @@
         {
             "id": "Requirement 1.1.3",
             "machine_id": "requirement_1_1_3",
-            "content": "The `API` MUST provide a function to bind a given `provider` to a client `name`. If the client-name already has a bound provider, it is overwritten with the new mapping.",
+            "content": "The `API` MUST provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

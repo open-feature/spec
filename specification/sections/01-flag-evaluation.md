@@ -56,7 +56,7 @@ see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-
 
 #### Requirement 1.1.3
 
-> The `API` **MUST** provide a function to bind a given `provider` to a client `name`. If the client-name already has a bound provider, it is overwritten with the new mapping.
+> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.
 
 ```java
 OpenFeature.setProvider("client-name", new MyProvider());
