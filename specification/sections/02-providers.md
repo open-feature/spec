@@ -257,7 +257,7 @@ Static-context focused providers may need a mechanism to understand when their c
 
 > The provider **MAY** define an `on context changed` handler, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.
 
-Especially in static-context implementations, providers and underlying SDKs may maintain a cache of evaluated flags for a particular context.
+Especially in static-context implementations, providers and underlying SDKs may maintain state for a particular context.
 The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
 
 ```java
