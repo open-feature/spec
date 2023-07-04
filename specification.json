@@ -276,7 +276,7 @@
         {
             "id": "Requirement 1.6.1",
             "machine_id": "requirement_1_6_1",
-            "content": "The API MUST define a `shutdown` function which, when called, must call the respective `shutdown` function on the active provider.",
+            "content": "The API MUST define a mechanism to propagate a shutdown request to active providers.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -432,7 +432,7 @@
         {
             "id": "Requirement 2.5.1",
             "machine_id": "requirement_2_5_1",
-            "content": "The provider MAY define a `shutdown` function to perform whatever cleanup is necessary for the implementation.",
+            "content": "The provider MAY define a mechanism to gracefully shutdown and dispose of resources.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
