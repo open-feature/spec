@@ -22,6 +22,8 @@ This document defines some terms that are used across this specification.
   - [Library Author](#library-author)
 - [Common](#common)
   - [Feature Flag SDK](#feature-flag-sdk)
+  - [Client-Side SDK](#client-side-sdk)
+  - [Server-Side SDK](#server-side-sdk)
   - [Feature Flag API](#feature-flag-api)
   - [Evaluation API](#evaluation-api)
   - [Flag Management System](#flag-management-system)
@@ -78,6 +80,14 @@ The maintainer of a shared library which is a dependency of many applications or
 ### Feature Flag SDK
 
 The libraries used by the Application Author to implement feature flags in their application or service. The interfaces defined in these libraries adhere to the Feature Flag API.
+
+### Client-Side SDK
+
+An SDK which is built for usage in client applications (e.g. single-page web applications), and typically uses the [static-context paradigm](#static-context-paradigm).
+
+### Server-Side SDK
+
+An SDK which is built for usage in server applications (e.g. REST services), and typically uses the [dynamic-context paradigm](#dynamic-context-paradigm).
 
 ### Feature Flag API
 
@@ -180,7 +190,7 @@ Server-side applications typically perform flag evaluations on behalf of many us
 
 ### Static-Context Paradigm
 
-In contrast to server-side or other service-type applications, client side applications typically operate in the context of a single user. Most feature flagging libraries for these applications have been designed with this in mind. Frequently, Client/web libraries operate similarly to this:
+In contrast to server-side or other service-type applications, client side applications typically operate in the context of a single user. Most feature flagging libraries for these applications have been designed with this in mind. Frequently, client/web libraries operate similarly to this:
 
 - an initialization occurs, which fetches evaluated flags in bulk for a given context (user)
 - the evaluated flags are cached in the library
