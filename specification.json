@@ -495,7 +495,7 @@
                 {
                     "id": "Conditional Requirement 3.2.2.1",
                     "machine_id": "conditional_requirement_3_2_2_1",
-                    "content": "The API MUST have a method for supplying `evaluation context`.",
+                    "content": "The API MUST have a method for setting the global `evaluation context`.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
