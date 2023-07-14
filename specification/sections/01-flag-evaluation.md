@@ -182,7 +182,6 @@ number myNumber = client.getNumberValue('number-flag', 75);
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
 ```
 
-See [evaluation context](./03-evaluation-context.md) for details.
 
 #### Condition 1.3.3
 
