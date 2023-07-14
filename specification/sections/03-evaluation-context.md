@@ -66,7 +66,7 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 3.2.2.1
 
-> The API **MUST** have a method for supplying `evaluation context`.
+> The API **MUST** have a method for setting the global `evaluation context`.
 
 API (global) `evaluation context` can be used to supply data to flag evaluation, such as (but not limited to) user name, email, or user organization membership changes.
 
