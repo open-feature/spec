@@ -16,7 +16,7 @@ sidebar_position: 0
 - [Evaluation Context](./sections/03-evaluation-context.md)
 - [Hooks](./sections/04-hooks.md)
 - [Events](./sections/05-events.md)
-- [Appendix](./appendix.md)
+- [Appendix-A](./appendix-A.md)
 
 ## Conformance
 
