@@ -6,7 +6,7 @@ sidebar_position: 4
 
 # Appendix
 
-This document contains extra information for OpenFeature maintainers and users.
+This document contains requirements for auxiliary utilities provided by the SDK, such as testing utilities.
 
 ## In-memory provider
 
