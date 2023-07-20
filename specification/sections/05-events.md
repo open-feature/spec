@@ -140,6 +140,5 @@ See [provider initialization](./02-providers.md#24-initialization) and [setting 
 
 _Application authors_ may attach readiness handlers to be confident that system is ready to evaluate flags.
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
-API (global) handlers have no such requirement, as they are potentially bound to multiple providers and are used primarily for diagnostic purposes.
 
 See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).
