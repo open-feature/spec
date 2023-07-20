@@ -136,7 +136,7 @@ See [provider initialization](./02-providers.md#24-initialization) and [setting 
 
 #### Requirement 5.3.3
 
-> Client `PROVIDER_READY` handlers attached after the provider is in a ready state **MUST** run immediately.
+> `PROVIDER_READY` handlers attached after the provider is in a ready state **MUST** run immediately.
 
 _Application authors_ may attach readiness handlers to be confident that system is ready to evaluate flags.
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
