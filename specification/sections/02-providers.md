@@ -77,7 +77,7 @@ The value of the variant field might only be meaningful in the context of the fl
 
 #### Requirement 2.2.5
 
-> The `provider` **SHOULD** populate the `resolution details` structure's `reason` field with `"STATIC"`, `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"CACHED"`, `"DISABLED"`, `"UNKNOWN"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
+> The `provider` **SHOULD** populate the `resolution details` structure's `reason` field with `"STATIC"`, `"DEFAULT",` `"TARGETING_MATCH"`, `"SPLIT"`, `"CACHED"`, `"DISABLED"`, `"UNKNOWN"`, `"STALE"`, `"ERROR"` or some other string indicating the semantic reason for the returned flag value.
 
 As indicated in the definition of the [`resolution details`](../types.md#resolution-details) structure, the `reason` should be a string. This allows providers to reflect accurately why a flag was resolved to a particular value.
 
@@ -245,6 +245,30 @@ class MyProvider implements Provider, AutoDisposable {
   void dispose() {
     // close connections, terminate threads or timers, etc...
   }
+```
+
+### 2.6. Provider context reconciliation
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on context changed` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
+
+#### Requirement 2.6.1
+
+> The provider **MAY** define an `on context changed` handler, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.
+
+Especially in static-context implementations, providers and underlying SDKs may maintain state for a particular context.
+The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
+
+```java
+// MyProvider implementation of the onContextChanged function defined in Provider
+class MyProvider implements Provider {
+  //...
+
+  onContextChanged(EvaluationContext oldContext, EvaluationContext newContext): void {
+    // update context-sensitive cached flags, or otherwise react to the change in the global context 
+  }
+
   //...
 }
 ```

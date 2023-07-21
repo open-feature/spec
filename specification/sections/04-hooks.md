@@ -73,41 +73,63 @@ Hook context exists to provide hooks with information about the invocation.
 
 > Hooks **MUST** specify at least one stage.
 
-#### Requirement 4.3.2
+#### Condition 4.3.2
+
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 4.3.2.1
 
 > The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters and returns either an `evaluation context` or nothing.
 
-```typescript
-EvaluationContext | void before(HookContext, HookHints);
+```java
+EvaluationContext | void before(HookContext hookContext, HookHints hints);
 ```
 
-#### Requirement 4.3.3
+#### Condition 4.3.3
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 4.3.3.1
+
+> The `before` stage **MUST** run before flag resolution occurs. It accepts a `hook context` (required) and `hook hints` (optional) as parameters. It has no return value.
+
+```java
+void before(HookContext hookContext, HookHints hints);
+```
+
+#### Requirement 4.3.4
 
 > Any `evaluation context` returned from a `before` hook **MUST** be passed to subsequent `before` hooks (via `HookContext`).
 
-#### Requirement 4.3.4
+#### Requirement 4.3.5
 
 > When `before` hooks have finished executing, any resulting `evaluation context` **MUST** be merged with the existing `evaluation context`.
 
 Evaluation context merge order is defined in [Requirement 3.2.2](./03-evaluation-context.md#requirement-322).
 
-#### Requirement 4.3.5
+#### Requirement 4.3.6
 
 > The `after` stage **MUST** run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `hook hints` (optional). It has no return value.
 
-#### Requirement 4.3.6
+#### Requirement 4.3.7
 
 > The `error` hook **MUST** run when errors are encountered in the `before` stage, the `after` stage or during flag resolution. It accepts `hook context` (required), `exception` representing what went wrong (required), and `hook hints` (optional). It has no return value.
 
-#### Requirement 4.3.7
+#### Requirement 4.3.8
 
 > The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `hook hints` (optional). There is no return value.
 
-#### Condition 4.3.8
+#### Condition 4.3.9
 
 > `finally` is a reserved word in the language.
 
-##### Conditional Requirement 4.3.8.1
+##### Conditional Requirement 4.3.9.1
 
 > Instead of `finally`, `finallyAfter` **SHOULD** be used.
 
