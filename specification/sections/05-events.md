@@ -144,3 +144,21 @@ For instance, _application authors_ may attach readiness handlers to be confiden
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
 
 See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+
+#### Requirement 5.3.4
+
+> When the provider's `on context changed` is called, `PROVIDER_STALE` handlers **MUST** run.
+
+See: [provider events](#51-provider-events), [`provider event types`](../types.md#provider-events)
+
+#### Requirement 5.3.5
+
+> If the provider's `on context changed` function terminates successfully, `PROVIDER_READY` handlers **MUST** run.
+
+See: [provider events](#51-provider-events), [`provider event types`](../types.md#provider-events)
+
+#### Requirement 5.3.6
+
+> If the provider's `on context changed` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
+
+See: [provider events](#51-provider-events), [`provider event types`](../types.md#provider-events)

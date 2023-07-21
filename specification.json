@@ -891,6 +891,27 @@
             "content": "Handlers attached after the provider is already in the associated state, MUST run immediately.",
             "RFC 2119 keyword": "MUST",
             "children": []
+        },
+        {
+            "id": "Requirement 5.3.4",
+            "machine_id": "requirement_5_3_4",
+            "content": "When the provider's `on context changed` is called, `PROVIDER_STALE` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.3.5",
+            "machine_id": "requirement_5_3_5",
+            "content": "If the provider's `on context changed` function terminates successfully, `PROVIDER_READY` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 5.3.6",
+            "machine_id": "requirement_5_3_6",
+            "content": "If the provider's `on context changed` function terminates abnormally, `PROVIDER_ERROR` handlers MUST run.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         }
     ]
 }
