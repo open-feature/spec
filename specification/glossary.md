@@ -22,6 +22,8 @@ This document defines some terms that are used across this specification.
   - [Library Author](#library-author)
 - [Common](#common)
   - [Feature Flag SDK](#feature-flag-sdk)
+  - [Client-Side SDK](#client-side-sdk)
+  - [Server-Side SDK](#server-side-sdk)
   - [Feature Flag API](#feature-flag-api)
   - [Evaluation API](#evaluation-api)
   - [Flag Management System](#flag-management-system)
@@ -39,6 +41,9 @@ This document defines some terms that are used across this specification.
   - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
+- [SDK Paradigms](#sdk-paradigms)
+  - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
+  - [Static-Context Paradigm](#static-context-paradigm)
 
 <!-- tocstop -->
 
@@ -75,6 +80,14 @@ The maintainer of a shared library which is a dependency of many applications or
 ### Feature Flag SDK
 
 The libraries used by the Application Author to implement feature flags in their application or service. The interfaces defined in these libraries adhere to the Feature Flag API.
+
+### Client-Side SDK
+
+An SDK which is built for usage in client applications (e.g. single-page web applications), and typically uses the [static-context paradigm](#static-context-paradigm).
+
+### Server-Side SDK
+
+An SDK which is built for usage in server applications (e.g. REST services), and typically uses the [dynamic-context paradigm](#dynamic-context-paradigm).
 
 ### Feature Flag API
 
@@ -163,3 +176,25 @@ Pseudorandomly resolve flag values using a context property, such as a targeting
 ### Rule
 
 A rule is some criteria that's used to determine which variant a particular context should be mapped to.
+
+## SDK Paradigms
+
+Feature flag frameworks have SDKs which operate in two distinct paradigms: those designed for use with a single user client application (e.g. mobile phones, single-page web apps), and those designed for multi-user applications, such as web server applications. Some parts of the OpenFeature specification diverge depending on the paradigm.
+
+### Dynamic-Context Paradigm
+
+Server-side applications typically perform flag evaluations on behalf of many users, with each request or event being associated with a particular user or client. For this reason, server frameworks typically operate similarly to this:
+
+- the application is initialized with some static context (geography, service name, hostname, etc)
+- with each request or event, relevant dynamic context (for example, user session data, unique user identifiers) is provided to flag evaluations
+
+### Static-Context Paradigm
+
+In contrast to server-side or other service-type applications, client side applications typically operate in the context of a single user. Most feature flagging libraries for these applications have been designed with this in mind. Frequently, client/web libraries operate similarly to this:
+
+- an initialization occurs, which fetches evaluated flags in bulk for a given context (user)
+- the evaluated flags are cached in the library
+- flag evaluations take place against this cache, without a need to provide context (context was already used to evaluate flags in bulk)
+- libraries provide a mechanism to update context (e.g. if a user logs in), meaning cached evaluations are no longer valid and must be re-evaluated, frequently involving a network request or I/O operation
+
+Not all client libraries work this way, but generally, libraries that accept dynamic context per evaluation can build providers which conform to this model with relative ease, while the reverse is not true.
