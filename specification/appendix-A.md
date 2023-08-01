@@ -28,7 +28,7 @@ Given below are features this provider **MUST** support,
 > E2E tests must utilize [in-memory provider](#in-memory-provider) defined within the SDK and must be self-contained.
 
 OpenFeature project maintains end-to-end(e2e) test suite defined with [Gherkin syntax](https://cucumber.io/docs/gherkin/).
-These test definitions resides in [OpenFeature test-harness](https://github.com/open-feature/test-harness) repository.
+These test definitions reside in the [OpenFeature test-harness](https://github.com/open-feature/test-harness) repository.
 
 ```mermaid
 flowchart LR 
