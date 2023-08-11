@@ -845,7 +845,7 @@
         {
             "id": "Requirement 5.3.3",
             "machine_id": "requirement_5_3_3",
-            "content": "`PROVIDER_READY` handlers attached after the provider is in a ready state MUST run immediately.",
+            "content": "Handlers attached after the provider is already in the associated state, MUST run immediately.",
             "RFC 2119 keyword": "MUST",
             "children": []
         }
