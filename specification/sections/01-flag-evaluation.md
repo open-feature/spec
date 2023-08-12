@@ -112,8 +112,13 @@ Clients may be created in critical code paths, and even per-request in server-si
 The `API` will ensure that the provider is ready or in error before being able to initializing the client.
 
 ```typescript
-await Openfeature.setProviderAndWait(myprovider)
-const client = Openfeature.getClient()
+// default client
+await Openfeature.setProviderAndWait(myprovider);
+const client = Openfeature.getClient();
+
+// named client
+await Openfeature.setProviderAndWait('client-name', myprovider);
+const client = Openfeature.getClient('client-name');
 ```
 
 ### 1.2. Client Usage
