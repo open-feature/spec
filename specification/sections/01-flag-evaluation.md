@@ -105,6 +105,17 @@ The name is a logical identifier for the client.
 
 Clients may be created in critical code paths, and even per-request in server-side HTTP contexts. Therefore, in keeping with the principle that OpenFeature should never cause abnormal execution of the first party application, this function should never throw. Abnormal execution in initialization should instead occur during provider registration.
 
+#### Requirement 1.1.8
+
+> The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to return or throw.
+
+The `API` will ensure that the provider is ready or in error before being able to initializing the client.
+
+```typescript
+await Openfeature.setProviderAndWait(myprovider)
+const client = Openfeature.getClient()
+```
+
 ### 1.2. Client Usage
 
 #### Requirement 1.2.1
