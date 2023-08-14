@@ -111,14 +111,14 @@ Clients may be created in critical code paths, and even per-request in server-si
 
 This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
 
-```typescript
+```java
 // default client
-await Openfeature.setProviderAndWait(myprovider);
-const client = Openfeature.getClient();
+OpenFeatureAPI.getInstance().setProviderAndWait(myprovider);
+Client client = OpenFeatureAPI.getInstance().getClient();
 
 // named client
-await Openfeature.setProviderAndWait('client-name', myprovider);
-const client = Openfeature.getClient('client-name');
+OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider);
+Client client = OpenFeatureAPI.getInstance().getClient('client-name');
 ```
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
