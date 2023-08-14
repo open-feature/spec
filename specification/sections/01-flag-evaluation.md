@@ -109,7 +109,7 @@ Clients may be created in critical code paths, and even per-request in server-si
 
 > The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to return or throw.
 
-The `API` will ensure that the provider is ready or in error before being able to initializing the client.
+This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
 
 ```typescript
 // default client
