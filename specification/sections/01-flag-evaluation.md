@@ -121,6 +121,8 @@ await Openfeature.setProviderAndWait('client-name', myprovider);
 const client = Openfeature.getClient('client-name');
 ```
 
+Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
+
 ### 1.2. Client Usage
 
 #### Requirement 1.2.1
