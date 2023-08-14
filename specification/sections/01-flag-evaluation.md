@@ -113,11 +113,11 @@ This function not only sets the provider, but ensures that the provider is ready
 
 ```java
 // default client
-OpenFeatureAPI.getInstance().setProviderAndWait(myprovider);
-Client client = OpenFeatureAPI.getInstance().getClient();
+OpenFeatureAPI.getInstance().setProviderAndWait(myprovider); // this method blocks until the provider is ready or in error
+Client client = OpenFeatureAPI.getInstance().getClient(); 
 
 // named client
-OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider);
+OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider); // this method blocks until the provider is ready or in error
 Client client = OpenFeatureAPI.getInstance().getClient('client-name');
 ```
 
