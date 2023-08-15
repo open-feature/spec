@@ -803,7 +803,7 @@
         {
             "id": "Requirement 5.2.3",
             "machine_id": "requirement_5_2_3",
-            "content": "The `event details` MUST contain the `client name` associated with the event.",
+            "content": "The `event details` MUST contain the `provider name` associated with the event.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -852,7 +852,7 @@
         {
             "id": "Requirement 5.3.3",
             "machine_id": "requirement_5_3_3",
-            "content": "`PROVIDER_READY` handlers attached after the provider is already in a ready state MUST run immediately.",
+            "content": "Handlers attached after the provider is already in the associated state, MUST run immediately.",
             "RFC 2119 keyword": "MUST",
             "children": []
         }
