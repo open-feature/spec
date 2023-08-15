@@ -64,6 +64,13 @@
             "children": []
         },
         {
+            "id": "Requirement 1.1.8",
+            "machine_id": "requirement_1_1_8",
+            "content": "The `API` SHOULD provide functions to set a provider and wait for the `initialize` function to return or throw.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
             "id": "Requirement 1.2.1",
             "machine_id": "requirement_1_2_1",
             "content": "The client MUST provide a method to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",

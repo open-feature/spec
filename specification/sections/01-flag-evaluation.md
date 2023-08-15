@@ -112,6 +112,24 @@ See [setting a provider](#setting-a-provider) for details.
 
 Clients may be created in critical code paths, and even per-request in server-side HTTP contexts. Therefore, in keeping with the principle that OpenFeature should never cause abnormal execution of the first party application, this function should never throw. Abnormal execution in initialization should instead occur during provider registration.
 
+#### Requirement 1.1.8
+
+> The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to return or throw.
+
+This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
+
+```java
+// default client
+OpenFeatureAPI.getInstance().setProviderAndWait(myprovider); // this method blocks until the provider is ready or in error
+Client client = OpenFeatureAPI.getInstance().getClient(); 
+
+// named client
+OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider); // this method blocks until the provider is ready or in error
+Client client = OpenFeatureAPI.getInstance().getClient('client-name');
+```
+
+Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
+
 ### 1.2. Client Usage
 
 #### Requirement 1.2.1
