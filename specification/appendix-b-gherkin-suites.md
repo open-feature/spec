@@ -1,5 +1,5 @@
 ---
-title: Appendix A: End-to-End Tests
+title: Appendix B: End-to-End Tests
 description: A Set of End-to-End Tests for Validating OpenFeature Implementations
 sidebar_position: 5
 ---
