@@ -3,7 +3,7 @@ Feature: Flag evaluation
 # This test suite contains scenarios to test the flag evaluation API.
 
   Background:
-    Given a provider is registered with cache disabled
+    Given a provider is registered
 
   # basic evaluation
   Scenario: Resolves boolean value
