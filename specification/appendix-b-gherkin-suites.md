@@ -1,5 +1,6 @@
 ---
-title: Appendix B: End-to-End Tests
+id: appendix-b
+title: "Appendix B: Gherkin Suites"
 description: A Set of End-to-End Tests for Validating OpenFeature Implementations
 sidebar_position: 5
 ---
