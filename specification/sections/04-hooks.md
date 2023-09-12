@@ -111,7 +111,7 @@ void before(HookContext hookContext, HookHints hints);
 
 > When `before` hooks have finished executing, any resulting `evaluation context` **MUST** be merged with the existing `evaluation context`.
 
-Evaluation context merge order is defined in [Requirement 3.2.2](./03-evaluation-context.md#requirement-322).
+Evaluation context merge order is defined in [Context levels and merging](./03-evaluation-context.md#32-context-levels-and-merging).
 
 #### Requirement 4.3.6
 
