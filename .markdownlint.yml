@@ -8,3 +8,5 @@ MD024:
   siblings_only: true
 MD025:
   front_matter_title: ""
+MD028: false # no blank lines in block quote - disabling b/c it fires on 2 consecutive block quotes :/
+
