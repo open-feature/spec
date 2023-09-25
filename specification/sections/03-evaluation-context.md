@@ -16,7 +16,8 @@ The context might contain information about the end-user, the application, the h
 
 ### 3.1 Fields
 
-NOTE: Field casing is not specified, and should be chosen in accordance with language idioms.
+> [!NOTE]
+> Field casing is not specified, and should be chosen in accordance with language idioms.
 
 see: [types](../types.md)
 
