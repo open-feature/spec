@@ -42,6 +42,11 @@ A structure representing the result of the [flag evaluation process](./glossary.
 - variant (string, optional)
 - flag metadata ([flag metadata](#flag-metadata))
 
+> [!NOTE]
+> Some type systems feature useful constraints that can enhance the ergonomics of the `evaluation details` structure.
+> For example, in the case of an unsuccessful evaluation, `error code`, `reason`, and `error message` will be set, and variant will not.
+> If the type system of the implementation supports the expression of such constraints, consider defining them.
+
 ### Resolution Details
 
 A structure which contains a subset of the fields defined in the `evaluation details`, representing the result of the provider's [flag resolution process](./glossary.md#resolving-flag-values), including:
@@ -67,7 +72,9 @@ A set of pre-defined reasons is enumerated below:
 | STALE           | The resolved value is non-authoritative or possibly out of date                                                                  |
 | ERROR           | The resolved value was the result of an error.                                                                                   |
 
-> NOTE: The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
+> [!NOTE]
+> The `resolution details` structure is not exposed to the Application Author.
+> It defines the data which Provider Authors must return when resolving the value of flags.
 
 ### Error Code
 

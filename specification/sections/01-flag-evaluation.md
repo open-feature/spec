@@ -232,6 +232,13 @@ See [types](../types.md) for details.
 
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
+The _detailed evaluation_ functions behave similarly to the standard flag evaluation functions, but provide additional metadata useful for telemetry, troubleshooting, debugging, and advanced integrations.
+
+> [!NOTE]
+> Metadata included in the `evaluation details` should be considered "best effort", since not all providers will be able to provide these details (such as the reason a flag resolved to a particular value).
+
+see: [evaluation details](../types.md#evaluation-details) type
+
 #### Condition 1.4.1
 
 > The implementation uses the dynamic-context paradigm.
