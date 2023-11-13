@@ -190,7 +190,7 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.2
 
-> The `provider` **MAY** define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, or `ERROR`.
+> The `provider` **MAY** define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, `STALE`, or `ERROR`.
 
 Providers without this field can be assumed to be ready immediately.
 
@@ -206,6 +206,9 @@ stateDiagram-v2
     NOT_READY --> READY
     READY --> ERROR
     ERROR --> READY
+    READY --> STALE
+    STALE --> READY
+    STALE --> ERROR
 ```
 
 see [provider status](../types.md#provider-status)
