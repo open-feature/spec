@@ -446,8 +446,8 @@
         {
             "id": "Requirement 2.5.2",
             "machine_id": "requirement_2_5_2",
-            "content": "After a provider's shutdown function has terminated successfully, the provider's state should revert to it's uninitialized state.",
-            "RFC 2119 keyword": null,
+            "content": "After a provider's shutdown function has terminated successfully, the provider's state MUST revert to it's uninitialized state.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
