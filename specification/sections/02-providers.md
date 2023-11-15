@@ -255,9 +255,9 @@ class MyProvider implements Provider, AutoDisposable {
 
 #### Requirement 2.5.2
 
-> After a provider's shutdown function has terminated successfully, the provider's state **MUST** revert to it's uninitialized state.
+> After a provider's shutdown function has terminated successfully, the provider's state **MUST** revert to its uninitialized state.
 
-If a provider requires initialization, once it's shut down, it should transition to it's initial `NOT_READY` state, so it can be reinitialized.
+If a provider requires initialization, once it's shut down, it should transition to its initial `NOT_READY` state, so it can be reinitialized.
 Providers not requiring initialization are assumed to be ready at all times.
 
 see: [initialization](#24-initialization)
