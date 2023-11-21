@@ -41,7 +41,13 @@ Hook context exists to provide hooks with information about the invocation.
 
 > The `flag key`, `flag type`, and `default value` properties **MUST** be immutable. If the language does not support immutability, the hook **MUST NOT** modify these properties.
 
-#### Requirement 4.1.4
+#### Condition 4.1.4
+
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 4.1.4.1
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
 
