@@ -559,11 +559,19 @@
             "children": []
         },
         {
-            "id": "Requirement 4.1.4",
-            "machine_id": "requirement_4_1_4",
-            "content": "The evaluation context MUST be mutable only within the `before` hook.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
+            "id": "Condition 4.1.4",
+            "machine_id": "condition_4_1_4",
+            "content": "The implementation uses the dynamic-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 4.1.4.1",
+                    "machine_id": "conditional_requirement_4_1_4_1",
+                    "content": "The evaluation context MUST be mutable only within the `before` hook.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
         },
         {
             "id": "Requirement 4.2.1",
