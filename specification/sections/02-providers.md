@@ -203,12 +203,15 @@ title: Provider State
 stateDiagram-v2
     direction LR
     [*] --> NOT_READY
-    NOT_READY --> READY
+    NOT_READY --> READY:initialize
     READY --> ERROR
     ERROR --> READY
     READY --> STALE
     STALE --> READY
     STALE --> ERROR
+    READY --> NOT_READY:shutdown
+    STALE --> NOT_READY:shutdown
+    ERROR --> NOT_READY:shutdown
 ```
 
 see [provider status](../types.md#provider-status)
@@ -249,6 +252,15 @@ class MyProvider implements Provider, AutoDisposable {
     // close connections, terminate threads or timers, etc...
   }
 ```
+
+#### Requirement 2.5.2
+
+> After a provider's shutdown function has terminated successfully, the provider's state **MUST** revert to its uninitialized state.
+
+If a provider requires initialization, once it's shut down, it must transition to its initial `NOT_READY` state. Some providers may allow reinitialization from this state.
+Providers not requiring initialization are assumed to be ready at all times.
+
+see: [initialization](#24-initialization)
 
 ### 2.6. Provider context reconciliation
 
