@@ -32,7 +32,7 @@ A language primitive for representing a date and time, optionally including time
 
 ### Evaluation Details
 
-A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./sections/01-flag-evaluation.md#14-detailed-flag-evaluation), containing the following fields:
+A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./sections/flag-evaluation.md#14-detailed-flag-evaluation), containing the following fields:
 
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
@@ -94,13 +94,13 @@ An enumerated error code represented idiomatically in the implementation languag
 
 A structure containing the following fields:
 
-- hooks (one or more [hooks](./sections/04-hooks.md), optional)
+- hooks (one or more [hooks](./sections/hooks.md), optional)
 
 ### Flag Metadata
 
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
 
-This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) (via the [Evaluation API](./glossary.md#evaluation-api)) or an [Application Integrator](./glossary.md#application-integrator) (via [hooks](./sections/04-hooks.md)).
+This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) (via the [Evaluation API](./glossary.md#evaluation-api)) or an [Application Integrator](./glossary.md#application-integrator) (via [hooks](./sections/hooks.md)).
 
 ### Provider Status
 

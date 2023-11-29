@@ -11,11 +11,11 @@ sidebar_position: 0
 
 - [Glossary](./glossary.md)
 - [Types](./types.md)
-- [Evaluation API](./sections/01-flag-evaluation.md)
-- [Providers](./sections//02-providers.md)
-- [Evaluation Context](./sections/03-evaluation-context.md)
-- [Hooks](./sections/04-hooks.md)
-- [Events](./sections/05-events.md)
+- [Evaluation API](./sections/flag-evaluation.md)
+- [Providers](./sections//providers.md)
+- [Evaluation Context](./sections/evaluation-context.md)
+- [Hooks](./sections/hooks.md)
+- [Events](./sections/events.md)
 - [Appendix A: Included Utilities](./appendix-a-included-utilities.md)
 - [Appendix B: Gherkin Suites](./appendix-b-gherkin-suites.md)
 

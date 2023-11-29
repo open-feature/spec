@@ -19,7 +19,7 @@ Hooks add their logic at any of four specific stages of flag evaluation:
 
 ![Flag evaluation life cycle](../assets/images/life-cycle.png)
 
-Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./03-evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
+Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
 
 ### Definitions
 
@@ -111,7 +111,7 @@ void before(HookContext hookContext, HookHints hints);
 
 > When `before` hooks have finished executing, any resulting `evaluation context` **MUST** be merged with the existing `evaluation context`.
 
-Evaluation context merge order is defined in [Context levels and merging](./03-evaluation-context.md#32-context-levels-and-merging).
+Evaluation context merge order is defined in [Context levels and merging](./evaluation-context.md#32-context-levels-and-merging).
 
 #### Requirement 4.3.6
 
@@ -198,7 +198,7 @@ val = client.get_boolean_value('my-key', False, evaluation_options={
 })
 ```
 
-see: [Flag evaluation options](./01-flag-evaluation.md#)
+see: [Flag evaluation options](./flag-evaluation.md)
 
 #### Requirement 4.5.1
 

@@ -44,7 +44,7 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 
 Providers bound to a named client constitute their own "events scope".
 
-see: [setting a provider](./01-flag-evaluation.md#setting-a-provider)
+see: [setting a provider](./flag-evaluation.md#setting-a-provider)
 
 #### Requirement 5.1.4
 
@@ -85,7 +85,7 @@ see: [provider events](#51-provider-events), [`provider event types`](../types.m
 The `provider name` indicates the provider from which the event originated.
 This is especially relevant for global event handlers used for general monitoring, such as alerting on provider errors. 
 
-See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [creating clients](./01-flag-evaluation.md#creating-clients). 
+See [setting a provider](./flag-evaluation.md#setting-a-provider), [creating clients](./flag-evaluation.md#creating-clients). 
 
 #### Requirement 5.2.4
 
@@ -122,7 +122,7 @@ _Application authors_ and _application integrators_ use these events to wait for
 
 > If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers **MUST** run.
 
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+See [provider initialization](./providers.md#24-initialization) and [setting a provider](./flag-evaluation.md#setting-a-provider).
 
 #### Requirement 5.3.2
 
@@ -132,7 +132,7 @@ A failed initialization could represent an unrecoverable error, such as bad cred
 If a failed initialization could also represent a transient error.
 A provider which maintains a persistent connection to a remote `flag management system` may attempt to reconnect, and emit `PROVIDER_READY` after a failed initialization.
 
-See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+See [provider initialization](./providers.md#24-initialization) and [setting a provider](./flag-evaluation.md#setting-a-provider).
 
 #### Requirement 5.3.3
 
@@ -143,4 +143,4 @@ Handlers should run immediately if the provider is already in the associated sta
 For instance, _application authors_ may attach readiness handlers to be confident that system is ready to evaluate flags.
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
 
-See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+See [provider initialization](./providers.md#24-initialization), [setting a provider](./flag-evaluation.md#setting-a-provider).

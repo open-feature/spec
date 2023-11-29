@@ -13,4 +13,4 @@ These tests can be used to validate the behavior of an OpenFeature implementatio
 
 ## Evaluation Feature
 
-The [evaluation feature](./assets/gherkin/evaluation.feature) contains tests for the basic functionality of the [Evaluation API](./sections/01-flag-evaluation.md).
+The [evaluation feature](./assets/gherkin/evaluation.feature) contains tests for the basic functionality of the [Evaluation API](./sections/flag-evaluation.md).

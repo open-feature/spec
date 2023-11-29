@@ -12,7 +12,7 @@ toc_max_heading_level: 4
 
 The `evaluation context` provides ambient information for the purposes of flag evaluation. Contextual data may be used as the basis for targeting, including rule-based evaluation, overrides for specific subjects, or fractional flag evaluation.
 
-The context might contain information about the end-user, the application, the host, or any other ambient data that might be useful in flag evaluation. For example, a flag system might define rules that return a specific value based on the user's email address, locale, or the time of day. The context provides this information. The context can be optionally provided at evaluation, and mutated in [before hooks](./04-hooks.md).
+The context might contain information about the end-user, the application, the host, or any other ambient data that might be useful in flag evaluation. For example, a flag system might define rules that return a specific value based on the user's email address, locale, or the time of day. The context provides this information. The context can be optionally provided at evaluation, and mutated in [before hooks](./hooks.md).
 
 ### 3.1 Fields
 
@@ -81,7 +81,7 @@ In the static-context paradigm, context is global. The client and invocation can
 
 > Evaluation context **MUST** be merged in the order: API (global; lowest precedence) -> client -> invocation -> before hooks (highest precedence), with duplicate values being overwritten.
 
-Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined globally or on the client. Any resulting `evaluation context` from a [before hook](./04-hooks.md#requirement-434) will overwrite duplicate fields defined globally, on the client, or in the invocation.
+Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined globally or on the client. Any resulting `evaluation context` from a [before hook](./hooks.md#requirement-434) will overwrite duplicate fields defined globally, on the client, or in the invocation.
 
 ```mermaid
 flowchart LR

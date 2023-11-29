@@ -10,7 +10,7 @@ toc_max_heading_level: 4
 
 ## Overview
 
-The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](./02-providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
+The `evaluation API` allows for the evaluation of feature flag values, independent of any flag control plane or vendor. In the absence of a [provider](./providers.md) the `evaluation API` uses the "No-op provider", which simply returns the supplied default flag value.
 
 ### 1.1. API Initialization and Configuration
 
@@ -33,7 +33,7 @@ OpenFeature.setProvider(new MyProvider());
 
 This provider is used if a client is not bound to a specific provider through its name.
 
-See [provider](./02-providers.md), [creating clients](#creating-clients).
+See [provider](./providers.md), [creating clients](#creating-clients).
 
 #### Requirement 1.1.2.2
 
@@ -43,7 +43,7 @@ Application authors can await the newly set `provider's` readiness using the `PR
 Provider instances which are already active (because they have been bound to other `names` or otherwise) need not be initialized again.
 The `provider's` readiness can state can be determined from its `status` member/accessor.
 
-See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization).
+See [event handlers and initialization](./events.md#event-handlers-and-initialization), [provider initialization](./providers.md#24-initialization).
 
 #### Requirement 1.1.2.3
 
@@ -52,7 +52,7 @@ See [event handlers and initialization](./05-events.md#event-handlers-and-initia
 When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
 Provider instances which are bound to multiple names won't be shut down until the last binding is removed.
 
-see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider)
+see: [shutdown](./providers.md#25-shutdown), [setting a provider](#setting-a-provider)
 
 #### Requirement 1.1.3
 
@@ -75,7 +75,7 @@ See [creating clients](#creating-clients).
 OpenFeature.addHooks([new MyHook()]);
 ```
 
-See [hooks](./04-hooks.md) for details.
+See [hooks](./hooks.md) for details.
 
 #### Requirement 1.1.5
 
@@ -86,7 +86,7 @@ See [hooks](./04-hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
-See [provider](./02-providers.md) for details.
+See [provider](./providers.md) for details.
 
 ### Creating clients
 
@@ -128,7 +128,7 @@ OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider); // t
 Client client = OpenFeatureAPI.getInstance().getClient('client-name');
 ```
 
-Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
+Though it's possible to use [events](./events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
 
 ### 1.2. Client Usage
 
@@ -141,7 +141,7 @@ Though it's possible to use [events](./05-events.md) to await provider readiness
 client.addHooks([new MyHook()]);
 ```
 
-See [hooks](./04-hooks.md) for details.
+See [hooks](./hooks.md) for details.
 
 #### Requirement 1.2.2
 
@@ -179,7 +179,7 @@ number myNumber = client.getNumberValue('number-flag', 75);
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, evaluationContext, options);
 ```
 
-See [evaluation context](./03-evaluation-context.md) for details.
+See [evaluation context](./evaluation-context.md) for details.
 
 #### Condition 1.3.2
 
@@ -367,7 +367,7 @@ This `flag metadata` field is intended as a mechanism for providers to surface a
 
 > The `evaluation options` structure's `hooks` field denotes an ordered collection of hooks that the client **MUST** execute for the respective flag evaluation, in addition to those already configured.
 
-See [hooks](./04-hooks.md) for details.
+See [hooks](./hooks.md) for details.
 
 ### 1.6. Shutdown
 
@@ -380,4 +380,4 @@ See [hooks](./04-hooks.md) for details.
 The global API object might expose a `shutdown` function, which will call the respective `shutdown` function on the registered providers.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
 
-see: [`shutdown`](./02-providers.md#25-shutdown)
+see: [`shutdown`](./providers.md#25-shutdown)
