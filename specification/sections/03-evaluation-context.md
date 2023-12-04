@@ -75,7 +75,22 @@ API (global) `evaluation context` can be used to supply data to flag evaluation,
 
 > The Client and invocation **MUST NOT** have a method for supplying `evaluation context`.
 
-In the static-context paradigm, context is global. The client and invocation cannot supply evaluation context. 
+In the static-context paradigm, context is global. The client and invocation cannot supply evaluation context.
+
+##### Conditional Requirement 3.2.2.3
+
+> The API **MUST** have a method for setting `evaluation context` for a provider bound to a named client.
+
+In the static-context paradigm, provider specific context can be defined using the name defined during provider registration.
+The global context is used if there's no matching provider specific context.
+
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
+
+##### Conditional Requirement 3.2.2.4
+
+> The API **MUST** have a a mechanism to manage `evaluation context`.
+
+In the static-context paradigm, it must be possible to create, read, and remove provider specific context.
 
 #### Requirement 3.2.3
 
@@ -106,4 +121,10 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 > When the global `evaluation context` is set, the `on context changed` handler **MUST** run.
 
-The SDK implementation must run the `on context changed` handler on the registered provider whenever the global `evaluation context` is mutated.
+The SDK implementation must run the `on context changed` handler on all registered provider that use the global `evaluation context` whenever it's mutated.
+
+##### Requirement 3.2.4.2
+
+> When the `evaluation context` for a named provider is set, the `on context changed` handler **MUST** only run on the corresponding provider.
+
+The SDK implementation must run the `on context changed` handler on only the specified provider that use the provider scoped `evaluation context` whenever it's mutated.
