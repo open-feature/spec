@@ -125,7 +125,7 @@ A structure defining a provider event payload, including:
 
 A structure defining an event payload, including:
 
-- client name (string, required)
+- provider name (string, required)
 - flags changed (string[], optional)
 - message (string, optional)
 - event metadata ([event metadata](#event-metadata))

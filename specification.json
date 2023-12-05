@@ -444,6 +444,13 @@
             "children": []
         },
         {
+            "id": "Requirement 2.5.2",
+            "machine_id": "requirement_2_5_2",
+            "content": "After a provider's shutdown function has terminated successfully, the provider's state MUST revert to its uninitialized state.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Requirement 2.6.1",
             "machine_id": "requirement_2_6_1",
             "content": "The provider MAY define an `on context changed` handler, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.",
@@ -559,11 +566,19 @@
             "children": []
         },
         {
-            "id": "Requirement 4.1.4",
-            "machine_id": "requirement_4_1_4",
-            "content": "The evaluation context MUST be mutable only within the `before` hook.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
+            "id": "Condition 4.1.4",
+            "machine_id": "condition_4_1_4",
+            "content": "The implementation uses the dynamic-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 4.1.4.1",
+                    "machine_id": "conditional_requirement_4_1_4_1",
+                    "content": "The evaluation context MUST be mutable only within the `before` hook.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
         },
         {
             "id": "Requirement 4.2.1",
