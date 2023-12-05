@@ -128,4 +128,4 @@ The SDK implementation must run the `on context changed` handler on all register
 
 > When the `evaluation context` for a specific provider is set, the `on context changed` handler **MUST** only run on the associated provider.
 
-The SDK implementation must run the `on context changed` handler only on the provider that's scoped to the mutated `evaluation context`.
+The SDK implementation must run the `on context changed` handler only on the provider that is scoped to the mutated `evaluation context`.
