@@ -100,7 +100,7 @@ A structure containing the following fields:
 
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
 
-This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) (via the [Evaluation API](./glossary.md#evaluation-api)) or an [Application Integrator](./glossary.md#application-integrator) (via [hooks](./sections/04-hooks.md)).
+This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) via the [Evaluation API](./glossary.md#evaluation-api) or an [Application Integrator](./glossary.md#application-integrator) via [hooks](./sections/04-hooks.md).
 
 ### Provider Status
 
