@@ -82,7 +82,7 @@ In the static-context paradigm, context is global. The client and invocation can
 > The API **MUST** have a method for setting `evaluation context` for a provider bound to a named client.
 
 In the static-context paradigm, provider specific context can be set using the associated name.
-The global context is used if there's no matching provider specific context.
+The global context is used if there is no matching provider specific context.
 
 See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
 
@@ -118,13 +118,13 @@ flowchart LR
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
-##### Requirement 3.2.4.1
+##### Conditional Requirement 3.2.4.1
 
 > When the global `evaluation context` is set, the `on context changed` handler **MUST** run.
 
-The SDK implementation must run the `on context changed` handler on all registered provider that use the global `evaluation context` whenever it's mutated.
+The SDK implementation must run the `on context changed` handler on all registered provider that use the global `evaluation context` whenever it is mutated.
 
-##### Requirement 3.2.4.2
+##### Conditional Requirement 3.2.4.2
 
 > When the `evaluation context` for a specific provider is set, the `on context changed` handler **MUST** only run on the associated provider.
 
