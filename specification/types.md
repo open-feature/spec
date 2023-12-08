@@ -139,12 +139,15 @@ It supports definition of arbitrary properties, with keys of type `string`, and 
 
 An enumeration of provider events.
 
-| Event                          | Explanation                                                                                         |
-| ------------------------------ | --------------------------------------------------------------------------------------------------- |
-| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                                  |
-| PROVIDER_ERROR                 | The provider signalled an error.                                                                    |
-| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                |
-| PROVIDER_STALE                 | The provider's cached state is no longer valid and may not be up-to-date with the source of truth.  |
+| Event                          | Explanation                                                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                                           |
+| PROVIDER_ERROR                 | The provider signalled an error.                                                                             |
+| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                         |
+| PROVIDER_STALE                 | The provider's cached state is no longer valid and may not be up-to-date with the source of truth.           |
+| PROVIDER_CONTEXT_CHANGED*      | The context associated with the provider has changed, and the provider has reconciled it's associated state. |
+
+\* [static context (client-side) paradigm](./glossary.md#static-context-paradigm) only
 
 ### Handler Functions
 
