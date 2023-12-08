@@ -75,7 +75,23 @@ API (global) `evaluation context` can be used to supply data to flag evaluation,
 
 > The Client and invocation **MUST NOT** have a method for supplying `evaluation context`.
 
-In the static-context paradigm, context is global. The client and invocation cannot supply evaluation context. 
+In the static-context paradigm, context is global. The client and invocation cannot supply evaluation context.
+
+##### Conditional Requirement 3.2.2.3
+
+> The API **MUST** have a method for setting `evaluation context` for a provider bound to a named client.
+
+In the static-context paradigm, provider specific context can be set using the associated name.
+The global context is used if there is no matching provider specific context.
+
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
+
+##### Conditional Requirement 3.2.2.4
+
+> The API **MUST** have a a mechanism to manage `evaluation context` for an associated name.
+
+In the static-context paradigm, it must be possible to create and remove provider-specific context.
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
 
 #### Requirement 3.2.3
 
@@ -102,8 +118,14 @@ flowchart LR
 
 see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
-##### Requirement 3.2.4.1
+##### Conditional Requirement 3.2.4.1
 
 > When the global `evaluation context` is set, the `on context changed` handler **MUST** run.
 
-The SDK implementation must run the `on context changed` handler on the registered provider whenever the global `evaluation context` is mutated.
+The SDK implementation must run the `on context changed` handler on all registered provider that use the global `evaluation context` whenever it is mutated.
+
+##### Conditional Requirement 3.2.4.2
+
+> When the `evaluation context` for a specific provider is set, the `on context changed` handler **MUST** only run on the associated provider.
+
+The SDK implementation must run the `on context changed` handler only on the provider that is scoped to the mutated `evaluation context`.
