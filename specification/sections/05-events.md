@@ -158,8 +158,7 @@ title: Provider context reconciliation
 stateDiagram-v2
     direction TB
     READY --> READY:emit(PROVIDER_CONTEXT_CHANGED)
-    READY --> ERROR
-    ERROR --> READY
+    ERROR --> READY:emit(PROVIDER_READY)
     READY --> STALE:emit(PROVIDER_STALE)
     STALE --> READY:emit(PROVIDER_CONTEXT_CHANGED)
     STALE --> ERROR:emit(PROVIDER_ERROR)
