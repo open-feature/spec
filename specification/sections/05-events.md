@@ -149,6 +149,7 @@ See [provider initialization](./02-providers.md#24-initialization), [setting a p
 
 Providers built to conform to the static context paradigm feature an additional `PROVIDER_CONTEXT_CHANGED` event, which is used to signal that the global context has been changed, and flags should be re-evaluated.
 This can be particularly useful for triggering UI repaints in multiple components when one component updates the [evaluation context](./03-evaluation-context.md).
+SDK implementations automatically fire the the `PROVIDER_CONTEXT_CHANGED` events if the `on context changed` handler terminates normally (and `PROVIDER_ERROR` events otherwise).
 Optionally, some providers may transition to a the `STALE` state while their associated context is waiting to be reconciled, since this may involve asynchronous operations such as network calls.
 
 ```mermaid
