@@ -891,6 +891,35 @@
             "content": "Handlers attached after the provider is already in the associated state, MUST run immediately.",
             "RFC 2119 keyword": "MUST",
             "children": []
+        },
+        {
+            "id": "Condition 5.3.4",
+            "machine_id": "condition_5_3_4",
+            "content": "The implementation uses the static-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 5.3.4.1",
+                    "machine_id": "conditional_requirement_5_3_4_1",
+                    "content": "When the provider's `on context changed` is called, the provider MAY emit the `PROVIDER_STALE` event, and transition to the `STALE` state.",
+                    "RFC 2119 keyword": "MAY",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 5.3.4.2",
+                    "machine_id": "conditional_requirement_5_3_4_2",
+                    "content": "If the provider's `on context changed` function terminates normally, associated `PROVIDER_CONTEXT_CHANGED` handlers MUST run.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 5.3.4.3",
+                    "machine_id": "conditional_requirement_5_3_4_3",
+                    "content": "If the provider's `on context changed` function terminates abnormally, associated `PROVIDER_ERROR` handlers MUST run.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
         }
     ]
 }

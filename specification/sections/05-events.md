@@ -144,3 +144,57 @@ For instance, _application authors_ may attach readiness handlers to be confiden
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
 
 See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).
+
+### Event handlers and context reconciliation
+
+Providers built to conform to the static context paradigm feature an additional `PROVIDER_CONTEXT_CHANGED` event, which is used to signal that the global context has been changed, and flags should be re-evaluated.
+This can be particularly useful for triggering UI repaints in multiple components when one component updates the [evaluation context](./03-evaluation-context.md).
+SDK implementations automatically fire the the `PROVIDER_CONTEXT_CHANGED` events if the `on context changed` handler terminates normally (and `PROVIDER_ERROR` events otherwise).
+Optionally, some providers may transition to the `STALE` state while their associated context is waiting to be reconciled, since this may involve asynchronous operations such as network calls.
+
+```mermaid
+---
+title: Provider context reconciliation 
+---
+stateDiagram-v2
+    direction TB
+    READY --> READY:emit(PROVIDER_CONTEXT_CHANGED)
+    ERROR --> READY:emit(PROVIDER_READY)
+    READY --> STALE:emit(PROVIDER_STALE)
+    STALE --> READY:emit(PROVIDER_CONTEXT_CHANGED)
+    STALE --> ERROR:emit(PROVIDER_ERROR)
+```
+
+#### Condition 5.3.4
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 5.3.4.1
+
+> When the provider's `on context changed` is called, the provider **MAY** emit the `PROVIDER_STALE` event, and transition to the `STALE` state.
+
+Some providers cache evaluated flags, and re-evaluate them when the context is changed.
+In these cases, the provider may signal its cache is invalid with the `PROVIDER_STALE` event and the `STALE` provider state.
+
+see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), context, [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
+
+##### Conditional Requirement 5.3.4.2
+
+> If the provider's `on context changed` function terminates normally, associated `PROVIDER_CONTEXT_CHANGED` handlers **MUST** run.
+
+The implementation must run any `PROVIDER_CONTEXT_CHANGED` handlers associated with the provider after the provider has reconciled its state and returned from the `on context changed` function.
+The `PROVIDER_CONTEXT_CHANGED` is not emitted from the provider itself; the SDK implementation must run the `PROVIDER_CONTEXT_CHANGED` handlers if the `on context changed` function terminates normally.
+
+see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), context, [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
+
+##### Conditional Requirement 5.3.4.3
+
+> If the provider's `on context changed` function terminates abnormally, associated `PROVIDER_ERROR` handlers **MUST** run.
+
+The `PROVIDER_ERROR` is not emitted from the provider itself; the SDK implementation must run the `PROVIDER_ERROR` handlers if the `on context changed` throws or otherwise signals an error.
+
+see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), context, [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
