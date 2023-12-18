@@ -1,0 +1,21 @@
+# Uses https://github.com/jgehrcke/github-repo-stats to overcome the 14-day limitation of GitHub's built-in traffic statistics.
+name: "Repo Stats"
+
+on:
+  schedule:
+    # Run this once per day, towards the end of the day for keeping the most
+    # recent data point most meaningful (hours are interpreted in UTC).
+    - cron: "0 23 * * *"
+  workflow_dispatch: # Allow for running this manually.
+
+jobs:
+  snapshot:
+    name: github-repo-stats
+    runs-on: ubuntu-latest
+    steps:
+      - name: run-ghrs
+        # Use latest release.
+        uses: jgehrcke/github-repo-stats@v1.4.2
+        with:
+          databranch: github-repo-stats
+          ghtoken: ${{ secrets.REPO_STATS_TOKEN }}
