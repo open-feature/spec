@@ -88,26 +88,28 @@ See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details
 
 ##### Conditional Requirement 3.2.2.4
 
-> The API **MUST** have a a mechanism to manage `evaluation context` for an associated name.
+> The API **MUST** have a mechanism to manage `evaluation context` for an associated name.
 
 In the static-context paradigm, it must be possible to create and remove provider-specific context.
 See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
 
 #### Requirement 3.2.3
 
-> Evaluation context **MUST** be merged in the order: API (global; lowest precedence) -> client -> invocation -> before hooks (highest precedence), with duplicate values being overwritten.
+> Evaluation context **MUST** be merged in the order: API (global; lowest precedence) -> transaction -> client -> invocation -> before hooks (highest precedence), with duplicate values being overwritten.
 
 Any fields defined in the client `evaluation context` will overwrite duplicate fields defined globally, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined globally or on the client. Any resulting `evaluation context` from a [before hook](./04-hooks.md#requirement-434) will overwrite duplicate fields defined globally, on the client, or in the invocation.
 
 ```mermaid
 flowchart LR
-  global("API (global)")
-  client("Client")
-  invocation("Invocation")
-  hook("Before Hooks")
-  global --> client
-  client --> invocation
-  invocation --> hook
+    global("API (global)")
+    transaction("Transaction")
+    client("Client")
+    invocation("Invocation")
+    hook("Before Hooks")
+    global --> transaction
+    transaction --> client
+    client --> invocation
+    invocation --> hook
 ```
 
 #### Condition 3.2.4
@@ -129,3 +131,51 @@ The SDK implementation must run the `on context changed` handler on all register
 > When the `evaluation context` for a specific provider is set, the `on context changed` handler **MUST** only run on the associated provider.
 
 The SDK implementation must run the `on context changed` handler only on the provider that is scoped to the mutated `evaluation context`.
+
+### 3.3 Context Propagation
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+#### Condition 3.3.1
+
+> The implementation uses the dynamic-context paradigm.
+
+see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
+
+##### Conditional Requirement 3.3.1.1
+
+> The API **MUST** have a method for setting a `transaction context propagator`.
+
+If there already is a `transaction context propagator`, it is replaced with the new one. 
+
+##### Conditional Requirement 3.3.1.2
+
+> The API **MUST** have a method for setting the `evaluation context` of the `transaction context propagator`.
+
+If a `transaction context propagator` is set, this `evaluation context` must be supplied to it and so will be available during the current transaction.
+This method can e.g. be used in a request handler to add request specific information to the `evaluation context`.
+
+##### Conditional Requirement 3.3.1.3
+
+> A `transaction context propagator` **MUST** have a method for setting the `evaluation context` of the current transaction.
+
+A `transaction context propagator` is responsible for persisting context for the duration of a single transaction.
+Typically, a transaction context propagator will propagate the context using a language-specific carrier such as [`ThreadLocal` (Java)](https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html), [`async hooks` (Node.js)](https://nodejs.org/api/async_hooks.html), [`Context` (Go)](https://pkg.go.dev/context) or another similar mechanism.
+
+##### Conditional Requirement 3.3.1.4
+
+> A `transaction context propagator` **MUST** have a method for getting the `evaluation context` of the current transaction.
+
+This must be used by the SDK implementation when merging the context for evaluating a feature flag.
+
+#### Condition 3.3.2
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 3.3.2.1
+
+> The API **MUST NOT** have a method for setting a `transaction context propagator`.
+
+In the static-context paradigm, context is global, so there should not be different context between transactions.
