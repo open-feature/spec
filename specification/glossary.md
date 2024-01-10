@@ -3,8 +3,8 @@ title: Glossary
 description: A list of terms used within the OpenFeature specification.
 sidebar_position: 1
 ---
-<!-- omit from toc -->
-# Glossary 
+
+# Glossary <!-- omit from toc -->
 
 This document defines some terms that are used across this specification.
 
