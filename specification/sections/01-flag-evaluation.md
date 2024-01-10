@@ -107,7 +107,8 @@ See [hooks](./04-hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
-TODO: Add text explaining that this is for a namespace
+It must be possible to access provider metadata using a namespace.
+If a provider has not be registered under the requested namespace, the default provider metadata is returned.
 
 ```typescript
 // example provider accessor
@@ -129,7 +130,8 @@ See [provider](./02-providers.md) for details.
 OpenFeature.getClient();
 ```
 
-TODO: Text explaining the namespace stuff
+It must be possible to create a client that is associated with a namespace.
+The client will use a provider in the same namespace if one exists, otherwise, the default provide is used.
 
 ```java
 // example client creation and retrieval using a namespace
