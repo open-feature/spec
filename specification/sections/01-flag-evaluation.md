@@ -31,7 +31,8 @@ It's important that multiple instances of the `API` not be active, so that state
 OpenFeature.setProvider(new MyProvider());
 ```
 
-This provider is used if a client is not bound to a specific provider through its name.
+The example above sets the default provider.
+This provider is used if a client is not bound to a specific provider through its [namespace](../glossary.md#namespace).
 
 See [provider](./02-providers.md), [creating clients](#creating-clients).
 
@@ -40,7 +41,7 @@ See [provider](./02-providers.md), [creating clients](#creating-clients).
 > The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
-Provider instances which are already active (because they have been bound to other `names` or otherwise) need not be initialized again.
+Provider instances which are already active (because they have been bound to other `namespaces` or otherwise) need not be initialized again.
 The `provider's` readiness can state can be determined from its `status` member/accessor.
 
 See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization).
@@ -50,7 +51,7 @@ See [event handlers and initialization](./05-events.md#event-handlers-and-initia
 >  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
 When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
-Provider instances which are bound to multiple names won't be shut down until the last binding is removed.
+Provider instances which are bound to multiple `namespaces` won't be shut down until the last binding is removed.
 
 see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider)
 
@@ -61,26 +62,28 @@ see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-
 This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
 
 ```java
-// default client
+// default provider
 OpenFeatureAPI.getInstance().setProviderAndWait(myprovider); // this method blocks until the provider is ready or in error
+// client uses the default provider
 Client client = OpenFeatureAPI.getInstance().getClient(); 
 
-// named client
-OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider); // this method blocks until the provider is ready or in error
-Client client = OpenFeatureAPI.getInstance().getClient('client-name');
+// namespaced provider
+OpenFeatureAPI.getInstance().setProviderAndWait('my-namespace', myprovider); // this method blocks until the provider is ready or in error
+// client uses provider associated with the namespace
+Client client = OpenFeatureAPI.getInstance().getClient('my-namespace');
 ```
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
 
 #### Requirement 1.1.3
 
-> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.
+> The `API` **MUST** provide a function to bind a given `provider` to one or more clients using a `namespace`. If the namespace already has a bound provider, it is overwritten with the new mapping.
 
 ```java
-OpenFeature.setProvider("client-name", new MyProvider());
+OpenFeature.setProvider("my-namespace", new MyProvider());
 ```
 
-Named clients can be associated with a particular provider by supplying a matching name when the provider is set.
+Clients can be associated with a particular provider by supplying a matching namespace when the provider is set.
 
 See [creating clients](#creating-clients).
 
@@ -104,6 +107,13 @@ See [hooks](./04-hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
+TODO: Add text explaining that this is for a namespace
+
+```typescript
+// example provider accessor
+OpenFeature.getProviderMetadata("my-namespace");
+```
+
 See [provider](./02-providers.md) for details.
 
 ### Creating clients
@@ -112,17 +122,21 @@ See [provider](./02-providers.md) for details.
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
-> - name (optional): A logical string identifier for the client.
+> - namespace (optional): A logical string identifier for mapping clients to provider.
 
 ```java
 // example client creation and retrieval
-OpenFeature.getClient("my-named-client");
+OpenFeature.getClient();
 ```
 
-The name is a logical identifier for the client which may be associated with a particular provider by the application integrator.
-If a client name is not bound to a particular provider, the client is associated with the default provider.
+TODO: Text explaining the namespace stuff
 
-See [setting a provider](#setting-a-provider) for details.
+```java
+// example client creation and retrieval using a namespace
+OpenFeature.getClient("my-namespace");
+```
+
+See [setting a provider](#setting-a-provider), [namespace](../glossary.md#namespace) for details.
 
 #### Requirement 1.1.7
 
@@ -145,11 +159,14 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.2.2
 
-> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.
+> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `namespace` field or accessor of type string, which corresponds to the `namespace` value supplied during client creation.
 
 ```typescript
-client.getMetadata().getName(); // "my-client"
+client.getMetadata().getNamespace(); // "my-namespace"
 ```
+
+In previous drafts, this property was called `name`.
+For backwards compatibility, implementations should consider `name` an alias to `namespace`.
 
 ### 1.3. Flag Evaluation
 

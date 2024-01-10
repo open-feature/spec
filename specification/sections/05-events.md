@@ -42,7 +42,7 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 
 > When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
-Providers bound to a named client constitute their own "events scope".
+Providers bound to a `namespace` constitute their own "events scope".
 
 see: [setting a provider](./01-flag-evaluation.md#setting-a-provider)
 
@@ -83,9 +83,9 @@ see: [provider events](#51-provider-events), [`provider event types`](../types.m
 > The `event details` **MUST** contain the `provider name` associated with the event.
 
 The `provider name` indicates the provider from which the event originated.
-This is especially relevant for global event handlers used for general monitoring, such as alerting on provider errors. 
+This is especially relevant for global event handlers used for general monitoring, such as alerting on provider errors.
 
-See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [creating clients](./01-flag-evaluation.md#creating-clients). 
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [creating clients](./01-flag-evaluation.md#creating-clients).
 
 #### Requirement 5.2.4
 

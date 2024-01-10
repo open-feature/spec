@@ -13,37 +13,39 @@ This document defines some terms that are used across this specification.
 
 <!-- toc -->
 
-- [Feature Flag](#feature-flag)
-- [User Roles](#user-roles)
-  - [Application Author](#application-author)
-  - [Application Integrator](#application-integrator)
-  - [Provider Author](#provider-author)
-  - [Integration Author](#integration-author)
-  - [Library Author](#library-author)
-- [Common](#common)
-  - [Feature Flag SDK](#feature-flag-sdk)
-  - [Client-Side SDK](#client-side-sdk)
-  - [Server-Side SDK](#server-side-sdk)
-  - [Feature Flag API](#feature-flag-api)
-  - [Evaluation API](#evaluation-api)
-  - [Flag Management System](#flag-management-system)
-  - [Provider](#provider)
-  - [Integration](#integration)
-  - [Evaluation Context](#evaluation-context)
-  - [Evaluating Flag Values](#evaluating-flag-values)
-  - [Resolving Flag Values](#resolving-flag-values)
-- [Flagging specifics](#flagging-specifics)
-  - [Flag](#flag)
-  - [Flag Key](#flag-key)
-  - [Variant](#variant)
-  - [Values](#values)
-  - [Targeting](#targeting)
-  - [Targeting Key](#targeting-key)
-  - [Fractional Evaluation](#fractional-evaluation)
-  - [Rule](#rule)
-- [SDK Paradigms](#sdk-paradigms)
-  - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
-  - [Static-Context Paradigm](#static-context-paradigm)
+- [Glossary](#glossary)
+  - [Feature Flag](#feature-flag)
+  - [User Roles](#user-roles)
+    - [Application Author](#application-author)
+    - [Application Integrator](#application-integrator)
+    - [Provider Author](#provider-author)
+    - [Integration Author](#integration-author)
+    - [Library Author](#library-author)
+  - [Common](#common)
+    - [Feature Flag SDK](#feature-flag-sdk)
+    - [Client-Side SDK](#client-side-sdk)
+    - [Server-Side SDK](#server-side-sdk)
+    - [Feature Flag API](#feature-flag-api)
+    - [Evaluation API](#evaluation-api)
+    - [Flag Management System](#flag-management-system)
+    - [Provider](#provider)
+    - [Namespace](#namespace)
+    - [Integration](#integration)
+    - [Evaluation Context](#evaluation-context)
+    - [Evaluating Flag Values](#evaluating-flag-values)
+    - [Resolving Flag Values](#resolving-flag-values)
+  - [Flagging specifics](#flagging-specifics)
+    - [Flag](#flag)
+    - [Flag Key](#flag-key)
+    - [Variant](#variant)
+    - [Values](#values)
+    - [Targeting](#targeting)
+    - [Targeting Key](#targeting-key)
+    - [Fractional Evaluation](#fractional-evaluation)
+    - [Rule](#rule)
+  - [SDK Paradigms](#sdk-paradigms)
+    - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
+    - [Static-Context Paradigm](#static-context-paradigm)
 
 <!-- tocstop -->
 
@@ -107,7 +109,9 @@ A source-of-truth for flag values and rules. Flag management systems may include
 
 An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./sections/01-flag-evaluation.md#13-flag-evaluation) as an abstraction for the system in question.
 
-Providers can be used in two ways. Client-specific providers are active for specific clients, based on their name. The default provider is used if there are no client-specific mappings setup.
+### Namespace
+
+An identifier which logically associates clients with providers, allowing for multiple providers to be used simultaneously within a single application.
 
 ### Integration
 
