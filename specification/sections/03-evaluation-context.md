@@ -154,7 +154,7 @@ If there already is a `transaction context propagator`, it is replaced with the 
 
 If a `transaction context propagator` is set, this `evaluation context` must be supplied to it and so will be available during the current transaction.
 If no `transaction context propagator` is set, this `evaluation context` is not used for evaluations.
-This method can e.g. be used in a request handler to add request specific information to the `evaluation context`.
+This method can e.g. be used in a request handler to add request-specific information to the `evaluation context`.
 
 ##### Conditional Requirement 3.3.1.3
 
