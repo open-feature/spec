@@ -539,7 +539,7 @@
         {
             "id": "Requirement 3.2.3",
             "machine_id": "requirement_3_2_3",
-            "content": "Evaluation context MUST be merged in the order: API (global; lowest precedence) - transaction - client - invocation - before hooks (highest precedence), with duplicate values being overwritten.",
+            "content": "[!NOTE] This describes the precedence of all `evaluation context` variants. Depending on the `paradigm`, not all variants might be available in an `SDK` implementation. Evaluation context MUST be merged in the order: API (global; lowest precedence) - transaction - client - invocation - before hooks (highest precedence), with duplicate values being overwritten.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
