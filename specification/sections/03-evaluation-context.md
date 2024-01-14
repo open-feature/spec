@@ -161,7 +161,33 @@ This method can e.g. be used in a request handler to add request-specific inform
 > A `transaction context propagator` **MUST** have a method for setting the `evaluation context` of the current transaction.
 
 A `transaction context propagator` is responsible for persisting context for the duration of a single transaction.
-Typically, a transaction context propagator will propagate the context using a language-specific carrier such as [`ThreadLocal` (Java)](https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html), [`async hooks` (Node.js)](https://nodejs.org/api/async_hooks.html), [`Context` (Go)](https://pkg.go.dev/context) or another similar mechanism.
+Typically, a transaction context propagator will propagate the context using a language-specific carrier such as [ThreadLocal (Java)](https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html), [async hooks (Node.js)](https://nodejs.org/api/async_hooks.html), [Context (Go)](https://pkg.go.dev/context) or another similar mechanism.
+
+The following shows a possible TypeScript implementation using [AsyncLocalStorage (async_hooks)](https://nodejs.org/api/async_context.html): 
+
+```typescript
+export class AsyncLocalStorageTransactionContext implements TransactionContextPropagator {
+    private asyncLocalStorage = new AsyncLocalStorage<EvaluationContext>();
+
+    getTransactionContext(): EvaluationContext {
+        return this.asyncLocalStorage.getStore() ?? {};
+    }
+    setTransactionContext(context: EvaluationContext, callback: () => void): void {
+        this.asyncLocalStorage.run(context, callback);
+    }
+}
+
+/**
+ * This example is based on an express middleware.
+ */
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const ip = res.headers.get("X-Forwarded-For")
+    OpenFeature.setTransactionContext({ targetingKey: req.user.id, ipAddress: ip }, () => {
+        // The transaction context is used in any flag evaluation throughout the whole call chain of next 
+        next();
+    });
+})
+```
 
 ##### Conditional Requirement 3.3.1.4
 
