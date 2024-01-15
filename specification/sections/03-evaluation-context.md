@@ -153,7 +153,7 @@ If there already is a `transaction context propagator`, it is replaced with the 
 
 ##### Conditional Requirement 3.3.1.2
 
-> The API **MUST** have a method for setting the `evaluation context` of the `transaction context propagator`.
+> The API **MUST** have a method for setting the `evaluation context` of the `transaction context propagator` for the current transaction.
 
 If a `transaction context propagator` is set, this `evaluation context` must be supplied to it and so will be available during the current transaction.
 If no `transaction context propagator` is set, this `evaluation context` is not used for evaluations.
