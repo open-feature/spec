@@ -120,7 +120,7 @@ Context object for flag evaluation, which may contain information about the runt
 
 ### Transaction Context Propagator
 
-An SDK-compliant implementation which stores and returns transaction specific evaluation context. A transaction can be something like a thread or web request.
+An SDK-compliant implementation which stores and returns transaction-specific evaluation context. A _transaction_ might be a web request or application event, which carries it's own contextual data in thread or continuation storage.
 
 ### Evaluating Flag Values
 
