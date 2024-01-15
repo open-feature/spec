@@ -196,7 +196,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 > A `transaction context propagator` **MUST** have a method for getting the `evaluation context` of the current transaction.
 
-This must be used by the SDK implementation when merging the context for evaluating a feature flag.
+This will be used by the SDK implementation when merging the context for evaluating a feature flag.
 
 #### Condition 3.3.2
 
