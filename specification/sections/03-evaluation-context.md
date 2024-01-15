@@ -95,9 +95,6 @@ See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details
 
 #### Requirement 3.2.3
 
-> [!NOTE]
-> This describes the precedence of all `evaluation context` variants. Depending on the `paradigm`, not all variants might be available in an `SDK` implementation.
-
 > Evaluation context **MUST** be merged in the order: API (global; lowest precedence) -> transaction -> client -> invocation -> before hooks (highest precedence), with duplicate values being overwritten.
 
 Any fields defined in the transaction `evaluation context` will overwrite duplicate fields defined in the global `evaluation context`, any fields defined in the client `evaluation context` will overwrite duplicate fields defined in the transaction `evaluation context`, and fields defined in the invocation `evaluation context` will overwrite duplicate fields defined globally or on the client. Any resulting `evaluation context` from a [before hook](./04-hooks.md#requirement-434) will overwrite duplicate fields defined globally, on the client, or in the invocation.
@@ -114,6 +111,8 @@ flowchart LR
     client --> invocation
     invocation --> hook
 ```
+
+This describes the precedence of all `evaluation context` variants. Depending on the `paradigm`, not all variants might be available in an `SDK` implementation.
 
 #### Condition 3.2.4
 
