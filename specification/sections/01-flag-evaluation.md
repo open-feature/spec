@@ -32,28 +32,28 @@ OpenFeature.setProvider(new MyProvider());
 ```
 
 The example above sets the default provider.
-This provider is used if a client is not bound to a specific provider through its [namespace](../glossary.md#namespace).
+This provider is used if a client is not bound to a specific provider via a [domain](../glossary.md#domain).
 
-See [provider](./02-providers.md), [creating clients](#creating-clients).
+See [provider](./02-providers.md), [creating clients](#creating-clients) for details.
 
 #### Requirement 1.1.2.2
 
 > The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
-Provider instances which are already active (because they have been bound to other `namespaces` or otherwise) need not be initialized again.
+Provider instances which are already active (because they have been bound to another `domain` or otherwise) need not be initialized again.
 The `provider's` readiness can state can be determined from its `status` member/accessor.
 
-See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization).
+See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.2.3
 
 >  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
 When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
-Provider instances which are bound to multiple `namespaces` won't be shut down until the last binding is removed.
+Provider instances which are bound to multiple `domains` won't be shut down until the last binding is removed.
 
-see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider)
+see [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.2.4
 
@@ -67,25 +67,25 @@ OpenFeatureAPI.getInstance().setProviderAndWait(myprovider); // this method bloc
 // client uses the default provider
 Client client = OpenFeatureAPI.getInstance().getClient(); 
 
-// namespaced provider
-OpenFeatureAPI.getInstance().setProviderAndWait('my-namespace', myprovider); // this method blocks until the provider is ready or in error
-// client uses provider associated with the namespace
-Client client = OpenFeatureAPI.getInstance().getClient('my-namespace');
+// provider associated with domain-1
+OpenFeatureAPI.getInstance().setProviderAndWait('domain-1', myprovider); // this method blocks until the provider is ready or in error
+// client uses provider associated with the domain named 'domain-1'
+Client client = OpenFeatureAPI.getInstance().getClient('domain-1');
 ```
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
 
 #### Requirement 1.1.3
 
-> The `API` **MUST** provide a function to bind a given `provider` to one or more clients using a `namespace`. If the namespace already has a bound provider, it is overwritten with the new mapping.
+> The `API` **MUST** provide a function to bind a given `provider` to one or more clients using a `domain`. If the domain already has a bound provider, it is overwritten with the new mapping.
 
 ```java
-OpenFeature.setProvider("my-namespace", new MyProvider());
+OpenFeature.setProvider("domain-1", new MyProvider());
 ```
 
-Clients can be associated with a particular provider by supplying a matching namespace when the provider is set.
+Clients can be associated with a particular provider by supplying a matching `domain`` when the provider is set.
 
-See [creating clients](#creating-clients).
+See [creating clients](#creating-clients), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.4
 
@@ -107,15 +107,15 @@ See [hooks](./04-hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
-It must be possible to access provider metadata using a namespace.
-If a provider has not be registered under the requested namespace, the default provider metadata is returned.
+It must be possible to access provider metadata using a `domain`.
+If a provider has not be registered under the requested domain, the default provider metadata is returned.
 
 ```typescript
 // example provider accessor
-OpenFeature.getProviderMetadata("my-namespace");
+OpenFeature.getProviderMetadata("domain-1");
 ```
 
-See [provider](./02-providers.md) for details.
+See [provider](./02-providers.md), [domain](../glossary.md#domain) for details.
 
 ### Creating clients
 
@@ -123,22 +123,22 @@ See [provider](./02-providers.md) for details.
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
-> - namespace (optional): A logical string identifier for mapping clients to provider.
+> - domain (optional): A logical string identifier for binding clients to provider.
 
 ```java
 // example client creation and retrieval
 OpenFeature.getClient();
 ```
 
-It must be possible to create a client that is associated with a namespace.
-The client will use a provider in the same namespace if one exists, otherwise, the default provide is used.
+It must be possible to create a client that is associated with a `domain`.
+The client will use a provider in the same `domain` if one exists, otherwise, the default provide is used.
 
 ```java
-// example client creation and retrieval using a namespace
-OpenFeature.getClient("my-namespace");
+// example client creation and retrieval using a domain
+OpenFeature.getClient("domain-1");
 ```
 
-See [setting a provider](#setting-a-provider), [namespace](../glossary.md#namespace) for details.
+See [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.7
 
@@ -161,14 +161,14 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.2.2
 
-> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `namespace` field or accessor of type string, which corresponds to the `namespace` value supplied during client creation.
+> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `domain` field or accessor of type string, which corresponds to the `domain` value supplied during client creation.
 
 ```typescript
-client.getMetadata().getNamespace(); // "my-namespace"
+client.getMetadata().getDomain(); // "domain-1"
 ```
 
 In previous drafts, this property was called `name`.
-For backwards compatibility, implementations should consider `name` an alias to `namespace`.
+For backwards compatibility, implementations should consider `name` an alias to `domain`.
 
 ### 1.3. Flag Evaluation
 

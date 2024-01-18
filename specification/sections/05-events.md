@@ -42,9 +42,9 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 
 > When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
-Providers bound to a `namespace` constitute their own "events scope".
+Providers bound to a `domain` constitute their own "events scope".
 
-see: [setting a provider](./01-flag-evaluation.md#setting-a-provider)
+see [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 5.1.4
 
