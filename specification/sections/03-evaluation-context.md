@@ -138,6 +138,35 @@ The SDK implementation must run the `on context changed` handler only on the pro
 
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
+`Transaction context` is a container for transaction-specific `evaluation context` (e.g. user id, user agent, IP).
+Transaction context can be set where specific data is available (e.g. an auth service or request handler) and by using the `transaction context propagator` it will automatically be applied to all flag evaluations within a transaction (e.g. a request or thread).
+
+The following shows a possible TypeScript implementation using [AsyncLocalStorage (async_hooks)](https://nodejs.org/api/async_context.html):
+
+```typescript
+export class AsyncLocalStorageTransactionContext implements TransactionContextPropagator {
+    private asyncLocalStorage = new AsyncLocalStorage<EvaluationContext>();
+
+    getTransactionContext(): EvaluationContext {
+        return this.asyncLocalStorage.getStore() ?? {};
+    }
+    setTransactionContext(context: EvaluationContext, callback: () => void): void {
+        this.asyncLocalStorage.run(context, callback);
+    }
+}
+
+/**
+ * This example is based on an express middleware.
+ */
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const ip = res.headers.get("X-Forwarded-For")
+    OpenFeature.setTransactionContext({ targetingKey: req.user.id, ipAddress: ip }, () => {
+        // The transaction context is used in any flag evaluation throughout the whole call chain of next 
+        next();
+    });
+})
+```
+
 #### Condition 3.3.1
 
 > The implementation uses the dynamic-context paradigm.
@@ -164,32 +193,6 @@ This method can e.g. be used in a request handler to add request-specific inform
 
 A `transaction context propagator` is responsible for persisting context for the duration of a single transaction.
 Typically, a transaction context propagator will propagate the context using a language-specific carrier such as [ThreadLocal (Java)](https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html), [async hooks (Node.js)](https://nodejs.org/api/async_hooks.html), [Context (Go)](https://pkg.go.dev/context) or another similar mechanism.
-
-The following shows a possible TypeScript implementation using [AsyncLocalStorage (async_hooks)](https://nodejs.org/api/async_context.html): 
-
-```typescript
-export class AsyncLocalStorageTransactionContext implements TransactionContextPropagator {
-    private asyncLocalStorage = new AsyncLocalStorage<EvaluationContext>();
-
-    getTransactionContext(): EvaluationContext {
-        return this.asyncLocalStorage.getStore() ?? {};
-    }
-    setTransactionContext(context: EvaluationContext, callback: () => void): void {
-        this.asyncLocalStorage.run(context, callback);
-    }
-}
-
-/**
- * This example is based on an express middleware.
- */
-app.use((req: Request, res: Response, next: NextFunction) => {
-    const ip = res.headers.get("X-Forwarded-For")
-    OpenFeature.setTransactionContext({ targetingKey: req.user.id, ipAddress: ip }, () => {
-        // The transaction context is used in any flag evaluation throughout the whole call chain of next 
-        next();
-    });
-})
-```
 
 ##### Conditional Requirement 3.3.1.4
 
