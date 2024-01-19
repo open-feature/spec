@@ -210,4 +210,4 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 > The API **MUST NOT** have a method for setting a `transaction context propagator`.
 
-In the static-context paradigm, context is global, so there should not be different context between transactions.
+In the static-context paradigm, context is global, so there must not be different contexts between transactions.
