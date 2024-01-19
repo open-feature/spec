@@ -107,7 +107,7 @@ See [hooks](./04-hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
-It must be possible to access provider metadata using a `domain`.
+It's possible to access provider metadata using a `domain`.
 If a provider has not be registered under the requested domain, the default provider metadata is returned.
 
 ```typescript
@@ -130,7 +130,7 @@ See [provider](./02-providers.md), [domain](../glossary.md#domain) for details.
 OpenFeature.getClient();
 ```
 
-It must be possible to create a client that is associated with a `domain`.
+It's possible to create a client that is associated with a `domain`.
 The client will use a provider in the same `domain` if one exists, otherwise, the default provide is used.
 
 ```java

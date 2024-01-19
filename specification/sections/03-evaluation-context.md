@@ -90,7 +90,7 @@ See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](.
 
 > The API **MUST** have a mechanism to manage `evaluation context` for an associated `domain`.
 
-In the static-context paradigm, it must be possible to create and remove provider-specific context.
+In the static-context paradigm, it's possible to create and remove provider-specific context.
 See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 3.2.3
