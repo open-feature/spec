@@ -38,7 +38,7 @@
         {
             "id": "Requirement 1.1.3",
             "machine_id": "requirement_1_1_3",
-            "content": "The `API` MUST provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.",
+            "content": "The `API` MUST provide a function to bind a given `provider` to one or more clients using a `domain`. If the domain already has a bound provider, it is overwritten with the new mapping.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -59,7 +59,7 @@
         {
             "id": "Requirement 1.1.6",
             "machine_id": "requirement_1_1_6",
-            "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - name (optional): A logical string identifier for the client.",
+            "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - domain (optional): A logical string identifier for binding clients to provider.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -80,7 +80,7 @@
         {
             "id": "Requirement 1.2.2",
             "machine_id": "requirement_1_2_2",
-            "content": "The client interface MUST define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.",
+            "content": "The client interface MUST define a `metadata` member or accessor, containing an immutable `domain` field or accessor of type string, which corresponds to the `domain` value supplied during client creation.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -523,14 +523,14 @@
                 {
                     "id": "Conditional Requirement 3.2.2.3",
                     "machine_id": "conditional_requirement_3_2_2_3",
-                    "content": "The API MUST have a method for setting `evaluation context` for a provider bound to a named client.",
+                    "content": "The API MUST have a method for setting `evaluation context` for a `domain`.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
                     "id": "Conditional Requirement 3.2.2.4",
                     "machine_id": "conditional_requirement_3_2_2_4",
-                    "content": "The API MUST have a a mechanism to manage `evaluation context` for an associated name.",
+                    "content": "The API MUST have a mechanism to manage `evaluation context` for an associated `domain`.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
