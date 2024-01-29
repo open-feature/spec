@@ -88,10 +88,10 @@ enum Reason {
     Unknown,
     Stale,
     Error,
-    Custom(String)
+    Other(String)
 }
 
-let myReason = Reason::Custom("my-reason".to_string());
+let myReason = Reason::Other("my-reason".to_string());
 ```
 
 > [!NOTE]
