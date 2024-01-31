@@ -79,19 +79,19 @@ In the static-context paradigm, context is global. The client and invocation can
 
 ##### Conditional Requirement 3.2.2.3
 
-> The API **MUST** have a method for setting `evaluation context` for a provider bound to a named client.
+> The API **MUST** have a method for setting `evaluation context` for a `domain`.
 
-In the static-context paradigm, provider specific context can be set using the associated name.
+In the static-context paradigm, provider specific context can be set using the associated `domain`.
 The global context is used if there is no matching provider specific context.
 
-See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 ##### Conditional Requirement 3.2.2.4
 
-> The API **MUST** have a mechanism to manage `evaluation context` for an associated name.
+> The API **MUST** have a mechanism to manage `evaluation context` for an associated `domain`.
 
-In the static-context paradigm, it must be possible to create and remove provider-specific context.
-See [setting a provider](./01-flag-evaluation.md#setting-a-provider) for details.
+In the static-context paradigm, it's possible to create and remove provider-specific context.
+See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 3.2.3
 

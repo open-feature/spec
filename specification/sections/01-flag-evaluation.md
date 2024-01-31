@@ -31,28 +31,29 @@ It's important that multiple instances of the `API` not be active, so that state
 OpenFeature.setProvider(new MyProvider());
 ```
 
-This provider is used if a client is not bound to a specific provider through its name.
+The example above sets the default provider.
+This provider is used if a client is not bound to a specific provider via a [domain](../glossary.md#domain).
 
-See [provider](./02-providers.md), [creating clients](#creating-clients).
+See [provider](./02-providers.md), [creating clients](#creating-clients) for details.
 
 #### Requirement 1.1.2.2
 
 > The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
-Provider instances which are already active (because they have been bound to other `names` or otherwise) need not be initialized again.
+Provider instances which are already active (because they have been bound to another `domain` or otherwise) need not be initialized again.
 The `provider's` readiness can state can be determined from its `status` member/accessor.
 
-See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization).
+See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.2.3
 
 >  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
 When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
-Provider instances which are bound to multiple names won't be shut down until the last binding is removed.
+Provider instances which are bound to multiple `domains` won't be shut down until the last binding is removed.
 
-see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider)
+see [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.2.4
 
@@ -61,28 +62,30 @@ see: [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-
 This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
 
 ```java
-// default client
+// default provider
 OpenFeatureAPI.getInstance().setProviderAndWait(myprovider); // this method blocks until the provider is ready or in error
+// client uses the default provider
 Client client = OpenFeatureAPI.getInstance().getClient(); 
 
-// named client
-OpenFeatureAPI.getInstance().setProviderAndWait('client-name', myprovider); // this method blocks until the provider is ready or in error
-Client client = OpenFeatureAPI.getInstance().getClient('client-name');
+// provider associated with domain-1
+OpenFeatureAPI.getInstance().setProviderAndWait('domain-1', myprovider); // this method blocks until the provider is ready or in error
+// client uses provider associated with the domain named 'domain-1'
+Client client = OpenFeatureAPI.getInstance().getClient('domain-1');
 ```
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
 
 #### Requirement 1.1.3
 
-> The `API` **MUST** provide a function to bind a given `provider` to one or more client `name`s. If the client-name already has a bound provider, it is overwritten with the new mapping.
+> The `API` **MUST** provide a function to bind a given `provider` to one or more clients using a `domain`. If the domain already has a bound provider, it is overwritten with the new mapping.
 
 ```java
-OpenFeature.setProvider("client-name", new MyProvider());
+OpenFeature.setProvider("domain-1", new MyProvider());
 ```
 
-Named clients can be associated with a particular provider by supplying a matching name when the provider is set.
+Clients can be associated with a particular provider by supplying a matching `domain` when the provider is set.
 
-See [creating clients](#creating-clients).
+See [creating clients](#creating-clients), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.4
 
@@ -104,7 +107,15 @@ See [hooks](./04-hooks.md) for details.
 OpenFeature.getProviderMetadata();
 ```
 
-See [provider](./02-providers.md) for details.
+It's possible to access provider metadata using a `domain`.
+If a provider has not be registered under the requested domain, the default provider metadata is returned.
+
+```typescript
+// example provider accessor
+OpenFeature.getProviderMetadata("domain-1");
+```
+
+See [provider](./02-providers.md), [domain](../glossary.md#domain) for details.
 
 ### Creating clients
 
@@ -112,17 +123,22 @@ See [provider](./02-providers.md) for details.
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
-> - name (optional): A logical string identifier for the client.
+> - domain (optional): A logical string identifier for binding clients to provider.
 
 ```java
 // example client creation and retrieval
-OpenFeature.getClient("my-named-client");
+OpenFeature.getClient();
 ```
 
-The name is a logical identifier for the client which may be associated with a particular provider by the application integrator.
-If a client name is not bound to a particular provider, the client is associated with the default provider.
+It's possible to create a client that is associated with a `domain`.
+The client will use a provider in the same `domain` if one exists, otherwise, the default provide is used.
 
-See [setting a provider](#setting-a-provider) for details.
+```java
+// example client creation and retrieval using a domain
+OpenFeature.getClient("domain-1");
+```
+
+See [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.7
 
@@ -145,11 +161,14 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.2.2
 
-> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `name` field or accessor of type string, which corresponds to the `name` value supplied during client creation.
+> The client interface **MUST** define a `metadata` member or accessor, containing an immutable `domain` field or accessor of type string, which corresponds to the `domain` value supplied during client creation.
 
 ```typescript
-client.getMetadata().getName(); // "my-client"
+client.getMetadata().getDomain(); // "domain-1"
 ```
+
+In previous drafts, this property was called `name`.
+For backwards compatibility, implementations should consider `name` an alias to `domain`.
 
 ### 1.3. Flag Evaluation
 
