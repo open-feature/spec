@@ -189,7 +189,7 @@ A language may not have any applicable way of implementing `transaction context 
 
 > The API **MUST** have a method for setting the `evaluation context` of the `transaction context propagator` for the current transaction.
 
-If a `transaction context propagator` is set, the SDK will call the [method defined in 3.3.1.3](#conditional-requirement-3313) with this `evaluation context` and so this `evaluation context` will be available during the current transaction.
+If a `transaction context propagator` is set, the SDK will call the [method defined in 3.3.1.3](#conditional-requirement-33122) with this `evaluation context` and so this `evaluation context` will be available during the current transaction.
 If no `transaction context propagator` is set, this `evaluation context` is not used for evaluations.
 This method then can be used for example in a request handler to add request-specific information to the `evaluation context`.
 
