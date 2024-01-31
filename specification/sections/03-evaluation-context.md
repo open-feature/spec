@@ -175,11 +175,17 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 
 ##### Conditional Requirement 3.3.1.1
 
-> The API **MUST** have a method for setting a `transaction context propagator`.
+> The API **SHOULD** have a method for setting a `transaction context propagator`.
 
 If there already is a `transaction context propagator`, it is replaced with the new one. 
 
-##### Conditional Requirement 3.3.1.2
+#### Condition 3.3.1.2
+
+> The SDK implements context propagation.
+
+A language may not have any applicable way of implementing `transaction context propagation` so the language SDK might not implement context propagation.
+
+##### Conditional Requirement 3.3.1.2.1
 
 > The API **MUST** have a method for setting the `evaluation context` of the `transaction context propagator` for the current transaction.
 
@@ -187,14 +193,14 @@ If a `transaction context propagator` is set, the SDK will call the [method defi
 If no `transaction context propagator` is set, this `evaluation context` is not used for evaluations.
 This method then can be used for example in a request handler to add request-specific information to the `evaluation context`.
 
-##### Conditional Requirement 3.3.1.3
+##### Conditional Requirement 3.3.1.2.2
 
 > A `transaction context propagator` **MUST** have a method for setting the `evaluation context` of the current transaction.
 
 A `transaction context propagator` is responsible for persisting context for the duration of a single transaction.
 Typically, a transaction context propagator will propagate the context using a language-specific carrier such as [ThreadLocal (Java)](https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html), [async hooks (Node.js)](https://nodejs.org/api/async_hooks.html), [Context (Go)](https://pkg.go.dev/context) or another similar mechanism.
 
-##### Conditional Requirement 3.3.1.4
+##### Conditional Requirement 3.3.1.2.3
 
 > A `transaction context propagator` **MUST** have a method for getting the `evaluation context` of the current transaction.
 

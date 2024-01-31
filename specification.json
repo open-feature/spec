@@ -574,27 +574,35 @@
                 {
                     "id": "Conditional Requirement 3.3.1.1",
                     "machine_id": "conditional_requirement_3_3_1_1",
-                    "content": "The API MUST have a method for setting a `transaction context propagator`.",
-                    "RFC 2119 keyword": "MUST",
+                    "content": "The API SHOULD have a method for setting a `transaction context propagator`.",
+                    "RFC 2119 keyword": "SHOULD",
                     "children": []
-                },
+                }
+            ]
+        },
+        {
+            "id": "Condition 3.3.1.2",
+            "machine_id": "condition_3_3_1_2",
+            "content": "The SDK implements context propagation.",
+            "RFC 2119 keyword": null,
+            "children": [
                 {
-                    "id": "Conditional Requirement 3.3.1.2",
-                    "machine_id": "conditional_requirement_3_3_1_2",
+                    "id": "Conditional Requirement 3.3.1.2.1",
+                    "machine_id": "conditional_requirement_3_3_1_2_1",
                     "content": "The API MUST have a method for setting the `evaluation context` of the `transaction context propagator` for the current transaction.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
-                    "id": "Conditional Requirement 3.3.1.3",
-                    "machine_id": "conditional_requirement_3_3_1_3",
+                    "id": "Conditional Requirement 3.3.1.2.2",
+                    "machine_id": "conditional_requirement_3_3_1_2_2",
                     "content": "A `transaction context propagator` MUST have a method for setting the `evaluation context` of the current transaction.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
-                    "id": "Conditional Requirement 3.3.1.4",
-                    "machine_id": "conditional_requirement_3_3_1_4",
+                    "id": "Conditional Requirement 3.3.1.2.3",
+                    "machine_id": "conditional_requirement_3_3_1_2_3",
                     "content": "A `transaction context propagator` MUST have a method for getting the `evaluation context` of the current transaction.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
