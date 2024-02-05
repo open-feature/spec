@@ -83,7 +83,7 @@ Though it's possible to use [events](./05-events.md) to await provider readiness
 OpenFeature.setProvider("domain-1", new MyProvider());
 ```
 
-Clients can be associated with a particular provider by supplying a matching `domain`` when the provider is set.
+Clients can be associated with a particular provider by supplying a matching `domain` when the provider is set.
 
 See [creating clients](#creating-clients), [domain](../glossary.md#domain) for details.
 
