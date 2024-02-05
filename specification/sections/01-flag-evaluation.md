@@ -401,3 +401,73 @@ The global API object might expose a `shutdown` function, which will call the re
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)
+
+### 1.7. Provider Lifecycle Management
+
+The implementation maintains an internal representation of the state of configured providers, tracking the lifecycle of each provider.
+This state of the provider is exposed on associated `clients`.
+
+The diagram below illustrates the possible states and transitions of the `state` field for a provider during the provider lifecycle.
+
+```mermaid
+---
+title: Provider State
+---
+stateDiagram-v2
+    direction LR
+    [*] --> NOT_READY
+    NOT_READY --> READY:initialize()
+    NOT_READY --> ERROR:initialize()
+    READY --> ERROR*
+    ERROR --> READY*
+    READY --> STALE*
+    STALE --> READY*
+    STALE --> ERROR*
+    READY --> NOT_READY:shutdown()
+    STALE --> NOT_READY:shutdown()
+    ERROR --> NOT_READY:shutdown()
+```
+
+\* transitions occurring when associated events are spontaneously emitted from the provider
+
+Note that SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define additional states to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
+
+#### Requirement 1.7.1
+
+> The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, or `ERROR`.
+
+see [provider status](../types.md#provider-status)
+
+#### Condition 1.7.2
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 1.7.2.1
+
+> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `CONTEXT_PENDING`.
+
+In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state with a context change.
+
+#### Requirement 1.7.3
+
+> The client's `provider status` accessor **MUST** indicate `READY` if the `initialize` function of the associated provider terminates normally.
+
+Once the provider has initialized, the `provider status` should indicate the provider is ready to be used to evaluate flags.
+
+#### Requirement 1.7.4
+
+> The client's `provider status` accessor **MUST** indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.
+
+If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
+
+#### Requirement 1.7.5
+
+> The client **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
+
+The SDK should return an informative `error code`, such as `PROVIDER_NOT_READY` if evaluation in attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
+
+see: [error codes](https://openfeature.dev/specification/types#error-code)
