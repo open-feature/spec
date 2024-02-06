@@ -74,7 +74,7 @@ Client client = OpenFeatureAPI.getInstance().getClient('domain-1');
 ```
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
-Implementations indicate an error in a manner idiomatic to the language in use (returning an error, throwing and exception, etc).
+Implementations indicate an error in a manner idiomatic to the language in use (returning an error, throwing an exception, etc).
 
 #### Requirement 1.1.3
 
