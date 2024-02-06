@@ -468,6 +468,6 @@ If the provider has failed to initialize, the `provider status` should indicate 
 
 > The client **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
 
-The SDK should return an informative `error code`, such as `PROVIDER_NOT_READY` if evaluation in attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
+The SDK should return an informative `error code`, such as `PROVIDER_NOT_READY`, if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
 
 see: [error codes](https://openfeature.dev/specification/types#error-code)
