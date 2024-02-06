@@ -450,7 +450,7 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 > In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `CONTEXT_PENDING`.
 
-In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state with a context change.
+In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
 
 #### Requirement 1.7.3
 
