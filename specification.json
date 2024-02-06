@@ -460,8 +460,8 @@
                 {
                     "id": "Conditional Requirement 2.4.2.1",
                     "machine_id": "conditional_requirement_2_4_2_1",
-                    "content": "If the provider's `initialize` function fails to ready the provider to evaluate flags, it MUST abnormally terminate.",
-                    "RFC 2119 keyword": "MUST",
+                    "content": "If the provider's `initialize` function fails to render the provider ready to evaluate flags, it SHOULD abnormally terminate.",
+                    "RFC 2119 keyword": "SHOULD",
                     "children": []
                 }
             ]
