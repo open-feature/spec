@@ -156,7 +156,7 @@ See [provider initialization](./02-providers.md#24-initialization), [setting a p
 ### Event handlers and context reconciliation
 
 Providers built to conform to the static context paradigm feature two additional events: `PROVIDER_CONTEXT_CHANGE_PENDING` and `PROVIDER_CONTEXT_CHANGED`.
-While the provider is reconciling it's internal state (the `on context changed` function is running and not yet terminated) the SDK emits `PROVIDER_CONTEXT_CHANGE_PENDING` and transitions the provider into state `CONTEXT_PENDING`.
+While the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the SDK emits `PROVIDER_CONTEXT_CHANGE_PENDING` and transitions the provider into state `CONTEXT_PENDING`.
 This can be particularly useful for displaying loading indicators while the [evaluation context](./03-evaluation-context.md) is being reconciled.
 
 If the `on context changed` function terminates normally, the SDK emits (`PROVIDER_CONTEXT_CHANGED`) and transitions the provider into the `READY` state, otherwise it emits `PROVIDER_ERROR` and transitions the provider into `ERROR` state.
