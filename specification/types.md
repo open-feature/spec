@@ -110,7 +110,7 @@ An enumerated error code represented idiomatically in the implementation languag
 | TYPE_MISMATCH         | The type of the flag value does not match the expected type.                                |
 | TARGETING_KEY_MISSING | The provider requires a targeting key and one was not provided in the `evaluation context`. |
 | INVALID_CONTEXT       | The `evaluation context` does not meet provider requirements.                               |
-| PROVIDER_STATE_FATAL  | The provider has entered a irrecoverable error state.                                       |
+| PROVIDER_STATE_FATAL  | The provider has entered an irrecoverable error state.                                      |
 | GENERAL               | The error was for a reason not enumerated above.                                            |
 
 ### Evaluation Options
