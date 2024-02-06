@@ -57,7 +57,7 @@ see [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-p
 
 #### Requirement 1.1.2.4
 
-> The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to return or throw.
+> The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to complete or abnormally terminate.
 
 This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
 
@@ -74,6 +74,7 @@ Client client = OpenFeatureAPI.getInstance().getClient('domain-1');
 ```
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
+Implementations indicate an error in a manner idiomatic to the language in use (returning an error, throwing and exception, etc).
 
 #### Requirement 1.1.3
 
