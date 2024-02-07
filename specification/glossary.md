@@ -31,6 +31,7 @@ This document defines some terms that are used across this specification.
   - [Domain](#domain)
   - [Integration](#integration)
   - [Evaluation Context](#evaluation-context)
+  - [Transaction Context Propagator](#transaction-context-propagator)
   - [Evaluating Flag Values](#evaluating-flag-values)
   - [Resolving Flag Values](#resolving-flag-values)
 - [Flagging specifics](#flagging-specifics)
@@ -119,6 +120,10 @@ An SDK-compliant secondary function that is abstracted by the Feature Flag API, 
 ### Evaluation Context
 
 Context object for flag evaluation, which may contain information about the runtime environment, details of the transport method encapsulating the flag evaluation, the host, the client, the subject (user), etc. This data may be used as a basis for differential evaluation of feature flags based on rules that can be defined in the flag system. Context data may be provided by merging static global context, arguments to flag evaluation, and implicit language-dependant state propagation mechanisms (thread-local storage, promise chains, continuations, etc).
+
+### Transaction Context Propagator
+
+An SDK-compliant implementation that stores and returns transaction-specific evaluation context. A _transaction_ might be a web request or application event, which carries its contextual data in a thread or continuation storage.
 
 ### Evaluating Flag Values
 

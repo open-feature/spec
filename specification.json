@@ -539,7 +539,7 @@
         {
             "id": "Requirement 3.2.3",
             "machine_id": "requirement_3_2_3",
-            "content": "Evaluation context MUST be merged in the order: API (global; lowest precedence) - client - invocation - before hooks (highest precedence), with duplicate values being overwritten.",
+            "content": "Evaluation context MUST be merged in the order: API (global; lowest precedence) - transaction - client - invocation - before hooks (highest precedence), with duplicate values being overwritten.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -561,6 +561,65 @@
                     "machine_id": "conditional_requirement_3_2_4_2",
                     "content": "When the `evaluation context` for a specific provider is set, the `on context changed` handler MUST only run on the associated provider.",
                     "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Condition 3.3.1",
+            "machine_id": "condition_3_3_1",
+            "content": "The implementation uses the dynamic-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 3.3.1.1",
+                    "machine_id": "conditional_requirement_3_3_1_1",
+                    "content": "The API SHOULD have a method for setting a `transaction context propagator`.",
+                    "RFC 2119 keyword": "SHOULD",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Condition 3.3.1.2",
+            "machine_id": "condition_3_3_1_2",
+            "content": "The SDK implements context propagation.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 3.3.1.2.1",
+                    "machine_id": "conditional_requirement_3_3_1_2_1",
+                    "content": "The API MUST have a method for setting the `evaluation context` of the `transaction context propagator` for the current transaction.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 3.3.1.2.2",
+                    "machine_id": "conditional_requirement_3_3_1_2_2",
+                    "content": "A `transaction context propagator` MUST have a method for setting the `evaluation context` of the current transaction.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 3.3.1.2.3",
+                    "machine_id": "conditional_requirement_3_3_1_2_3",
+                    "content": "A `transaction context propagator` MUST have a method for getting the `evaluation context` of the current transaction.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Condition 3.3.2",
+            "machine_id": "condition_3_3_2",
+            "content": "The implementation uses the static-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 3.3.2.1",
+                    "machine_id": "conditional_requirement_3_3_2_1",
+                    "content": "The API MUST NOT have a method for setting a `transaction context propagator`.",
+                    "RFC 2119 keyword": "MUST NOT",
                     "children": []
                 }
             ]
