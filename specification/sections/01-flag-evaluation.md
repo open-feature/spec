@@ -410,27 +410,28 @@ This state of the provider is exposed on associated `clients`.
 The diagram below illustrates the possible states and transitions of the `state` field for a provider during the provider lifecycle.
 
 ```mermaid
----
-title: Provider State
----
 stateDiagram-v2
     direction LR
     [*] --> NOT_READY
     NOT_READY --> READY:initialize()
     NOT_READY --> ERROR:initialize()
-    READY --> ERROR*
-    ERROR --> READY*
-    READY --> STALE*
-    STALE --> READY*
-    STALE --> ERROR*
+    READY --> ERROR:*
+    ERROR --> READY:*
+    READY --> STALE:*
+    STALE --> READY:*
+    STALE --> ERROR:*
     READY --> NOT_READY:shutdown()
     STALE --> NOT_READY:shutdown()
     ERROR --> NOT_READY:shutdown()
+    READY --> CONTEXT_PENDING:::optional:setContext()
+    CONTEXT_PENDING --> READY:*
+
+    classDef optional fill:#999
 ```
 
 \* transitions occurring when associated events are spontaneously emitted from the provider
 
-Note that SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define additional states to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
+Note that only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `CONTEXT_PENDING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
 
 #### Requirement 1.7.1
 
