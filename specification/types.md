@@ -73,6 +73,28 @@ A set of pre-defined reasons is enumerated below:
 | ERROR           | The resolved value was the result of an error.                                                                                   |
 
 > [!NOTE]
+> The `reason` should not be limited to the reasons enumerated above. It can be any of the pre-defined reasons, or
+> any string value. Some type systems have features which can increase the ergonomics of `reason`, for instance a union
+> of pre-defined types with a string, or a rust-style enumeration which allows for enumerated values to have associated
+> content.
+
+```rust
+enum Reason {
+    Static,
+    Default,
+    TargetingMatch,
+    Split,
+    Cached,
+    Unknown,
+    Stale,
+    Error,
+    Other(String)
+}
+
+let myReason = Reason::Other("my-reason".to_string());
+```
+
+> [!NOTE]
 > The `resolution details` structure is not exposed to the Application Author.
 > It defines the data which Provider Authors must return when resolving the value of flags.
 

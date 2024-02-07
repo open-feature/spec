@@ -31,7 +31,7 @@
         {
             "id": "Requirement 1.1.2.4",
             "machine_id": "requirement_1_1_2_4",
-            "content": "The `API` SHOULD provide functions to set a provider and wait for the `initialize` function to return or throw.",
+            "content": "The `API` SHOULD provide functions to set a provider and wait for the `initialize` function to complete or abnormally terminate.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
