@@ -197,7 +197,7 @@ class MyProvider implements Provider {
 > If the provider's `initialize` function fails to render the provider ready to evaluate flags, it **SHOULD** abnormally terminate.
 
 If a provider is unable to start up correctly, it should indicate abnormal execution by throwing an exception, returning an error, or otherwise indicating so by means idiomatic to the implementation language.
-If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) you can use the `PROVIDER_FATAL` error code.
+If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) the `PROVIDER_FATAL` error code should be used.
 
 see: [error codes](../types.md#error-code)
 
