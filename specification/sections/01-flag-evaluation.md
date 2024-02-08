@@ -484,7 +484,7 @@ If the provider has failed to initialize, the `provider status` should indicate 
 The client defaults and returns the `PROVIDER_NOT_READY` `error code` if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
 The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
 
-see: [error codes](https://openfeature.dev/specification/types#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
 
 #### Requirement 1.7.7
 
