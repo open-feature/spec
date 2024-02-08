@@ -168,7 +168,7 @@ class MyProvider implements Provider {
 
 Many feature flag frameworks or SDKs require some initialization before they can be used.
 They might require the completion of an HTTP request, establishing persistent connections, or starting timers or worker threads.
-The `initialization` function is an ideal place for such logic.
+The `initialize` function is an ideal place for such logic. The `initialize` function may be renamed in accordance with language idioms.
 
 ```java
 // MyProvider implementation of the initialize function defined in Provider
