@@ -491,7 +491,7 @@ see: [error codes](../types.md#error-code), [flag value resolution](./02-provide
 
 > The client **SHOULD** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.
 
-TThe client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
+The client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
 The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
 
 see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
