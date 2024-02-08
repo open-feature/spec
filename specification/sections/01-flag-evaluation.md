@@ -493,7 +493,7 @@ see: [error codes](https://openfeature.dev/specification/types#error-code), [fla
 TThe client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
 The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
 
-see: [error codes](https://openfeature.dev/specification/types#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+see: [error codes](../types#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
 
 #### Requirement 1.7.8
 
