@@ -228,7 +228,7 @@ The SDK must update it's internal representation of the provider's state accordi
 | `PROVIDER_READY`                 | `READY`                                                 |
 | `PROVIDER_STALE`                 | `STALE`                                                 |
 | `PROVIDER_ERROR`                 | `ERROR`                                                 |
-| `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in state `READY`)                 |
+| `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in its current state)                 |
 | `PROVIDER_CONTEXT_CHANGED`       | N/A (only emitted by SDK during context reconciliation) |
 | `PROVIDER_RECONCILING`           | N/A (only emitted by SDK during context reconciliation) |
 
