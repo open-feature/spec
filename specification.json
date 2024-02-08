@@ -333,15 +333,15 @@
         {
             "id": "Requirement 1.7.6",
             "machine_id": "requirement_1_7_6",
-            "content": "The client SHOULD default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.",
-            "RFC 2119 keyword": "SHOULD",
+            "content": "The client MUST default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.7.7",
             "machine_id": "requirement_1_7_7",
-            "content": "The client SHOULD default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.",
-            "RFC 2119 keyword": "SHOULD",
+            "content": "The client MUST default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
