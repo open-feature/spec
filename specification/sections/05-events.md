@@ -197,7 +197,7 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 The implementation must run any `RECONCILING` handlers associated with the provider while the provider is reconciling its state.
 In languages with asynchronous semantics, the emission of this event can be skipped if the `on context changed` function of the provider in question executes synchronously for a given provider, no other operations can take place while it runs.
 
-see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), context, [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
+see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
 ##### Conditional Requirement 5.3.4.2
 
@@ -206,7 +206,7 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 The implementation must run any `PROVIDER_CONTEXT_CHANGED` handlers associated with the provider after the provider has reconciled its state and returned from the `on context changed` function.
 The `PROVIDER_CONTEXT_CHANGED` is not emitted from the provider itself; the SDK implementation must run the `PROVIDER_CONTEXT_CHANGED` handlers if the `on context changed` function terminates normally.
 
-see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), context, [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
+see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
 ##### Conditional Requirement 5.3.4.3
 
@@ -214,7 +214,7 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 The `PROVIDER_ERROR` is not emitted from the provider itself; the SDK implementation must run the `PROVIDER_ERROR` handlers if the `on context changed` throws or otherwise signals an error.
 
-see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), context, [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
+see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
 #### Requirement 5.3.5
 

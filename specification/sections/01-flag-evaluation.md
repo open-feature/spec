@@ -435,7 +435,8 @@ stateDiagram-v2
 
 <span style="color:#555">█</span> only defined in static-context (client-side) paradigm
 
-Note that only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `RECONCILING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
+> [!NOTE]
+> Only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `RECONCILING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
 
 #### Requirement 1.7.1
 
@@ -493,7 +494,7 @@ see: [error codes](../types.md#error-code), [flag value resolution](./02-provide
 TThe client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
 The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
 
-see: [error codes](../types#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
 
 #### Requirement 1.7.8
 
@@ -501,4 +502,4 @@ see: [error codes](../types#error-code), [flag value resolution](./02-providers.
 
 The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
 
-see: [error codes](../types#error-code)
+see: [error codes](../types.md#error-code)
