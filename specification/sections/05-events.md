@@ -34,8 +34,8 @@ These are emitted only by the SDK during context reconciliation.
 If available, native event-emitter or observable/observer language constructs can be used.
 
 When a provider is unable to evaluate flags (perhaps due to loss of connection with a remote service) the provider can signal this by emitting a `PROVIDER_ERROR` event.
-If the error state is irrecoverable, the `PROVIDER_FATAL` error code can be used.
 When it recovers, it can emit a `PROVIDER_READY` event.
+If the error state is irrecoverable, the `PROVIDER_FATAL` error code can be used.
 If a provider caches rules-sets or previously evaluated flags, and such states cannot be considered up-to-date, the provider can signal this by emitting a `PROVIDER_STALE` event.
 
 see: [provider event types](../types.md#provider-events), [`event details`](../types.md#provider-event-details), [events handlers and context reconciliation](#event-handlers-and-context-reconciliation)
