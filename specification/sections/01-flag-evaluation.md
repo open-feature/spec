@@ -501,4 +501,4 @@ see: [error codes](https://openfeature.dev/specification/types#error-code), [fla
 
 The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
 
-see: [error codes](https://openfeature.dev/specification/types#error-code)
+see: [error codes](../types#error-code)
