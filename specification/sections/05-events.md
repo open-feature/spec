@@ -232,4 +232,4 @@ The SDK must update it's internal representation of the provider's state accordi
 | `PROVIDER_CONTEXT_CHANGED`       | N/A (only emitted by SDK during context reconciliation) |
 | `PROVIDER_RECONCILING`           | N/A (only emitted by SDK during context reconciliation) |
 
-see [provider lifecycle management](01-flag-evaluation.md#17-provider-lifecycle-management)
+see: [provider lifecycle management](01-flag-evaluation.md#17-provider-lifecycle-management)
