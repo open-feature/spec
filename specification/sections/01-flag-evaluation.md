@@ -428,12 +428,12 @@ stateDiagram-v2
     READY --> RECONCILING:::client:setContext()
     RECONCILING:::client --> READY:*
 
-    classDef client fill:#555
+    classDef client fill:#888
 ```
 
 \* transitions occurring when associated events are spontaneously emitted from the provider
 
-<span style="color:#555">█</span> only defined in static-context (client-side) paradigm
+<span style="color:#888">█</span> only defined in static-context (client-side) paradigm
 
 > [!NOTE]
 > Only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `RECONCILING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
