@@ -290,7 +290,7 @@
         {
             "id": "Requirement 1.7.1",
             "machine_id": "requirement_1_7_1",
-            "content": "The `client` MUST define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, or `ERROR`.",
+            "content": "The `client` MUST define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -303,7 +303,7 @@
                 {
                     "id": "Conditional Requirement 1.7.2.1",
                     "machine_id": "conditional_requirement_1_7_2_1",
-                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `CONTEXT_PENDING`.",
+                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.",
                     "RFC 2119 keyword": null,
                     "children": []
                 }
@@ -326,7 +326,28 @@
         {
             "id": "Requirement 1.7.5",
             "machine_id": "requirement_1_7_5",
-            "content": "The client SHOULD indicate an error if flag resolution is attempted before the provider is ready.",
+            "content": "The client's `provider status` accessor MUST indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.6",
+            "machine_id": "requirement_1_7_6",
+            "content": "The client SHOULD default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.7",
+            "machine_id": "requirement_1_7_7",
+            "content": "The client SHOULD default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.8",
+            "machine_id": "requirement_1_7_8",
+            "content": "Implementations SHOULD propagate the `error code` returned from any provider lifecycle methods.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
@@ -912,6 +933,13 @@
             "children": []
         },
         {
+            "id": "Requirement 5.1.5",
+            "machine_id": "requirement_5_1_5",
+            "content": "`PROVIDER_ERROR` events SHOULD populate the `provider event details`'s `error code` field.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
             "id": "Requirement 5.2.1",
             "machine_id": "requirement_5_2_1",
             "content": "The `client` MUST provide a function for associating `handler functions` with a particular `provider event type`.",
@@ -990,7 +1018,7 @@
                 {
                     "id": "Conditional Requirement 5.3.4.1",
                     "machine_id": "conditional_requirement_5_3_4_1",
-                    "content": "While the provider's `on context changed` function is executing, associated `PROVIDER_CONTEXT_PENDING` handlers MUST run.",
+                    "content": "While the provider's `on context changed` function is executing, associated `RECONCILING` handlers MUST run.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },

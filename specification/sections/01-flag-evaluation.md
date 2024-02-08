@@ -415,6 +415,8 @@ stateDiagram-v2
     [*] --> NOT_READY
     NOT_READY --> READY:initialize()
     NOT_READY --> ERROR:initialize()
+    NOT_READY --> FATAL:initialize()
+    FATAL --> [*]
     READY --> ERROR:*
     ERROR --> READY:*
     READY --> STALE:*
@@ -423,19 +425,23 @@ stateDiagram-v2
     READY --> NOT_READY:shutdown()
     STALE --> NOT_READY:shutdown()
     ERROR --> NOT_READY:shutdown()
-    READY --> CONTEXT_PENDING:::optional:setContext()
-    CONTEXT_PENDING --> READY:*
+    READY --> RECONCILING:::client:setContext()
+    RECONCILING:::client --> READY:*
 
-    classDef optional fill:#999
+    classDef client fill:#555
 ```
 
 \* transitions occurring when associated events are spontaneously emitted from the provider
 
-Note that only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `CONTEXT_PENDING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
+<span style="color:#555">█</span> only defined in static-context (client-side) paradigm
+
+Note that only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `RECONCILING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
 
 #### Requirement 1.7.1
 
-> The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, or `ERROR`.
+> The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.
+
+The SDK at all times maintains an up-to-date state corresponding to the success/failure of the last lifecycle method (`initialize`, `shutdown`, `on context change`) or emitted event.
 
 see [provider status](../types.md#provider-status)
 
@@ -449,7 +455,7 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 1.7.2.1
 
-> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `CONTEXT_PENDING`.
+> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.
 
 In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
 
@@ -467,8 +473,32 @@ If the provider has failed to initialize, the `provider status` should indicate 
 
 #### Requirement 1.7.5
 
-> The client **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
+> The client's `provider status` accessor **MUST** indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.
 
-The SDK should return an informative `error code`, such as `PROVIDER_NOT_READY`, if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
+If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
+
+#### Requirement 1.7.6
+
+> The client **SHOULD** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.
+
+The client defaults and returns the `PROVIDER_NOT_READY` `error code` if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
+The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
+
+see: [error codes](https://openfeature.dev/specification/types#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+
+#### Requirement 1.7.7
+
+> The client **SHOULD** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.
+
+TThe client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
+The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
+
+see: [error codes](https://openfeature.dev/specification/types#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+
+#### Requirement 1.7.8
+
+> Implementations **SHOULD** propagate the `error code` returned from any provider lifecycle methods.
+
+The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
 
 see: [error codes](https://openfeature.dev/specification/types#error-code)
