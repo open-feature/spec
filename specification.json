@@ -404,7 +404,7 @@
         {
             "id": "Requirement 2.4.1",
             "machine_id": "requirement_2_4_1",
-            "content": "The `provider` MAY define an `initialize` function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.",
+            "content": "The `provider` MAY define an initialization function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
