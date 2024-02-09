@@ -162,7 +162,7 @@ See [provider initialization](./02-providers.md#24-initialization), [setting a p
 ### Event handlers and context reconciliation
 
 Providers built to conform to the static context paradigm feature two additional events: `PROVIDER_RECONCILING` and `PROVIDER_CONTEXT_CHANGED`.
-When the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the SDK emits `PROVIDER_CONTEXT_CHANGE_PENDING` and transitions the provider into state `RECONCILING`.
+When the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the SDK emits `PROVIDER_RECONCILING` and transitions the provider into state `RECONCILING`.
 This can be particularly useful for displaying loading indicators while the [evaluation context](./03-evaluation-context.md) is being reconciled.
 
 If the `on context changed` function terminates normally, the SDK emits (`PROVIDER_CONTEXT_CHANGED`) and transitions the provider into the `READY` state, otherwise it emits `PROVIDER_ERROR` and transitions the provider into `ERROR` state.
@@ -178,7 +178,7 @@ stateDiagram-v2
     READY --> READY:emit(PROVIDER_CONFIGURATION_CHANGED)
     READY --> ERROR:emit(PROVIDER_ERROR)
     ERROR --> READY:emit(PROVIDER_READY)
-    READY --> RECONCILING:emit(PROVIDER_CONTEXT_CHANGE_PENDING)
+    READY --> RECONCILING:emit(PROVIDER_RECONCILING)
     RECONCILING --> READY:emit(PROVIDER_CONTEXT_CHANGED)
 ```
 
@@ -228,7 +228,7 @@ The SDK must update it's internal representation of the provider's state accordi
 | `PROVIDER_READY`                 | `READY`                                                 |
 | `PROVIDER_STALE`                 | `STALE`                                                 |
 | `PROVIDER_ERROR`                 | `ERROR`                                                 |
-| `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in its current state)                 |
+| `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in its current state)             |
 | `PROVIDER_CONTEXT_CHANGED`       | N/A (only emitted by SDK during context reconciliation) |
 | `PROVIDER_RECONCILING`           | N/A (only emitted by SDK during context reconciliation) |
 
