@@ -121,7 +121,7 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 ```
 ##### Requirement 2.2.9
 
-> The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field. 
+> The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field.
 
 ##### Requirement 2.2.10
 
@@ -164,11 +164,11 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.1
 
-> The `provider` **MAY** define an `initialize` function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.
+> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.
 
 Many feature flag frameworks or SDKs require some initialization before they can be used.
 They might require the completion of an HTTP request, establishing persistent connections, or starting timers or worker threads.
-The `initialization` function is an ideal place for such logic.
+The initialization function is an ideal place for such logic.
 
 ```java
 // MyProvider implementation of the initialize function defined in Provider
@@ -281,7 +281,7 @@ class MyProvider implements Provider {
   //...
 
   onContextChanged(EvaluationContext oldContext, EvaluationContext newContext): void {
-    // update context-sensitive cached flags, or otherwise react to the change in the global context 
+    // update context-sensitive cached flags, or otherwise react to the change in the global context
   }
 
   //...
