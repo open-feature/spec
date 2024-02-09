@@ -28,7 +28,7 @@ graph
 
 > The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload. 
 
-Providers cannot emit `PROVIDER_CONTEXT_CHANGED` or `RECONCILING` event.
+Providers cannot emit `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_RECONCILING` event.
 These are emitted only by the SDK during context reconciliation.
 
 If available, native event-emitter or observable/observer language constructs can be used.
