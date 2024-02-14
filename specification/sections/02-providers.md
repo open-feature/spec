@@ -26,6 +26,22 @@ Providers are the "translator" between the flag evaluation calls made in applica
 provider.getMetadata().getName(); // "my-custom-provider"
 ```
 
+#### Requirement 2.1.2
+
+> The provider `metadata` member or accessor **MAY** define an `allFlagKeys` field or accessor of type collection of strings, which identifies all available flag keys in the provider.
+
+```typescript
+provider.getMetadata().getAllFlagKeys(); // ['featureA', 'featureB']
+```
+
+#### Condition 2.1.3
+
+> The implementing language has an asynchronous support.
+
+##### Conditional Requirement 2.1.3.1
+
+> The accessor for `allFlagKeys` **SHOULD** be asynchronous.
+
 ### 2.2 Flag Value Resolution
 
 `Providers` are implementations of the `feature provider` interface, which may wrap vendor SDKs, REST API clients, or otherwise resolve flag values from the runtime environment.

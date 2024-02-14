@@ -26,6 +26,10 @@ A numeric value of unspecified type or size. Implementation languages may furthe
 
 Structured data, presented however is idiomatic in the implementation language, such as JSON or YAML.
 
+### Collection
+
+A list or series of similar data types, presented however is idiomatic in the implementation language.
+
 ### Datetime
 
 A language primitive for representing a date and time, optionally including timezone information. If no timezone is specified, the date and time will be treated as UTC.
@@ -124,6 +128,14 @@ A structure containing the following fields:
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
 
 This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) via the [Evaluation API](./glossary.md#evaluation-api) or an [Application Integrator](./glossary.md#application-integrator) via [hooks](./sections/04-hooks.md).
+
+### Provider Metadata
+
+A structure which carries information about the provider.
+In addition to the defined metadata fields below, arbitrary information can be stored here unique to the provider.
+
+`name` is a required key with a string value.
+`allFlagKeys` is an optional key with a collection of string value.
 
 ### Provider Status
 

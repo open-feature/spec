@@ -359,6 +359,28 @@
             "children": []
         },
         {
+            "id": "Requirement 2.1.2",
+            "machine_id": "requirement_2_1_2",
+            "content": "The provider `metadata` member or accessor MAY define an `allFlagKeys` field or accessor of type collection of strings, which identifies all available flag keys in the provider.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
+            "id": "Condition 2.1.3",
+            "machine_id": "condition_2_1_3",
+            "content": "The implementing language has an asynchronous support.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 2.1.3.1",
+                    "machine_id": "conditional_requirement_2_1_3_1",
+                    "content": "The accessor for `allFlagKeys` SHOULD be asynchronous.",
+                    "RFC 2119 keyword": "SHOULD",
+                    "children": []
+                }
+            ]
+        },
+        {
             "id": "Requirement 2.2.1",
             "machine_id": "requirement_2_2_1",
             "content": "The `feature provider` interface MUST define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `resolution details` structure.",
