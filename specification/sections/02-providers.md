@@ -28,10 +28,10 @@ provider.getMetadata().getName(); // "my-custom-provider"
 
 #### Requirement 2.1.2
 
-> The provider `metadata` member or accessor **MAY** define an `allFlagKeys` field or accessor of type collection of strings, which identifies all available flag keys in the provider.
+> The provider `metadata` member or accessor **MAY** define an `allFlagMetadata` field or accessor of type collection of [flag_metadata](../types.md#flag-metadata), which identifies all available flag keys in the provider.
 
 ```typescript
-provider.getMetadata().getAllFlagKeys(); // ['featureA', 'featureB']
+provider.getMetadata().getAllFlagMetadata(); // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]
 ```
 
 #### Condition 2.1.3
@@ -40,7 +40,7 @@ provider.getMetadata().getAllFlagKeys(); // ['featureA', 'featureB']
 
 ##### Conditional Requirement 2.1.3.1
 
-> The accessor for `allFlagKeys` **SHOULD** be asynchronous.
+> The accessor for `allFlagMetadata` **SHOULD** be asynchronous.
 
 ### 2.2 Flag Value Resolution
 

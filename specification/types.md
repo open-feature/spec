@@ -127,6 +127,9 @@ A structure containing the following fields:
 
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
 
+`key` is a required property with a value of `string`.
+`type` is a required property with a `string` value of either `boolean`, `string`, `number`, or `structure`.
+
 This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) via the [Evaluation API](./glossary.md#evaluation-api) or an [Application Integrator](./glossary.md#application-integrator) via [hooks](./sections/04-hooks.md).
 
 ### Provider Metadata
