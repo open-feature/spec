@@ -410,6 +410,9 @@ This state of the provider is exposed on associated `clients`.
 The diagram below illustrates the possible states and transitions of the `state` field for a provider during the provider lifecycle.
 
 ```mermaid
+---
+title: Provider lifecycle
+---
 stateDiagram-v2
     direction LR
     [*] --> NOT_READY
