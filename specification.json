@@ -1025,14 +1025,14 @@
                 {
                     "id": "Conditional Requirement 5.3.4.2",
                     "machine_id": "conditional_requirement_5_3_4_2",
-                    "content": "If the provider's `on context changed` function terminates normally, associated `PROVIDER_CONTEXT_CHANGED` handlers MUST run.",
+                    "content": "If the provider's `on context changed` function terminates normally, and no other invocations have yet to terminate, associated `PROVIDER_CONTEXT_CHANGED` handlers MUST run.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
                     "id": "Conditional Requirement 5.3.4.3",
                     "machine_id": "conditional_requirement_5_3_4_3",
-                    "content": "If the provider's `on context changed` function terminates abnormally, associated `PROVIDER_ERROR` handlers MUST run.",
+                    "content": "If the provider's `on context changed` function terminates abnormally, and no other invocations have yet to terminate, associated `PROVIDER_ERROR` handlers MUST run.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
