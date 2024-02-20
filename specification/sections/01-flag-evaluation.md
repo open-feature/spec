@@ -426,7 +426,8 @@ stateDiagram-v2
     STALE --> NOT_READY:shutdown()
     ERROR --> NOT_READY:shutdown()
     READY --> RECONCILING:::client:setContext()
-    RECONCILING:::client --> READY:*
+    RECONCILING:::client --> READY
+    RECONCILING:::client --> ERROR
 
     classDef client fill:#888
 ```
