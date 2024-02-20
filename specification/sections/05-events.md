@@ -175,12 +175,13 @@ title: Provider context reconciliation
 ---
 stateDiagram-v2
     direction TB
-    READY --> READY:emit(PROVIDER_CONFIGURATION_CHANGED)
-    READY --> ERROR:emit(PROVIDER_ERROR)
-    ERROR --> READY:emit(PROVIDER_READY)
+    READY --> READY:emit(PROVIDER_CONTEXT_CHANGED)*
     READY --> RECONCILING:emit(PROVIDER_RECONCILING)
     RECONCILING --> READY:emit(PROVIDER_CONTEXT_CHANGED)
+    RECONCILING --> ERROR:emit(PROVIDER_ERROR)
 ```
+
+\* Implementations may allow for providers to reconcile synchronously, in which case no `PROVIDER_RECONCILING` event is emitted.
 
 #### Condition 5.3.4
 
