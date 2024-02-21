@@ -138,7 +138,6 @@ A structure which carries information about the provider.
 In addition to the defined metadata fields below, arbitrary information can be stored here unique to the provider.
 
 `name` is a required key with a string value.
-`allFlagKeys` is an optional key with a collection of string value.
 
 ### Provider Status
 
