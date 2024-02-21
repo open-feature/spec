@@ -85,6 +85,13 @@
             "children": []
         },
         {
+            "id": "Requirement 1.2.3",
+            "machine_id": "requirement_1_2_3",
+            "content": "The client interface MUST define a `allFlagMetadata` member or accessor, returning a collection of flag metadata from the provider.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Condition 1.3.1",
             "machine_id": "condition_1_3_1",
             "content": "The implementation uses the dynamic-context paradigm.",
@@ -361,7 +368,7 @@
         {
             "id": "Requirement 2.1.2",
             "machine_id": "requirement_2_1_2",
-            "content": "The provider `metadata` member or accessor MAY define an `allFlagMetadata` field or accessor of type collection of [flag_metadata](../types.md",
+            "content": "The provider MAY define an `allFlagMetadata` field or accessor of type collection of [flag_metadata](../types.md",
             "RFC 2119 keyword": "MAY",
             "children": []
         },

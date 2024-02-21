@@ -65,7 +65,7 @@ This function not only sets the provider, but ensures that the provider is ready
 // default provider
 OpenFeatureAPI.getInstance().setProviderAndWait(myprovider); // this method blocks until the provider is ready or in error
 // client uses the default provider
-Client client = OpenFeatureAPI.getInstance().getClient(); 
+Client client = OpenFeatureAPI.getInstance().getClient();
 
 // provider associated with domain-1
 OpenFeatureAPI.getInstance().setProviderAndWait('domain-1', myprovider); // this method blocks until the provider is ready or in error
@@ -170,6 +170,16 @@ client.getMetadata().getDomain(); // "domain-1"
 
 In previous drafts, this property was called `name`.
 For backwards compatibility, implementations should consider `name` an alias to `domain`.
+
+#### Requirement 1.2.3
+
+> The client interface **MUST** define a `allFlagMetadata` member or accessor, returning a collection of flag metadata from the provider.
+
+```typescript
+client.getAllFlagMetadata() // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]
+```
+
+This may return an empty collection if the provider does not implement the `allFlagMetadata` member or accessor.
 
 ### 1.3. Flag Evaluation
 
