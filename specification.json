@@ -340,7 +340,7 @@
         {
             "id": "Requirement 1.7.7",
             "machine_id": "requirement_1_7_7",
-            "content": "The client MUST default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.",
+            "content": "The client MUST default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `FATAL`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
