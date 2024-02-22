@@ -188,53 +188,18 @@ class MyProvider implements Provider {
 }
 ```
 
-#### Requirement 2.4.2
+#### Condition 2.4.2
 
-> The `provider` **MAY** define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, `STALE`, or `ERROR`.
+> The provider defines an `initialize` function.
 
-Providers without this field can be assumed to be ready immediately.
+##### Conditional Requirement 2.4.2.1
 
-The diagram below illustrates the possible states and transitions of the `status` fields.
+> If the provider's `initialize` function fails to render the provider ready to evaluate flags, it **SHOULD** abnormally terminate.
 
-```mermaid
----
-title: Provider State
----
-stateDiagram-v2
-    direction LR
-    [*] --> NOT_READY
-    NOT_READY --> READY:initialize
-    READY --> ERROR
-    ERROR --> READY
-    READY --> STALE
-    STALE --> READY
-    STALE --> ERROR
-    READY --> NOT_READY:shutdown
-    STALE --> NOT_READY:shutdown
-    ERROR --> NOT_READY:shutdown
-```
+If a provider is unable to start up correctly, it should indicate abnormal execution by throwing an exception, returning an error, or otherwise indicating so by means idiomatic to the implementation language.
+If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) the `PROVIDER_FATAL` error code should be used.
 
-see [provider status](../types.md#provider-status)
-
-#### Requirement 2.4.3
-
-> The provider **MUST** set its `status` field/accessor to `READY` if its `initialize` function terminates normally.
-
-If the provider supports the `status` field/accessor and initialization succeeds, setting the `status` to `READY` indicates that the provider is initialized and flag evaluation is proceeding normally.
-
-#### Requirement 2.4.4
-
-> The provider **MUST** set its `status` field to `ERROR` if its `initialize` function terminates abnormally.
-
-If the provider supports the `status` field/accessor and initialization fails, setting the `status` to `ERROR` indicates the provider is in an error state. If the error is transient in nature (ex: a connectivity failure of some kind) the provider can attempt to resolve this state automatically.
-
-#### Requirement 2.4.5
-
-> The provider **SHOULD** indicate an error if flag resolution is attempted before the provider is ready.
-
-It's recommended to set an informative `error code`, such as `PROVIDER_NOT_READY` if evaluation in attempted before the provider is initialized.
-
-see: [error codes](https://openfeature.dev/specification/types#error-code)
+see: [error codes](../types.md#error-code)
 
 ### 2.5. Shutdown
 
@@ -266,14 +231,14 @@ see: [initialization](#24-initialization)
 
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
-Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on context changed` handler can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
+Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on context changed` function can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
 
 #### Requirement 2.6.1
 
-> The provider **MAY** define an `on context changed` handler, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.
+> The provider **MAY** define an `on context changed` function, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.
 
 Especially in static-context implementations, providers and underlying SDKs may maintain state for a particular context.
-The `on context changed` handler provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
+The `on context changed` function provides a mechanism to update this state, often by re-evaluating flags in bulk with respect to the new context.
 
 ```java
 // MyProvider implementation of the onContextChanged function defined in Provider

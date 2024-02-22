@@ -124,15 +124,15 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 3.2.4.1
 
-> When the global `evaluation context` is set, the `on context changed` handler **MUST** run.
+> When the global `evaluation context` is set, the `on context changed` function **MUST** run.
 
-The SDK implementation must run the `on context changed` handler on all registered provider that use the global `evaluation context` whenever it is mutated.
+The SDK implementation must run the `on context changed` function on all registered provider that use the global `evaluation context` whenever it is mutated.
 
 ##### Conditional Requirement 3.2.4.2
 
-> When the `evaluation context` for a specific provider is set, the `on context changed` handler **MUST** only run on the associated provider.
+> When the `evaluation context` for a specific provider is set, the `on context changed` function **MUST** only run on the associated provider.
 
-The SDK implementation must run the `on context changed` handler only on the provider that is scoped to the mutated `evaluation context`.
+The SDK implementation must run the `on context changed` function only on the provider that is scoped to the mutated `evaluation context`.
 
 ### 3.3 Context Propagation
 

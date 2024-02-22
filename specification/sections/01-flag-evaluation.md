@@ -401,3 +401,109 @@ The global API object might expose a `shutdown` function, which will call the re
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)
+
+### 1.7. Provider Lifecycle Management
+
+The implementation maintains an internal representation of the state of configured providers, tracking the lifecycle of each provider.
+This state of the provider is exposed on associated `clients`.
+
+The diagram below illustrates the possible states and transitions of the `state` field for a provider during the provider lifecycle.
+
+```mermaid
+---
+title: Provider lifecycle
+---
+stateDiagram-v2
+    direction LR
+    [*] --> NOT_READY
+    NOT_READY --> READY:initialize()
+    NOT_READY --> ERROR:initialize()
+    NOT_READY --> FATAL:initialize()
+    FATAL --> [*]
+    READY --> ERROR:*
+    ERROR --> READY:*
+    READY --> STALE:*
+    STALE --> READY:*
+    STALE --> ERROR:*
+    READY --> NOT_READY:shutdown()
+    STALE --> NOT_READY:shutdown()
+    ERROR --> NOT_READY:shutdown()
+    READY --> RECONCILING:::client:setContext()
+    RECONCILING:::client --> READY
+    RECONCILING:::client --> ERROR
+
+    classDef client fill:#888
+```
+
+\* transitions occurring when associated events are spontaneously emitted from the provider
+
+<span style="color:#888">█</span> only defined in static-context (client-side) paradigm
+
+> [!NOTE]
+> Only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `RECONCILING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
+
+#### Requirement 1.7.1
+
+> The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.
+
+The SDK at all times maintains an up-to-date state corresponding to the success/failure of the last lifecycle method (`initialize`, `shutdown`, `on context change`) or emitted event.
+
+see [provider status](../types.md#provider-status)
+
+#### Condition 1.7.2
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 1.7.2.1
+
+> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.
+
+In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
+
+#### Requirement 1.7.3
+
+> The client's `provider status` accessor **MUST** indicate `READY` if the `initialize` function of the associated provider terminates normally.
+
+Once the provider has initialized, the `provider status` should indicate the provider is ready to be used to evaluate flags.
+
+#### Requirement 1.7.4
+
+> The client's `provider status` accessor **MUST** indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.
+
+If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
+
+#### Requirement 1.7.5
+
+> The client's `provider status` accessor **MUST** indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.
+
+If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
+
+#### Requirement 1.7.6
+
+> The client **MUST** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.
+
+The client defaults and returns the `PROVIDER_NOT_READY` `error code` if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
+The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
+
+see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+
+#### Requirement 1.7.7
+
+> The client **MUST** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.
+
+The client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
+The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
+
+see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
+
+#### Requirement 1.7.8
+
+> Implementations **SHOULD** propagate the `error code` returned from any provider lifecycle methods.
+
+The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
+
+see: [error codes](../types.md#error-code)

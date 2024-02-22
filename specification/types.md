@@ -110,6 +110,7 @@ An enumerated error code represented idiomatically in the implementation languag
 | TYPE_MISMATCH         | The type of the flag value does not match the expected type.                                |
 | TARGETING_KEY_MISSING | The provider requires a targeting key and one was not provided in the `evaluation context`. |
 | INVALID_CONTEXT       | The `evaluation context` does not meet provider requirements.                               |
+| PROVIDER_FATAL        | The provider has entered an irrecoverable error state.                                      |
 | GENERAL               | The error was for a reason not enumerated above.                                            |
 
 ### Evaluation Options
@@ -128,12 +129,15 @@ This structure is populated by a provider for use by an [Application Author](./g
 
 An enumeration of possible provider states.
 
-| Status    | Explanation                                                                                         |
-| --------- | --------------------------------------------------------------------------------------------------- |
-| NOT_READY | The provider has not been initialized.                                                              |
-| READY     | The provider has been initialized, and is able to reliably resolve flag values.                     |
-| ERROR     | The provider is initialized but is not able to reliably resolve flag values.                        |
-| STALE     | The provider's cached state is no longer valid and may not be up-to-date with the source of truth.  |
+| Status       | Explanation                                                                                        |
+| ------------ | -------------------------------------------------------------------------------------------------- |
+| NOT_READY    | The provider has not been initialized.                                                             |
+| READY        | The provider has been initialized, and is able to reliably resolve flag values.                    |
+| ERROR        | The provider is initialized but is not able to reliably resolve flag values.                       |
+| STALE        | The provider's cached state is no longer valid and may not be up-to-date with the source of truth. |
+| RECONCILING* | The provider is reconciling its state with a context change.                                       |
+
+\* [static context (client-side) paradigm](./glossary.md#static-context-paradigm) only
 
 ### Provider Event Details
 
@@ -150,6 +154,7 @@ A structure defining an event payload, including:
 - provider name (string, required)
 - flags changed (string[], optional)
 - message (string, optional)
+- error code ([error code](#error-code), optional)
 - event metadata ([event metadata](#event-metadata))
 
 ### Event Metadata
@@ -161,13 +166,14 @@ It supports definition of arbitrary properties, with keys of type `string`, and 
 
 An enumeration of provider events.
 
-| Event                          | Explanation                                                                                                  |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                                           |
-| PROVIDER_ERROR                 | The provider signalled an error.                                                                             |
-| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                         |
-| PROVIDER_STALE                 | The provider's cached state is no longer valid and may not be up-to-date with the source of truth.           |
-| PROVIDER_CONTEXT_CHANGED*      | The context associated with the provider has changed, and the provider has reconciled it's associated state. |
+| Event                          | Explanation                                                                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                                                  |
+| PROVIDER_ERROR                 | The provider signalled an error.                                                                                    |
+| PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                                |
+| PROVIDER_STALE                 | The provider's cached state is no longer valid and may not be up-to-date with the source of truth.                  |
+| PROVIDER_RECONCILING*          | The context associated with the provider has changed, and the provider has not yet reconciled its associated state. |
+| PROVIDER_CONTEXT_CHANGED*      | The context associated with the provider has changed, and the provider has reconciled its associated state.         |
 
 \* [static context (client-side) paradigm](./glossary.md#static-context-paradigm) only
 

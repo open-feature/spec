@@ -288,6 +288,70 @@
             "children": []
         },
         {
+            "id": "Requirement 1.7.1",
+            "machine_id": "requirement_1_7_1",
+            "content": "The `client` MUST define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Condition 1.7.2",
+            "machine_id": "condition_1_7_2",
+            "content": "The implementation uses the static-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 1.7.2.1",
+                    "machine_id": "conditional_requirement_1_7_2_1",
+                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.",
+                    "RFC 2119 keyword": null,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Requirement 1.7.3",
+            "machine_id": "requirement_1_7_3",
+            "content": "The client's `provider status` accessor MUST indicate `READY` if the `initialize` function of the associated provider terminates normally.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.4",
+            "machine_id": "requirement_1_7_4",
+            "content": "The client's `provider status` accessor MUST indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.5",
+            "machine_id": "requirement_1_7_5",
+            "content": "The client's `provider status` accessor MUST indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.6",
+            "machine_id": "requirement_1_7_6",
+            "content": "The client MUST default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.7",
+            "machine_id": "requirement_1_7_7",
+            "content": "The client MUST default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `PROVIDER_FATAL`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.8",
+            "machine_id": "requirement_1_7_8",
+            "content": "Implementations SHOULD propagate the `error code` returned from any provider lifecycle methods.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
             "id": "Requirement 2.1.1",
             "machine_id": "requirement_2_1_1",
             "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
@@ -409,32 +473,19 @@
             "children": []
         },
         {
-            "id": "Requirement 2.4.2",
-            "machine_id": "requirement_2_4_2",
-            "content": "The `provider` MAY define a `status` field/accessor which indicates the readiness of the provider, with possible values `NOT_READY`, `READY`, `STALE`, or `ERROR`.",
-            "RFC 2119 keyword": "MAY",
-            "children": []
-        },
-        {
-            "id": "Requirement 2.4.3",
-            "machine_id": "requirement_2_4_3",
-            "content": "The provider MUST set its `status` field/accessor to `READY` if its `initialize` function terminates normally.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 2.4.4",
-            "machine_id": "requirement_2_4_4",
-            "content": "The provider MUST set its `status` field to `ERROR` if its `initialize` function terminates abnormally.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 2.4.5",
-            "machine_id": "requirement_2_4_5",
-            "content": "The provider SHOULD indicate an error if flag resolution is attempted before the provider is ready.",
-            "RFC 2119 keyword": "SHOULD",
-            "children": []
+            "id": "Condition 2.4.2",
+            "machine_id": "condition_2_4_2",
+            "content": "The provider defines an `initialize` function.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 2.4.2.1",
+                    "machine_id": "conditional_requirement_2_4_2_1",
+                    "content": "If the provider's `initialize` function fails to render the provider ready to evaluate flags, it SHOULD abnormally terminate.",
+                    "RFC 2119 keyword": "SHOULD",
+                    "children": []
+                }
+            ]
         },
         {
             "id": "Requirement 2.5.1",
@@ -453,7 +504,7 @@
         {
             "id": "Requirement 2.6.1",
             "machine_id": "requirement_2_6_1",
-            "content": "The provider MAY define an `on context changed` handler, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.",
+            "content": "The provider MAY define an `on context changed` function, which takes an argument for the previous context and the newly set context, in order to respond to an evaluation context change.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
@@ -552,14 +603,14 @@
                 {
                     "id": "Conditional Requirement 3.2.4.1",
                     "machine_id": "conditional_requirement_3_2_4_1",
-                    "content": "When the global `evaluation context` is set, the `on context changed` handler MUST run.",
+                    "content": "When the global `evaluation context` is set, the `on context changed` function MUST run.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
                     "id": "Conditional Requirement 3.2.4.2",
                     "machine_id": "conditional_requirement_3_2_4_2",
-                    "content": "When the `evaluation context` for a specific provider is set, the `on context changed` handler MUST only run on the associated provider.",
+                    "content": "When the `evaluation context` for a specific provider is set, the `on context changed` function MUST only run on the associated provider.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -882,6 +933,13 @@
             "children": []
         },
         {
+            "id": "Requirement 5.1.5",
+            "machine_id": "requirement_5_1_5",
+            "content": "`PROVIDER_ERROR` events SHOULD populate the `provider event details`'s `error code` field.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
             "id": "Requirement 5.2.1",
             "machine_id": "requirement_5_2_1",
             "content": "The `client` MUST provide a function for associating `handler functions` with a particular `provider event type`.",
@@ -960,25 +1018,32 @@
                 {
                     "id": "Conditional Requirement 5.3.4.1",
                     "machine_id": "conditional_requirement_5_3_4_1",
-                    "content": "When the provider's `on context changed` is called, the provider MAY emit the `PROVIDER_STALE` event, and transition to the `STALE` state.",
-                    "RFC 2119 keyword": "MAY",
+                    "content": "While the provider's `on context changed` function is executing, associated `RECONCILING` handlers MUST run.",
+                    "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
                     "id": "Conditional Requirement 5.3.4.2",
                     "machine_id": "conditional_requirement_5_3_4_2",
-                    "content": "If the provider's `on context changed` function terminates normally, associated `PROVIDER_CONTEXT_CHANGED` handlers MUST run.",
+                    "content": "If the provider's `on context changed` function terminates normally, and no other invocations have yet to terminate, associated `PROVIDER_CONTEXT_CHANGED` handlers MUST run.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 },
                 {
                     "id": "Conditional Requirement 5.3.4.3",
                     "machine_id": "conditional_requirement_5_3_4_3",
-                    "content": "If the provider's `on context changed` function terminates abnormally, associated `PROVIDER_ERROR` handlers MUST run.",
+                    "content": "If the provider's `on context changed` function terminates abnormally, and no other invocations have yet to terminate, associated `PROVIDER_ERROR` handlers MUST run.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 5.3.5",
+            "machine_id": "requirement_5_3_5",
+            "content": "If the provider emits an event, the value of the client's `provider status` MUST be updated accordingly.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         }
     ]
 }
