@@ -229,9 +229,11 @@ The SDK must update it's internal representation of the provider's state accordi
 | -------------------------------- | ------------------------------------------------------- |
 | `PROVIDER_READY`                 | `READY`                                                 |
 | `PROVIDER_STALE`                 | `STALE`                                                 |
-| `PROVIDER_ERROR`                 | `ERROR`                                                 |
+| `PROVIDER_ERROR`                 | `ERROR`/`FATAL`*                                        |
 | `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in its current state)             |
 | `PROVIDER_CONTEXT_CHANGED`       | N/A (only emitted by SDK during context reconciliation) |
 | `PROVIDER_RECONCILING`           | N/A (only emitted by SDK during context reconciliation) |
 
-see: [provider lifecycle management](01-flag-evaluation.md#17-provider-lifecycle-management)
+\* If the `error code` associated with the error indicates `PROVIDER_FATAL`, the state is set to `FATAL`
+
+see: [provider lifecycle management](01-flag-evaluation.md#17-provider-lifecycle-management), [provider status](../types.md#provider-status) [error codes](../types.md#error-code)

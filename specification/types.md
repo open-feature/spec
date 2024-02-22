@@ -135,6 +135,7 @@ An enumeration of possible provider states.
 | READY        | The provider has been initialized, and is able to reliably resolve flag values.                    |
 | ERROR        | The provider is initialized but is not able to reliably resolve flag values.                       |
 | STALE        | The provider's cached state is no longer valid and may not be up-to-date with the source of truth. |
+| FATAL        | The provider has entered an irrecoverable error state.                                             |
 | RECONCILING* | The provider is reconciling its state with a context change.                                       |
 
 \* [static context (client-side) paradigm](./glossary.md#static-context-paradigm) only
