@@ -28,7 +28,7 @@ provider.getMetadata().getName(); // "my-custom-provider"
 
 #### Requirement 2.1.2
 
-> The provider **MAY** define an `allFlagMetadata` field or accessor of type collection of [flag_metadata](../types.md#flag-metadata), which identifies all available flag keys in the provider.
+> The provider **MAY** define an `allFlagMetadata` field or accessor of type collection of flag_metadata, which identifies all available flag keys in the provider.
 
 ```typescript
 provider.getAllFlagMetadata(); // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]

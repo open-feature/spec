@@ -368,7 +368,7 @@
         {
             "id": "Requirement 2.1.2",
             "machine_id": "requirement_2_1_2",
-            "content": "The provider MAY define an `allFlagMetadata` field or accessor of type collection of [flag_metadata](../types.md",
+            "content": "The provider MAY define an `allFlagMetadata` field or accessor of type collection of flag_metadata, which identifies all available flag keys in the provider.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
