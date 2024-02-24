@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,247,184
+/open-feature/spec/pull/241,109,26
+/open-feature/spec/pull/245,93,11
+/open-feature/spec/tree/main/specification,45,13
+/open-feature/spec/pulls,38,11
+/open-feature/spec/pull/245/files,38,8
+/open-feature/spec/pull/246,37,10
+/open-feature/spec/pull/241/files,30,9
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,30,7
+/open-feature/spec/blob/main/specification/sections/04-hooks.md,20,6
