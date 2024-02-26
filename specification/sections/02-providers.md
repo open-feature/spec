@@ -34,13 +34,7 @@ provider.getMetadata().getName(); // "my-custom-provider"
 provider.getAllFlagMetadata(); // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]
 ```
 
-#### Condition 2.1.3
-
-> The implementing language has an asynchronous support.
-
-##### Conditional Requirement 2.1.3.1
-
-> The accessor for `allFlagMetadata` **SHOULD** be asynchronous.
+For some providers, fetching all flags is an expensive operation. If there is language support, consider implementing this as an asynchronous operation.
 
 ### 2.2 Flag Value Resolution
 
