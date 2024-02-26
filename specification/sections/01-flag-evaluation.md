@@ -179,7 +179,7 @@ For backwards compatibility, implementations should consider `name` an alias to 
 client.getAllFlagMetadata() // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]
 ```
 
-This may return an empty collection if the provider does not implement the `allFlagMetadata` member or accessor.
+This may return a language-idiomatic way of describing the absence of a value if the provider does not implement the `allFlagMetadata` member or accessor.
 
 ### 1.3. Flag Evaluation
 
