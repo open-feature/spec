@@ -116,7 +116,7 @@ The possible states and transitions of a provider over the course of its usage, 
 
 ### Domain
 
-An identifier which logically binds clients with providers, allowing for multiple providers to be used simultaneously within a single application. Domain binding is dynamic; it may change over the course of an application lifetime (ie: a client associated to the default provider via an unbound domain will be bound to a new provider if a provider is subsequently assigned to that domain).
+An identifier which logically binds clients with providers, allowing for multiple providers to be used simultaneously within a single application. Domain binding is dynamic; it may change over the course of an application's lifetime (ie: a client associated to the default provider via an unbound domain will be bound to a new provider if a provider is subsequently assigned to that domain).
 
 ### Integration
 
