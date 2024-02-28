@@ -23,7 +23,7 @@ graph
 ```
 
 The `domain` of a provider constitutes a logical scope for events.
-Clients associated to a particular provider through a `domain` run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
+Clients associated to a particular provider through a `domain`, run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
 
 see: [domain](../glossary.md#domain)
 
