@@ -28,13 +28,13 @@ provider.getMetadata().getName(); // "my-custom-provider"
 
 #### Requirement 2.1.2
 
-> The provider **MAY** define an `allFlagMetadata` field or accessor of type collection of flag_metadata, which identifies all available flag keys in the provider.
+> The provider **MAY** define an `all flag metadata` field or accessor of type collection of flag_metadata, which identifies all available flag keys in the provider.
 
 ```typescript
 provider.getAllFlagMetadata(); // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]
 ```
 
-This operation should not be confused with bulk evaluation of all flags.
+This operation should not be confused with a bulk evaluation of all flags.
 This is an informative operation available to clients for understanding which flag keys are currently active from a provider.
 Example usages include building a debug screen based on available flags and detecting stale flag evaluations.
 For some providers, fetching all flags is an expensive operation. If there is language support, consider implementing this as an asynchronous operation.

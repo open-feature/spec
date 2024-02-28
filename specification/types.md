@@ -127,8 +127,8 @@ A structure containing the following fields:
 
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
 
-`key` is a required property with a value of `string`.
-`type` is an optional property with a `string` value indicating which client resolution method should be used to resolve the flag key.
+`key` is a required property with a value of type `string`.
+`type` is an optional property with a value of type `string`, indicating which client resolution method should be used to resolve the flag key.
 
 This structure is populated by a provider for use by an [Application Author](./glossary.md#application-author) via the [Evaluation API](./glossary.md#evaluation-api) or an [Application Integrator](./glossary.md#application-integrator) via [hooks](./sections/04-hooks.md).
 
@@ -137,7 +137,7 @@ This structure is populated by a provider for use by an [Application Author](./g
 A structure which carries information about the provider.
 In addition to the defined metadata fields below, arbitrary information can be stored here unique to the provider.
 
-`name` is a required key with a string value.
+`name` is a required key with a value of type string.
 
 ### Provider Status
 
