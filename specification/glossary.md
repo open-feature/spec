@@ -28,6 +28,7 @@ This document defines some terms that are used across this specification.
   - [Evaluation API](#evaluation-api)
   - [Flag Management System](#flag-management-system)
   - [Provider](#provider)
+  - [Provider Lifecycle](#provider-lifecycle)
   - [Domain](#domain)
   - [Integration](#integration)
   - [Evaluation Context](#evaluation-context)
@@ -109,9 +110,14 @@ A source-of-truth for flag values and rules. Flag management systems may include
 
 An SDK-compliant implementation which resolves flag values from a particular flag management system, allowing the use of the [Evaluation API](./sections/01-flag-evaluation.md#13-flag-evaluation) as an abstraction for the system in question.
 
+### Provider Lifecycle
+
+The possible states and transitions of a provider over the course of its usage, as defined by the [provider interface](./sections/02-providers.md).
+
 ### Domain
 
 An identifier which logically binds clients with providers, allowing for multiple providers to be used simultaneously within a single application.
+Domain binding is dynamic; it may change over the course of an application lifetime (ie: a client associated to the default provider via an unbound domain will be bound to a new provider if a provider is subsequently assigned to that domain).
 
 ### Integration
 
