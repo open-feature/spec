@@ -146,6 +146,7 @@ A structure defining a provider event payload, including:
 
 - flags changed (string[], optional)
 - message (string, optional)
+- error code ([error code](#error-code), optional)
 - event metadata ([event metadata](#event-metadata))
 
 ### Event Details
