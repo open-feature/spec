@@ -173,10 +173,10 @@ For backwards compatibility, implementations should consider `name` an alias to 
 
 #### Requirement 1.2.3
 
-> The client interface **MUST** define a `all flag metadata` member or accessor, returning a collection of flag metadata from the provider.
+> The client interface **MUST** define a `all flag metadata` member or accessor, containing a `flags` field or accessor which is a collection of flag metadata, from the provider.
 
 ```typescript
-client.getAllFlagMetadata() // [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}]
+client.getAllFlagMetadata() // { flags: [{"key": "featureA", "type": "boolean"}, {"key": "featureB", "type": "string"}] }
 ```
 
 This may return a language-idiomatic way of describing the absence of a value if the provider does not implement the `allFlagMetadata` member or accessor.

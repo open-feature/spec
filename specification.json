@@ -87,7 +87,7 @@
         {
             "id": "Requirement 1.2.3",
             "machine_id": "requirement_1_2_3",
-            "content": "The client interface MUST define a `all flag metadata` member or accessor, returning a collection of flag metadata from the provider.",
+            "content": "The client interface MUST define a `all flag metadata` member or accessor, containing a `flags` field or accessor which is a collection of flag metadata, from the provider.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -368,7 +368,7 @@
         {
             "id": "Requirement 2.1.2",
             "machine_id": "requirement_2_1_2",
-            "content": "The provider MAY define an `all flag metadata` field or accessor of type collection of flag_metadata, which identifies all available flag keys in the provider.",
+            "content": "The provider MAY define an `all flag metadata` field or accessor, containing a `flags` field or accessor which is a collection of flag metadata, identifying all available flag keys in the provider.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
