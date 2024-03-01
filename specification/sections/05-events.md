@@ -22,6 +22,11 @@ graph
     C -->|run handlers| CH(Client event handlers)
 ```
 
+The `domain` of a provider constitutes a logical scope for events.
+Clients associated to a particular provider through a `domain`, run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
+
+see: [domain](../glossary.md#domain)
+
 ### 5.1. Provider events
 
 #### Requirement 5.1.1
@@ -44,13 +49,17 @@ see: [provider event types](../types.md#provider-events), [`event details`](../t
 
 > When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers **MUST** run.
 
+Client event handlers respect the dynamic binding of clients to providers via `domains`.
+Client event handlers run when a lifecycle function terminates on the associated provider, or the associated provider emits an event. 
+
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
 #### Requirement 5.1.3
 
 > When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
-Providers bound to a `domain` constitute their own "events scope".
+Client event handlers respect the dynamic binding of clients to providers via `domains`.
+Client event handlers do not run when a lifecycle function terminates on an unassociated provider, or an unassociated provider emits an event. 
 
 see [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
@@ -130,6 +139,7 @@ This means that the order of provider configuration and event handler addition i
 ### Event handlers and initialization
 
 Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
+Implementations automatically emit `PROVIDER_READY` or `PROVIDER_ERROR` events depending on the outcome of the `initialize` function, if the provider has implemented one (if none is implemented, `PROVIDER_READY` runs unconditionally).
 _Application authors_ and _application integrators_ use these events to wait for proper initialization of the provider and to do basic monitoring and error handling.
 
 #### Requirement 5.3.1
