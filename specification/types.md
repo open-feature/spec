@@ -28,7 +28,7 @@ Structured data, presented however is idiomatic in the implementation language, 
 
 ### Collection
 
-A list or series of similar data types, presented however is idiomatic in the implementation language.
+An unordered list or series of similar data types, presented however is idiomatic in the implementation language.
 
 ### Datetime
 
@@ -126,6 +126,7 @@ A structure containing the following fields:
 ### Flag Metadata
 
 A structure which supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean`, `string`, or `number`.
+`key` and `type` are reserved properties.
 
 `key` is a required property with a value of type `string`.
 `type` is an optional property with a value of type `string`, indicating which client resolution method should be used to resolve the flag key.
