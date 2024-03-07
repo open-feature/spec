@@ -38,6 +38,7 @@ This operation should not be confused with a bulk evaluation of all flags.
 This is an informative operation available to clients for understanding which flag keys are currently active from a provider.
 Example usages include building a debug screen based on available flags and detecting stale flag evaluations.
 For some providers, fetching all flags is an expensive operation. If there is language support, consider implementing this as an asynchronous operation.
+If the provider does not implement this behavior or the flag metadata cannot currently be retrieved due to an error status, the language-idiomatic way of describing the absence of a value can be returned from this method.
 
 ### 2.2 Flag Value Resolution
 
