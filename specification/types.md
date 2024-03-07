@@ -118,6 +118,7 @@ An enumerated error code represented idiomatically in the implementation languag
 A structure containing the following fields:
 
 - hooks (one or more [hooks](./sections/04-hooks.md), optional)
+- hook hints ([hook hints structure](./sections/04-hooks.md#42-hook-hints), optional)
 
 ### Flag Metadata
 
