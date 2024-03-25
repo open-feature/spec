@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,250,201
+/open-feature/spec/tree/main/specification,66,23
+/open-feature/spec/tree/github-repo-stats/open-feature/spec,26,6
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,25,10
+/open-feature/spec/tree/main/specification/sections,21,10
+/open-feature/spec/blob/main/specification/sections/04-hooks.md,20,5
+/open-feature/spec/blob/main/specification/sections/02-providers.md,16,6
+/open-feature/spec/blob/main/specification/sections/03-evaluation-context.md,15,6
+/open-feature/spec/blob/main/specification/types.md,15,5
+/open-feature/spec/tree/main/tools/specification_parser,11,5
