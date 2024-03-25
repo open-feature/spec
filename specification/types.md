@@ -42,7 +42,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 - variant (string, optional)
 - flag metadata ([flag metadata](#flag-metadata))
 
-> [!NOTE]
+> [!NOTE]  
 > Some type systems feature useful constraints that can enhance the ergonomics of the `evaluation details` structure.
 > For example, in the case of an unsuccessful evaluation, `error code`, `reason`, and `error message` will be set, and variant will not.
 > If the type system of the implementation supports the expression of such constraints, consider defining them.
@@ -72,7 +72,7 @@ A set of pre-defined reasons is enumerated below:
 | STALE           | The resolved value is non-authoritative or possibly out of date                                                                  |
 | ERROR           | The resolved value was the result of an error.                                                                                   |
 
-> [!NOTE]
+> [!NOTE]  
 > The `reason` should not be limited to the reasons enumerated above. It can be any of the pre-defined reasons, or
 > any string value. Some type systems have features which can increase the ergonomics of `reason`, for instance a union
 > of pre-defined types with a string, or a rust-style enumeration which allows for enumerated values to have associated
@@ -172,7 +172,7 @@ An enumeration of provider events.
 | Event                          | Explanation                                                                                                         |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
 | PROVIDER_READY                 | The provider is ready to perform flag evaluations.                                                                  |
-| PROVIDER_ERROR                 | The provider signalled an error.                                                                                    |
+| PROVIDER_ERROR                 | The provider signaled an error.                                                                                    |
 | PROVIDER_CONFIGURATION_CHANGED | A change was made to the backend flag configuration.                                                                |
 | PROVIDER_STALE                 | The provider's cached state is no longer valid and may not be up-to-date with the source of truth.                  |
 | PROVIDER_RECONCILING*          | The context associated with the provider has changed, and the provider has not yet reconciled its associated state. |
