@@ -254,7 +254,7 @@ See [types](../types.md) for details.
 
 The _detailed evaluation_ functions behave similarly to the standard flag evaluation functions, but provide additional metadata useful for telemetry, troubleshooting, debugging, and advanced integrations.
 
-> [!NOTE]
+> [!NOTE]  
 > Metadata included in the `evaluation details` should be considered "best effort", since not all providers will be able to provide these details (such as the reason a flag resolved to a particular value).
 
 see: [evaluation details](../types.md#evaluation-details) type
@@ -439,7 +439,7 @@ stateDiagram-v2
 
 <span style={{ color: '#888' }}>█</span> only defined in static-context (client-side) paradigm
 
-> [!NOTE]
+> [!NOTE]  
 > Only SDKs implementing the [static context (client-side) paradigm](../glossary.md#static-context-paradigm) define `RECONCILING` to facilitate [context reconciliation](./02-providers.md#26-provider-context-reconciliation).
 
 #### Requirement 1.7.1
