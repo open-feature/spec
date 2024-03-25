@@ -75,5 +75,5 @@ Put simply:
 
 > These features are stable and battle-hardened.
 
-> [!NOTE]
+> [!NOTE]  
 > No explicit status = `Experimental`
