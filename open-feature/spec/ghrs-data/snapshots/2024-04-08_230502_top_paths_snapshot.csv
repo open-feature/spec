@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,234,185
+/open-feature/spec/tree/main/specification,74,25
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,25,10
+/open-feature/spec/blob/main/specification/sections/02-providers.md,18,5
+/open-feature/spec/pulls,16,7
+/open-feature/spec/tree/main/specification/sections,15,5
+/open-feature/spec/blob/main/specification/types.md,14,6
+/open-feature/spec/issues,13,10
+/open-feature/spec/issues/180,11,8
+/open-feature/spec/tree/main/tools/specification_parser,10,5
