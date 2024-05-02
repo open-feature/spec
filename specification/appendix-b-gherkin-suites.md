@@ -9,7 +9,7 @@ sidebar_position: 5
 
 This section contains a set of language-agnostic end-to-end tests (defined in gherkin).
 These tests can be used to validate the behavior of an OpenFeature implementation.
-"Features" (test suites) can be used in conjunction with a cucumber test-runner for the language in question.
+"Features" (test suites) can be used in conjunction with an [in-memory provider](./appendix-a-included-utilities.md#in-memory-provider) and a cucumber test-runner for the language in question.
 
 ## Evaluation Feature
 
