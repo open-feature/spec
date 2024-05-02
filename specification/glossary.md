@@ -109,8 +109,7 @@ A source-of-truth for flag values and rules. Flag management systems may include
 
 ### Client
 
-A lightweight abstraction which provides functions to evaluate feature flags.
-A client is associated with a single provider, which it uses to perform evaluations.
+A lightweight abstraction which provides functions to evaluate feature flags. A client is associated with a single provider, which it uses to perform evaluations.
 
 ### Provider
 
