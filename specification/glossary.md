@@ -27,6 +27,7 @@ This document defines some terms that are used across this specification.
   - [Feature Flag API](#feature-flag-api)
   - [Evaluation API](#evaluation-api)
   - [Flag Management System](#flag-management-system)
+  - [Client](#client)
   - [Provider](#provider)
   - [Provider Lifecycle](#provider-lifecycle)
   - [Domain](#domain)
@@ -105,6 +106,10 @@ The subset of the [Feature Flag API](#feature-flag-api) that the Application Aut
 ### Flag Management System
 
 A source-of-truth for flag values and rules. Flag management systems may include SaaS feature flag vendors, custom "in-house" feature flag infrastructure, or open-source implementations.
+
+### Client
+
+A lightweight abstraction that provides functions to evaluate feature flags. A client is associated with a single provider, which it uses to perform evaluations.
 
 ### Provider
 
