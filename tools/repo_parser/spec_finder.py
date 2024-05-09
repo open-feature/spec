@@ -115,9 +115,6 @@ def main(refresh_spec=False, diff_output=False, limit_numbers=None, code_directo
                     print("")
                     print("Ours:")
                     print("\t%s" % txt)
-
-                    # print('\n'.join(difflib.ndiff([txt], [spec_map[number]])))
-                    # print(number + '\n' + '\n'.join([li for li in difflib.ndiff([txt], [spec_map[number]]) if not li.startswith(' ')]))
                 continue
 
         report['extra'].add(number)
