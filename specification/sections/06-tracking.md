@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 ## Overview
 
 Experimentation is a primary use case for feature flags.
-In practice, this often means flags variants are assigned to users at random or in accordance to a business rule, while the impact of the assigned variant on some business objective is measured.
+In practice, this often means flag variants are assigned to users at random or in accordance with a business rule, while the impact of the assigned variant on some business objective is measured.
 Vendors and custom solutions often support a _tracking_ or _goal measuring_ API to facilitate the measurement of these business objectives.
 
 ### Goals
