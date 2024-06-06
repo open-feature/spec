@@ -6,22 +6,38 @@ import difflib
 import os
 import sys
 import configparser
+from typing import TypedDict, Optional, cast
+
+class Config(TypedDict):
+    file_extension: str
+    multiline_regex: Optional[str]
+    number_subregex: Optional[str]
+    text_subregex: Optional[str]
+    inline_comment_prefix: Optional[str]
 
 def _demarkdown(t):
     return t.replace('**', '').replace('`', '').replace('"', '')
 
-def get_spec_parser(code_dir):
+def get_spec_parser(code_dir) -> Config:
     with open(os.path.join(code_dir, '.specrc')) as f:
         data = '\n'.join(f.readlines())
 
-    typical = configparser.ConfigParser()
+    typical = configparser.ConfigParser(comment_prefixes=None)
     typical.read_string(data)
     retval = typical['spec']
-    assert 'file_extension' in retval
-    assert 'multiline_regex' in retval
-    assert 'number_subregex' in retval
-    assert 'text_subregex' in retval
-    return retval
+
+    if 'inline_comment_prefix' in retval:
+        # If an `inline_comment_prefix` is set, then we're using the inline
+        # comment approach, which should obviate artisnal regexes.
+        retval['multiline_regex'] = r'spec:(.*?):end'
+        retval['number_subregex'] = r'(?P<number>[\d.]+):'
+        retval['text_subregex'] = r'[\d.]+:(.*)'
+    else:
+        assert 'file_extension' in retval
+        assert 'multiline_regex' in retval
+        assert 'number_subregex' in retval
+        assert 'text_subregex' in retval
+    return cast(Config, retval)
 
 
 
@@ -43,6 +59,67 @@ def get_spec(force_refresh=False, path_prefix="./"):
             f.write(data)
     return json.loads(data)
 
+def specmap_from_file(actual_spec):
+    spec_map = {}
+    for entry in actual_spec['rules']:
+        number = re.search(r'[\d.]+', entry['id']).group()
+        if 'requirement' in entry['machine_id']:
+            spec_map[number] = _demarkdown(entry['content'])
+
+        if len(entry['children']) > 0:
+            for ch in entry['children']:
+                number = re.search(r'[\d.]+', ch['id']).group()
+                if 'requirement' in ch['machine_id']:
+                    spec_map[number] = _demarkdown(ch['content'])
+    return spec_map
+
+def find_covered_specs(config, data):
+    repo_specs = {}
+    for match in re.findall(config['multiline_regex'], data, re.MULTILINE | re.DOTALL):
+        match = match.replace('\n', '').replace(config['inline_comment_prefix'], '')
+        # normalize whitespace
+        match = re.sub(" {2,}", " ", match.strip())
+        number = re.findall(config['number_subregex'], match)[0]
+
+        text_with_concat_chars = re.findall(config['text_subregex'], match, re.MULTILINE | re.DOTALL)
+        try:
+            text = ''.join(text_with_concat_chars).strip()
+            # We have to match for ") to capture text with parens inside, so we add the trailing " back in.
+            text = _demarkdown(eval('"%s"' % text))
+            entry = repo_specs[number] = {
+                'number': number,
+                'text': text,
+            }
+        except Exception as e:
+            print(f"Skipping {match} b/c we couldn't parse it")
+    return repo_specs
+
+def gen_report(from_spec, from_repo):
+    extra = set()
+    missing = set()
+    different_text = set()
+    good = set()
+
+    missing = set(from_spec.keys()) # assume they're all missing
+
+    for number, text in from_repo.items():
+        if number in missing:
+            missing.remove(number)
+        if number not in from_spec:
+            extra.add(number)
+            continue
+        if text == from_spec[number]:
+            good.add(number)
+        else:
+            different_text.add(number)
+
+    return {
+        'extra': extra,
+        'missing': missing,
+        'different-text': different_text,
+        'good': good,
+    }
+
 
 def main(refresh_spec=False, diff_output=False, limit_numbers=None, code_directory=None, json_report=False):
     report = {
@@ -55,20 +132,12 @@ def main(refresh_spec=False, diff_output=False, limit_numbers=None, code_directo
     actual_spec = get_spec(refresh_spec, path_prefix=code_directory)
     config = get_spec_parser(code_directory)
 
-    spec_map = {}
-    for entry in actual_spec['rules']:
-        number = re.search(r'[\d.]+', entry['id']).group()
-        if 'requirement' in entry['machine_id']:
-            spec_map[number] = _demarkdown(entry['content'])
+    spec_map = specmap_from_file(actual_spec)
 
-        if len(entry['children']) > 0:
-            for ch in entry['children']:
-                number = re.search(r'[\d.]+', ch['id']).group()
-                if 'requirement' in ch['machine_id']:
-                    spec_map[number] = _demarkdown(ch['content'])
 
     repo_specs = {}
     missing = set(spec_map.keys())
+    bad_num = 0
 
     for root, dirs, files in os.walk(".", topdown=False):
         for name in files:
@@ -78,51 +147,28 @@ def main(refresh_spec=False, diff_output=False, limit_numbers=None, code_directo
             with open(F) as f:
                 data = ''.join(f.readlines())
 
-            for match in re.findall(config['multiline_regex'], data, re.MULTILINE | re.DOTALL):
-                match = match.replace('\n', '')
-                number = re.findall(config['number_subregex'], match)[0]
+            repo_specs |= find_covered_specs(config, data)
 
-                if number in missing:
-                    missing.remove(number)
-                text_with_concat_chars = re.findall(config['text_subregex'], match, re.MULTILINE | re.DOTALL)
-                try:
-                    text = ''.join(text_with_concat_chars).strip()
-                    # We have to match for ") to capture text with parens inside, so we add the trailing " back in.
-                    text = _demarkdown(eval('"%s"' % text))
-                    entry = repo_specs[number] = {
-                        'number': number,
-                        'text': text,
-                    }
-                except Exception as e:
-                    print(f"Skipping {match} b/c we couldn't parse it")
+    report = gen_report(from_spec=spec_map, from_repo=repo_specs)
 
-    bad_num = len(missing)
-    for number, entry in sorted(repo_specs.items(), key=lambda x: x[0]):
-        if limit_numbers is not None and len(limit_numbers) > 0 and number not in limit_numbers:
-            continue
-        if number in spec_map:
-            txt = entry['text']
-            if txt == spec_map[number]:
-                report['good'].add(number)
-                continue
-            else:
-                print(f"{number} is bad.")
-                report['different-text'].add(number)
-                bad_num += 1
-                if diff_output:
-                    print("Official:")
-                    print("\t%s" % spec_map[number])
-                    print("")
-                    print("Ours:")
-                    print("\t%s" % txt)
-                continue
+    for number in report['different-text']:
+        bad_num += 1
+        print(f"{number} is bad.")
+        if diff_output:
+            print("Official:")
+            print("\t%s" % spec_map[number])
+            print("")
+            print("Ours:")
+            print("\t%s" % repo_specs[number])
 
-        report['extra'].add(number)
+    bad_num += len(report['extra'])
+    for number in report['extra']:
         print(f"{number} is defined in our tests, but couldn't find it in the spec")
-    print("")
 
+
+    missing = report['missing']
+    bad_num += len(missing)
     if len(missing) > 0:
-        report['missing'] = missing
         print('In the spec, but not in our tests: ')
         for m in sorted(missing):
             print(f"  {m}: {spec_map[m]}")
@@ -131,7 +177,7 @@ def main(refresh_spec=False, diff_output=False, limit_numbers=None, code_directo
         for k in report.keys():
             report[k] = sorted(list(report[k]))
         report_txt = json.dumps(report, indent=4)
-        loc = '/appdir/%s-report.json' % config['file_extension']
+        loc = os.path.join(code_directory, '%s-report.json' % config['file_extension'])
         with open(loc, 'w') as f:
             f.write(report_txt)
     sys.exit(bad_num)
