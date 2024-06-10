@@ -21,6 +21,10 @@ Vendors and custom solutions often support a _tracking_ or _goal measuring_ API 
   - Define tracking event payload
   - Define tracking event identifier
   - Support client and server paradigms
+  - Provide recommendations around: 
+    - Async vs sync
+    - Flushing mechanisms
+    - Event batching
 
 ### Non-goals
 
