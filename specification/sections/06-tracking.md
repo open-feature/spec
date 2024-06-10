@@ -20,6 +20,7 @@ Vendors and custom solutions often support a _tracking_ or _goal measuring_ API 
 - Specify a flexible API widely compatible with basic vendor functionality
   - Define tracking event payload
   - Define tracking event identifier
+  - Support A/B testing and experimentation use-cases
   - Support client and server paradigms
   - Provide recommendations around: 
     - Async vs sync
@@ -30,9 +31,8 @@ Vendors and custom solutions often support a _tracking_ or _goal measuring_ API 
 
 - Creating an experimentation platform
 - Covering every user-tracking use case
-  - Focus on A/B testing, and experimentation based on feature flags
-  - Focus on "facts" not "metrics"
-    - Simple point in time data, no aggregation
+  - We will not define any data aggregation mechanisms
+  - We will not focus on "metrics", but instead, "facts"
 
 ### Design Principles
 
