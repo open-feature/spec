@@ -39,6 +39,7 @@ flowchart LR
 ```
 
 ## Multi-Provider
+
 ### Introduction
 
 The OpenFeature Multi-Provider wraps multiple underlying providers in a unified interface, allowing the SDK client to transparently interact with all those providers at once.
@@ -52,7 +53,6 @@ Some examples:
 - Long-term use of multiple sources for flags.
   For example, someone might want to be able to combine environment variables, database entries, and vendor feature flag results together in a single interface, and define the precedence order in which those sources should be consulted.
 
-
 Check the [OpenFeature JavaScript Multi-Provider](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider) for a reference implementation.
 
 ### Basics
@@ -65,15 +65,15 @@ For example:
 
 ```typescript
 const multiProvider = new MultiProvider(
-	[
-		{
-			provider: new ProviderA(),
-		},
-		{
-			provider: new ProviderB()
-		}
-	],
-	new FirstMatchStrategy()
+ [
+  {
+   provider: new ProviderA(),
+  },
+  {
+   provider: new ProviderB()
+  }
+ ],
+ new FirstMatchStrategy()
 )
 ```
 
@@ -96,14 +96,14 @@ When instantiating the Multi-Provider, there will be an option for specifying a 
 
 ```typescript
 const multiProvider = new MultiProvider([
-	{
-		provider: new ProviderA(),
-		name: "ProviderA"
-	},
-	{
-		provider: new ProviderB(),
-		name: "ProviderB"
-	}
+ {
+  provider: new ProviderA(),
+  name: "ProviderA"
+ },
+ {
+  provider: new ProviderB(),
+  name: "ProviderB"
+ }
 ])
 ```
 
@@ -192,15 +192,15 @@ The strategy to use is passed in to the Multi-Provider constructor as follows:
 
 ```typescript
 new MultiProvider(
-	[
-		{
-			provider: new ProviderA()
-		},
-		{
-			provider: new ProviderB()
-		}
-	],
-	new FirstMatchStrategy()
+ [
+  {
+   provider: new ProviderA()
+  },
+  {
+   provider: new ProviderB()
+  }
+ ],
+ new FirstMatchStrategy()
 )
 ```
 
@@ -208,7 +208,7 @@ By default, the Multi-Provider uses the “FirstMatchStrategy”.
 
 Here are some standard strategies that come with the Multi-Provider:
 
-**First Match**
+###### First Match
 
 Return the first result returned by a provider.
 Skip providers that indicate they had no value due to `FLAG_NOT_FOUND`.
@@ -217,19 +217,19 @@ If any provider returns an error result other than `FLAG_NOT_FOUND`, the whole e
 
 As soon as a value is returned by a provider, the rest of the operation should short-circuit and not call the rest of the providers.
 
-**First Successful**
+###### First Successful
 
 Similar to “First Match”, except that errors from evaluated providers do not halt execution.
 Instead, it will return the first successful result from a provider. If no provider successfully responds, it will throw an error result.
 
-**Comparison**
+###### Comparison
 
 Require that all providers agree on a value.
 If every provider returns a non-error result, and the values do not agree, the Multi-Provider should return the result from a configurable “fallback” provider.
 It will also call an optional “onMismatch” callback that can be used to monitor cases where mismatches of evaluation occurred.
 Otherwise the value of the result will be the result of the first provider in precedence order.
 
-**User Defined**
+###### User Defined
 
 Rather than making assumptions about when to use a provider’s result and when not to (which may not hold across all providers) there is also a way for the user to define their own strategy that determines whether or not to use a result or fall through to the next one.
 
@@ -248,7 +248,7 @@ type StrategyPerProviderContext = StrategyEvaluationContext & {
 };
 
 type ProviderResolutionResult<T extends FlagValue> = {
-	details: ResolutionDetails<T>;
+ details: ResolutionDetails<T>;
   thrownError?: unknown;
   provider: Provider;
   providerName: string;
@@ -264,11 +264,11 @@ type FinalResult = {
 };
 
 abstract class BaseEvaluationStrategy {
-	runMode: 'parallel' | 'sequential'
+ runMode: 'parallel' | 'sequential'
   
   abstract shouldEvaluateThisProvider(
-	  strategyContext: StrategyPerProviderContext, 
-	  evalContext: EvaluationContext
+   strategyContext: StrategyPerProviderContext, 
+   evalContext: EvaluationContext
   ): boolean;
 
   abstract shouldEvaluateNextProvider<T extends FlagValue>(
@@ -333,12 +333,12 @@ error = {
   code: SOME_ERROR,
   // which provider caused the error
   originalErrors: [
-	  {
-	    source: 'ProviderA',
-			error: {
-				  message: 'something',
-			}
-	  }
+   {
+     source: 'ProviderA',
+   error: {
+      message: 'something',
+   }
+   }
   ]
 }
 ```
@@ -354,9 +354,9 @@ Providers can contain metadata. The Multi-Provider will make that metadata avail
 ```javascript
 {
   name: 'multiprovider',
-	originalMetadata: {
-		providerA: {...},
-		providerB: {...}
-	},
+ originalMetadata: {
+  providerA: {...},
+  providerB: {...}
+ },
 }
 ```
