@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,230,191
+/open-feature/spec/tree/main/specification,61,23
+/open-feature/spec/tree/main/tools,39,15
+/open-feature/spec/blob/main/specification/sections/02-providers.md,31,8
+/open-feature/spec/tree/main/tools/repo_parser,20,7
+/open-feature/spec/issues/265,17,7
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,16,6
+/open-feature/spec/blob/main/specification/glossary.md,15,8
+/open-feature/spec/blob/main/specification/sections/06-tracking.md,15,7
+/open-feature/spec/blob/main/specification/assets/gherkin/evaluation.feature,14,2
