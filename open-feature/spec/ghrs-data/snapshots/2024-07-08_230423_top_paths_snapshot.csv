@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,219,182
+/open-feature/spec/tree/main/specification,43,17
+/open-feature/spec/tree/main/tools,35,13
+/open-feature/spec/issues/265,29,10
+/open-feature/spec/blob/main/specification/sections/02-providers.md,23,8
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,16,6
+/open-feature/spec/blob/main/specification/appendix-b-gherkin-suites.md,16,4
+/open-feature/spec/blob/main/specification/assets/gherkin/evaluation.feature,16,3
+/open-feature/spec/issues,15,9
+/open-feature/spec/blob/main/specification/sections/06-tracking.md,15,7
