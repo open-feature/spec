@@ -509,6 +509,13 @@
             "children": []
         },
         {
+            "id": "Condition 2.7.1",
+            "machine_id": "condition_2_7_1",
+            "content": "The `provider` MAY define a function for tracking the occurrence of a particular user action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
             "id": "Requirement 3.1.1",
             "machine_id": "requirement_3_1_1",
             "content": "The `evaluation context` structure MUST define an optional `targeting key` field of type string, identifying the subject of the flag evaluation.",
@@ -1042,6 +1049,50 @@
             "id": "Requirement 5.3.5",
             "machine_id": "requirement_5_3_5",
             "content": "If the provider emits an event, the value of the client's `provider status` MUST be updated accordingly.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Condition 6.1.1",
+            "machine_id": "condition_6_1_1",
+            "content": "The implementation uses the dynamic-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 6.1.1.1",
+                    "machine_id": "conditional_requirement_6_1_1_1",
+                    "content": "The `client` MUST define a function for tracking the occurrence of a particular action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Condition 6.1.2",
+            "machine_id": "condition_6_1_2",
+            "content": "The implementation uses the static-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 6.1.2.1",
+                    "machine_id": "conditional_requirement_6_1_2_1",
+                    "content": "The `client` MUST define a function for tracking the occurrence of a particular action or application state, with parameters `occurrence key` (string, required) and `occurrence details` (optional) which returns nothing.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Requirement 6.1.3",
+            "machine_id": "requirement_6_1_3",
+            "content": "The evaluation context passed to the provider's track function MUST be merged in the order: API (global; lowest precedence) - transaction - client - invocation (highest precedence), with duplicate values being overwritten.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 6.1.4",
+            "machine_id": "requirement_6_1_4",
+            "content": "If the client's `track` function is called and the associated provider does not implement tracking, the client's `track` function MUST no-op.",
             "RFC 2119 keyword": "MUST",
             "children": []
         }

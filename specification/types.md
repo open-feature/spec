@@ -113,6 +113,10 @@ An enumerated error code represented idiomatically in the implementation languag
 | PROVIDER_FATAL        | The provider has entered an irrecoverable error state.                                      |
 | GENERAL               | The error was for a reason not enumerated above.                                            |
 
+### Evaluation Context
+
+See [evaluation context](./sections/03-evaluation-context.md).
+
 ### Evaluation Options
 
 A structure containing the following fields:
@@ -184,3 +188,7 @@ An enumeration of provider events.
 
 A function or method which can be associated with a `provider event`, and runs when that event occurs.
 It declares an `event details` parameter.
+
+### Occurrence Details
+
+See [occurrence details](./sections/06-tracking.md#62-occurrence-details).\

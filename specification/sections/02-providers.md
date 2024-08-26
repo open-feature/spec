@@ -261,3 +261,34 @@ class MyProvider implements Provider {
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.
 Provider authors may implement a `shutdown` function to perform relevant clean-up actions.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
+
+### 2.7. Tracking Support
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+Some flag management systems support tracking functionality, which associates feature flag evaluations with subsequent user actions or application state.
+
+See [tracking](./06-tracking.md).
+
+#### Condition 2.7.1
+
+> The `provider` **MAY** define a function for tracking the occurrence of a particular user action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.
+
+```java
+class MyProvider implements Tracking {
+  //...
+
+  /**
+   * Record a tracking occurrence.
+   */
+  void track(String occurrenceKey, OccurrenceDetails details, EvaluationContext context): void;
+  
+  //...
+}
+```
+
+The track function is a void function (function returning nothing).
+The track function performs side effects required to record the `occurrence` in question, which may include network activity or other I/O; this I/O should not block the function call.
+Providers should be careful to complete any communication or flush any relevant uncommitted tracking data before they shut down.
+
+See [shutdown](#25-shutdown).
