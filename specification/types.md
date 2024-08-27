@@ -191,4 +191,4 @@ It declares an `event details` parameter.
 
 ### Occurrence Details
 
-See [occurrence details](./sections/06-tracking.md#62-occurrence-details).\
+See [occurrence details](./sections/06-tracking.md#62-occurrence-details).
