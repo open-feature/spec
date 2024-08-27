@@ -266,7 +266,7 @@ Alternatively, implementations might leverage language idioms such as auto-dispo
 
 [![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
 
-Some flag management systems support tracking functionality, which associates feature flag evaluations with subsequent user actions or application state.
+Some flag management systems support tracking functionality, which can be used to associate feature flag evaluations with subsequent user actions or application state.
 
 See [tracking](./06-tracking.md).
 
