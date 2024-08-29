@@ -233,8 +233,8 @@
         {
             "id": "Requirement 1.4.11",
             "machine_id": "requirement_1_4_11",
-            "content": "In the case of abnormal execution, the client SHOULD log an informative error message.",
-            "RFC 2119 keyword": "SHOULD",
+            "content": "Methods, functions, or operations on the client SHOULD NOT write log messages.",
+            "RFC 2119 keyword": "SHOULD NOT",
             "children": []
         },
         {

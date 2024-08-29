@@ -353,9 +353,15 @@ Configuration code includes code to set the provider, instantiate providers, and
 
 #### Requirement 1.4.11
 
-> In the case of abnormal execution, the client **SHOULD** log an informative error message.
+> Methods, functions, or operations on the client **SHOULD NOT** write log messages.
 
-Implementations may define a standard logging interface that can be supplied as an optional argument to the client creation function, which may wrap standard logging functionality of the implementation language.
+The client methods (particularly the evaluation methods) run in hot code paths.
+Logging (even at error level) can cause a huge volume of log entries.
+For example, in a circumstance in which an application expecting a particular flag to exist is deployed in advance of that flag's being defined in the management system, logs can become inundated with `FLAG_NOT_FOUND` messages and related stack traces.
+Logging in these code paths is highly discouraged.
+Application authors can attach a [logging hook](../appendix-a-included-utilities.md#logging-hook) or author their own custom logging hook(s) to help with debugging or satisfy their particular logging needs.
+
+Logging is encouraged in functions to do with configuration, initialization, shutdown, etc.
 
 #### Requirement 1.4.12
 

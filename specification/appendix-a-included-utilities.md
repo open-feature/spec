@@ -11,7 +11,7 @@ This document contains requirements for auxiliary utilities provided by the SDK,
 
 ## In-memory provider
 
-> Language-specific OpenFeature SDK implementations **SHOULD** expose an in-memory provider built into the SDK.
+> OpenFeature SDK implementations **SHOULD** provide an `in-memory provider`.
 
 The in-memory provider is intended to be used for testing; SDK consumers may use it for their use cases.
 Hence, the packaging, naming, and access modifiers must be set appropriately.
@@ -360,3 +360,24 @@ Providers can contain metadata. The Multi-Provider will make that metadata avail
  },
 }
 ```
+
+## Logging Hook
+
+> OpenFeature SDK implementations **SHOULD** provide a `logging hook`.
+
+The logging hook is a hook which logs messages during the flag evaluation life-cycle as described below:
+
+| Stage   | Logged data                                                                                                                                   |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| before  | `stage`, `domain`, `provider name`, `flag key`, `default value` and `evaluation context` (serialized, opt-in)                                 |
+| after   | `stage`, `domain`, `provider name`, `flag key`, `default value`, `evaluation context` (serialized, opt-in), `reason`, `variant` and `value`   |
+| error   | `stage`, `domain`, `provider name`, `flag key`, `default value`, `evaluation context` (serialized, opt-in), `error code`, and `error message` |
+| finally | N/A                                                                                                                                           |
+
+> The evaluation context **SHOULD** only be logged if an associated option indicates so.
+
+The can be a constructor option or similar, for example: `boolean printContext`.
+
+> If logging the evaluation context is enabled, it **MUST** be printed in such a way that it's human readable.
+
+> If the logger abstraction in the SDK supports a log level concept, the appropriate log level **SHOULD** be used for each stage (before/after: info, error: error).
