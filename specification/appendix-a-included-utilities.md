@@ -376,8 +376,12 @@ The logging hook is a hook which logs messages during the flag evaluation life-c
 
 > The evaluation context **SHOULD** only be logged if an associated option indicates so.
 
-The can be a constructor option or similar, for example: `boolean printContext`.
+This can be a constructor option or similar, for example: `boolean printContext`.
 
 > If logging the evaluation context is enabled, it **MUST** be printed in such a way that it's human readable.
 
-> If the logger abstraction in the SDK supports a log level concept, the appropriate log level **SHOULD** be used for each stage (before/after: info, error: error).
+Consider printing the evaluation context as a stringified JSON object, or using some other format that allows the nested properties to be easily read.
+
+> If the logger abstraction in the SDK supports a log level concept, the appropriate log level **SHOULD** be used for each stage (before/after: debug/info, error: error).
+
+Consider using `debug` or `info` levels for the `before` and `after` stages, and the `error` level for the `error` stage. 
