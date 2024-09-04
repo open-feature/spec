@@ -384,4 +384,4 @@ Consider printing the evaluation context as a stringified JSON object, or using 
 
 > If the logger abstraction in the SDK supports a log level concept, the appropriate log level **SHOULD** be used for each stage (before/after: debug/info, error: error).
 
-Consider using `debug` or `info` levels for the `before` and `after` stages, and the `error` level for the `error` stage. 
+Consider using `debug` or `info` levels for the `before` and `after` stages, and the `error` level for the `error` stage.
