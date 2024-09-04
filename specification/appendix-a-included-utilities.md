@@ -371,7 +371,7 @@ The logging hook is a hook which logs messages during the flag evaluation life-c
 | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | before  | `stage`, `domain`, `provider_name`, `flag_key`, `default_value` and `evaluation_context` (serialized, opt-in)                                 |
 | after   | `stage`, `domain`, `provider_name`, `flag_key`, `default_value`, `evaluation_context` (serialized, opt-in), `reason`, `variant` and `value`   |
-| error   | `stage`, `domain`, `provider_name`, `flag_key`, `default_value`, `evaluation_context` (serialized, opt-in), `error code`, and `error_message` |
+| error   | `stage`, `domain`, `provider_name`, `flag_key`, `default_value`, `evaluation_context` (serialized, opt-in), `error_code`, and `error_message` |
 | finally | N/A                                                                                                                                           |
 
 > The evaluation context **SHOULD** only be logged if an associated option indicates so.
