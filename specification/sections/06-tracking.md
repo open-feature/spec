@@ -80,11 +80,11 @@ See: [context levels and merging](./03-evaluation-context.md#32-context-levels-a
 
 > If the client's `track` function is called and the associated provider does not implement tracking, the client's `track` function **MUST** no-op.
 
-## 6.2. Occurrence Details
+### 6.2. Occurrence Details
 
 The `occurrence details` structure defines optional data pertinent to a particular `occurrence`.
 
-### Requirement 6.2.1
+#### Requirement 6.2.1
 
 > The `occurrence details` structure **MUST** define an optional numeric `value`, associating a scalar quality with an `occurrence`.
 
@@ -92,6 +92,10 @@ The `occurrence details` structure defines optional data pertinent to a particul
 
 See [provider tracking support](./02-providers.md#27-tracking-support).
 
-### Requirement 6.2.2
+#### Requirement 6.2.2
 
-> The `occurrence details` **MUST** support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number`.
+> The `occurrence details` **MUST** support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | structure`.
+
+The `occurrence details` supports the addition of arbitrary fields, including nested objects, similar to the `evaluation context` and object-typed flag values.
+
+See [structure](../types.md#structure), [evaluation context](.//03-evaluation-context.md).

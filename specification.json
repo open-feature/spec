@@ -1095,6 +1095,20 @@
             "content": "If the client's `track` function is called and the associated provider does not implement tracking, the client's `track` function MUST no-op.",
             "RFC 2119 keyword": "MUST",
             "children": []
+        },
+        {
+            "id": "Requirement 6.2.1",
+            "machine_id": "requirement_6_2_1",
+            "content": "The `occurrence details` structure MUST define an optional numeric `value`, associating a scalar quality with an `occurrence`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 6.2.2",
+            "machine_id": "requirement_6_2_2",
+            "content": "The `occurrence details` MUST support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | structure`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         }
     ]
 }
