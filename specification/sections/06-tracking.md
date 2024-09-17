@@ -40,7 +40,10 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 client.track("visited-promo-page", evaluationContext);
 
 // example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric value
-client.track("clicked-checkout", evaluationContext, new OccurrenceDetails(99.77)): void;
+client.track("clicked-checkout", evaluationContext, new OccurrenceDetails(99.77));
+
+// example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric value
+client.track("clicked-checkout", evaluationContext, new OccurrenceDetails(99.77).add("currencyCode", "USD"));
 ```
 
 See [evaluation context](../types.md#evaluation-context), [occurrence details](#62-occurrence-details).
@@ -65,7 +68,10 @@ Though it may be associated with network activity or other I/O, it need not be a
 client.track("visited-promo-page");
 
 // example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric value
-client.track("clicked-checkout", new OccurrenceDetails(99.77)): void;
+client.track("clicked-checkout", new OccurrenceDetails(99.77));
+
+// example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric and some additional details
+client.track("clicked-checkout", new OccurrenceDetails(99.77).add("currencyCode", "USD"));
 ```
 
 #### Requirement 6.1.3
