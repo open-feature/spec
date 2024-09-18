@@ -45,6 +45,7 @@ This document defines some terms that are used across this specification.
   - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
+  - [Flag Set](#flag-set)
 - [SDK Paradigms](#sdk-paradigms)
   - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
   - [Static-Context Paradigm](#static-context-paradigm)
@@ -160,6 +161,11 @@ erDiagram
 ### Flag
 
 Flags represent a single pivot point of logic. Flags have a type, like `string`, `boolean`, `json`, etc. Examples: `redesign_enabled` or `header-order`
+
+### Flag Set
+
+A flag set is a collection of related [flags](#flag).
+This grouping helps organize feature flags based on their intended use, facilitating easier management and deployment.
 
 ### Flag Key
 
