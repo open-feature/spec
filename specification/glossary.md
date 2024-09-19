@@ -164,8 +164,7 @@ Flags represent a single pivot point of logic. Flags have a type, like `string`,
 
 ### Flag Set
 
-A collection of related [flags](#flag).
-This grouping helps organize feature flags based on their intended use, facilitating easier management and deployment.
+A collection of related [flags](#flag). This grouping helps organize feature flags based on their intended use, facilitating easier management and deployment.
 
 ### Flag Key
 
