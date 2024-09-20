@@ -38,6 +38,7 @@ This document defines some terms that are used across this specification.
   - [Resolving Flag Values](#resolving-flag-values)
 - [Flagging specifics](#flagging-specifics)
   - [Flag](#flag)
+  - [Flag Set](#flag-set)
   - [Flag Key](#flag-key)
   - [Variant](#variant)
   - [Values](#values)
@@ -160,6 +161,10 @@ erDiagram
 ### Flag
 
 Flags represent a single pivot point of logic. Flags have a type, like `string`, `boolean`, `json`, etc. Examples: `redesign_enabled` or `header-order`
+
+### Flag Set
+
+A collection of related [flags](#flag). This grouping helps organize feature flags based on their intended use, facilitating easier management and deployment.
 
 ### Flag Key
 
