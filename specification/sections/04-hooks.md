@@ -17,7 +17,15 @@ Hooks add their logic at any of four specific stages of flag evaluation:
 - `error`, immediately after an unsuccessful during flag evaluation
 - `finally` unconditionally after flag evaluation
 
-![Flag evaluation life cycle](../assets/images/life-cycle.png)
+```mermaid
+flowchart LR
+    B(('Before' stage)) ---> FE[Flag Evaluation]
+    B -..->|Error| E
+    FE ---> A(('After' stage))
+    FE -..->|Error| E(('Error' stage))
+    A ---> F(('Finally' stage))
+    E -..-> F
+```
 
 Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./03-evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
 
