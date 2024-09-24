@@ -14,7 +14,12 @@ The `provider` API defines interfaces that Provider Authors can use to abstract 
 
 Providers are the "translator" between the flag evaluation calls made in application code, and the flag management system that stores flags and in some cases evaluates flags. At a minimum, providers should implement some basic evaluation methods which return flag values of the expected type. In addition, providers may transform the [evaluation context](./03-evaluation-context.md) appropriately in order to be used in dynamic evaluation of their associated flag management system, provide insight into why evaluation proceeded the way it did, and expose configuration options for their associated flag management system. Hypothetical provider implementations might wrap a vendor SDK, embed an REST client, or read flags from a local file.
 
-![Provider](../assets/images/provider.png)
+```mermaid
+flowchart LR
+    A[Application] --> API(Evaluation API)
+    API --> P[Provider]
+    P --> FMS[(Flag Management System)]
+```
 
 ### 2.1. Feature Provider Interface
 
