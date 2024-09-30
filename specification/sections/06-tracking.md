@@ -10,7 +10,7 @@ toc_max_heading_level: 4
 
 ## Overview
 
-The `tracking API` enables the association of feature flag evaluations with subsequent actions or application states, in order to facilitate experimentation, and analysis of the impact of feature flags on business objectives.
+The `tracking API` enables the association of feature flag evaluations with subsequent actions or application states, in order to facilitate experimentation and analysis of the impact of feature flags on business objectives.
 
 Combined with hooks which report feature flag evaluations to the analytics platform in question, tracking can allow for robust experimentation even for flag management systems that don't support tracking directly.
 
