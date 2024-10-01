@@ -36,6 +36,7 @@ This document defines some terms that are used across this specification.
   - [Transaction Context Propagator](#transaction-context-propagator)
   - [Evaluating Flag Values](#evaluating-flag-values)
   - [Resolving Flag Values](#resolving-flag-values)
+  - [Tracking Event](#tracking-event)
 - [Flagging specifics](#flagging-specifics)
   - [Flag](#flag)
   - [Flag Set](#flag-set)
@@ -46,7 +47,6 @@ This document defines some terms that are used across this specification.
   - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
-  - [Tracking Event](#tracking-event)
 - [SDK Paradigms](#sdk-paradigms)
   - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
   - [Static-Context Paradigm](#static-context-paradigm)
@@ -149,6 +149,10 @@ The process of retrieving a feature flag value in it's entirety, including:
 
 The process of a provider retrieving a feature flag value from it's particular source-of-truth.
 
+### Tracking Event
+
+A particular user action or application state representing a business objective or outcome, identified by a unique string, and recorded using the [tracking API](./sections/06-tracking.md).
+
 ## Flagging specifics
 
 ```mermaid
@@ -200,10 +204,6 @@ Pseudorandomly resolve flag values using a context property, such as a targeting
 ### Rule
 
 A rule is some criteria that's used to determine which variant a particular context should be mapped to.
-
-### Tracking Event
-
-A particular user action or application state representing a business objective or outcome, identified by a unique string, and recorded using the [tracking API](./sections/06-tracking.md).
 
 ## SDK Paradigms
 
