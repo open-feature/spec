@@ -33,20 +33,20 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 
 ##### Conditional Requirement 6.1.1.1
 
-> The `client` **MUST** define a function for tracking the occurrence of a particular action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.
+> The `client` **MUST** define a function for tracking the occurrence of a particular action or application state, with parameters `tracking event name` (string, required), `evaluation context` (optional) and `tracking event details` (optional), which returns nothing.
 
 ```java
-// example tracking occurrence recording that a subject reached a page associated with a business goal
+// example tracking event recording that a subject reached a page associated with a business goal
 client.track("visited-promo-page", evaluationContext);
 
-// example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric value
-client.track("clicked-checkout", evaluationContext, new OccurrenceDetails(99.77));
+// example tracking event recording that a subject performed an action associated with a business goal, with the tracking event details having a particular numeric value
+client.track("clicked-checkout", evaluationContext, new TrackingEventDetails(99.77));
 
-// example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric value
-client.track("clicked-checkout", evaluationContext, new OccurrenceDetails(99.77).add("currencyCode", "USD"));
+// example tracking event recording that a subject performed an action associated with a business goal, with the tracking event details having a particular numeric value
+client.track("clicked-checkout", evaluationContext, new TrackingEventDetails(99.77).add("currencyCode", "USD"));
 ```
 
-See [evaluation context](../types.md#evaluation-context), [occurrence details](#62-occurrence-details).
+See [evaluation context](../types.md#evaluation-context), [tracking event details](#62-tracking-event-details).
 
 #### Condition 6.1.2
 
@@ -58,20 +58,20 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 6.1.2.1
 
-> The `client` **MUST** define a function for tracking the occurrence of a particular action or application state, with parameters `occurrence key` (string, required) and `occurrence details` (optional) which returns nothing.
+> The `client` **MUST** define a function for tracking the occurrence of a particular action or application state, with parameters `tracking event name` (string, required) and `tracking event details` (optional), which returns nothing.
 
 The track function is a void function (function returning nothing).
 Though it may be associated with network activity or other I/O, it need not be awaited by application authors.
 
 ```java
-// example tracking occurrence recording that a subject reached a page associated with a business goal
+// example tracking event recording that a subject reached a page associated with a business goal
 client.track("visited-promo-page");
 
-// example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric value
-client.track("clicked-checkout", new OccurrenceDetails(99.77));
+// example tracking event recording that a subject performed an action associated with a business goal, with the tracking event details having a particular numeric value
+client.track("clicked-checkout", new TrackingEventDetails(99.77));
 
-// example tracking occurrence recording that a subject performed an action associated with a business goal, with the occurrence details having a particular numeric and some additional details
-client.track("clicked-checkout", new OccurrenceDetails(99.77).add("currencyCode", "USD"));
+// example tracking event recording that a subject performed an action associated with a business goal, with the tracking event details having a particular numeric and some additional details
+client.track("clicked-checkout", new TrackingEventDetails(99.77).add("currencyCode", "USD"));
 ```
 
 #### Requirement 6.1.3
@@ -86,13 +86,13 @@ See: [context levels and merging](./03-evaluation-context.md#32-context-levels-a
 
 > If the client's `track` function is called and the associated provider does not implement tracking, the client's `track` function **MUST** no-op.
 
-### 6.2. Occurrence Details
+### 6.2. Tracking Event Details
 
-The `occurrence details` structure defines optional data pertinent to a particular `occurrence`.
+The `tracking event details` structure defines optional data pertinent to a particular `tracking event`.
 
 #### Requirement 6.2.1
 
-> The `occurrence details` structure **MUST** define an optional numeric `value`, associating a scalar quality with an `occurrence`.
+> The `tracking event details` structure **MUST** define an optional numeric `value`, associating a scalar quality with an `tracking event`.
 
 `Value` is a well-defined field which some providers may map to equivalent numeric values in their API.
 
@@ -100,8 +100,8 @@ See [provider tracking support](./02-providers.md#27-tracking-support).
 
 #### Requirement 6.2.2
 
-> The `occurrence details` **MUST** support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | structure`.
+> The `tracking event details` **MUST** support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | structure`.
 
-The `occurrence details` supports the addition of arbitrary fields, including nested objects, similar to the `evaluation context` and object-typed flag values.
+The `tracking event details` supports the addition of arbitrary fields, including nested objects, similar to the `evaluation context` and object-typed flag values.
 
 See [structure](../types.md#structure), [evaluation context](.//03-evaluation-context.md).

@@ -281,7 +281,7 @@ class MyProvider implements Tracking {
   /**
    * Record a tracking occurrence.
    */
-  void track(String occurrenceKey, EvaluationContext context, OccurrenceDetails details): void;
+  void track(String trackingEventName, EvaluationContext context, TrackingEventDetails details): void;
   
   //...
 }

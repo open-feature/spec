@@ -46,7 +46,7 @@ This document defines some terms that are used across this specification.
   - [Targeting Key](#targeting-key)
   - [Fractional Evaluation](#fractional-evaluation)
   - [Rule](#rule)
-  - [Tracking Occurrence](#tracking-occurrence)
+  - [Tracking Event](#tracking-event)
 - [SDK Paradigms](#sdk-paradigms)
   - [Dynamic-Context Paradigm](#dynamic-context-paradigm)
   - [Static-Context Paradigm](#static-context-paradigm)
@@ -201,7 +201,7 @@ Pseudorandomly resolve flag values using a context property, such as a targeting
 
 A rule is some criteria that's used to determine which variant a particular context should be mapped to.
 
-### Tracking Occurrence
+### Tracking Event
 
 A particular user action or application state representing a business objective or outcome, identified by a unique string, and recorded using the [tracking API](./sections/06-tracking.md).
 

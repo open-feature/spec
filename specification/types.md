@@ -189,6 +189,8 @@ An enumeration of provider events.
 A function or method which can be associated with a `provider event`, and runs when that event occurs.
 It declares an `event details` parameter.
 
-### Occurrence Details
+### Tracking Event Details
 
-See [occurrence details](./sections/06-tracking.md#62-occurrence-details).
+A structure which supports definition of arbitrary properties, including nested objects, similar to the `evaluation context` and object-typed flag values.
+
+See [tracking event details](./sections/06-tracking.md#62-tracking-event-details), [evaluation context](#evaluation-context).

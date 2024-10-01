@@ -1061,7 +1061,7 @@
                 {
                     "id": "Conditional Requirement 6.1.1.1",
                     "machine_id": "conditional_requirement_6_1_1_1",
-                    "content": "The `client` MUST define a function for tracking the occurrence of a particular action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.",
+                    "content": "The `client` MUST define a function for tracking the occurrence of a particular action or application state, with parameters `tracking event name` (string, required), `evaluation context` (optional) and `tracking event details` (optional), which returns nothing.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -1076,7 +1076,7 @@
                 {
                     "id": "Conditional Requirement 6.1.2.1",
                     "machine_id": "conditional_requirement_6_1_2_1",
-                    "content": "The `client` MUST define a function for tracking the occurrence of a particular action or application state, with parameters `occurrence key` (string, required) and `occurrence details` (optional) which returns nothing.",
+                    "content": "The `client` MUST define a function for tracking the occurrence of a particular action or application state, with parameters `tracking event name` (string, required) and `tracking event details` (optional), which returns nothing.",
                     "RFC 2119 keyword": "MUST",
                     "children": []
                 }
@@ -1099,14 +1099,14 @@
         {
             "id": "Requirement 6.2.1",
             "machine_id": "requirement_6_2_1",
-            "content": "The `occurrence details` structure MUST define an optional numeric `value`, associating a scalar quality with an `occurrence`.",
+            "content": "The `tracking event details` structure MUST define an optional numeric `value`, associating a scalar quality with an `tracking event`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 6.2.2",
             "machine_id": "requirement_6_2_2",
-            "content": "The `occurrence details` MUST support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | structure`.",
+            "content": "The `tracking event details` MUST support the inclusion of custom fields, having keys of type `string`, and values of type `boolean | string | number | structure`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         }
