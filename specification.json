@@ -511,7 +511,7 @@
         {
             "id": "Condition 2.7.1",
             "machine_id": "condition_2_7_1",
-            "content": "The `provider` MAY define a function for tracking the occurrence of a particular user action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.",
+            "content": "The `provider` MAY define a function for tracking the occurrence of a particular user action or application state, with parameters `tracking event name` (string, required), `evaluation context` (optional) and `tracking event details` (optional) which returns nothing.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },

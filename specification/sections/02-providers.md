@@ -272,14 +272,14 @@ See [tracking](./06-tracking.md).
 
 #### Condition 2.7.1
 
-> The `provider` **MAY** define a function for tracking the occurrence of a particular user action or application state, with parameters `occurrence key` (string, required), `evaluation context` (optional) and `occurrence details` (optional) which returns nothing.
+> The `provider` **MAY** define a function for tracking the occurrence of a particular user action or application state, with parameters `tracking event name` (string, required), `evaluation context` (optional) and `tracking event details` (optional) which returns nothing.
 
 ```java
 class MyProvider implements Tracking {
   //...
 
   /**
-   * Record a tracking occurrence.
+   * Record a tracking event.
    */
   void track(String trackingEventName, EvaluationContext context, TrackingEventDetails details): void;
   
@@ -288,7 +288,7 @@ class MyProvider implements Tracking {
 ```
 
 The track function is a void function (function returning nothing).
-The track function performs side effects required to record the `occurrence` in question, which may include network activity or other I/O; this I/O should not block the function call.
+The track function performs side effects required to record the `tracking event` in question, which may include network activity or other I/O; this I/O should not block the function call.
 Providers should be careful to complete any communication or flush any relevant uncommitted tracking data before they shut down.
 
 See [shutdown](#25-shutdown).
