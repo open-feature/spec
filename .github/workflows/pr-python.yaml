@@ -30,3 +30,9 @@ jobs:
       - name: Lint
         working-directory: ${{ env.WORKING_DIR }}
         run: ruff check
+      - name: Typing
+        working-directory: ${{ env.WORKING_DIR }}
+        run: mypy
+      - name: Unit tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: pytest
