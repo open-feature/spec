@@ -12,10 +12,21 @@ from typing import Any, TypedDict, cast
 
 class Config(TypedDict):
     file_extension: str
-    multiline_regex: str | None
-    number_subregex: str | None
-    text_subregex: str | None
+    multiline_regex: str
+    number_subregex: str
+    text_subregex: str
     inline_comment_prefix: str | None
+
+
+Report = TypedDict(
+    'Report',
+    {
+        'extra': list[str],
+        'missing': list[str],
+        'different-text': list[str],
+        'good': list[str],
+    },
+)
 
 
 def _demarkdown(t: str) -> str:
@@ -47,7 +58,6 @@ def get_spec_parser(code_dir: str) -> Config:
 def get_spec(force_refresh: bool = False, path_prefix: str = './') -> dict[str, Any]:
     spec_path = os.path.join(path_prefix, 'specification.json')
     print('Going to look in ', spec_path)
-    data = ''
     if os.path.exists(spec_path) and not force_refresh:
         with open(spec_path) as f:
             data = ''.join(f.readlines())
@@ -62,25 +72,29 @@ def get_spec(force_refresh: bool = False, path_prefix: str = './') -> dict[str, 
         data = ''.join(raw)
         with open(spec_path, 'w') as f:
             f.write(data)
-    return json.loads(data)
+    return cast('dict[str, Any]', json.loads(data))
 
 
 def specmap_from_file(actual_spec: dict[str, Any]) -> dict[str, str]:
     spec_map = {}
     for entry in actual_spec['rules']:
-        number = re.search(r'[\d.]+', entry['id']).group()
         if 'requirement' in entry['machine_id']:
-            spec_map[number] = _demarkdown(entry['content'])
+            if number := re.search(r'[\d.]+', entry['id']):
+                spec_map[number.group()] = _demarkdown(entry['content'])
+            else:
+                print(f'Skipping invalid ID {entry["id"]}')
 
-        if len(entry['children']) > 0:
+        if entry['children']:
             for ch in entry['children']:
-                number = re.search(r'[\d.]+', ch['id']).group()
                 if 'requirement' in ch['machine_id']:
-                    spec_map[number] = _demarkdown(ch['content'])
+                    if number := re.search(r'[\d.]+', ch['id']):
+                        spec_map[number.group()] = _demarkdown(ch['content'])
+                    else:
+                        print(f'Skipping invalid child ID {ch["id"]}')
     return spec_map
 
 
-def find_covered_specs(config: Config, data: str) -> dict[str, dict[str, str]]:
+def find_covered_specs(config: Config, data: str) -> dict[str, str]:
     repo_specs = {}
     for match in re.findall(config['multiline_regex'], data, re.MULTILINE | re.DOTALL):
         match = match.replace('\n', '').replace(config['inline_comment_prefix'], '')
@@ -93,16 +107,13 @@ def find_covered_specs(config: Config, data: str) -> dict[str, dict[str, str]]:
             text = ''.join(text_with_concat_chars).strip()
             # We have to match for ") to capture text with parens inside, so we add the trailing " back in.
             text = _demarkdown(eval('"%s"' % text))
-            entry = repo_specs[number] = {
-                'number': number,
-                'text': text,
-            }
+            repo_specs[number] = text
         except Exception as e:
             print(f"Skipping {match} b/c we couldn't parse it")
     return repo_specs
 
 
-def gen_report(from_spec: dict[str, str], from_repo: dict[str, dict[str, str]]) -> dict[str, set[str]]:
+def gen_report(from_spec: dict[str, str], from_repo: dict[str, str]) -> Report:
     extra = set()
     different_text = set()
     good = set()
@@ -121,34 +132,26 @@ def gen_report(from_spec: dict[str, str], from_repo: dict[str, dict[str, str]]) 
             different_text.add(number)
 
     return {
-        'extra': extra,
-        'missing': missing,
-        'different-text': different_text,
-        'good': good,
+        'extra': sorted(extra),
+        'missing': sorted(missing),
+        'different-text': sorted(different_text),
+        'good': sorted(good),
     }
 
 
 def main(
+    code_directory: str,
     refresh_spec: bool = False,
     diff_output: bool = False,
     limit_numbers: str | None = None,
-    code_directory: str | None = None,
     json_report: bool = False,
 ) -> None:
-    report = {
-        'extra': set(),
-        'missing': set(),
-        'different-text': set(),
-        'good': set(),
-    }
-
     actual_spec = get_spec(refresh_spec, path_prefix=code_directory)
     config = get_spec_parser(code_directory)
 
     spec_map = specmap_from_file(actual_spec)
 
-    repo_specs = {}
-    missing = set(spec_map.keys())
+    repo_specs: dict[str, str] = {}
     bad_num = 0
 
     for root, dirs, files in os.walk('.', topdown=False):
@@ -179,14 +182,12 @@ def main(
 
     missing = report['missing']
     bad_num += len(missing)
-    if len(missing) > 0:
+    if missing:
         print('In the spec, but not in our tests: ')
         for m in sorted(missing):
             print(f'  {m}: {spec_map[m]}')
 
     if json_report:
-        for k in report.keys():
-            report[k] = sorted(list(report[k]))
         report_txt = json.dumps(report, indent=4)
         loc = os.path.join(code_directory, '%s-report.json' % config['file_extension'])
         with open(loc, 'w') as f:
@@ -206,9 +207,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     main(
+        code_directory=args.code_directory,
         refresh_spec=args.refresh_spec,
         diff_output=args.diff_output,
         limit_numbers=args.specific_numbers,
-        code_directory=args.code_directory,
         json_report=args.json_report,
     )
