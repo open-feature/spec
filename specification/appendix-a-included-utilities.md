@@ -16,7 +16,7 @@ This document contains requirements for auxiliary utilities provided by the SDK,
 The in-memory provider is intended to be used for testing; SDK consumers may use it for their use cases.
 Hence, the packaging, naming, and access modifiers must be set appropriately.
 
-Given below are features this provider **MUST** have the following features:
+This provider **MUST** have the following features:
 
 - The provider is initiated with a pre-defined `flag set` provided in athe constructor.
 - The flag structure must be minimalist, and should help to test the OpenFeature specification.
