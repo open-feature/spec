@@ -18,8 +18,8 @@ Hence, the packaging, naming, and access modifiers must be set appropriately.
 
 Given below are features this provider **MUST** have the following features:
 
-- The provider is initiated with a pre-defined `flag set` provided in a constructor.
-- The flag structure must be minimalist, and should help to test OpenFeature specification.
+- The provider is initiated with a pre-defined `flag set` provided in athe constructor.
+- The flag structure must be minimalist, and should help to test the OpenFeature specification.
   - EvaluationContext support should be provided through callbacks/lambda expressions.
 - The provider must support a means of updating the `flag set`, resulting in the emission of `PROVIDER_CONFIGURATION_CHANGED` events.
   - The change event should consider all flags changed; a union of all previous and all new flag keys should be supplied in the `flags changed` field.
