@@ -16,13 +16,14 @@ This document contains requirements for auxiliary utilities provided by the SDK,
 The in-memory provider is intended to be used for testing; SDK consumers may use it for their use cases.
 Hence, the packaging, naming, and access modifiers must be set appropriately.
 
-Given below are features this provider **MUST** support,
+Given below are features this provider **MUST** have the following features:
 
-- Provider must be initiated with a pre-defined set of flags provided to a constructor
-- Feature Flag structure must be minimal but should help to test OpenFeature specification
-- EvaluationContext support should be provided through callbacks/lambda expressions
-- Provider must support a means of updating flag values, resulting in the emission of `PROVIDER_CONFIGURATION_CHANGED` events
-- Provider must be maintained to support specification changes
+- The provider is be initiated with a pre-defined `flag set` provided to a constructor.
+- The flag structure must be minimalist, and should help to test OpenFeature specification.
+  - EvaluationContext support should be provided through callbacks/lambda expressions.
+- The provider must support a means of updating the `flag set`, resulting in the emission of `PROVIDER_CONFIGURATION_CHANGED` events.
+  - The change event should consider all flags changed; a union of all previous and all new flag keys should be supplied in the `flags changed` field.
+- The provider must be maintained to support specification changes.
 
 ## SDK end-to-end testing
 
