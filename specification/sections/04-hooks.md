@@ -35,11 +35,11 @@ Hooks can be configured to run globally (impacting all flag evaluations), per cl
 
 ### 4.1. Hook context
 
-Hook context exists to provide hooks with information about the invocation.
+Hook context exists to provide hooks with information about the invocation and propagate data between hook stages.
 
 #### Requirement 4.1.1
 
-> Hook context **MUST** provide: the `flag key`, `flag value type`, `evaluation context`, and the `default value`.
+> Hook context **MUST** provide: the `flag key`, `flag value type`, `evaluation context`, `default value`, and `hook data`.
 
 #### Requirement 4.1.2
 
@@ -58,6 +58,22 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 ##### Conditional Requirement 4.1.4.1
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
+
+#### Requirement 4.1.5
+
+> The `hook data` **MUST** be mutable.
+
+Either the `hook data` reference itself must be mutable, or it must allow mutation of its contents.
+
+Mutable reference:
+```
+hookContext.hookData = {'my-key': 'my-value'}
+```
+
+Mutable content:
+```
+hookContext.hookData.set('my-key', 'my-value')
+```
 
 ### 4.2. Hook Hints
 
