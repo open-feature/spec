@@ -31,7 +31,13 @@ Hooks can be configured to run globally (impacting all flag evaluations), per cl
 
 ### Definitions
 
-**Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage. **Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](../glossary.md#resolving-flag-values) is run. **Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation. **API**: The global API singleton.
+*Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage.
+
+**Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](../glossary.md#resolving-flag-values) is run.
+
+**Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation.
+
+**API**: The global API singleton.
 
 ### 4.1. Hook context
 
