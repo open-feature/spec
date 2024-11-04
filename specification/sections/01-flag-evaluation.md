@@ -426,11 +426,11 @@ stateDiagram-v2
     NOT_READY --> ERROR:initialize()
     NOT_READY --> FATAL:initialize()
     FATAL --> [*]
-    READY --> ERROR:*
-    ERROR --> READY:*
-    READY --> STALE:*
-    STALE --> READY:*
-    STALE --> ERROR:*
+    READY --> ERROR:#ast;
+    ERROR --> READY:#ast;
+    READY --> STALE:#ast;
+    STALE --> READY:#ast;
+    STALE --> ERROR:#ast;
     READY --> NOT_READY:shutdown()
     STALE --> NOT_READY:shutdown()
     ERROR --> NOT_READY:shutdown()
