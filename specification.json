@@ -692,7 +692,7 @@
         {
             "id": "Requirement 4.1.2",
             "machine_id": "requirement_4_1_2",
-            "content": "The `hook context` SHOULD provide: access to the `client metadata` and the `provider metadata` fields.",
+            "content": "The `hook context` SHOULD provide access to the `client metadata` and the `provider metadata` fields.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
@@ -721,7 +721,7 @@
         {
             "id": "Requirement 4.2.1",
             "machine_id": "requirement_4_2_1",
-            "content": "`hook hints` MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..",
+            "content": "`hook hints` MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -808,7 +808,7 @@
         {
             "id": "Requirement 4.3.6",
             "machine_id": "requirement_4_3_6",
-            "content": "The `after` stage MUST run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `hook hints` (optional). It has no return value.",
+            "content": "The `after` stage MUST run after flag resolution occurs. It accepts a `hook context` (required), `evaluation details` (required) and `hook hints` (optional). It has no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -822,7 +822,7 @@
         {
             "id": "Requirement 4.3.8",
             "machine_id": "requirement_4_3_8",
-            "content": "The `finally` hook MUST run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `hook hints` (optional). There is no return value.",
+            "content": "The `finally` hook MUST run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required), `evaluation details` (required) and `hook hints` (optional). It has no return value.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
