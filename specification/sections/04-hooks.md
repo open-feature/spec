@@ -142,7 +142,7 @@ Evaluation context merge order is defined in [Context levels and merging](./03-e
 
 > The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required), `evaluation details` (required) and `hook hints` (optional). It has no return value.
 
-The evaluation details passed to the `finally` stage should match the evaluation details returned to the application author.
+The evaluation details passed to the `finally` stage matches the evaluation details returned to the application author.
 
 #### Condition 4.3.9
 
