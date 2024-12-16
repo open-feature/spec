@@ -25,7 +25,11 @@ The following describes how fields on the [evaluation details](types.md#evaluati
 | `error code`             | `error.type`                            | See: [error code](./types.md#error-code)             |
 | `variant`                | `feature_flag.variant`                  | See: [variant](./glossary.md#variant)                |
 | `error message`          | `feature_flag.evaluation.error.message` | An error message associated with a failed evaluation |
-| `reason`                 | `feature_flag.evaluation.reason`        | See: [reason](./types.md#reason)                     |
+| `reason`                 | `feature_flag.evaluation.reason`        | See: [reason](./types.md#resolution-reason)          |
+
+> [!NOTE]  
+> The `error.type` and `feature_flag.evaluation.reason` enumerations use a lowercase "snake_case" convention (see [OpenTelemetry feature-flag log records](https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/)).
+> OpenFeature [error codes](types.md#error-code) and [resolution reasons](./types.md#resolution-reason) should be transformed accordingly by integrations which include this data.
 
 ### Flag Metadata
 
@@ -45,3 +49,4 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 | Provider Metadata Field | Log Record Attribute         | Notes                                                                                            |
 | ----------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------ |
 | `name`                  | `feature_flag.provider_name` | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
+      
