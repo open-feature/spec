@@ -16,8 +16,11 @@ sidebar_position: 0
 - [Evaluation Context](./sections/03-evaluation-context.md)
 - [Hooks](./sections/04-hooks.md)
 - [Events](./sections/05-events.md)
+- [Tracking](./sections/06-tracking.md)
 - [Appendix A: Included Utilities](./appendix-a-included-utilities.md)
 - [Appendix B: Gherkin Suites](./appendix-b-gherkin-suites.md)
+- [Appendix C: OFREP](./appendix-c-ofrep.md)
+- [Appendix D: Observability](./appendix-d-observability.md)
 
 ## Conformance
 

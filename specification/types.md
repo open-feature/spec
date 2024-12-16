@@ -58,6 +58,8 @@ A structure which contains a subset of the fields defined in the `evaluation det
 - variant (string, optional)
 - flag metadata ([flag metadata](#flag-metadata), optional)
 
+#### Resolution Reason
+
 A set of pre-defined reasons is enumerated below:
 
 | Reason          | Explanation                                                                                                                      |
