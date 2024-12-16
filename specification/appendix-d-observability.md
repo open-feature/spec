@@ -49,4 +49,3 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 | Provider Metadata Field | Log Record Attribute         | Notes                                                                                            |
 | ----------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------ |
 | `name`                  | `feature_flag.provider_name` | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
-      
