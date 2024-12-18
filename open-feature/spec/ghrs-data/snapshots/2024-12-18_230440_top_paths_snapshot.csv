@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,180,148
+/open-feature/spec/tree/main/specification,27,21
+/open-feature/spec/pull/287,24,15
+/open-feature/spec/pull/285,23,10
+/open-feature/spec/pull/280,15,6
+/open-feature/spec/pull/285/files,13,4
+/open-feature/spec/issues/286,10,4
+/open-feature/spec/commit/cd99c3560a68c1810971be19b87ea803fb9b0b3a,9,8
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,9,6
+/open-feature/spec/blob/main/specification/assets/gherkin/evaluation.feature,9,5
