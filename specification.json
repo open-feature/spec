@@ -928,7 +928,7 @@
         {
             "id": "Requirement 4.6.1",
             "machine_id": "requirement_4_6_1",
-            "content": "`hook data` MUST be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.",
+            "content": "`hook data` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
