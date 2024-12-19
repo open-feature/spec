@@ -1,0 +1,38 @@
+name: PR Python checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  WORKING_DIR: tools/repo_parser
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: pip install -r requirements.txt
+
+      - name: Format
+        working-directory: ${{ env.WORKING_DIR }}
+        run: ruff format --check
+      - name: Lint
+        working-directory: ${{ env.WORKING_DIR }}
+        run: ruff check
+      - name: Typing
+        working-directory: ${{ env.WORKING_DIR }}
+        run: mypy
+      - name: Unit tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: pytest

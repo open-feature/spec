@@ -1,0 +1,17 @@
+[tool.mypy]
+files = "spec_finder.py"
+local_partial_types = true # will become the new default from version 2
+pretty = true
+strict = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "I",
+]
+
+[tool.ruff.format]
+quote-style = "single"

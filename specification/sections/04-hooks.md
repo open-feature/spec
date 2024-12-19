@@ -14,8 +14,8 @@ Hooks add their logic at any of four specific stages of flag evaluation:
 
 - `before`, immediately before flag evaluation
 - `after`, immediately after successful flag evaluation
-- `error`, immediately after an unsuccessful during flag evaluation
-- `finally` unconditionally after flag evaluation
+- `error`, immediately after an unsuccessful flag evaluation
+- `finally`, unconditionally after flag evaluation
 
 ```mermaid
 flowchart LR
@@ -27,11 +27,11 @@ flowchart LR
     E -..-> F
 ```
 
-Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use-cases for hook include adding additional data to the [evaluation context](./03-evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
+Hooks can be configured to run globally (impacting all flag evaluations), per client, or per flag evaluation invocation. Some example use cases for a hook include adding additional data to the [evaluation context](./03-evaluation-context.md), performing validation on the received flag value, providing data to telemetric tools, and logging errors.
 
 ### Definitions
 
-*Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage.
+**Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage.
 
 **Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](../glossary.md#resolving-flag-values) is run.
 
@@ -49,7 +49,7 @@ Hook context exists to provide hooks with information about the invocation and p
 
 #### Requirement 4.1.2
 
-> The `hook context` **SHOULD** provide: access to the `client metadata` and the `provider metadata` fields.
+> The `hook context` **SHOULD** provide access to the `client metadata` and the `provider metadata` fields.
 
 #### Requirement 4.1.3
 
@@ -85,7 +85,7 @@ hookContext.hookData.set('my-key', 'my-value')
 
 #### Requirement 4.2.1
 
-> `hook hints` **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`..
+> `hook hints` **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.
 
 #### Condition 4.2.2
 
@@ -203,7 +203,7 @@ Evaluation context merge order is defined in [Context levels and merging](./03-e
 
 #### Requirement 4.3.6
 
-> The `after` stage **MUST** run after flag resolution occurs. It accepts a `hook context` (required), `flag evaluation details` (required) and `hook hints` (optional). It has no return value.
+> The `after` stage **MUST** run after flag resolution occurs. It accepts a `hook context` (required), `evaluation details` (required) and `hook hints` (optional). It has no return value.
 
 #### Requirement 4.3.7
 
@@ -211,7 +211,9 @@ Evaluation context merge order is defined in [Context levels and merging](./03-e
 
 #### Requirement 4.3.8
 
-> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required) and `hook hints` (optional). There is no return value.
+> The `finally` hook **MUST** run after the `before`, `after`, and `error` stages. It accepts a `hook context` (required), `evaluation details` (required) and `hook hints` (optional). It has no return value.
+
+The evaluation details passed to the `finally` stage matches the evaluation details returned to the application author.
 
 #### Condition 4.3.9
 
@@ -253,7 +255,7 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 > If a `finally` hook abnormally terminates, evaluation **MUST** proceed, including the execution of any remaining `finally` hooks.
 
-In languages with try/catch semantics, this means that exceptions thrown in `finally` hooks should be caught, and not propagated up the call stack.
+In languages with try/catch semantics, this means that exceptions thrown in `finally` hooks should be caught and not propagated up the call stack.
 
 #### Requirement 4.4.4
 
