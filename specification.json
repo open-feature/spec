@@ -685,7 +685,7 @@
         {
             "id": "Requirement 4.1.1",
             "machine_id": "requirement_4_1_1",
-            "content": "Hook context MUST provide: the `flag key`, `flag value type`, `evaluation context`, and the `default value`.",
+            "content": "Hook context MUST provide: the `flag key`, `flag value type`, `evaluation context`, `default value`, and `hook data`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -717,6 +717,13 @@
                     "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 4.1.5",
+            "machine_id": "requirement_4_1_5",
+            "content": "The `hook data` MUST be mutable.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         },
         {
             "id": "Requirement 4.2.1",
@@ -758,6 +765,13 @@
             "id": "Requirement 4.3.1",
             "machine_id": "requirement_4_3_1",
             "content": "Hooks MUST specify at least one stage.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 4.3.2",
+            "machine_id": "requirement_4_3_2",
+            "content": "`Hook data` MUST must be created before the first `stage` invoked in a hook for a specific evaluation and propagated between each `stage` of the hook. The hook data is not shared between different hooks.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -909,6 +923,13 @@
             "machine_id": "requirement_4_5_3",
             "content": "The hook MUST NOT alter the `hook hints` structure.",
             "RFC 2119 keyword": "MUST NOT",
+            "children": []
+        },
+        {
+            "id": "Requirement 4.6.1",
+            "machine_id": "requirement_4_6_1",
+            "content": "`hook data` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
