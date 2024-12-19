@@ -328,4 +328,4 @@ but different hooks have different hook data instances.
 
 #### Requirement 4.6.1
 
-> `hook data` **MUST** be a structure supports definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.
+> `hook data` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.
