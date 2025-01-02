@@ -95,7 +95,7 @@ def find_rfc_2119_keyword(content):
         ) is not None:
             return rfc_2119_keyword_regex
 
-def parsed_content_to_heirarchy(parsed_content):
+def parsed_content_to_hierarchy(parsed_content):
     'Turns a bunch of headline & content pairings into a tree of requirements'
     content_tree = []
     headline_stack = []
@@ -183,7 +183,7 @@ def parse(markdown_file_path):
     with open(markdown_file_path, "r") as markdown_file:
         content_finder = re.compile(r'^(?P<level>####+)(?P<headline>[^\n]+)\n+?.*?\n+?(?P<rest>>\s[^#?]*)', re.MULTILINE)
         parsed = content_finder.findall(markdown_file.read())
-        return parsed_content_to_heirarchy(parsed)
+        return parsed_content_to_hierarchy(parsed)
 
 def write_json_specifications(requirements):
     for md_absolute_file_path, requirement_sections in requirements.items():
