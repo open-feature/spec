@@ -48,7 +48,7 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 | ------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `feature_flag.context.id` | `contextId`       | The context identifier returned in the flag metadata uniquely identifies the subject of the flag evaluation. If not available, the [targeting key](./glossary.md#targeting-key) should be used. |
 | `feature_flag.set.id`     | `flagSetId`       | A logical identifier for the [flag set](./glossary.md#flag-set).                                                                                                                                |
-| `feature_flag.version`    | `flagSetVersion`  | A version string (format unspecified) for the [flag set](./glossary.md#flag-set).                                                                                                               |
+| `feature_flag.version`    | `version`         | A version string (format unspecified) for the flag or [flag set](./glossary.md#flag-set).                                                                                                       |
 
 > [!NOTE]  
 > Keys in flag metadata use the "camelCase" casing convention, while the OpenTelemetry standard uses a namespaced "snake_case" convention.
