@@ -2,7 +2,7 @@
 Feature: Metadata
 
   Background:
-    Given a provider is registered
+    Given a stable provider
 
   Scenario: Returns metadata
     Given a Boolean-flag with key "metadata-flag" and a default value "true"
