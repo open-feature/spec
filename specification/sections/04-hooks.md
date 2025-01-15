@@ -32,17 +32,20 @@ Hooks can be configured to run globally (impacting all flag evaluations), per cl
 ### Definitions
 
 **Hook**: Application author/integrator-supplied logic that is called by the OpenFeature framework at a specific stage.
-**Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before" the [resolution](../glossary.md#resolving-flag-values) is run.
+
+**Stage**: An explicit portion of the flag evaluation lifecycle. e.g. `before` being "before the [resolution](../glossary.md#resolving-flag-values) is run.
+
 **Invocation**: A single call to evaluate a flag. `client.getBooleanValue(..)` is an invocation.
+
 **API**: The global API singleton.
 
 ### 4.1. Hook context
 
-Hook context exists to provide hooks with information about the invocation.
+Hook context exists to provide hooks with information about the invocation and propagate data between hook stages.
 
 #### Requirement 4.1.1
 
-> Hook context **MUST** provide: the `flag key`, `flag value type`, `evaluation context`, and the `default value`.
+> Hook context **MUST** provide: the `flag key`, `flag value type`, `evaluation context`, `default value`, and `hook data`.
 
 #### Requirement 4.1.2
 
@@ -61,6 +64,22 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 ##### Conditional Requirement 4.1.4.1
 
 > The evaluation context **MUST** be mutable only within the `before` hook.
+
+#### Requirement 4.1.5
+
+> The `hook data` **MUST** be mutable.
+
+Either the `hook data` reference itself must be mutable, or it must allow mutation of its contents.
+
+Mutable reference:
+```
+hookContext.hookData = {'my-key': 'my-value'}
+```
+
+Mutable content:
+```
+hookContext.hookData.set('my-key', 'my-value')
+```
 
 ### 4.2. Hook Hints
 
@@ -89,6 +108,58 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 #### Requirement 4.3.1
 
 > Hooks **MUST** specify at least one stage.
+
+#### Requirement 4.3.2
+
+> `Hook data` **MUST** must be created before the first `stage` invoked in a hook for a specific evaluation and propagated between each `stage` of the hook. The hook data is not shared between different hooks.
+
+Example showing data between `before` and `after` stage for two different hooks.
+```mermaid
+sequenceDiagram
+actor Application
+participant Client
+participant HookA
+participant HookB
+
+Application->>Client: getBooleanValue('my-bool', myContext, false)
+activate Client
+
+Client-->>Client: create hook data for HookA
+
+Client->>HookA: before(hookContext: {data: {}, ... })
+activate HookA
+
+HookA-->>HookA: hookContext.hookData.set('key',' data for A')
+
+HookA-->>Client: (return)
+deactivate HookA
+
+Client-->>Client: create hook data for HookB
+
+Client->>HookB: before(hookContext: {data: {}, ... }, hints)
+activate HookB
+
+HookB-->>HookB: hookContext.hookData.set('key', 'data for B')
+deactivate HookB
+
+Client-->>Client: Flag evaluation
+
+Client->>HookB: after(hookContext: {data: {key: 'data for B'}, ... }, detail, hints)
+activate HookB
+
+HookB-->>Client: (return)
+deactivate HookB
+
+Client->>HookA: after(hookContext: {data: {'key': 'data for A'}, ... })
+activate HookA
+
+HookA-->>Client: (return)
+deactivate HookA
+
+Client-->>Application: true
+deactivate Client
+
+```
 
 #### Condition 4.3.2
 
@@ -230,3 +301,33 @@ see: [Flag evaluation options](./01-flag-evaluation.md#evaluation-options)
 #### Requirement 4.5.3
 
 > The hook **MUST NOT** alter the `hook hints` structure.
+
+### 4.6. Hook data
+
+Hook data exists to allow hook stages to share data for a specific evaluation. For instance a span
+for OpenTelemetry could be created in a `before` stage and closed in an `after` stage.
+
+Hook data is scoped to a specific hook instance. The different stages of a hook share the same data,
+but different hooks have different hook data instances.
+
+```Java
+  public Optional<EvaluationContext> before(HookContext context, HookHints hints) {
+    SpanBuilder builder = tracer.spanBuilder('sample')
+    .setParent(Context.current().with(Span.current()));
+    Span span = builder.startSpan()
+    context.hookData.set("span", span);
+  }
+
+  public void after(HookContext context, FlagEvaluationDetails details, HookHints hints) {
+    // Only accessible by this hook for this specific evaluation.
+    Object value = context.hookData.get("span");
+    if (value instanceof Span) {
+      Span span = (Span) value;
+      span.end();
+    }
+  }
+```
+
+#### Requirement 4.6.1
+
+> `hook data` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.
