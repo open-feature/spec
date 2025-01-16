@@ -4,14 +4,14 @@ Feature: Evaluation details through hooks
 # This test suite contains scenarios to test the functionality of hooks.
 
   Background:
-    Given a provider is registered with cache disabled
+    Given a stable provider
 
   Scenario: Passes evaluation details to after and finally hooks
     Given a client with added hook
     And a boolean-flag with key "boolean-flag" and a default value "false"
     When the flag was evaluated with details
-    Then "before" hooks should be called
-    And "after, finally after" hooks should be called with evaluation details
+    Then the "before" hook should have been executed
+    And the "after, finally after" hooks should be called with evaluation details
       | data_type | key           | value        |
       | string    | flag_key      | boolean-flag |
       | boolean   | value         | true         |
@@ -25,9 +25,9 @@ Feature: Evaluation details through hooks
     Given a client with added hook
     And a string-flag with key "missing-flag" and a default value "uh-oh"
     When the flag was evaluated with details
-    Then "before" hooks should be called
-    And "error" hooks should be called
-    And "finally after" hooks should be called with evaluation details
+    Then the "before" hook should have been executed
+    And the "error" hook should have been executed
+    And the "finally after" hooks should be called with evaluation details
       | data_type | key           | value                         |
       | string    | flag_key      | missing-flag                  |
       | string    | value         | uh-oh                         |
@@ -40,9 +40,9 @@ Feature: Evaluation details through hooks
     Given a client with added hook
     And a string-flag with key "wrong-flag" and a default value "13"
     When the flag was evaluated with details
-    Then "before" hooks should be called
-    And "error" hooks should be called
-    And "finally after" hooks should be called with evaluation details
+    Then the "before" hook should have been executed
+    And the "error" hook should have been executed
+    And the "finally after" hooks should be called with evaluation details
       | data_type | key           | value                                             |
       | string    | flag_key      | wrong-flag                                        |
       | integer   | value         | 13                                                |
