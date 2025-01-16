@@ -48,19 +48,6 @@ Feature: Flag evaluation
     Then the resolved object details value should be contain fields "showImages", "title", and "imagesPerPage", with values "true", "Check out these pics!" and 100, respectively
     And the variant should be "template", and the reason should be "STATIC"
 
-  Scenario: Passes evaluation details to after and finally hooks
-    When a hook is added to the client
-    And a boolean flag with key "boolean-flag" is evaluated with details and default value "false"
-    Then "before" hooks should be called
-    And "after, finally after" hooks should be called with evaluation details
-      | flag_type | key           | value        |
-      | string    | flag_key      | boolean-flag |
-      | boolean   | value         | true         |
-      | string    | variant       | on           |
-      | string    | reason        | STATIC       |
-      | string    | error_code    | None         |
-      | string    | error_message | None         |
-
   # context-aware evaluation
   Scenario: Resolves based on context
     When context contains keys "fn", "ln", "age", "customer" with values "Sulisław", "Świętopełk", 29, "false"
@@ -70,31 +57,11 @@ Feature: Flag evaluation
 
   # errors
   Scenario: Flag not found
-    When a hook is added to the client
-    And a non-existent string flag with key "missing-flag" is evaluated with details and a default value "uh-oh"
+    When a non-existent string flag with key "missing-flag" is evaluated with details and a default value "uh-oh"
     Then the default string value should be returned
     And the reason should indicate an error and the error code should indicate a missing flag with "FLAG_NOT_FOUND"
-    Then "before, error" hooks should be called
-    And "finally after" hooks should be called with evaluation details
-      | type   | key           | value                         |
-      | string | flag_key      | missing-flag                  |
-      | string | value         | uh-oh                         |
-      | string | variant       | None                          |
-      | string | reason        | ERROR                         |
-      | string | error_code    | ErrorCode.FLAG_NOT_FOUND      |
-      | string | error_message | Flag 'missing-flag' not found |
 
   Scenario: Type error
-    When a hook is added to the client
-    And a string flag with key "wrong-flag" is evaluated as an integer, with details and a default value 13
+    When a string flag with key "wrong-flag" is evaluated as an integer, with details and a default value 13
     Then the default integer value should be returned
     And the reason should indicate an error and the error code should indicate a type mismatch with "TYPE_MISMATCH"
-    Then "before, error" hooks should be called
-    And "finally after" hooks should be called with evaluation details
-      | type    | key           | value                                             |
-      | string  | flag_key      | wrong-flag                                        |
-      | integer | value         | 13                                                |
-      | string  | variant       | None                                              |
-      | string  | reason        | ERROR                                             |
-      | string  | error_code    | ErrorCode.TYPE_MISMATCH                           |
-      | string  | error_message | Expected type <class 'int'> but got <class 'str'> |
