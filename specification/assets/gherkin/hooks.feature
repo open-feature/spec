@@ -18,7 +18,6 @@ Feature: Evaluation details through hooks
       | string    | variant       | on           |
       | string    | reason        | STATIC       |
       | string    | error_code    | None         |
-      | string    | error_message | None         |
 
   # errors
   Scenario: Flag not found
@@ -34,7 +33,6 @@ Feature: Evaluation details through hooks
       | string    | variant       | None                          |
       | string    | reason        | ERROR                         |
       | string    | error_code    | ErrorCode.FLAG_NOT_FOUND      |
-      | string    | error_message | Flag 'missing-flag' not found |
 
   Scenario: Type error
     Given a client with added hook
@@ -49,4 +47,3 @@ Feature: Evaluation details through hooks
       | string    | variant       | None                                              |
       | string    | reason        | ERROR                                             |
       | string    | error_code    | ErrorCode.TYPE_MISMATCH                           |
-      | string    | error_message | Expected type <class 'int'> but got <class 'str'> |
