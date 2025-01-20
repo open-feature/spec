@@ -11,7 +11,7 @@ Feature: Evaluation details through hooks
     And a boolean-flag with key "boolean-flag" and a default value "false"
     When the flag was evaluated with details
     Then the "before" hook should have been executed
-    And the "after, finally after" hooks should be called with evaluation details
+    And the "after, finally" hooks should be called with evaluation details
       | data_type | key           | value        |
       | string    | flag_key      | boolean-flag |
       | boolean   | value         | true         |
@@ -26,7 +26,7 @@ Feature: Evaluation details through hooks
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
-    And the "finally after" hooks should be called with evaluation details
+    And the "finally" hooks should be called with evaluation details
       | data_type | key           | value                         |
       | string    | flag_key      | missing-flag                  |
       | string    | value         | uh-oh                         |
@@ -40,7 +40,7 @@ Feature: Evaluation details through hooks
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
-    And the "finally after" hooks should be called with evaluation details
+    And the "finally" hooks should be called with evaluation details
       | data_type | key           | value                                             |
       | string    | flag_key      | wrong-flag                                        |
       | integer   | value         | 13                                                |
