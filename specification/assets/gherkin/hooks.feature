@@ -12,12 +12,12 @@ Feature: Evaluation details through hooks
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "after, finally" hooks should be called with evaluation details
-      | data_type | key           | value        |
-      | string    | flag_key      | boolean-flag |
-      | boolean   | value         | true         |
-      | string    | variant       | on           |
-      | string    | reason        | STATIC       |
-      | string    | error_code    | None         |
+      | data_type | key        | value        |
+      | string    | flag_key   | boolean-flag |
+      | boolean   | value      | true         |
+      | string    | variant    | on           |
+      | string    | reason     | STATIC       |
+      | string    | error_code | None         |
 
   # errors
   Scenario: Flag not found
@@ -27,12 +27,12 @@ Feature: Evaluation details through hooks
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
     And the "finally" hooks should be called with evaluation details
-      | data_type | key           | value                         |
-      | string    | flag_key      | missing-flag                  |
-      | string    | value         | uh-oh                         |
-      | string    | variant       | None                          |
-      | string    | reason        | ERROR                         |
-      | string    | error_code    | ErrorCode.FLAG_NOT_FOUND      |
+      | data_type | key        | value          |
+      | string    | flag_key   | missing-flag   |
+      | string    | value      | uh-oh          |
+      | string    | variant    | None           |
+      | string    | reason     | ERROR          |
+      | string    | error_code | FLAG_NOT_FOUND |
 
   Scenario: Type error
     Given a client with added hook
@@ -41,9 +41,9 @@ Feature: Evaluation details through hooks
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
     And the "finally" hooks should be called with evaluation details
-      | data_type | key           | value                                             |
-      | string    | flag_key      | wrong-flag                                        |
-      | integer   | value         | 13                                                |
-      | string    | variant       | None                                              |
-      | string    | reason        | ERROR                                             |
-      | string    | error_code    | ErrorCode.TYPE_MISMATCH                           |
+      | data_type | key        | value         |
+      | string    | flag_key   | wrong-flag    |
+      | integer   | value      | 13            |
+      | string    | variant    | None          |
+      | string    | reason     | ERROR         |
+      | string    | error_code | TYPE_MISMATCH |
