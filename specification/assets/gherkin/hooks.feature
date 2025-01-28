@@ -30,7 +30,7 @@ Feature: Evaluation details through hooks
       | data_type | key        | value          |
       | string    | flag_key   | missing-flag   |
       | string    | value      | uh-oh          |
-      | string    | variant    | None           |
+      | string    | variant    | null           |
       | string    | reason     | ERROR          |
       | string    | error_code | FLAG_NOT_FOUND |
 
@@ -44,6 +44,6 @@ Feature: Evaluation details through hooks
       | data_type | key        | value         |
       | string    | flag_key   | wrong-flag    |
       | integer   | value      | 13            |
-      | string    | variant    | None          |
+      | string    | variant    | null          |
       | string    | reason     | ERROR         |
       | string    | error_code | TYPE_MISMATCH |
