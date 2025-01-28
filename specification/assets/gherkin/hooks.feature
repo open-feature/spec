@@ -17,7 +17,7 @@ Feature: Evaluation details through hooks
       | boolean   | value      | true         |
       | string    | variant    | on           |
       | string    | reason     | STATIC       |
-      | string    | error_code | None         |
+      | string    | error_code | null         |
 
   # errors
   Scenario: Flag not found
