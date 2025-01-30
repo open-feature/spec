@@ -23,11 +23,11 @@ The following describes how fields on the [evaluation details](types.md#evaluati
 | --------------------------------------- | ----------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `feature_flag.key`                      | `flag key`                                            | `Required`                    | See: [flag key](./glossary.md#flag-key)                                                                               |
 | `error.type`                            | `error code`                                          | `Conditionally Required` [^1] | See: [error code](./types.md#error-code),                                                                             |
-| `feature_flag.variant`                  | `variant`                                             | `Conditionally Required` [^2] | See: [variant](./glossary.md#variant)                                                                                 |
 | `feature_flag.evaluation.error.message` | `error message`                                       | `Conditionally Required` [^1] | A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`. |
+| `feature_flag.variant`                  | `variant`                                             | `Conditionally Required` [^2] | See: [variant](./glossary.md#variant)                                                                                 |
 | `feature_flag.evaluation.reason`        | `reason`                                              | `Recommended`                 | See: [reason](./types.md#resolution-reason)                                                                           |
 
-> [!NOTE]  
+> [!NOTE]
 > The `error.type` and `feature_flag.evaluation.reason` enumerations use a lowercase "snake_case" convention (see [OpenTelemetry feature-flag log records][otel-ff-logs]).
 > OpenFeature [error codes](types.md#error-code) and [resolution reasons](./types.md#resolution-reason) should be transformed accordingly by integrations which include this data.
 
@@ -49,7 +49,7 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 | `feature_flag.set.id`     | `flagSetId`       | `Recommended`     | A logical identifier for the [flag set](./glossary.md#flag-set).                                                                                                                                |
 | `feature_flag.version`    | `version`         | `Recommended`     | A version string (format unspecified) for the flag or [flag set](./glossary.md#flag-set).                                                                                                       |
 
-> [!NOTE]  
+> [!NOTE]
 > Keys in flag metadata use the "camelCase" casing convention, while the OpenTelemetry standard uses a namespaced "snake_case" convention.
 
 ### Provider Metadata
@@ -58,10 +58,10 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 | ---------------------------- | ----------------------- | ----------------- | ------------------------------------------------------------------------------------------------ |
 | `feature_flag.provider_name` | `name`                  | `Recommended`     | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
 
-// Links
+## Footnotes
 
-[otel-ff-logs]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
-
-[^1]: If and only if an error occurred during a flag evaluation.
+[^1]: Include if and only if an error occurred during a flag evaluation.
 [^2]: The `variant` field is required if the `value` field is not set.
 [^3]: The `value` field is required if the `variant` field is not set.
+
+[otel-ff-logs]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
