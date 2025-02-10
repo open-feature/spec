@@ -36,14 +36,14 @@ Feature: Evaluation details through hooks
 
   Scenario: Type error
     Given a client with added hook
-    And a string-flag with key "wrong-flag" and a default value "13"
+    And a boolean-flag with key "wrong-flag" and a default value "false"
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
     And the "finally" hooks should be called with evaluation details
       | data_type | key        | value         |
       | string    | flag_key   | wrong-flag    |
-      | integer   | value      | 13            |
+      | boolean   | value      | false         |
       | string    | variant    | null          |
       | string    | reason     | ERROR         |
       | string    | error_code | TYPE_MISMATCH |
