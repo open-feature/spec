@@ -18,15 +18,19 @@ Feature: Context merging precedence
 
     Scenario: A context entry is added to each level with different keys
         Given A context entry with key "API" and value "API value" is added to the "API" level
+        @Transaction
         And A context entry with key "Transaction" and value "Transaction value" is added to the "Transaction" level
         And A context entry with key "Client" and value "Client value" is added to the "Client" level
         And A context entry with key "Invocation" and value "Invocation value" is added to the "Invocation" level
+        @Hooks
         And A context entry with key "Before Hooks" and value "Before Hooks value" is added to the "Before Hooks" level
         When Some flag was evaluated
         Then The merged context contains an entry with key "API" and value "API value"
+        @Transaction
         And The merged context contains an entry with key "Transaction" and value "Transaction value"
         And The merged context contains an entry with key "Client" and value "Client value"
         And The merged context contains an entry with key "Invocation" and value "Invocation value"
+        @Hooks
         And The merged context contains an entry with key "Before Hooks" and value "Before Hooks value"
 
     Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
