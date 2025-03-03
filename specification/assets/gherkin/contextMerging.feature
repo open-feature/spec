@@ -8,7 +8,7 @@ Feature: Context merging precedence
     When Some flag was evaluated
     Then The merged context contains an entry with key "key" and value "value"
 
-    @Transaction
+    @transaction
     Examples:
       | level       |
       | API         |
@@ -16,7 +16,7 @@ Feature: Context merging precedence
       | Client      |
       | Invocation  |
 
-    @Hooks
+    @hooks
     Examples:
       | level        |
       | API          |
@@ -24,8 +24,7 @@ Feature: Context merging precedence
       | Invocation   |
       | Before Hooks |
 
-    @Hooks
-    @Transaction
+    @hooks @transaction
     Examples:
       | level        |
       | API          |
@@ -34,7 +33,7 @@ Feature: Context merging precedence
       | Invocation   |
       | Before Hooks |
 
-  @Transaction
+  @transaction
   Scenario: A context entry is added to each level with different keys
     Given A context entry with key "API" and value "API value" is added to the "API" level
     And A context entry with key "Transaction" and value "Transaction value" is added to the "Transaction" level
@@ -46,7 +45,7 @@ Feature: Context merging precedence
     And The merged context contains an entry with key "Client" and value "Client value"
     And The merged context contains an entry with key "Invocation" and value "Invocation value"
 
-  @Hooks
+  @hooks
   Scenario: A context entry is added to each level with different keys
     Given A context entry with key "API" and value "API value" is added to the "API" level
     And A context entry with key "Client" and value "Client value" is added to the "Client" level
@@ -58,8 +57,7 @@ Feature: Context merging precedence
     And The merged context contains an entry with key "Invocation" and value "Invocation value"
     And The merged context contains an entry with key "Before Hooks" and value "Before Hooks value"
 
-  @Hooks
-  @Transaction
+  @hooks @transaction
   Scenario: A context entry is added to each level with different keys
     Given A context entry with key "API" and value "API value" is added to the "API" level
     And A context entry with key "Transaction" and value "Transaction value" is added to the "Transaction" level
@@ -73,7 +71,7 @@ Feature: Context merging precedence
     And The merged context contains an entry with key "Invocation" and value "Invocation value"
     And The merged context contains an entry with key "Before Hooks" and value "Before Hooks value"
 
-  @Transaction
+  @transaction
   Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
     Given A table with levels of increasing precedence
       | API         |
@@ -91,7 +89,7 @@ Feature: Context merging precedence
       | Client      |
       | Invocation  |
 
-  @Hooks
+  @hooks
   Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
     Given A table with levels of increasing precedence
       | API          |
@@ -109,8 +107,7 @@ Feature: Context merging precedence
       | Invocation   |
       | Before Hooks |
 
-  @Hooks
-    @Transaction
+  @hooks @transaction
   Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
     Given A table with levels of increasing precedence
       | API          |
