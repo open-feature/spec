@@ -281,7 +281,9 @@ class MyProvider implements Tracking {
   /**
    * Record a tracking event.
    */
-  void track(String trackingEventName, EvaluationContext context, TrackingEventDetails details): void;
+  public void track(String trackingEventName, EvaluationContext context, TrackingEventDetails details) {
+    // perform side effects to record the event
+  }
   
   //...
 }
