@@ -34,7 +34,7 @@ Feature: Context merging precedence
       | Before Hooks |
 
   @transaction
-  Scenario: A context entry is added to each level with different keys
+  Scenario: For a transaction, a context entry is added to each level with different keys
     Given A context entry with key "API" and value "API value" is added to the "API" level
     And A context entry with key "Transaction" and value "Transaction value" is added to the "Transaction" level
     And A context entry with key "Client" and value "Client value" is added to the "Client" level
@@ -46,7 +46,7 @@ Feature: Context merging precedence
     And The merged context contains an entry with key "Invocation" and value "Invocation value"
 
   @hooks
-  Scenario: A context entry is added to each level with different keys
+  Scenario: For a hook, a context entry is added to each level with different keys
     Given A context entry with key "API" and value "API value" is added to the "API" level
     And A context entry with key "Client" and value "Client value" is added to the "Client" level
     And A context entry with key "Invocation" and value "Invocation value" is added to the "Invocation" level
@@ -58,7 +58,7 @@ Feature: Context merging precedence
     And The merged context contains an entry with key "Before Hooks" and value "Before Hooks value"
 
   @hooks @transaction
-  Scenario: A context entry is added to each level with different keys
+  Scenario: For a transaction and a hook, a context entry is added to each level with different keys
     Given A context entry with key "API" and value "API value" is added to the "API" level
     And A context entry with key "Transaction" and value "Transaction value" is added to the "Transaction" level
     And A context entry with key "Client" and value "Client value" is added to the "Client" level
@@ -72,7 +72,7 @@ Feature: Context merging precedence
     And The merged context contains an entry with key "Before Hooks" and value "Before Hooks value"
 
   @transaction
-  Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
+  Scenario Outline: For a transaction, a context entry in one level overwrites values with the same key from preceding levels
     Given A table with levels of increasing precedence
       | API         |
       | Transaction |
@@ -90,7 +90,7 @@ Feature: Context merging precedence
       | Invocation  |
 
   @hooks
-  Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
+  Scenario Outline: For a hook, a context entry in one level overwrites values with the same key from preceding levels
     Given A table with levels of increasing precedence
       | API          |
       | Client       |
@@ -108,7 +108,7 @@ Feature: Context merging precedence
       | Before Hooks |
 
   @hooks @transaction
-  Scenario Outline: A context entry in one level overwrites values with the same key from preceding levels
+  Scenario Outline: For a transaction and a hook, context entry in one level overwrites values with the same key from preceding levels
     Given A table with levels of increasing precedence
       | API          |
       | Transaction  |
