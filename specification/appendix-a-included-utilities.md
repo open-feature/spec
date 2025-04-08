@@ -76,6 +76,8 @@ const multiProvider = new MultiProvider(
  ],
  new FirstMatchStrategy()
 )
+
+await OpenFeature.setProviderAndWait(multiProvider)
 ```
 
 From the perspective of the SDK client, this provider will now act as a “normal” spec-compliant provider, while handling the complexities of aggregating multiple providers internally.
@@ -106,6 +108,8 @@ const multiProvider = new MultiProvider([
   name: "ProviderB"
  }
 ])
+
+await OpenFeature.setProviderAndWait(multiProvider)
 ```
 
 Names for each provider are then determined like this:
@@ -130,9 +134,9 @@ Provider states can be transitioned in the ways represented here:
 
 The SDK client tracks statuses of a provider as follows:
 
-- Initially the status is NOT_READY
+- Initially the status is `NOT_READY`
 - Initialize function is called (if exists) and result is awaited
-- Successful initialize transitions state to READY, error result transitions to either ERROR or FATAL
+- Successful initialize transitions state to `READY`, error result transitions to either `ERROR` or `FATAL`
 - From this point onwards, status is only changed as a result of provider emitting events to indicate status-changing things have occurred.
 - It can emit events like `FATAL`, `ERROR`, `STALE` and `READY` to transition to those states.
 
@@ -144,9 +148,7 @@ Other statuses are currently “informational”. Nevertheless, the Multi-Provid
 ##### Multi-Provider Status
 
 The Multi-Provider mimics the event handling logic that tracks statuses in the SDK, and keeps track of the status of each provider it is managing.
-
 The individual status-changing events from these providers will be “captured” in the Multi-Provider, and not re-emitted to the outer SDK UNLESS they cause the status of the Multi-Provider to change.
-
 The status of the Multi-Provider will change when one of its providers changes to a status that is considered higher “precedence” than the current status.
 
 The precedence order is defined as:
@@ -157,8 +159,9 @@ The precedence order is defined as:
 - STALE
 - READY
 
-For example, if all providers are currently in “READY” status, the Multi-Provider will be in “READY” status.
-If one of the providers is “STALE”, the status of the Multi-Provider will be “STALE”. If a different provider now becomes “ERROR”, the status will be “ERROR” even if the other provider is still in “STALE”.
+For example, if all providers are currently in `READY` status, the Multi-Provider will be in `READY` status.
+If one of the providers is `STALE`, the status of the Multi-Provider will be `STALE`.
+If a different provider now becomes `ERROR`, the status will be `ERROR` even if the other provider is still in `STALE`.
 
 When the Multi-Provider changes status, it does so by emitting the appropriate event to the SDK.
 The “details” of that event will be **identical** to the details of the original event from one of the inner providers which triggered this state change.
@@ -171,7 +174,7 @@ This event should be re-emitted any time it occurs from any provider.
 The evaluation result is based on the results from evaluating each provider.
 There are multiple “strategies” configurable in the Multi-Provider to decide how to use the results.
 
-##### Interpreting Errors
+#### Interpreting Errors
 
 Currently, providers have multiple ways of signalling evaluation errors to the SDK.
 Particularly in the case of Javascript, a provider can return an evaluation result that contains an error code and message, but still has a “value” for the result. It can also throw an error.
@@ -180,7 +183,7 @@ Several providers currently use the former approach for indicating errors in ope
 
 For the purposes of aggregating providers, the Multi-Provider treats both thrown and returned errors as an “error” result. If the returned error result has a value, that value will be ignored by all strategies. Only “nominal” evaluation results will be considered by the evaluation.
 
-##### Strategies
+### Strategies
 
 The Multi-Provider supports multiple ways of deciding how to evaluate the set of providers it is managing, and how to deal with any errors that are thrown.
 
@@ -205,11 +208,11 @@ new MultiProvider(
 )
 ```
 
-By default, the Multi-Provider uses the “FirstMatchStrategy”.
+By default, the Multi-Provider uses the `FirstMatchStrategy`.
 
 Here are some standard strategies that come with the Multi-Provider:
 
-###### First Match
+#### First Match Strategy
 
 Return the first result returned by a provider.
 Skip providers that indicate they had no value due to `FLAG_NOT_FOUND`.
@@ -218,19 +221,25 @@ If any provider returns an error result other than `FLAG_NOT_FOUND`, the whole e
 
 As soon as a value is returned by a provider, the rest of the operation should short-circuit and not call the rest of the providers.
 
-###### First Successful
+[See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/FirstMatchStrategy.ts)
+
+#### First Successful Strategy
 
 Similar to “First Match”, except that errors from evaluated providers do not halt execution.
 Instead, it will return the first successful result from a provider. If no provider successfully responds, it will throw an error result.
 
-###### Comparison
+[See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/FirstSuccessfulStrategy.ts)
+
+#### Comparison Strategy
 
 Require that all providers agree on a value.
 If every provider returns a non-error result, and the values do not agree, the Multi-Provider should return the result from a configurable “fallback” provider.
 It will also call an optional “onMismatch” callback that can be used to monitor cases where mismatches of evaluation occurred.
 Otherwise the value of the result will be the result of the first provider in precedence order.
 
-###### User Defined
+[See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/ComparisonStrategy.ts)
+
+#### User Defined Custom Strategy
 
 Rather than making assumptions about when to use a provider’s result and when not to (which may not hold across all providers) there is also a way for the user to define their own strategy that determines whether or not to use a result or fall through to the next one.
 
@@ -286,44 +295,42 @@ abstract class BaseEvaluationStrategy {
 }
 ```
 
-The `runMode` property defines whether the providers will all be evaluated at once in parallel, or whether they will be evaluated one at a time with each result determining whether to evaluate the next one in order.
+- **`runMode`**: property defines whether the providers will all be evaluated at once in `parallel`, or whether they will be evaluated `sequentially` with each result determining whether to evaluate the next one in order.
 
-The `shouldEvaluateThisProvider` function is called for each provider right before the Multi-Provider would evaluate it.
-If the function returns false, the provider will be skipped.
-This can be useful in cases where it’s desired to skip a provider based on what flag key is being used, or based on some state from the provider itself that indicates it shouldn’t be evaluated right now.
+- **`shouldEvaluateThisProvider`**: function is called for each provider right before the Multi-Provider would evaluate it.
+  - If the function returns false, the provider will be skipped.
+  - This can be useful in cases where it’s desired to skip a provider based on what flag key is being used, or based on some state from the provider itself that indicates it shouldn’t be evaluated right now.
 
-The `shouldEvaluateNextProvider` function is called right after a provider is evaluated.
-It is called with the details of resolution or any error that was thrown (which will be caught).
-If the function returns true, the next provider will be called.
-Otherwise all remaining providers will be skipped and the results of the ones that have been evaluated so far will be passed to `determineFinalResult` .
-If this function throws an error, the Multi-Provider will throw an error and not evaluate further providers.
-This function is not called when `runMode` is `parallel`, since all providers will be executed (as long as they individually pass the `shouldEvaluateThisProvider` check)
+- **`shouldEvaluateNextProvider`**: function is called right after a provider is evaluated.
+  - It is called with the details of resolution or any error that was thrown (which will be caught).
+  - If the function returns true, the next provider will be called.
+  - Otherwise all remaining providers will be skipped and the results of the ones that have been evaluated so far will be passed to `determineFinalResult` .
+  - If this function throws an error, the Multi-Provider will throw an error and not evaluate further providers.
+  - This function is not called when `runMode` is `parallel`, since all providers will be executed (as long as they individually pass the `shouldEvaluateThisProvider` check)
 
-The `determineFinalResult` function is called after the resolution stage if no further providers will be called.
-This function can be used to decide from the set of resolutions which one should ultimately be used.
-The function must return a `FinalResult` object which contains the final “ResolutionDetails” and the provider that they correspond to, or an array of “errors” in the case of a non-successful result, with the provider that created each error.
+- **`determineFinalResult`**: function is called after the resolution stage if no further providers will be called.
+  - This function can be used to decide from the set of resolutions which one should ultimately be used.
+  - The function must return a `FinalResult` object which contains the final `ResolutionDetails` and the provider that they correspond to, or an array of `errors` in the case of a non-successful result, with the provider that created each error.
 
-To see reference implementations of the above-mentioned strategies, check out the source
+To see [reference implementations](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider/src/lib/strategies) of the above-mentioned strategies.
 
-[https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider/src/lib/strategies](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider/src/lib/strategies)
-
-#### Hooks
+### Hooks
 
 Provider hooks are capable of modifying the context before an evaluation takes place.
 This behavior must be preserved, but it’s also necessary to prevent these hooks from interfering with the context being passed to other providers.
 
 For this reason, the Multi-Provider manages calling the hooks of each provider itself, at the appropriate time.
-It then uses the result of the before hooks for a given provider as the new evaluation context when evaluating *that provider*, without affecting the context used for other providers.
+It then uses the result of the before hooks for a given provider as the new evaluation context when evaluating **that provider**, without affecting the context used for other providers.
 
 It then calls the after, error and finally hooks using the appropriate context as well.
 
 Errors thrown from these hooks are be bubbled up to the client, depending on how the evaluation “strategy” defines what to do with errors.
 
-#### Shutdown
+### Shutdown
 
-The shutdown method should ensure that “shutdown” is called in all underlying providers, and bubble up any errors to the client
+The shutdown method should ensure that `shutdown()` is called in all underlying providers, and bubble up any errors to the client
 
-#### Error Handling
+### Error Handling
 
 In cases where all providers are being called (Evaluation etc.) there may be more than one error encountered from more than one provider.
 The Multi-Provider will collect and throw all errors in an aggregated form as follows:
@@ -334,12 +341,12 @@ error = {
   code: SOME_ERROR,
   // which provider caused the error
   originalErrors: [
-   {
-     source: 'ProviderA',
-   error: {
-      message: 'something',
-   }
-   }
+    {
+      source: 'ProviderA',
+      error: {
+        message: 'something',
+      }
+    }
   ]
 }
 ```
@@ -348,17 +355,17 @@ In the case where only one error is thrown by one provider, it will still throw 
 
 Other errors from the Multi-Provider itself will use standard error types.
 
-#### Metadata
+### Metadata
 
 Providers can contain metadata. The Multi-Provider will make that metadata available within its own metadata as follows:
 
 ```javascript
 {
   name: 'multiprovider',
- originalMetadata: {
-  providerA: {...},
-  providerB: {...}
- },
+  originalMetadata: {
+    providerA: {...},
+    providerB: {...}
+  },
 }
 ```
 
