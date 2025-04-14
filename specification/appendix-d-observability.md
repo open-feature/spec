@@ -19,21 +19,21 @@ This is particularly relevant to telemetry-related [hooks](./sections/04-hooks.m
 
 The following describes how fields on the [evaluation details](types.md#evaluation-details) are mapped to feature flag log records:
 
-| Log Record Attribute                    | Source Field or Derived Value from Evaluation Details | Requirement level             | Notes                                                                                                                 |
-| --------------------------------------- | ----------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `feature_flag.key`                      | `flag key`                                            | `Required`                    | See: [flag key](./glossary.md#flag-key)                                                                               |
-| `error.type`                            | `error code`                                          | `Conditionally Required` [^1] | See: [error code](./types.md#error-code),                                                                             |
-| `feature_flag.evaluation.error.message` | `error message`                                       | `Conditionally Required` [^1] | A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`. |
-| `feature_flag.variant`                  | `variant`                                             | `Conditionally Required` [^2] | See: [variant](./glossary.md#variant)                                                                                 |
-| `feature_flag.evaluation.reason`        | `reason`                                              | `Recommended`                 | See: [reason](./types.md#resolution-reason)                                                                           |
+| Log Record Attribute          | Source Field or Derived Value from Evaluation Details | Requirement level             | Notes                                                                                                                 |
+| ----------------------------- | ----------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `feature_flag.key`            | `flag key`                                            | `Required`                    | See: [flag key](./glossary.md#flag-key)                                                                               |
+| `feature_flag.result.variant` | `variant`                                             | `Conditionally Required` [^2] | See: [variant](./glossary.md#variant)                                                                                 |
+| `feature_flag.result.reason`  | `reason`                                              | `Recommended`                 | See: [reason](./types.md#resolution-reason)                                                                           |
+| `error.type`                  | `error code`                                          | `Conditionally Required` [^1] | See: [error code](./types.md#error-code),                                                                             |
+| `error.message`               | `error message`                                       | `Conditionally Required` [^1] | A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`. |
 
 > [!NOTE]
-> The `error.type` and `feature_flag.evaluation.reason` enumerations use a lowercase "snake_case" convention (see [OpenTelemetry feature-flag log records][otel-ff-logs]).
+> The `error.type` and `feature_flag.result.reason` enumerations use a lowercase "snake_case" convention (see [OpenTelemetry feature-flag log records][otel-ff-logs]).
 > OpenFeature [error codes](types.md#error-code) and [resolution reasons](./types.md#resolution-reason) should be transformed accordingly by integrations which include this data.
 
 #### Flag Value
 
-The flag value is required if the `feature_flag.variant` is not set (and optional otherwise), and is defined in a the event body:
+The flag value is required if the `feature_flag.result.variant` is not set (and optional otherwise), and is defined in a the event body:
 
 | Body Field | Source Field from Evaluation Details | Requirement level             | Notes                                       |
 | ---------- | ------------------------------------ | ----------------------------- | ------------------------------------------- |
@@ -56,7 +56,19 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 
 | Log Record Attribute         | Provider Metadata Field | Requirement level | Notes                                                                                            |
 | ---------------------------- | ----------------------- | ----------------- | ------------------------------------------------------------------------------------------------ |
-| `feature_flag.provider_name` | `name`                  | `Recommended`     | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
+| `feature_flag.provider.name` | `name`                  | `Recommended`     | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
+
+## History
+
+Feature flags in the OpenTelemetry semantic conventions are currently in development and are marked as experimental.
+The following table describes the history of changes to the OpenTelemetry feature flag log records as it progresses towards a stable release.
+
+| Original Field Name                     | New Field Name                | Semantic Convention Release                                                            |
+| --------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
+| `feature_flag.evaluation.error.message` | `error.message`               | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
+| `feature_flag.variant`                  | `feature_flag.result.variant` | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
+| `feature_flag.evaluation.reason`        | `feature_flag.result.reason`  | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
+| `feature_flag.provider_name`            | `feature_flag.provider.name`  | Unreleased                                                                             |
 
 ## Footnotes
 
