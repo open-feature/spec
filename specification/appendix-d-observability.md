@@ -58,16 +58,16 @@ The following table describes the history of changes to the OpenTelemetry featur
 
 | Original Field Name                     | New Field Name                | Semantic Convention Release                                                            |
 | --------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
-| `feature_flag.evaluation.error.message` | `error.message`               | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
 | `feature_flag.variant`                  | `feature_flag.result.variant` | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
 | `feature_flag.evaluation.reason`        | `feature_flag.result.reason`  | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
-| `value`                                 | `feature_flag.result.value`   | Unreleased                                                                             |
-| `feature_flag.provider_name`            | `feature_flag.provider.name`  | Unreleased                                                                             |
+| `feature_flag.evaluation.error.message` | `error.message`               | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
+| `feature_flag.provider_name`            | `feature_flag.provider.name`  | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
+| `value`                                 | `feature_flag.result.value`   | Unreleased |
 
 ## Footnotes
 
-[^1]: The `variant` field is required if the `value` field is not set.
-[^2]: The `value` field is required if the `variant` field is not set.
-[^3]: Include if and only if an error occurred during a flag evaluation.
+[^1]: The `variant` field should be included whenever possible as it represents the symbolic name of the flag's returned value (e.g., "on"/"off", "control"/"treatment"). Only omit if the provider doesn't supply this information.
+[^2]: The `value` field should be included whenever a `variant` is unavailable. Large or sensitive values should be redacted or omitted prior to being captured in telemetry signals.
+[^3]: Include `error.type` and `error.message`, if and only if an error occurred during a flag evaluation.
 
 [otel-ff-logs]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
