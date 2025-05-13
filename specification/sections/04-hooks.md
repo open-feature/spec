@@ -330,4 +330,11 @@ but different hooks have different hook data instances.
 
 #### Requirement 4.6.1
 
-> `hook data` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number | datetime | structure`.
+> `hook data` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of any type.
+
+Access to hook data is restricted to only a single hook instance, and it has no serialization requirements, and as a result does not require any value type restrictions.
+
+Example TypeScript definition:
+```JavaScript
+type HookData = Record<string, unknown>;
+```
