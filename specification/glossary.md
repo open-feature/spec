@@ -123,7 +123,7 @@ The possible states and transitions of a provider over the course of its usage, 
 
 ### Domain
 
-An identifier which logically binds clients with providers, allowing for multiple providers to be used simultaneously within a single application. Domain binding is dynamic; it may change over the course of an application's lifetime (ie: a client associated to the default provider via an unbound domain will be bound to a new provider if a provider is subsequently assigned to that domain).
+An identifier which logically binds clients with providers, allowing for multiple providers to be used simultaneously within a single application. Domain binding is dynamic; it may change over the course of an application's lifetime (i.e.: a client associated with the default provider via an unbound domain will be bound to a new provider if a provider is subsequently assigned to that domain).
 
 ### Integration
 
@@ -139,7 +139,7 @@ An SDK-compliant implementation that stores and returns transaction-specific eva
 
 ### Evaluating Flag Values
 
-The process of retrieving a feature flag value in it's entirety, including:
+The process of retrieving a feature flag value in its entirety, including:
 
 - any effects resulting from hooks
 - resolving a flag value from a configured provider
@@ -147,7 +147,7 @@ The process of retrieving a feature flag value in it's entirety, including:
 
 ### Resolving Flag Values
 
-The process of a provider retrieving a feature flag value from it's particular source-of-truth.
+The process of a provider retrieving a feature flag value from its particular source-of-truth.
 
 ### Tracking Event
 

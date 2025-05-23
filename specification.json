@@ -59,7 +59,7 @@
         {
             "id": "Requirement 1.1.6",
             "machine_id": "requirement_1_1_6",
-            "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - domain (optional): A logical string identifier for binding clients to provider.",
+            "content": "The `API` MUST provide a function for creating a `client` which accepts the following options:  - domain (optional): A logical string identifier for binding a client to a provider.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -539,7 +539,7 @@
         {
             "id": "Requirement 3.1.4",
             "machine_id": "requirement_3_1_4",
-            "content": "The evaluation context fields MUST have an unique key.",
+            "content": "The evaluation context fields MUST have a unique key.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -991,7 +991,7 @@
         {
             "id": "Requirement 5.2.4",
             "machine_id": "requirement_5_2_4",
-            "content": "The `handler function` MUST accept a `event details` parameter.",
+            "content": "The `handler function` MUST accept an `event details` parameter.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

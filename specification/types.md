@@ -44,7 +44,7 @@ A structure representing the result of the [flag evaluation process](./glossary.
 
 > [!NOTE]  
 > Some type systems feature useful constraints that can enhance the ergonomics of the `evaluation details` structure.
-> For example, in the case of an unsuccessful evaluation, `error code`, `reason`, and `error message` will be set, and variant will not.
+> For example, in the case of an unsuccessful evaluation, `error code`, `reason`, and `error message` will be set, and `variant` will not.
 > If the type system of the implementation supports the expression of such constraints, consider defining them.
 
 ### Resolution Details
@@ -68,7 +68,7 @@ A set of pre-defined reasons is enumerated below:
 | DEFAULT         | The resolved value fell back to a pre-configured value (no dynamic evaluation occurred or dynamic evaluation yielded no result). |
 | TARGETING_MATCH | The resolved value was the result of a dynamic evaluation, such as a rule or specific user-targeting.                            |
 | SPLIT           | The resolved value was the result of pseudorandom assignment.                                                                    |
-| CACHED          | The resolved value was retrieved from cache.                                                                                     |
+| CACHED          | The resolved value was retrieved from a cache.                                                                                     |
 | DISABLED        | The resolved value was the result of the flag being disabled in the management system.                                           |
 | UNKNOWN         | The reason for the resolved value could not be determined.                                                                       |
 | STALE           | The resolved value is non-authoritative or possibly out of date                                                                  |
