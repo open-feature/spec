@@ -23,7 +23,7 @@ graph
 ```
 
 The `domain` of a provider constitutes a logical scope for events.
-Clients associated to a particular provider through a `domain`, run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
+Clients associated with a particular provider through a `domain` run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
 
 see: [domain](../glossary.md#domain)
 
@@ -33,7 +33,7 @@ see: [domain](../glossary.md#domain)
 
 > The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload. 
 
-Providers cannot emit `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_RECONCILING` event.
+Providers cannot emit `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_RECONCILING` events.
 These are emitted only by the SDK during context reconciliation.
 
 If available, native event-emitter or observable/observer language constructs can be used.
@@ -112,7 +112,7 @@ See [setting a provider](./01-flag-evaluation.md#setting-a-provider), [creating 
 
 #### Requirement 5.2.4
 
-> The `handler function` **MUST** accept a `event details` parameter.
+> The `handler function` **MUST** accept an `event details` parameter.
 
 see: [`event details`](../types.md#event-details)
 
@@ -164,7 +164,7 @@ See [provider initialization](./02-providers.md#24-initialization) and [setting 
 
 Handlers may be attached at any point in the application lifecycle.
 Handlers should run immediately if the provider is already in the associated state.
-For instance, _application authors_ may attach readiness handlers to be confident that system is ready to evaluate flags.
+For instance, _application authors_ may attach readiness handlers to be confident that the system is ready to evaluate flags.
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
 
 See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).
@@ -233,7 +233,7 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 > If the provider emits an event, the value of the client's `provider status` **MUST** be updated accordingly.
 
 Some providers may emit events spontaneously, based on changes in their internal state (connections, caches, etc).
-The SDK must update it's internal representation of the provider's state accordingly:
+The SDK must update its internal representation of the provider's state accordingly:
 
 | Event                            | Associated Status                                       |
 | -------------------------------- | ------------------------------------------------------- |

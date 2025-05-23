@@ -39,7 +39,7 @@ see: [structure](../types.md#structure), [datetime](../types.md#datetime)
 
 #### Requirement 3.1.4
 
-> The evaluation context fields **MUST** have an unique key.
+> The evaluation context fields **MUST** have a unique key.
 
 The key uniquely identifies a field in the `evaluation context` and it should be unique across all types to avoid any collision when marshalling the `evaluation context` by the provider.
 
@@ -126,7 +126,7 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 > When the global `evaluation context` is set, the `on context changed` function **MUST** run.
 
-The SDK implementation must run the `on context changed` function on all registered provider that use the global `evaluation context` whenever it is mutated.
+The SDK implementation must run the `on context changed` function on all registered providers that use the global `evaluation context` whenever it is mutated.
 
 ##### Conditional Requirement 3.2.4.2
 

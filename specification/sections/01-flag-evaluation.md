@@ -42,7 +42,7 @@ See [provider](./02-providers.md), [creating clients](#creating-clients) for det
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
 Provider instances which are already active (because they have been bound to another `domain` or otherwise) need not be initialized again.
-The `provider's` readiness can state can be determined from its `status` member/accessor.
+The `provider's` readiness state can be determined from its `status` member/accessor.
 
 See [event handlers and initialization](./05-events.md#event-handlers-and-initialization), [provider initialization](./02-providers.md#24-initialization), [domain](../glossary.md#domain) for details.
 
@@ -109,7 +109,7 @@ OpenFeature.getProviderMetadata();
 ```
 
 It's possible to access provider metadata using a `domain`.
-If a provider has not be registered under the requested domain, the default provider metadata is returned.
+If a provider has not been registered under the requested domain, the default provider metadata is returned.
 
 ```typescript
 // example provider accessor
@@ -124,7 +124,7 @@ See [provider](./02-providers.md), [domain](../glossary.md#domain) for details.
 
 > The `API` **MUST** provide a function for creating a `client` which accepts the following options:
 >
-> - domain (optional): A logical string identifier for binding clients to provider.
+> - domain (optional): A logical string identifier for binding a client to a provider.
 
 ```java
 // example client creation and retrieval
@@ -132,7 +132,7 @@ OpenFeature.getClient();
 ```
 
 It's possible to create a client that is associated with a `domain`.
-The client will use a provider in the same `domain` if one exists, otherwise, the default provide is used.
+The client will use a provider in the same `domain` if one exists, otherwise, the default provider is used.
 
 ```java
 // example client creation and retrieval using a domain
