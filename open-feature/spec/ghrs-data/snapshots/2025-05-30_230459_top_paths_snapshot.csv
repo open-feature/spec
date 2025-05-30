@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,176,160
+/open-feature/spec/tree/main/specification,34,28
+/open-feature/spec/blob/main/specification/appendix-a-included-utilities.md,12,8
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,10,7
+/open-feature/spec/blob/main/specification/sections/02-providers.md,9,7
+/open-feature/spec/tree/main/tools,7,7
+/open-feature/spec/pull/306,7,4
+/open-feature/spec/blob/main/specification/assets/gherkin/contextMerging.feature,6,5
+/open-feature/spec/blob/main/specification/sections/04-hooks.md,6,5
+/open-feature/spec/issues/82,5,5
