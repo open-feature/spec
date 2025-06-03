@@ -427,22 +427,22 @@
                     "content": "The `resolution details` structure SHOULD accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
-                },
-                {
-                    "id": "Requirement 2.2.9",
-                    "machine_id": "requirement_2_2_9",
-                    "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
-                    "RFC 2119 keyword": "SHOULD",
-                    "children": []
-                },
-                {
-                    "id": "Requirement 2.2.10",
-                    "machine_id": "requirement_2_2_10",
-                    "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
-                    "RFC 2119 keyword": "MUST",
-                    "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 2.2.9",
+            "machine_id": "requirement_2_2_9",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.2.10",
+            "machine_id": "requirement_2_2_10",
+            "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         },
         {
             "id": "Requirement 2.3.1",
