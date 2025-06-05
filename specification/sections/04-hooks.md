@@ -6,6 +6,8 @@ toc_max_heading_level: 4
 
 # 4. Hooks
 
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
 ## Overview
 
 `Hooks` are a mechanism whereby application developers can add arbitrary behavior to flag evaluation. They operate similarly to middleware in many web frameworks.
