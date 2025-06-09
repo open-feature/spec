@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 4. Hooks
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ## Overview
 
@@ -179,7 +179,7 @@ EvaluationContext | void before(HookContext hookContext, HookHints hints);
 
 #### Condition 4.3.3
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
