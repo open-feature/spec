@@ -252,6 +252,19 @@ Before flag resolution (the `before` stage), hooks run in the order `API` -> `Cl
 After flag evaluation (the `after`, `error`, or `finally` stages), hooks run in the order `Provider` -> `Invocation` -> `Client` -> `API`, and within those, in reverse of the order in which they were added.
 This achieves intuitive "stack-like" or "LIFO" behavior for side effects and transformations.
 
+```
+Given hooks A - H, each implementing the both the `before` and `after` stages, added at the following levels and order:
+
+API: [A, B]
+Client: [C, D]
+Invocation: [E, F]
+Provider: [G, H]
+
+The expected order of execution is:
+
+A.before -> B.before -> C.before -> D.before -> E.before -> F.before -> G.before -> H.before -> flagResolution -> H.after -> G.after -> F.after -> E.after -> D.after -> C.after -> B.after -> A.after
+```
+
 #### Requirement 4.4.3
 
 > If a `finally` hook abnormally terminates, evaluation **MUST** proceed, including the execution of any remaining `finally` hooks.
