@@ -246,12 +246,11 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 #### Requirement 4.4.2
 
-> Hooks **MUST** be evaluated in the following order:
->
-> - before: API, Client, Invocation, Provider
-> - after: Provider, Invocation, Client, API
-> - error (if applicable): Provider, Invocation, Client, API
-> - finally: Provider, Invocation, Client, API
+> Hooks **MUST** be executed "stack-wise" with respect to flag resolution, prioritizing increasing specificity (API, Client, Invocation, Provider) first, and the order in which they were added second.
+
+Before flag resolution (the `before` stage), hooks run in the order `API` -> `Client` -> `Invocation` -> `Provider`, and within those, in the order in which they were added. 
+After flag evaluation (the `after`, `error`, or `finally` stages), hooks run in the order `Provider` -> `Invocation` -> `Client` -> `API`, and within those, in reverse of the order in which they were added.
+This achieves "stack-like" or "LIFO" behavior, for side effects and transformations.
 
 #### Requirement 4.4.3
 

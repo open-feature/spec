@@ -865,7 +865,7 @@
         {
             "id": "Requirement 4.4.2",
             "machine_id": "requirement_4_4_2",
-            "content": "Hooks MUST be evaluated in the following order:  - before: API, Client, Invocation, Provider - after: Provider, Invocation, Client, API - error (if applicable): Provider, Invocation, Client, API - finally: Provider, Invocation, Client, API",
+            "content": "Hooks MUST be executed \"stack-wise\" with respect to flag resolution, prioritizing increasing specificity (API, Client, Invocation, Provider) first, and the order in which they were added second.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
