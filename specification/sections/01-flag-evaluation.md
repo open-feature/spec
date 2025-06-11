@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 1. Flag Evaluation API
 
-[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+[![stable](https://img.shields.io/static/v1?label=Status&message=stable&color=green)](https://github.com/open-feature/spec/tree/main/specification#stable)
 
 ## Overview
 
@@ -203,7 +203,7 @@ See [evaluation context](./03-evaluation-context.md) for details.
 
 #### Condition 1.3.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -286,7 +286,7 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 #### Condition 1.4.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -397,7 +397,7 @@ See [hooks](./04-hooks.md) for details.
 
 ### 1.6. Shutdown
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 #### Requirement 1.6.1
 
@@ -458,7 +458,7 @@ see [provider status](../types.md#provider-status)
 
 #### Condition 1.7.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
