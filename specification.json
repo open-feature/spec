@@ -352,6 +352,13 @@
             "children": []
         },
         {
+            "id": "Requirement 1.7.9",
+            "machine_id": "requirement_1_7_9",
+            "content": "The client's `provider status` accessor MUST indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Requirement 2.1.1",
             "machine_id": "requirement_2_1_1",
             "content": "The provider interface MUST define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.",
@@ -497,8 +504,8 @@
         {
             "id": "Requirement 2.5.2",
             "machine_id": "requirement_2_5_2",
-            "content": "After a provider's shutdown function has terminated successfully, the provider's state MUST revert to its uninitialized state.",
-            "RFC 2119 keyword": "MUST",
+            "content": "After a provider's shutdown function has terminated, the provider SHOULD revert to its uninitialized state.",
+            "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
