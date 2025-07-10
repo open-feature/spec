@@ -283,8 +283,15 @@
         {
             "id": "Requirement 1.6.1",
             "machine_id": "requirement_1_6_1",
-            "content": "The API MUST define a mechanism to propagate a shutdown request to active providers.",
+            "content": "The API MUST define a function to propagate a shutdown request to active providers.",
             "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.6.2",
+            "machine_id": "requirement_1_6_2",
+            "content": "The API's `shutdown` function MUST NOT call shutdown on providers which are in state `NOT_READY`.",
+            "RFC 2119 keyword": "MUST NOT",
             "children": []
         },
         {

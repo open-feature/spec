@@ -401,10 +401,19 @@ See [hooks](./04-hooks.md) for details.
 
 #### Requirement 1.6.1
 
-> The API **MUST** define a mechanism to propagate a shutdown request to active providers.
+> The API **MUST** define a function to propagate a shutdown request to active providers.
 
-The global API object might expose a `shutdown` function, which will call the respective `shutdown` function on the registered providers.
+The global API object might expose a `shutdown` function, which will call the respective `shutdown` function on the active providers.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
+
+see: [`shutdown`](./02-providers.md#25-shutdown)
+
+#### Requirement 1.6.2
+
+> The API's `shutdown` function **MUST NOT** call shutdown on providers which are in state `NOT_READY`.
+
+With respect to the lifecycle of a given active provider, the global API object's `shutdown` function should be idempotent; multiple calls to `shutdown` should result in only a single execution of the provider's `shutdown` function.
+Implementations should take care to await or cancel the initialization of providers if `shutdown` is called while providers are still being initialized, and have yet to transition to `READY` or some other state.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)
 
