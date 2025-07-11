@@ -44,15 +44,13 @@ flowchart LR
 ### Introduction
 
 The OpenFeature Multi-Provider wraps multiple underlying providers in a unified interface, allowing the SDK client to transparently interact with all those providers at once.
-This allows use cases where a single client and evaluation interface is desired, but where the flag data should come from more than one source.
+This allows use cases where a single client and evaluation interface is desired, but where the flag data should come from more than one source, or where tracking events should be sent to multiple providers simultaneously.
 
 Some examples:
 
-- A migration from one feature flagging provider to another.
-  During that process, you may have some flags that have been ported to the new system and others that haven’t.
-  Therefore you’d want the Multi-Provider to return the result of the “new” system if available otherwise, return the "old" system’s result.
-- Long-term use of multiple sources for flags.
-  For example, someone might want to be able to combine environment variables, database entries, and vendor feature flag results together in a single interface, and define the precedence order in which those sources should be consulted.
+- **Migration**: When migrating between two providers, you can run both in parallel under a unified flagging interface. As flags are added to the new provider, the Multi-Provider will fetch flags from the new provider first, falling back to the old provider.
+- **Multiple Data Sources**: The Multi-Provider allows you to combine many sources of flagging data, such as environment variables, local files, database values and SaaS hosted feature management systems.
+- **Analytics Aggregation**: Send tracking events to multiple analytics providers simultaneously.
 
 Check the [OpenFeature JavaScript Multi-Provider](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider) for a reference implementation.
 
@@ -60,7 +58,7 @@ Check the [OpenFeature JavaScript Multi-Provider](https://github.com/open-featur
 
 The provider is initialized by passing a list of provider instances it should evaluate.
 The order of the array defines the order in which sources should be evaluated.
-The provider whose value is ultimately used will depend on the “strategy” that is provided, which can be chosen from a set of pre-defined ones or implemented as custom logic.
+The provider whose value is ultimately used will depend on the "strategy" that is provided, which can be chosen from a set of pre-defined ones or implemented as custom logic.
 
 For example:
 
@@ -80,12 +78,12 @@ const multiProvider = new MultiProvider(
 await OpenFeature.setProviderAndWait(multiProvider)
 ```
 
-From the perspective of the SDK client, this provider will now act as a “normal” spec-compliant provider, while handling the complexities of aggregating multiple providers internally.
+From the perspective of the SDK client, this provider will now act as a "normal" spec-compliant provider, while handling the complexities of aggregating multiple providers internally.
 
 ### Specific Behavior
 
-When dealing with many providers at once, various aspects of those providers need to be “combined” into one unified view.
-For example, each internal provider has a “status”, which should influence the Multi-Provider’s overall “status”.
+When dealing with many providers at once, various aspects of those providers need to be "combined" into one unified view.
+For example, each internal provider has a "status", which should influence the Multi-Provider's overall "status".
 The specific aspects that need to be addressed are described below.
 
 #### Unique Names
@@ -116,13 +114,13 @@ Names for each provider are then determined like this:
 
 1. name passed in to constructor if specified
 2. `metadata.name` if it is unique among providers
-3. `${metadata.name}_${index}` if name is not unique. Eg. the first instance of ProviderA provider might be named “providerA_1” and the second might be “providerA_2”
+3. `${metadata.name}_${index}` if name is not unique. Eg. the first instance of ProviderA provider might be named "providerA_1" and the second might be "providerA_2"
 
 If multiple names are passed in the constructor which conflict, an error will be thrown.
 
 #### Initialization
 
-Initialization of each provider should be handled in parallel in the Multi-Provider’s `initialize` method.
+Initialization of each provider should be handled in parallel in the Multi-Provider's `initialize` method.
 It should call `initialize` on each provider it is managing, and bubble up any error that is thrown by re-throwing to the client.
 
 #### Status and Event Handling
@@ -141,15 +139,15 @@ The SDK client tracks statuses of a provider as follows:
 - It can emit events like `FATAL`, `ERROR`, `STALE` and `READY` to transition to those states.
 
 The only statuses which affect evaluation behavior at the SDK client level are `FATAL` and `NOT_READY`.
-If a provider is in either of these states, evaluation will be “skipped” by the client and the default value will be returned.
+If a provider is in either of these states, evaluation will be "skipped" by the client and the default value will be returned.
 
-Other statuses are currently “informational”. Nevertheless, the Multi-Provider will represent an overall “status” based on the combined statuses of the providers.
+Other statuses are currently "informational". Nevertheless, the Multi-Provider will represent an overall "status" based on the combined statuses of the providers.
 
 ##### Multi-Provider Status
 
 The Multi-Provider mimics the event handling logic that tracks statuses in the SDK, and keeps track of the status of each provider it is managing.
-The individual status-changing events from these providers will be “captured” in the Multi-Provider, and not re-emitted to the outer SDK UNLESS they cause the status of the Multi-Provider to change.
-The status of the Multi-Provider will change when one of its providers changes to a status that is considered higher “precedence” than the current status.
+The individual status-changing events from these providers will be "captured" in the Multi-Provider, and not re-emitted to the outer SDK UNLESS they cause the status of the Multi-Provider to change.
+The status of the Multi-Provider will change when one of its providers changes to a status that is considered higher "precedence" than the current status.
 
 The precedence order is defined as:
 
@@ -164,24 +162,55 @@ If one of the providers is `STALE`, the status of the Multi-Provider will be `ST
 If a different provider now becomes `ERROR`, the status will be `ERROR` even if the other provider is still in `STALE`.
 
 When the Multi-Provider changes status, it does so by emitting the appropriate event to the SDK.
-The “details” of that event will be **identical** to the details of the original event from one of the inner providers which triggered this state change.
+The "details" of that event will be **identical** to the details of the original event from one of the inner providers which triggered this state change.
 
-There is another event called “configuration changed” which does not affect status.
+There is another event called "configuration changed" which does not affect status.
 This event should be re-emitted any time it occurs from any provider.
 
 #### Evaluation Result
 
 The evaluation result is based on the results from evaluating each provider.
-There are multiple “strategies” configurable in the Multi-Provider to decide how to use the results.
+There are multiple "strategies" configurable in the Multi-Provider to decide how to use the results.
+
+#### Track Method Support
+
+The Multi-Provider implements the `track` method from the OpenFeature specification, allowing tracking events to be sent across multiple underlying providers.
+
+By default, tracking events are sent to all providers that are in `READY` status.
+Providers in `NOT_READY` or `FATAL` states are automatically skipped for tracking operations.
+
+Key features of tracking support include:
+
+- **Error Resilience**: Individual provider tracking failures do not break the overall tracking flow - errors are logged but do not throw exceptions
+- **Status Awareness**: Providers in `NOT_READY` or `FATAL` status will not recieve tracking events.
+- **Strategy Integration**: Custom strategies can control which providers receive tracking calls using the `shouldTrackWithThisProvider` method
+- **Graceful Degradation**: Providers that don't implement the `track` method are skipped
+
+Example usage:
+
+```typescript
+const multiProvider = new MultiProvider([
+  { provider: new ProviderA() },
+  { provider: new ProviderB() }
+])
+
+await OpenFeature.setProviderAndWait(multiProvider)
+const client = OpenFeature.getClient()
+
+// Track events across all ready providers
+client.track('purchase', { targetingKey: 'user123' }, { value: 99.99, currency: 'USD' })
+```
+
+For custom tracking behavior, strategies can implement the `shouldTrackWithThisProvider` method to selectively track with specific providers based on event name, context, or provider characteristics.
 
 #### Interpreting Errors
 
 Currently, providers have multiple ways of signalling evaluation errors to the SDK.
-Particularly in the case of Javascript, a provider can return an evaluation result that contains an error code and message, but still has a “value” for the result. It can also throw an error.
+Particularly in the case of Javascript, a provider can return an evaluation result that contains an error code and message, but still has a "value" for the result. It can also throw an error.
 
 Several providers currently use the former approach for indicating errors in operations, and use the `value` field of the result to return the default value from the provider itself.
 
-For the purposes of aggregating providers, the Multi-Provider treats both thrown and returned errors as an “error” result. If the returned error result has a value, that value will be ignored by all strategies. Only “nominal” evaluation results will be considered by the evaluation.
+For the purposes of aggregating providers, the Multi-Provider treats both thrown and returned errors as an "error" result. If the returned error result has a value, that value will be ignored by all strategies. Only "nominal" evaluation results will be considered by the evaluation.
 
 ### Strategies
 
@@ -217,7 +246,7 @@ Here are some standard strategies that come with the Multi-Provider:
 Return the first result returned by a provider.
 Skip providers that indicate they had no value due to `FLAG_NOT_FOUND`.
 In all other cases, use the value returned by the provider.
-If any provider returns an error result other than `FLAG_NOT_FOUND`, the whole evaluation should error and “bubble up” the individual provider’s error in the result.
+If any provider returns an error result other than `FLAG_NOT_FOUND`, the whole evaluation should error and "bubble up" the individual provider's error in the result.
 
 As soon as a value is returned by a provider, the rest of the operation should short-circuit and not call the rest of the providers.
 
@@ -225,7 +254,7 @@ As soon as a value is returned by a provider, the rest of the operation should s
 
 #### First Successful Strategy
 
-Similar to “First Match”, except that errors from evaluated providers do not halt execution.
+Similar to "First Match", except that errors from evaluated providers do not halt execution.
 Instead, it will return the first successful result from a provider. If no provider successfully responds, it will throw an error result.
 
 [See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/FirstSuccessfulStrategy.ts)
@@ -233,15 +262,15 @@ Instead, it will return the first successful result from a provider. If no provi
 #### Comparison Strategy
 
 Require that all providers agree on a value.
-If every provider returns a non-error result, and the values do not agree, the Multi-Provider should return the result from a configurable “fallback” provider.
-It will also call an optional “onMismatch” callback that can be used to monitor cases where mismatches of evaluation occurred.
+If every provider returns a non-error result, and the values do not agree, the Multi-Provider should return the result from a configurable "fallback" provider.
+It will also call an optional "onMismatch" callback that can be used to monitor cases where mismatches of evaluation occurred.
 Otherwise the value of the result will be the result of the first provider in precedence order.
 
 [See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/ComparisonStrategy.ts)
 
 #### User Defined Custom Strategy
 
-Rather than making assumptions about when to use a provider’s result and when not to (which may not hold across all providers) there is also a way for the user to define their own strategy that determines whether or not to use a result or fall through to the next one.
+Rather than making assumptions about when to use a provider's result and when not to (which may not hold across all providers) there is also a way for the user to define their own strategy that determines whether or not to use a result or fall through to the next one.
 
 A strategy can be implemented by implementing the `BaseEvaluationStrategy` class as follows:
 
@@ -292,6 +321,13 @@ abstract class BaseEvaluationStrategy {
     context: EvaluationContext,
     resolutions: ProviderResolutionResult<T>[],
   ): FinalResult;
+
+  abstract shouldTrackWithThisProvider(
+    strategyContext: StrategyProviderContext,
+    context: EvaluationContext,
+    trackingEventName: string,
+    trackingEventDetails: TrackingEventDetails,
+  ): boolean;
 }
 ```
 
@@ -299,7 +335,7 @@ abstract class BaseEvaluationStrategy {
 
 - **`shouldEvaluateThisProvider`**: function is called for each provider right before the Multi-Provider would evaluate it.
   - If the function returns false, the provider will be skipped.
-  - This can be useful in cases where it’s desired to skip a provider based on what flag key is being used, or based on some state from the provider itself that indicates it shouldn’t be evaluated right now.
+  - This can be useful in cases where it's desired to skip a provider based on what flag key is being used, or based on some state from the provider itself that indicates it shouldn't be evaluated right now.
 
 - **`shouldEvaluateNextProvider`**: function is called right after a provider is evaluated.
   - It is called with the details of resolution or any error that was thrown (which will be caught).
@@ -312,19 +348,23 @@ abstract class BaseEvaluationStrategy {
   - This function can be used to decide from the set of resolutions which one should ultimately be used.
   - The function must return a `FinalResult` object which contains the final `ResolutionDetails` and the provider that they correspond to, or an array of `errors` in the case of a non-successful result, with the provider that created each error.
 
+- **`shouldTrackWithThisProvider`**: function is called when the `track()` method is called on the SDK.
+  - This function can be used to decide which providers should recieve `track()` events.
+  - Return `true` to send the tracking event to the provider, `false` to skip it.
+
 To see [reference implementations](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider/src/lib/strategies) of the above-mentioned strategies.
 
 ### Hooks
 
 Provider hooks are capable of modifying the context before an evaluation takes place.
-This behavior must be preserved, but it’s also necessary to prevent these hooks from interfering with the context being passed to other providers.
+This behavior must be preserved, but it's also necessary to prevent these hooks from interfering with the context being passed to other providers.
 
 For this reason, the Multi-Provider manages calling the hooks of each provider itself, at the appropriate time.
 It then uses the result of the before hooks for a given provider as the new evaluation context when evaluating **that provider**, without affecting the context used for other providers.
 
 It then calls the after, error and finally hooks using the appropriate context as well.
 
-Errors thrown from these hooks are be bubbled up to the client, depending on how the evaluation “strategy” defines what to do with errors.
+Errors thrown from these hooks are be bubbled up to the client, depending on how the evaluation "strategy" defines what to do with errors.
 
 ### Shutdown
 
