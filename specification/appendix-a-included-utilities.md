@@ -182,7 +182,7 @@ Providers in `NOT_READY` or `FATAL` states are automatically skipped for trackin
 Key features of tracking support include:
 
 - **Error Resilience**: Individual provider tracking failures do not break the overall tracking flow - errors are logged but do not throw exceptions
-- **Status Awareness**: Only providers in `READY` status receive tracking calls by default
+- **Status Awareness**: Providers in `NOT_READY` or `FATAL` status will not recieve tracking events.
 - **Strategy Integration**: Custom strategies can control which providers receive tracking calls using the `shouldTrackWithThisProvider` method
 - **Graceful Degradation**: Providers that don't implement the `track` method are skipped
 
