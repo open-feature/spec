@@ -407,7 +407,7 @@ It's recommended that application-authors call this function on application shut
 
 > The API **MUST** define a function to propagate a shutdown request to all providers.
 
-The global API object defines a `shutdown` function, which will call the respective `shutdown` function on the active providers.
+The global API object defines a `shutdown` function, which will call the respective `shutdown` function on all providers.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
 This shutdown function unconditionally calls the shutdown function on all registered providers, regardless of their state. 
 
