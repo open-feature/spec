@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 5. Events
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ## Overview
 
@@ -195,7 +195,7 @@ stateDiagram-v2
 
 #### Condition 5.3.4
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
