@@ -62,7 +62,7 @@ The following table describes the history of changes to the OpenTelemetry featur
 | `feature_flag.evaluation.reason`        | `feature_flag.result.reason`  | [v1.32.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.32.0) |
 | `feature_flag.evaluation.error.message` | `error.message`               | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
 | `feature_flag.provider_name`            | `feature_flag.provider.name`  | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
-| `value`                                 | `feature_flag.result.value`   | Unreleased |
+| `value`                                 | `feature_flag.result.value`   | [v1.34.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.34.0) |
 
 ## Footnotes
 
