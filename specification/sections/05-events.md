@@ -31,7 +31,7 @@ see: [domain](../glossary.md#domain)
 
 #### Requirement 5.1.1
 
-> The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload. 
+> The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload.
 
 Providers cannot emit `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_RECONCILING` events.
 These are emitted only by the SDK during context reconciliation.
@@ -50,7 +50,7 @@ see: [provider event types](../types.md#provider-events), [`event details`](../t
 > When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers **MUST** run.
 
 Client event handlers respect the dynamic binding of clients to providers via `domains`.
-Client event handlers run when a lifecycle function terminates on the associated provider, or the associated provider emits an event. 
+Client event handlers run when a lifecycle function terminates on the associated provider, or the associated provider emits an event.
 
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
@@ -59,7 +59,7 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 > When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
 Client event handlers respect the dynamic binding of clients to providers via `domains`.
-Client event handlers do not run when a lifecycle function terminates on an unassociated provider, or an unassociated provider emits an event. 
+Client event handlers do not run when a lifecycle function terminates on an unassociated provider, or an unassociated provider emits an event.
 
 see [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
@@ -152,7 +152,7 @@ See [provider initialization](./02-providers.md#24-initialization) and [setting 
 
 > If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
 
-A failed initialization could represent an unrecoverable error, such as bad credentials or a missing file. 
+A failed initialization could represent an unrecoverable error, such as bad credentials or a missing file.
 If a failed initialization could also represent a transient error.
 A provider which maintains a persistent connection to a remote `flag management system` may attempt to reconnect, and emit `PROVIDER_READY` after a failed initialization.
 

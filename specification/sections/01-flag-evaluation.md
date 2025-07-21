@@ -48,7 +48,7 @@ See [event handlers and initialization](./05-events.md#event-handlers-and-initia
 
 #### Requirement 1.1.2.3
 
->  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
+> The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
 When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
 Provider instances which are bound to multiple `domains` won't be shut down until the last binding is removed.
@@ -226,7 +226,6 @@ number myNumber = client.getNumberValue('number-flag', 75);
 // example overloaded structure flag evaluation with optional params
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
 ```
-
 
 #### Condition 1.3.3
 
@@ -409,7 +408,7 @@ It's recommended that application-authors call this function on application shut
 
 The global API object defines a `shutdown` function, which will call the respective `shutdown` function on all providers.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
-This shutdown function unconditionally calls the shutdown function on all registered providers, regardless of their state. 
+This shutdown function unconditionally calls the shutdown function on all registered providers, regardless of their state.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)
 

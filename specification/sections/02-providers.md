@@ -124,6 +124,7 @@ ResolutionDetails<number> resolveNumberValue(string flagKey, number defaultValue
 // example structure flag value resolution with generic argument
 ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defaultValue, context: EvaluationContext);
 ```
+
 #### Requirement 2.2.9
 
 > The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field.

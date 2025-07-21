@@ -177,7 +177,7 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 
 > The API **SHOULD** have a method for setting a `transaction context propagator`.
 
-If there already is a `transaction context propagator`, it is replaced with the new one. 
+If there already is a `transaction context propagator`, it is replaced with the new one.
 
 #### Condition 3.3.1.2
 
