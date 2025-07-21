@@ -74,12 +74,14 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 Either the `hook data` reference itself must be mutable, or it must allow mutation of its contents.
 
 Mutable reference:
-```
+
+```js
 hookContext.hookData = {'my-key': 'my-value'}
 ```
 
 Mutable content:
-```
+
+```js
 hookContext.hookData.set('my-key', 'my-value')
 ```
 
@@ -116,6 +118,7 @@ hookContext.hookData.set('my-key', 'my-value')
 > `Hook data` **MUST** must be created before the first `stage` invoked in a hook for a specific evaluation and propagated between each `stage` of the hook. The hook data is not shared between different hooks.
 
 Example showing data between `before` and `after` stage for two different hooks.
+
 ```mermaid
 sequenceDiagram
 actor Application
@@ -248,21 +251,70 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 > Hooks **MUST** be executed "stack-wise" with respect to flag resolution, prioritizing increasing specificity (API, Client, Invocation, Provider) first, and the order in which they were added second.
 
-Before flag resolution (the `before` stage), hooks run in the order `API` -> `Client` -> `Invocation` -> `Provider`, and within those, in the order in which they were added. 
+Before flag resolution (the `before` stage), hooks run in the order `API` -> `Client` -> `Invocation` -> `Provider`, and within those, in the order in which they were added.
 After flag evaluation (the `after`, `error`, or `finally` stages), hooks run in the order `Provider` -> `Invocation` -> `Client` -> `API`, and within those, in reverse of the order in which they were added.
 This achieves intuitive "stack-like" or "LIFO" behavior for side effects and transformations.
 
-```
 Given hooks A - H, each implementing the both the `before` and `after` stages, added at the following levels and order:
 
-API: [A, B]
-Client: [C, D]
-Invocation: [E, F]
-Provider: [G, H]
+- API: [A, B]
+- Client: [C, D]
+- Invocation: [E, F]
+- Provider: [G, H]
 
 The expected order of execution is:
 
-A.before -> B.before -> C.before -> D.before -> E.before -> F.before -> G.before -> H.before -> flagResolution -> H.after -> G.after -> F.after -> E.after -> D.after -> C.after -> B.after -> A.after
+```mermaid
+flowchart BT
+    subgraph FlagResolution [Flag Resolution]
+        flagResolution[flagResolution]
+    end
+
+    subgraph Provider [Provider Layer]
+        G_before[G.before]
+        H_before[H.before]
+        G_after[G.after]
+        H_after[H.after]
+    end
+
+    subgraph Invocation [Invocation Layer]
+        E_before[E.before]
+        F_before[F.before]
+        E_after[E.after]
+        F_after[F.after]
+    end
+
+    subgraph Client [Client Layer]
+        C_before[C.before]
+        D_before[D.before]
+        C_after[C.after]
+        D_after[D.after]
+    end
+
+    subgraph API [API Layer]
+        A_before[A.before]
+        B_before[B.before]
+        A_after[A.after]
+        B_after[B.after]
+    end
+
+    A_before --> B_before
+    B_before --> C_before
+    C_before --> D_before
+    D_before --> E_before
+    E_before --> F_before
+    F_before --> G_before
+    G_before --> H_before
+    H_before --> flagResolution
+    
+    flagResolution --> H_after
+    H_after --> G_after
+    G_after --> F_after
+    F_after --> E_after
+    E_after --> D_after
+    D_after --> C_after
+    C_after --> B_after
+    B_after --> A_after
 ```
 
 #### Requirement 4.4.3
@@ -349,6 +401,7 @@ but different hooks have different hook data instances.
 Access to hook data is restricted to only a single hook instance, and it has no serialization requirements, and as a result does not require any value type restrictions.
 
 Example TypeScript definition:
-```JavaScript
+
+```js
 type HookData = Record<string, unknown>;
 ```
