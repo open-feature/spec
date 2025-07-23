@@ -49,6 +49,8 @@ Hook context exists to provide hooks with information about the invocation and p
 
 > Hook context **MUST** provide: the `flag key`, `flag value type`, `evaluation context`, `default value`, and `hook data`.
 
+The `evaluation context` provided in the hook context refers to the **merged evaluation context** as specified in [Requirement 3.2.3](./03-evaluation-context.md#requirement-323).
+
 #### Requirement 4.1.2
 
 > The `hook context` **SHOULD** provide access to the `client metadata` and the `provider metadata` fields.
