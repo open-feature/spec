@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,101,90
+/open-feature/spec/tree/main/specification,20,16
+/open-feature/spec/issues,8,4
+/open-feature/spec/issues/316,6,6
+/open-feature/spec/releases,4,3
+/open-feature/spec/blob/main/specification/types.md,3,3
+/open-feature/spec/pulls,3,3
+/open-feature/spec/pull/333,3,2
+/open-feature/spec/tree/d4a9a910946eded57cf82d6fd4921785a5e64c2b,3,2
+/open-feature/spec/blob/main/specification/assets/gherkin/contextMerging.feature,3,1
