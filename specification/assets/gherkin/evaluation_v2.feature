@@ -60,7 +60,8 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
 
         @objects
         Examples: Object evaluations
-            | key | type | default | resolved_val
+            | key         | type   | default | resolved_value                                                                     |
+            | object-flag | Object | {}      | {\"showImages\": true,\"title\": \"Check out these pics!\",\"imagesPerPage\": 100} |
 
   # Spec 1.4.7: Testing TARGETING_MATCH reason with evaluation context
   # Testing: dynamic context paradigm with targeting rules
@@ -367,7 +368,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: complex targeting rules with multiple context fields
     @context-handling @targeting @spec-1.3.1.1
     Scenario: Multiple context attributes targeting
-        Given a String-flag with key "context-aware" and a default value "false"
+        Given a String-flag with key "complex-targeted" and a default value "false"
         And a context containing a key "email", with type "String" and with value "ballmer@macrosoft.com"
         And a context containing a key "role", with type "String" and with value "admin"
         And a context containing a key "age", with type "Integer" and with value "65"

@@ -22,14 +22,14 @@
     },
     "defaultVariant": "zero"
   },
-  "context-aware": {
+  "complex-targeted": {
     "variants": {
       "internal": "INTERNAL",
       "external": "EXTERNAL"
     },
     "defaultVariant": "external",
     "flagMetadata": null,
-    "contextEvaluator": "!customer ? 'internal' : ''"
+    "contextEvaluator": "!customer && email == 'ballmer@macrosoft.com' && age > 10 ? 'internal' : ''"
   },
   "float-flag": {
     "variants": {
