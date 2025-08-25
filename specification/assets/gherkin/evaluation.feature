@@ -1,3 +1,4 @@
+@deprecated
 Feature: Flag evaluation
 
 # This test suite contains scenarios to test the flag evaluation API.
