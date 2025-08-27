@@ -60,8 +60,8 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
 
         @objects
         Examples: Object evaluations
-            | key         | type   | default | resolved_value                                                                     |
-            | object-flag | Object | {}      | {\"showImages\": true,\"title\": \"Check out these pics!\",\"imagesPerPage\": 100} |
+            | key              | type   | default | resolved_value                                                                     |
+            | object-zero-flag | Object | {}      | {\"showImages\": true,\"title\": \"Check out these pics!\",\"imagesPerPage\": 100} |
 
   # Spec 1.4.7: Testing TARGETING_MATCH reason with evaluation context
   # Testing: dynamic context paradigm with targeting rules
@@ -439,16 +439,33 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "DISABLED"
-        Examples:
+
+        @booleans
+        Examples: Boolean evaluations
             | key                   | type    | default |
             | boolean-disabled-flag | Boolean | false   |
-            | string-disabled-flag  | String  | bye     |
+
+        @strings
+        Examples: String evaluations
+            | key                  | type   | default |
+            | string-disabled-flag | String | bye     |
+
+        @numbers
+        Examples: Number evaluations
+            | key                   | type    | default |
+            | integer-disabled-flag | Integer | 1       |
+            | float-disabled-flag   | Float   | 0.1     |
+
+        @objects
+        Examples: Object evaluations
+            | key                  | type   | default    |
+            | object-disabled-flag | Object | {\"a\": 1} |
 
   # Spec 1.4.13: Testing error message field in abnormal execution
   # Testing: evaluation details may contain error message with additional details
     @error-handling @spec-1.4.13
     Scenario: Error message in evaluation details
-        Given a Boolean-flag with key "error-flag" and a default value "false"
+        Given a Boolean-flag with key "missing-flag" and a default value "false"
         When the flag was evaluated with details
         Then the reason should be "ERROR"
         And the error message should contain "flag error-flag not found"
@@ -505,12 +522,32 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing async/non-blocking mechanisms (Spec 1.4.12)
   # Testing: client should provide asynchronous mechanisms for flag evaluation
     @async @spec-1.4.12
-    Scenario: Asynchronous flag evaluation
-        Given a Boolean-flag with key "async-flag" and a default value "false"
+    Scenario Outline: Asynchronous flag evaluation
+        Given a <type>-flag with key "<key>" and a default value "<default>"
         When the flag was evaluated with details asynchronously
         Then the evaluation should complete without blocking
-        And the result should be equivalent to synchronous evaluation
+        And the resolved details value should be "<resolved_value>"
 
+        @booleans
+        Examples: Boolean evaluations
+            | key          | type    | default | resolved_value |
+            | boolean-flag | Boolean | false   | true           |
+
+        @strings
+        Examples: String evaluations
+            | key         | type   | default | resolved_value |
+            | string-flag | String | bye     | hi             |
+
+        @numbers
+        Examples: Number evaluations
+            | key          | type    | default | resolved_value |
+            | integer-flag | Integer | 1       | 10             |
+            | float-flag   | Float   | 0.1     | 0.5            |
+            
+        @objects
+        Examples: Object evaluations
+            | key         | type   | default | resolved_value                                                                     |
+            | object-flag | Object | {}      | {\"showImages\": true,\"title\": \"Check out these pics!\",\"imagesPerPage\": 100} |
 #
 # IMPLICIT SPECIFICATION COVERAGE NOTES:
 #
