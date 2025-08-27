@@ -468,7 +468,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         Given a Boolean-flag with key "missing-flag" and a default value "false"
         When the flag was evaluated with details
         Then the reason should be "ERROR"
-        And the error message should contain "flag error-flag not found"
+        And the error message should contain "flag missing-flag not found"
 
   # Spec 1.7.1: Testing provider status accessibility
   # Testing: client must expose provider status (READY, NOT_READY, ERROR, etc.)
