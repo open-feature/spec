@@ -118,7 +118,7 @@ For comprehensive testing, use these context combinations:
 
 // Triggers complex targeting
 {
-  "targetingKey": "user2", 
+  "targetingKey": "user2",
   "email": "ballmer@macrosoft.com",
   "customer": false,
   "age": 15
