@@ -61,7 +61,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         @objects
         Examples: Object evaluations
             | key              | type   | default | resolved_value                                                                     |
-            | object-zero-flag | Object | {}      | {\"showImages\": true,\"title\": \"Check out these pics!\",\"imagesPerPage\": 100} |
+            | object-zero-flag | Object | {\"a\": 1} | {}                                                                                 |
 
   # Spec 1.4.7: Testing TARGETING_MATCH reason with evaluation context
   # Testing: dynamic context paradigm with targeting rules
