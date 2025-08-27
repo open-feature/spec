@@ -142,7 +142,7 @@ For comprehensive testing, use these context combinations:
 ## Contributing
 
 When modifying test data:
-1. Maintain the three-category structure (standard, zero, targeted-zero)
+1. Maintain the category structure (standard, zero, targeted-zero, disabled)
 2. Validate CEL expressions for syntax correctness
 3. Ensure all required context variables are documented
 4. Test both matching and non-matching targeting scenarios
