@@ -7,6 +7,15 @@
     "defaultVariant": "on",
     "flagMetadata": null
   },
+  "boolean-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "on": true,
+      "off": false
+    },
+    "defaultVariant": "on",
+    "flagMetadata": null
+  },
   "boolean-targeted-zero-flag": {
     "variants": {
       "zero": false,
@@ -39,6 +48,15 @@
     "defaultVariant": "half",
     "flagMetadata": null
   },
+  "float-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "tenth": 0.1,
+      "half": 0.5
+    },
+    "defaultVariant": "half",
+    "flagMetadata": null
+  },
   "float-targeted-zero-flag": {
     "variants": {
       "zero": 0.0,
@@ -55,6 +73,15 @@
     "defaultVariant": "zero"
   },
   "integer-flag": {
+    "variants": {
+      "one": 1,
+      "ten": 10
+    },
+    "defaultVariant": "ten",
+    "flagMetadata": null
+  },
+  "integer-disabled-flag": {
+    "disabled": true,
     "variants": {
       "one": 1,
       "ten": 10
@@ -123,6 +150,19 @@
     "defaultVariant": "template",
     "flagMetadata": null
   },
+  "object-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "empty": {},
+      "template": {
+        "showImages": true,
+        "title": "Check out these pics!",
+        "imagesPerPage": 100
+      }
+    },
+    "defaultVariant": "template",
+    "flagMetadata": null
+  },
   "object-targeted-zero-flag": {
     "variants": {
       "zero": {},
@@ -147,6 +187,15 @@
     "defaultVariant": "zero"
   },
   "string-flag": {
+    "variants": {
+      "greeting": "hi",
+      "parting": "bye"
+    },
+    "defaultVariant": "greeting",
+    "flagMetadata": null
+  },
+  "string-disabled-flag": {
+    "disabled": true,
     "variants": {
       "greeting": "hi",
       "parting": "bye"
