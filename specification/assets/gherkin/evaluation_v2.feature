@@ -1,7 +1,6 @@
 Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # This comprehensive test suite covers all OpenFeature specification requirements
   # for flag evaluation, including error handling, provider states, and edge cases.
-  # It reuses existing step definitions where possible and adds new scenarios for full compliance.
 
     Background:
     # Implicitly tests spec 1.1.2.1 (provider mutator) and 1.7.3 (READY status after initialize)
