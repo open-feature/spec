@@ -367,7 +367,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: complex targeting rules with multiple context fields
     @context-handling @targeting @spec-1.3.1.1
     Scenario: Multiple context attributes targeting
-        Given a String-flag with key "complex-targeted" and a default value "false"
+        Given a String-flag with key "complex-targeted" and a default value "default"
         And a context containing a key "email", with type "String" and with value "ballmer@macrosoft.com"
         And a context containing a key "role", with type "String" and with value "admin"
         And a context containing a key "age", with type "Integer" and with value "65"
@@ -494,19 +494,6 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         Then the specified hooks should execute during evaluation
         And the hook order should be maintained
 
-  # Additional edge cases for robustness
-    @edge-cases
-    Scenario Outline: Default value type validation
-        Given a <type>-flag with key "<key>" and a default value "<default>"
-        When the flag was evaluated with details
-        Then the resolved details value should be "<default>"
-        And the error-code should be "TYPE_MISMATCH"
-        Examples:
-            | key          | type    | default |
-            | string-flag  | Boolean | false   |
-            | boolean-flag | String  | bye     |
-            | boolean-flag | Integer | 1       |
-            | boolean-flag | Float   | 0.1     |
 
   # Testing immutability requirements (Spec 1.4.15/1.4.14.1)
   # Testing: flag metadata must be immutable

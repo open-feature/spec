@@ -117,20 +117,6 @@
       "float": 0.1
     }
   },
-  "no-default-flag-null-targeting-variant": {
-    "variants": {
-      "normal": "CFO",
-      "special": "CEO"
-    },
-    "contextEvaluator": "email == 'jobs@orange.com' ? 'special' : ''"
-  },
-  "no-default-flag-undefined-targeting-variant": {
-    "variants": {
-      "normal": "CFO",
-      "special": "CEO"
-    },
-    "contextEvaluator": "email == 'jobs@orange.com' ? 'special' : ''"
-  },
   "null-default-flag": {
     "variants": {
       "on": true,

@@ -34,14 +34,20 @@ Flags with CEL expressions that can evaluate to zero values based on context:
 - `float-targeted-zero-flag`: Uses CEL targeting, defaults to `zero` (0.0)
 - `object-targeted-zero-flag`: Uses CEL targeting, defaults to `zero` (empty object)
 
+### Disabled Flags
+Flags with CEL expressions that can evaluate to zero values based on context:
+- `boolean-disabled-flag`: Disabled Flag
+- `string-disabled-flag`: Disabled Flag
+- `integer-disabled-flag`: Disabled Flag
+- `float-disabled-flag`: Disabled Flag
+- `object-disabled-flag`: Disabled Flag
+- 
 ### Special Testing Flags
 Flags for testing edge cases and metadata:
 - `metadata-flag`: Boolean flag with rich metadata including string, integer, boolean, and float values
 - `complex-targeted`: String flag with complex CEL expression for internal/external user distinction
 - `null-default-flag`: Flag with explicitly null default variant
 - `undefined-default-flag`: Flag with no default variant defined
-- `no-default-flag-null-targeting-variant`: Tests null targeting behavior
-- `no-default-flag-undefined-targeting-variant`: Tests undefined targeting behavior
 - `wrong-flag`: Flag for testing error scenarios
 
 ## CEL Expression Variables
