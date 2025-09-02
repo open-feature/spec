@@ -35,7 +35,7 @@ Flags with CEL expressions that can evaluate to zero values based on context:
 - `object-targeted-zero-flag`: Uses CEL targeting, defaults to `zero` (empty object)
 
 ### Disabled Flags
-Flags with CEL expressions that can evaluate to zero values based on context:
+Flags that are statically disabled:
 - `boolean-disabled-flag`: Disabled Flag
 - `string-disabled-flag`: Disabled Flag
 - `integer-disabled-flag`: Disabled Flag
