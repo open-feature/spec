@@ -405,7 +405,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         @objects
         Examples: Object evaluations
             | key         | type   | default | expected_variant |
-            | object-flag | Object | {}      | template   |
+            | object-flag | Object | {}      | template         |
 
 
   # Spec 1.4.7: Testing CACHED reason code
