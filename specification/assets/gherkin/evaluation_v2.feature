@@ -170,15 +170,24 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
 
         @booleans
         Examples: Boolean evaluations
-            | key          | requested_type | default |
-            | boolean-flag | String         | bye     |
-@error-handling-types
-            | string-flag | Integer        | 1       |
+            | key          | type    | default |
+            | string-flag  | Boolean | false   |
+
+        @strings
+        Examples: String evaluations
+            | key          | type   | default |
+            | boolean-flag | String | bye     |
+
+        @numbers
+        Examples: Number evaluations
+            | key          | type    | default |
+            | boolean-flag | Integer | 1       |
+            | boolean-flag | Float   | 0.1     |
 
         @objects
         Examples: Object evaluations
-            | key         | requested_type | default |
-            | string-flag | Object         | {}      |
+            | key          | type   | default    |
+            | boolean-flag | Object | {\"a\": 1} |
 
   # Spec 1.7.6: Testing PROVIDER_NOT_READY error when provider isn't initialized
   # Testing: client must short-circuit and return error when provider not ready

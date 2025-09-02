@@ -41,7 +41,7 @@ Flags that are statically disabled:
 - `integer-disabled-flag`: Disabled Flag
 - `float-disabled-flag`: Disabled Flag
 - `object-disabled-flag`: Disabled Flag
-- 
+
 ### Special Testing Flags
 Flags for testing edge cases and metadata:
 - `metadata-flag`: Boolean flag with rich metadata including string, integer, boolean, and float values
@@ -72,12 +72,6 @@ Used in: `boolean-targeted-zero-flag`, `string-targeted-zero-flag`, `integer-tar
 !customer && email == 'ballmer@macrosoft.com' && age > 10 ? 'internal' : ''
 ```
 Used in: `complex-targeted`
-
-#### Alternative Email Targeting
-```cel
-email == 'jobs@orange.com' ? 'special' : ''
-```
-Used in: `no-default-flag-null-targeting-variant`, `no-default-flag-undefined-targeting-variant`
 
 ## Flag Structure Schema
 
