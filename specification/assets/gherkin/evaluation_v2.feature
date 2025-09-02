@@ -11,7 +11,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Implicitly tests: 1.1.6 (client creation), 1.1.7 (client creation no throw), 1.4.3 (value field), 1.4.10 (no exceptions)
     @spec-1.3.1.1 @spec-1.4.1.1 @spec-1.1.6 @spec-1.1.7 @spec-1.4.3 @spec-1.4.10
     Scenario Outline: Resolve values
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<resolved_value>"
         @booleans
@@ -36,7 +36,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: evaluation details structure contains correct reason
     @spec-1.4.7
     Scenario Outline: Resolves zero value
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<resolved_value>"
         And the reason should be "STATIC"
@@ -66,7 +66,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: dynamic context paradigm with targeting rules
     @targeting @spec-1.4.7
     Scenario Outline: Resolves zero value with targeting
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         And a context containing a key "email", with type "String" and with value "ballmer@macrosoft.com"
         When the flag was evaluated with details
         Then the resolved details value should be "<resolved_value>"
@@ -97,7 +97,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: fallback to default value when context doesn't match targeting rules
     @targeting @spec-1.4.7
     Scenario Outline: Resolves zero value with targeting using default
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         And a context containing a key "email", with type "String" and with value "ballmer@none.com"
         When the flag was evaluated with details
         Then the resolved details value should be "<resolved_value>"
@@ -129,7 +129,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead)
     @error-handling @spec-1.4.8 @spec-1.4.9 @spec-1.4.10
     Scenario Outline: Flag not found error
-        Given a <type>-flag with key "non-existent-flag" and a default value "<default>"
+        Given a <type>-flag with key "non-existent-flag" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "ERROR"
@@ -160,9 +160,9 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: client should return default value when provider returns wrong type
   # Note: Test data setup ensures the flag returns wrong type, triggering type mismatch
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead)
-    @error-handling @spec-1.3.4 @spec-1.4.10
+    @error-handling @error-handling-types @spec-1.3.4 @spec-1.4.10
     Scenario Outline: Type mismatch error
-        Given a <requested_type>-flag with key "<key>" and a default value "<default>"
+        Given a <requested_type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "ERROR"
@@ -194,7 +194,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
     @provider-status @spec-1.7.6 @spec-1.4.10
     Scenario Outline: Provider not ready error
         Given a not ready provider
-        And a <type>-flag with key "<key>" and a default value "<default>"
+        And a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "ERROR"
@@ -227,7 +227,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
     @provider-status @provider-status-fatal @spec-1.7.7 @spec-1.4.10 @spec-1.7.5
     Scenario Outline: Provider in fatal state error
         Given a fatal provider
-        And a <type>-flag with key "<key>" and a default value "<default>"
+        And a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "ERROR"
@@ -258,7 +258,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: evaluation details must contain value, flagKey, and variant fields
     @evaluation-details @spec-1.4.3 @spec-1.4.5 @spec-1.4.6
     Scenario Outline: Complete evaluation details structure
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<resolved_value>"
         And the flag key should be "<key>"
@@ -290,7 +290,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Note: Test data setup ensures these flags have metadata configured
     @evaluation-details @metadata @spec-1.4.14
     Scenario: Flag metadata in evaluation details
-        Given a Boolean-flag with key "metadata-flag" and a default value "true"
+        Given a Boolean-flag with key "metadata-flag" and a fallback value "true"
         When the flag was evaluated with details
         Then the resolved metadata should contain
             | key     | metadata_type | value |
@@ -304,7 +304,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: targeting rules should fall back to default when context is empty
     @context-handling @spec-1.3.1.1
     Scenario Outline: Empty evaluation context
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<value>"
         And the reason should be "DEFAULT"
@@ -335,7 +335,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: targeting rules should handle null values gracefully
     @context-handling @spec-1.3.1.1
     Scenario Outline: Null context values
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         And a context containing a key "email" with null value
         When the flag was evaluated with details
         Then the resolved details value should be "<value>"
@@ -367,7 +367,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: complex targeting rules with multiple context fields
     @context-handling @targeting @spec-1.3.1.1
     Scenario: Multiple context attributes targeting
-        Given a String-flag with key "complex-targeted" and a default value "default"
+        Given a String-flag with key "complex-targeted" and a fallback value "default"
         And a context containing a key "email", with type "String" and with value "ballmer@macrosoft.com"
         And a context containing a key "role", with type "String" and with value "admin"
         And a context containing a key "age", with type "Integer" and with value "65"
@@ -380,7 +380,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: structured data evaluation using existing steps with JSON data
     @data-types @spec-1.3.1.1
     Scenario: Structure flag evaluation
-        Given a Object-flag with key "object-flag" and a default value "{}"
+        Given a Object-flag with key "object-flag" and a fallback value "{}"
         When the flag was evaluated with details
         Then the resolved details value should be "{\"showImages\": true,\"title\": \"Check out these pics!\",\"imagesPerPage\": 100}"
         And the reason should be "STATIC"
@@ -389,7 +389,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: variant field must contain provider's variant value
     @variants @spec-1.4.6
     Scenario Outline: Variant field population
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the variant should be "<expected_variant>"
 
@@ -420,7 +420,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: provider can return CACHED reason for performance optimization
     @reason-codes @spec-1.4.7
     Scenario Outline: CACHED reason
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         And the flag was evaluated with details
         Then the reason should be "CACHED"
@@ -434,7 +434,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Note: Test data setup ensures these flags are configured as disabled
     @reason-codes @spec-1.4.7
     Scenario Outline: DISABLED reason
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "DISABLED"
@@ -462,9 +462,9 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
 
   # Spec 1.4.13: Testing error message field in abnormal execution
   # Testing: evaluation details may contain error message with additional details
-    @error-handling @spec-1.4.13
+    @error-handling @error-handling-not-found @spec-1.4.13
     Scenario: Error message in evaluation details
-        Given a Boolean-flag with key "missing-flag" and a default value "false"
+        Given a Boolean-flag with key "missing-flag" and a fallback value "false"
         When the flag was evaluated with details
         Then the reason should be "ERROR"
         And the error message should contain "flag missing-flag not found"
@@ -488,7 +488,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: evaluation options can specify hooks to execute during evaluation
     @hooks @evaluation-options @spec-1.5.1
     Scenario: Evaluation options with hooks
-        Given a Boolean-flag with key "boolean-flag" and a default value "false"
+        Given a Boolean-flag with key "boolean-flag" and a fallback value "false"
         And evaluation options containing specific hooks
         When the flag was evaluated with details using the evaluation options
         Then the specified hooks should execute during evaluation
@@ -499,7 +499,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: flag metadata must be immutable
     @immutability @spec-1.4.14.1
     Scenario: Evaluation context immutability
-        Given a Boolean-flag with key "boolean-flag" and a default value "false"
+        Given a Boolean-flag with key "boolean-flag" and a fallback value "false"
         And an evaluation context with modifiable data
         When the flag was evaluated with details
         Then the original evaluation context should remain unmodified
@@ -509,7 +509,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Testing: client should provide asynchronous mechanisms for flag evaluation
     @async @spec-1.4.12
     Scenario Outline: Asynchronous flag evaluation
-        Given a <type>-flag with key "<key>" and a default value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details asynchronously
         Then the evaluation should complete without blocking
         And the resolved details value should be "<resolved_value>"

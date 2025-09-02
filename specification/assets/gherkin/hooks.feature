@@ -8,7 +8,7 @@ Feature: Evaluation details through hooks
 
   Scenario: Passes evaluation details to after and finally hooks
     Given a client with added hook
-    And a boolean-flag with key "boolean-flag" and a default value "false"
+    And a boolean-flag with key "boolean-flag" and a fallback value "false"
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "after, finally" hooks should be called with evaluation details
@@ -22,7 +22,7 @@ Feature: Evaluation details through hooks
   # errors
   Scenario: Flag not found
     Given a client with added hook
-    And a string-flag with key "missing-flag" and a default value "uh-oh"
+    And a string-flag with key "missing-flag" and a fallback value "uh-oh"
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
@@ -36,7 +36,7 @@ Feature: Evaluation details through hooks
 
   Scenario: Type error
     Given a client with added hook
-    And a boolean-flag with key "wrong-flag" and a default value "false"
+    And a boolean-flag with key "wrong-flag" and a fallback value "false"
     When the flag was evaluated with details
     Then the "before" hook should have been executed
     And the "error" hook should have been executed
