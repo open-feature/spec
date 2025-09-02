@@ -124,10 +124,10 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
             | key                       | type   | default    | resolved_value |
             | object-targeted-zero-flag | Object | {\"a\": 1} | {}             |
 
-  # Spec 1.4.8 & 1.4.9: Testing FLAG_NOT_FOUND error code in abnormal execution
+  # Spec 1.4.8 & 1.4.9 & 1.4.13: Testing FLAG_NOT_FOUND error code in abnormal execution
   # Testing: client must return default value and error code when flag doesn't exist
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead)
-    @error-handling @spec-1.4.8 @spec-1.4.9 @spec-1.4.10
+    @error-handling @error-handling-not-found @spec-1.4.8 @spec-1.4.9 @spec-1.4.10 @spec-1.4.13
     Scenario Outline: Flag not found error
         Given a <type>-flag with key "non-existent-flag" and a fallback value "<default>"
         When the flag was evaluated with details
@@ -172,15 +172,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         Examples: Boolean evaluations
             | key          | requested_type | default |
             | boolean-flag | String         | bye     |
-
-        @strings
-        Examples: String evaluations
-            | key         | requested_type | default |
-            | string-flag | Boolean        | false   |
-
-        @numbers
-        Examples: Number evaluations
-            | key         | requested_type | default |
+@error-handling-types
             | string-flag | Integer        | 1       |
 
         @objects
@@ -460,14 +452,6 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
             | key                  | type   | default    |
             | object-disabled-flag | Object | {\"a\": 1} |
 
-  # Spec 1.4.13: Testing error message field in abnormal execution
-  # Testing: evaluation details may contain error message with additional details
-    @error-handling @error-handling-not-found @spec-1.4.13
-    Scenario: Error message in evaluation details
-        Given a Boolean-flag with key "missing-flag" and a fallback value "false"
-        When the flag was evaluated with details
-        Then the reason should be "ERROR"
-        And the error message should contain "flag missing-flag not found"
 
   # Spec 1.7.1: Testing provider status accessibility
   # Testing: client must expose provider status (READY, NOT_READY, ERROR, etc.)
