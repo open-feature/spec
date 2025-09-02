@@ -224,7 +224,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Spec 1.7.7: Testing PROVIDER_FATAL error when provider is in fatal state
   # Testing: client must short-circuit and return error when provider is fatal
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead), 1.7.5 (FATAL status)
-    @provider-status @spec-1.7.7 @spec-1.4.10 @spec-1.7.5
+    @provider-status @provider-status-fatal @spec-1.7.7 @spec-1.4.10 @spec-1.7.5
     Scenario Outline: Provider in fatal state error
         Given a fatal provider
         And a <type>-flag with key "<key>" and a default value "<default>"
