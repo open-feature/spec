@@ -419,7 +419,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
 
   # Spec 1.4.7: Testing CACHED reason code
   # Testing: provider can return CACHED reason for performance optimization
-    @reason-codes @spec-1.4.7
+    @reason-codes @reason-codes-cached @spec-1.4.7
     Scenario Outline: CACHED reason
         Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
@@ -433,7 +433,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Spec 1.4.7: Testing DISABLED reason code
   # Testing: provider can return DISABLED reason when flag is turned off
   # Note: Test data setup ensures these flags are configured as disabled
-    @reason-codes @spec-1.4.7
+    @reason-codes @reason-codes-disabled @spec-1.4.7
     Scenario Outline: DISABLED reason
         Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
@@ -522,7 +522,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
             | key          | type    | default | resolved_value |
             | integer-flag | Integer | 1       | 10             |
             | float-flag   | Float   | 0.1     | 0.5            |
-            
+
         @objects
         Examples: Object evaluations
             | key         | type   | default | resolved_value                                                                     |
