@@ -162,7 +162,7 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead)
     @error-handling @error-handling-types @spec-1.3.4 @spec-1.4.10
     Scenario Outline: Type mismatch error
-        Given a <requested_type>-flag with key "<key>" and a fallback value "<default>"
+        Given a <type>-flag with key "<key>" and a fallback value "<default>"
         When the flag was evaluated with details
         Then the resolved details value should be "<default>"
         And the reason should be "ERROR"
