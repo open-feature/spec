@@ -1,0 +1,221 @@
+{
+  "boolean-flag": {
+    "variants": {
+      "on": true,
+      "off": false
+    },
+    "defaultVariant": "on",
+    "flagMetadata": null
+  },
+  "boolean-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "on": true,
+      "off": false
+    },
+    "defaultVariant": "on",
+    "flagMetadata": null
+  },
+  "boolean-targeted-zero-flag": {
+    "variants": {
+      "zero": false,
+      "non-zero": true
+    },
+    "defaultVariant": "zero",
+    "contextEvaluator": "email == 'ballmer@macrosoft.com' ? 'zero' : ''"
+  },
+  "boolean-zero-flag": {
+    "variants": {
+      "zero": false,
+      "non-zero": true
+    },
+    "defaultVariant": "zero"
+  },
+  "complex-targeted": {
+    "variants": {
+      "internal": "INTERNAL",
+      "external": "EXTERNAL"
+    },
+    "defaultVariant": "external",
+    "flagMetadata": null,
+    "contextEvaluator": "!customer && email == 'ballmer@macrosoft.com' && age > 10 ? 'internal' : ''"
+  },
+  "float-flag": {
+    "variants": {
+      "tenth": 0.1,
+      "half": 0.5
+    },
+    "defaultVariant": "half",
+    "flagMetadata": null
+  },
+  "float-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "tenth": 0.1,
+      "half": 0.5
+    },
+    "defaultVariant": "half",
+    "flagMetadata": null
+  },
+  "float-targeted-zero-flag": {
+    "variants": {
+      "zero": 0.0,
+      "non-zero": 1.0
+    },
+    "defaultVariant": "zero",
+    "contextEvaluator": "email == 'ballmer@macrosoft.com' ? 'zero' : ''"
+  },
+  "float-zero-flag": {
+    "variants": {
+      "zero": 0.0,
+      "non-zero": 1.0
+    },
+    "defaultVariant": "zero"
+  },
+  "integer-flag": {
+    "variants": {
+      "one": 1,
+      "ten": 10
+    },
+    "defaultVariant": "ten",
+    "flagMetadata": null
+  },
+  "integer-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "one": 1,
+      "ten": 10
+    },
+    "defaultVariant": "ten",
+    "flagMetadata": null
+  },
+  "integer-targeted-zero-flag": {
+    "variants": {
+      "zero": 0,
+      "non-zero": 1
+    },
+    "defaultVariant": "zero",
+    "contextEvaluator": "email == 'ballmer@macrosoft.com' ? 'zero' : ''"
+  },
+  "integer-zero-flag": {
+    "variants": {
+      "zero": 0,
+      "non-zero": 1
+    },
+    "defaultVariant": "zero"
+  },
+  "metadata-flag": {
+    "variants": {
+      "on": true,
+      "off": false
+    },
+    "defaultVariant": "on",
+    "flagMetadata": {
+      "string": "1.0.2",
+      "integer": 2,
+      "boolean": true,
+      "float": 0.1
+    }
+  },
+  "null-default-flag": {
+    "variants": {
+      "on": true,
+      "off": false
+    },
+    "defaultVariant": null
+  },
+  "object-flag": {
+    "variants": {
+      "empty": {},
+      "template": {
+        "showImages": true,
+        "title": "Check out these pics!",
+        "imagesPerPage": 100
+      }
+    },
+    "defaultVariant": "template",
+    "flagMetadata": null
+  },
+  "object-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "empty": {},
+      "template": {
+        "showImages": true,
+        "title": "Check out these pics!",
+        "imagesPerPage": 100
+      }
+    },
+    "defaultVariant": "template",
+    "flagMetadata": null
+  },
+  "object-targeted-zero-flag": {
+    "variants": {
+      "zero": {},
+      "non-zero": {
+        "showImages": true,
+        "title": "Check out these pics!",
+        "imagesPerPage": 100
+      }
+    },
+    "defaultVariant": "zero",
+    "contextEvaluator": "email == 'ballmer@macrosoft.com' ? 'zero' : ''"
+  },
+  "object-zero-flag": {
+    "variants": {
+      "zero": {},
+      "non-zero": {
+        "showImages": true,
+        "title": "Check out these pics!",
+        "imagesPerPage": 100
+      }
+    },
+    "defaultVariant": "zero"
+  },
+  "string-flag": {
+    "variants": {
+      "greeting": "hi",
+      "parting": "bye"
+    },
+    "defaultVariant": "greeting",
+    "flagMetadata": null
+  },
+  "string-disabled-flag": {
+    "disabled": true,
+    "variants": {
+      "greeting": "hi",
+      "parting": "bye"
+    },
+    "defaultVariant": "greeting",
+    "flagMetadata": null
+  },
+  "string-targeted-zero-flag": {
+    "variants": {
+      "zero": "",
+      "non-zero": "str"
+    },
+    "defaultVariant": "zero",
+    "contextEvaluator": "email == 'ballmer@macrosoft.com' ? 'zero' : ''"
+  },
+  "string-zero-flag": {
+    "variants": {
+      "zero": "",
+      "non-zero": "str"
+    },
+    "defaultVariant": "zero"
+  },
+  "undefined-default-flag": {
+    "variants": {
+      "small": 10,
+      "big": 1000
+    }
+  },
+  "wrong-flag": {
+    "variants": {
+      "one": "uno",
+      "two": "dos"
+    },
+    "defaultVariant": "one",
+    "flagMetadata": null
+  }
+}

@@ -5,7 +5,7 @@ Feature: Metadata
     Given a stable provider
 
   Scenario: Returns metadata
-    Given a Boolean-flag with key "metadata-flag" and a default value "true"
+    Given a Boolean-flag with key "metadata-flag" and a fallback value "true"
     When the flag was evaluated with details
     Then the resolved metadata should contain
       | key     | metadata_type | value |
@@ -15,7 +15,7 @@ Feature: Metadata
       | boolean | Boolean       | true  |
 
   Scenario Outline: Returns no metadata
-    Given a <flag_type>-flag with key "<key>" and a default value "<default_value>"
+    Given a <flag_type>-flag with key "<key>" and a fallback value "<default_value>"
     When the flag was evaluated with details
     Then the resolved metadata is empty
 
