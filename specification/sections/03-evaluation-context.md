@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 3. Evaluation Context
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 ## Overview
 
@@ -59,7 +59,7 @@ API (global) `evaluation context` can be used to supply static data to flag eval
 
 #### Condition 3.2.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -116,7 +116,7 @@ This describes the precedence of all `evaluation context` variants. Depending on
 
 #### Condition 3.2.4
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
