@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 2. Provider
 
-[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+[![stable](https://img.shields.io/static/v1?label=Status&message=stable&color=green)](https://github.com/open-feature/spec/tree/main/specification#stable)
 
 ## Overview
 
@@ -166,7 +166,7 @@ class MyProvider implements Provider {
 
 ### 2.4 Initialization
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 #### Requirement 2.4.1
 
@@ -209,7 +209,7 @@ see: [error codes](../types.md#error-code)
 
 ### 2.5. Shutdown
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 #### Requirement 2.5.1
 
@@ -245,7 +245,7 @@ see: [initialization](#24-initialization)
 
 ### 2.6. Provider context reconciliation
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on context changed` function can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
 
