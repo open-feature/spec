@@ -53,7 +53,7 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 
 ### Propagation Metadata
 
-Feature Flags are propagated through different systems with different methods. Often this updates have an asynchronous nature to the evaluation and do not correlate directly (eg. cached values or in-process evaluations). For distributed systems it is important to reflect how changes are populate to all systems, and how those correlate with evaluations. In a simple manner the version could be used to achieve this, but offers additional and more complex solution to correlate the data. Instead we are defining two additional metadata properties `propagationTraceId` and `propagationSpanId` which can be used to link evaluation spans to propagation spans.
+Feature Flags are propagated through different systems with different methods. Often these updates have an asynchronous nature to the evaluation and do not correlate directly (eg. cached values or in-process evaluations). For distributed systems it is important to reflect how changes are populated to all systems, and how those correlate with evaluations. In a simple manner the version could be used to achieve this, but it offers a more complex solution to correlate the data. Instead we are defining two additional metadata properties `propagationTraceId` and `propagationSpanId` which can be used to link evaluation spans to propagation spans.
 
 | Flag Metadata Key       | Requirement level | Type     | Notes                                  |
 | ----------------------- | ----------------- | -------- | -------------------------------------- |
