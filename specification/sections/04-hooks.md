@@ -6,6 +6,8 @@ toc_max_heading_level: 4
 
 # 4. Hooks
 
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+
 ## Overview
 
 `Hooks` are a mechanism whereby application developers can add arbitrary behavior to flag evaluation. They operate similarly to middleware in many web frameworks.
@@ -47,6 +49,8 @@ Hook context exists to provide hooks with information about the invocation and p
 
 > Hook context **MUST** provide: the `flag key`, `flag value type`, `evaluation context`, `default value`, and `hook data`.
 
+The `evaluation context` provided in the hook context refers to the **merged evaluation context** as specified in [Requirement 3.2.3](./03-evaluation-context.md#requirement-323).
+
 #### Requirement 4.1.2
 
 > The `hook context` **SHOULD** provide access to the `client metadata` and the `provider metadata` fields.
@@ -72,12 +76,14 @@ see: [dynamic-context paradigm](../glossary.md#dynamic-context-paradigm)
 Either the `hook data` reference itself must be mutable, or it must allow mutation of its contents.
 
 Mutable reference:
-```
+
+```js
 hookContext.hookData = {'my-key': 'my-value'}
 ```
 
 Mutable content:
-```
+
+```js
 hookContext.hookData.set('my-key', 'my-value')
 ```
 
@@ -114,6 +120,7 @@ hookContext.hookData.set('my-key', 'my-value')
 > `Hook data` **MUST** must be created before the first `stage` invoked in a hook for a specific evaluation and propagated between each `stage` of the hook. The hook data is not shared between different hooks.
 
 Example showing data between `before` and `after` stage for two different hooks.
+
 ```mermaid
 sequenceDiagram
 actor Application
@@ -177,7 +184,7 @@ EvaluationContext | void before(HookContext hookContext, HookHints hints);
 
 #### Condition 4.3.3
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -244,12 +251,73 @@ client.getValue('my-flag', 'defaultValue', new Hook3());
 
 #### Requirement 4.4.2
 
-> Hooks **MUST** be evaluated in the following order:
->
-> - before: API, Client, Invocation, Provider
-> - after: Provider, Invocation, Client, API
-> - error (if applicable): Provider, Invocation, Client, API
-> - finally: Provider, Invocation, Client, API
+> Hooks **MUST** be executed "stack-wise" with respect to flag resolution, prioritizing increasing specificity (API, Client, Invocation, Provider) first, and the order in which they were added second.
+
+Before flag resolution (the `before` stage), hooks run in the order `API` -> `Client` -> `Invocation` -> `Provider`, and within those, in the order in which they were added.
+After flag evaluation (the `after`, `error`, or `finally` stages), hooks run in the order `Provider` -> `Invocation` -> `Client` -> `API`, and within those, in reverse of the order in which they were added.
+This achieves intuitive "stack-like" or "LIFO" behavior for side effects and transformations.
+
+Given hooks A - H, each implementing the both the `before` and `after` stages, added at the following levels and order:
+
+- API: [A, B]
+- Client: [C, D]
+- Invocation: [E, F]
+- Provider: [G, H]
+
+The expected order of execution is:
+
+```mermaid
+flowchart BT
+    subgraph FlagResolution [Flag Resolution]
+        flagResolution[flagResolution]
+    end
+
+    subgraph Provider [Provider Layer]
+        G_before[G.before]
+        H_before[H.before]
+        G_after[G.after]
+        H_after[H.after]
+    end
+
+    subgraph Invocation [Invocation Layer]
+        E_before[E.before]
+        F_before[F.before]
+        E_after[E.after]
+        F_after[F.after]
+    end
+
+    subgraph Client [Client Layer]
+        C_before[C.before]
+        D_before[D.before]
+        C_after[C.after]
+        D_after[D.after]
+    end
+
+    subgraph API [API Layer]
+        A_before[A.before]
+        B_before[B.before]
+        A_after[A.after]
+        B_after[B.after]
+    end
+
+    A_before --> B_before
+    B_before --> C_before
+    C_before --> D_before
+    D_before --> E_before
+    E_before --> F_before
+    F_before --> G_before
+    G_before --> H_before
+    H_before --> flagResolution
+    
+    flagResolution --> H_after
+    H_after --> G_after
+    G_after --> F_after
+    F_after --> E_after
+    E_after --> D_after
+    D_after --> C_after
+    C_after --> B_after
+    B_after --> A_after
+```
 
 #### Requirement 4.4.3
 
@@ -335,6 +403,7 @@ but different hooks have different hook data instances.
 Access to hook data is restricted to only a single hook instance, and it has no serialization requirements, and as a result does not require any value type restrictions.
 
 Example TypeScript definition:
-```JavaScript
+
+```js
 type HookData = Record<string, unknown>;
 ```

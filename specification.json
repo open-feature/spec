@@ -283,7 +283,14 @@
         {
             "id": "Requirement 1.6.1",
             "machine_id": "requirement_1_6_1",
-            "content": "The API MUST define a mechanism to propagate a shutdown request to active providers.",
+            "content": "The API MUST define a function to propagate a shutdown request to all providers.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.6.2",
+            "machine_id": "requirement_1_6_2",
+            "content": "The API's `shutdown` function MUST reset all state of the API, removing all hooks, event handlers, and providers.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -349,6 +356,13 @@
             "machine_id": "requirement_1_7_8",
             "content": "Implementations SHOULD propagate the `error code` returned from any provider lifecycle methods.",
             "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.7.9",
+            "machine_id": "requirement_1_7_9",
+            "content": "The client's `provider status` accessor MUST indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
@@ -427,22 +441,22 @@
                     "content": "The `resolution details` structure SHOULD accept a generic argument (or use an equivalent language feature) which indicates the type of the wrapped `value` field.",
                     "RFC 2119 keyword": "SHOULD",
                     "children": []
-                },
-                {
-                    "id": "Requirement 2.2.9",
-                    "machine_id": "requirement_2_2_9",
-                    "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
-                    "RFC 2119 keyword": "SHOULD",
-                    "children": []
-                },
-                {
-                    "id": "Requirement 2.2.10",
-                    "machine_id": "requirement_2_2_10",
-                    "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
-                    "RFC 2119 keyword": "MUST",
-                    "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 2.2.9",
+            "machine_id": "requirement_2_2_9",
+            "content": "The `provider` SHOULD populate the `resolution details` structure's `flag metadata` field.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.2.10",
+            "machine_id": "requirement_2_2_10",
+            "content": "`flag metadata` MUST be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
         },
         {
             "id": "Requirement 2.3.1",
@@ -497,8 +511,15 @@
         {
             "id": "Requirement 2.5.2",
             "machine_id": "requirement_2_5_2",
-            "content": "After a provider's shutdown function has terminated successfully, the provider's state MUST revert to its uninitialized state.",
-            "RFC 2119 keyword": "MUST",
+            "content": "After a provider's `shutdown` function has terminated, the provider SHOULD revert to its uninitialized state.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.5.3",
+            "machine_id": "requirement_2_5_3",
+            "content": "A Provider's `shutdown` function SHOULD be idempotent.",
+            "RFC 2119 keyword": "SHOULD",
             "children": []
         },
         {
@@ -865,7 +886,7 @@
         {
             "id": "Requirement 4.4.2",
             "machine_id": "requirement_4_4_2",
-            "content": "Hooks MUST be evaluated in the following order:  - before: API, Client, Invocation, Provider - after: Provider, Invocation, Client, API - error (if applicable): Provider, Invocation, Client, API - finally: Provider, Invocation, Client, API",
+            "content": "Hooks MUST be executed \"stack-wise\" with respect to flag resolution, prioritizing increasing specificity (API, Client, Invocation, Provider) first, and the order in which they were added second.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

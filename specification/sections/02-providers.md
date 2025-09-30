@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 2. Provider
 
-[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+[![stable](https://img.shields.io/static/v1?label=Status&message=stable&color=green)](https://github.com/open-feature/spec/tree/main/specification#stable)
 
 ## Overview
 
@@ -124,11 +124,12 @@ ResolutionDetails<number> resolveNumberValue(string flagKey, number defaultValue
 // example structure flag value resolution with generic argument
 ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defaultValue, context: EvaluationContext);
 ```
-##### Requirement 2.2.9
+
+#### Requirement 2.2.9
 
 > The `provider` **SHOULD** populate the `resolution details` structure's `flag metadata` field.
 
-##### Requirement 2.2.10
+#### Requirement 2.2.10
 
 > `flag metadata` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.
 
@@ -165,7 +166,7 @@ class MyProvider implements Provider {
 
 ### 2.4 Initialization
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 #### Requirement 2.4.1
 
@@ -208,7 +209,7 @@ see: [error codes](../types.md#error-code)
 
 ### 2.5. Shutdown
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 #### Requirement 2.5.1
 
@@ -225,16 +226,26 @@ class MyProvider implements Provider, AutoDisposable {
 
 #### Requirement 2.5.2
 
-> After a provider's shutdown function has terminated successfully, the provider's state **MUST** revert to its uninitialized state.
+> After a provider's `shutdown` function has terminated, the provider **SHOULD** revert to its uninitialized state.
 
-If a provider requires initialization, once it's shut down, it must transition to its initial `NOT_READY` state. Some providers may allow reinitialization from this state.
+If a provider requires initialization, once it's shut down, it must transition to its uninitialized state.
+Some providers may allow reinitialization from this state.
 Providers not requiring initialization are assumed to be ready at all times.
+Providers in the process of initializing abort initialization if shutdown is called while they are still starting up.
+
+see: [initialization](#24-initialization)
+
+#### Requirement 2.5.3
+
+> A Provider's `shutdown` function **SHOULD** be idempotent.
+
+If a provider's `shutdown` function has been called, subsequent calls (without an intervening call to `initialize`) should have no effect.
 
 see: [initialization](#24-initialization)
 
 ### 2.6. Provider context reconciliation
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 Static-context focused providers may need a mechanism to understand when their cache of evaluated flags must be invalidated or updated. An `on context changed` function can be defined which performs whatever operations are needed to reconcile the evaluated flags with the new context.
 

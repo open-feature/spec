@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # 1. Flag Evaluation API
 
-[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+[![stable](https://img.shields.io/static/v1?label=Status&message=stable&color=green)](https://github.com/open-feature/spec/tree/main/specification#stable)
 
 ## Overview
 
@@ -48,7 +48,7 @@ See [event handlers and initialization](./05-events.md#event-handlers-and-initia
 
 #### Requirement 1.1.2.3
 
->  The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
+> The `provider mutator` function **MUST** invoke the `shutdown` function on the previously registered provider once it's no longer being used to resolve flag values.
 
 When a provider is no longer in use, it should be disposed of using its `shutdown` mechanism.
 Provider instances which are bound to multiple `domains` won't be shut down until the last binding is removed.
@@ -203,7 +203,7 @@ See [evaluation context](./03-evaluation-context.md) for details.
 
 #### Condition 1.3.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -226,7 +226,6 @@ number myNumber = client.getNumberValue('number-flag', 75);
 // example overloaded structure flag evaluation with optional params
 MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: 'N/A', percentage: 75 }, options);
 ```
-
 
 #### Condition 1.3.3
 
@@ -286,7 +285,7 @@ FlagEvaluationDetails<MyStruct> myStructDetails = client.getObjectDetails<MyStru
 
 #### Condition 1.4.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -397,16 +396,28 @@ See [hooks](./04-hooks.md) for details.
 
 ### 1.6. Shutdown
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+
+The API's `shutdown` function defines a means of graceful shutdown, calling the `shutdown` function on all providers, allowing them to flush telemetry, clean up connections, and release any relevant resources.
+It also provides a means of resetting the API object to its default state, removing all hooks, event handlers, providers, and setting a "No-op provider"; this is useful for testing purposes.
+It's recommended that application-authors call this function on application shutdown, and after the completion of test suites which make use of the SDK.
 
 #### Requirement 1.6.1
 
-> The API **MUST** define a mechanism to propagate a shutdown request to active providers.
+> The API **MUST** define a function to propagate a shutdown request to all providers.
 
-The global API object might expose a `shutdown` function, which will call the respective `shutdown` function on the registered providers.
+The global API object defines a `shutdown` function, which will call the respective `shutdown` function on all providers.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
+This shutdown function unconditionally calls the shutdown function on all registered providers, regardless of their state.
 
 see: [`shutdown`](./02-providers.md#25-shutdown)
+
+#### Requirement 1.6.2
+
+> The API's `shutdown` function **MUST** reset all state of the API, removing all hooks, event handlers, and providers.
+
+After shutting down all providers, the `shutdown` function resets the state of the API.
+This is especially useful for testing purposes to restore the API to a known state.
 
 ### 1.7. Provider Lifecycle Management
 
@@ -458,7 +469,7 @@ see [provider status](../types.md#provider-status)
 
 #### Condition 1.7.2
 
-[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 > The implementation uses the static-context paradigm.
 
@@ -513,3 +524,9 @@ see: [error codes](../types.md#error-code), [flag value resolution](./02-provide
 The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
 
 see: [error codes](../types.md#error-code)
+
+#### Requirement 1.7.9
+
+> The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
+
+Regardless of the success of the provider's `shutdown` function, the `provider status` should convey the provider is no longer ready to use once the shutdown function terminates.

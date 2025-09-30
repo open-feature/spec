@@ -1,3 +1,4 @@
+@deprecated
 Feature: Flag evaluation
 
 # This test suite contains scenarios to test the flag evaluation API.
@@ -57,11 +58,11 @@ Feature: Flag evaluation
 
   # errors
   Scenario: Flag not found
-    When a non-existent string flag with key "missing-flag" is evaluated with details and a default value "uh-oh"
+    When a non-existent string flag with key "missing-flag" is evaluated with details and a fallback value "uh-oh"
     Then the default string value should be returned
     And the reason should indicate an error and the error code should indicate a missing flag with "FLAG_NOT_FOUND"
 
   Scenario: Type error
-    When a string flag with key "wrong-flag" is evaluated as an integer, with details and a default value 13
+    When a string flag with key "wrong-flag" is evaluated as an integer, with details and a fallback value 13
     Then the default integer value should be returned
     And the reason should indicate an error and the error code should indicate a type mismatch with "TYPE_MISMATCH"
