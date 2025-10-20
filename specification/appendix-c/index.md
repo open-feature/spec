@@ -20,4 +20,4 @@ If you are interested in this initiative, you can join the [`#openfeature-remote
 
 ## API Specification
 
-View the full [OFREP API Specification](./ofrep-api) with interactive documentation.
+View the full [OFREP API Specification](./ofrep-api.mdx) with interactive documentation.
