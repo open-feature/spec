@@ -62,7 +62,7 @@ Telemetry hooks can emit OpenTelemetry signals in three distinct ways:
 | Pattern                                                                            | Advantages                                                                                                                                                                                | Disadvantages                                                                                                                                                                                          |
 | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Span Events**</br>![recommended](https://img.shields.io/badge/recommended-green) | - Leverages existing trace configuration and tooling</br> - Minimal overhead, no additional spans created</br> - Maintains trace context relationships</br> - Simpler than creating spans | - Requires an active span to function</br> - Must gracefully handle absence of active span</br> - Limited to span lifetime and context.                                                                |
-| **Event Logging**                                                                  | - Works independently without active spans</br> - Aligns with OpenTelemetry's emerging direction</br> - Suitable for environments without tracing</br> - Simpler implementation model     | - Requires an event exporter to be configured</br> - May require separate correlation mechanisms</br> - Event logging standards still evolving                                                         |
+| **Event Logging**                                                                  | - Works independently without active spans</br> - Aligns with OpenTelemetry's emerging direction</br> - Suitable for environments without tracing</br> - Simpler implementation model     | - Requires an event exporter to be configured</br> - Processed and stored separately from spans</br> - Event logging standards still evolving                                                         |
 | **Standalone Spans**                                                               | - Distributed traces contain every evaluation</br> - Detailed timing information</br> - Full span lifecycle control                                                                       | - Creates one span per evaluation</br> - May clutter trace visualizations</br> - Increased overhead and resource usage</br> - Potential performance impact at scale</br> - More complex implementation |
 
 > [!NOTE]
@@ -74,13 +74,13 @@ Telemetry hooks can emit OpenTelemetry signals in three distinct ways:
 
 The `before` hook stage is primarily used by standalone span hooks to create and store spans. When creating spans, it's recommended to store them in hook data using a consistent, documented key for easy retrieval in later stages.
 
-#### Finally Stage
-
-The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the attribute mapping tables above. It's also responsible for proper resource cleanup (like ending spans or closing connections) while ensuring it doesn't throw exceptions that could affect flag evaluation.
-
 #### Error Stage
 
 The `error` hook stage records exception information unless explicitly configured to exclude it. Implementations typically use OpenTelemetry's standard exception recording semantics (`recordException` for spans, exception log events for event logging). Configuration options like `excludeExceptions` allow users to control this behavior based on their needs.
+
+#### Finally Stage
+
+The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the attribute mapping tables above. It's also responsible for proper resource cleanup (like ending spans or closing connections) while ensuring it doesn't throw exceptions that could affect flag evaluation.
 
 ### Attribute Transformations
 
