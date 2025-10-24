@@ -76,7 +76,7 @@ The `before` hook stage is primarily used by standalone span hooks to create and
 
 #### Finally Stage
 
-The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the evaluation details mapping table. It's also responsible for proper resource cleanup (like ending spans or closing connections) while ensuring it doesn't throw exceptions that could affect flag evaluation.
+The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the attribute mapping tables above. It's also responsible for proper resource cleanup (like ending spans or closing connections) while ensuring it doesn't throw exceptions that could affect flag evaluation.
 
 #### Error Stage
 
