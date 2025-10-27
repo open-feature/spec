@@ -66,7 +66,7 @@ Telemetry hooks can emit OpenTelemetry signals in three distinct ways:
 | **Standalone Spans**                                                               | - Distributed traces contain every evaluation</br> - Detailed timing information</br> - Full span lifecycle control                                                                       | - Creates one span per evaluation</br> - May clutter trace visualizations</br> - Increased overhead and resource usage</br> - Potential performance impact at scale</br> - More complex implementation |
 
 > [!NOTE]
-> While span events are recommended for their low overhead and ease of use, OpenTelemetry is trending toward using log-based events instead of span events. SDK implementations may choose to prioritize event logging as standards evolve. Please refer to the [OpenTelemetry Span Event Deprecation Plan][otel-span-event-deprecation-plan] for more details.
+> While span events are recommended for their low overhead and ease of use, OpenTelemetry is trending toward using log-based events instead of span events. Please refer to the [OpenTelemetry Span Event Deprecation Plan][otel-span-event-deprecation-plan] for more details.
 
 ### Hook Lifecycle Implementation
 
@@ -76,7 +76,7 @@ The `before` hook stage is primarily used by standalone span hooks to create and
 
 #### Error Stage
 
-The `error` hook stage records exception information unless explicitly configured to exclude it. Implementations typically use OpenTelemetry's standard exception recording semantics (`recordException` for spans, exception log events for event logging). Configuration options like `excludeExceptions` allow users to control this behavior based on their needs.
+The `error` hook stage records exception information unless explicitly configured to exclude it. Implementations typically use [OpenTelemetry's standard exception][otle-record-error] recording semantics (`recordException` for spans, exception log events for event logging). Configuration options like `excludeExceptions` allow users to control this behavior based on their needs.
 
 #### Finally Stage
 
@@ -100,6 +100,7 @@ For consistency across implementations, consider supporting a common set of conf
 - `includeValue` (boolean): Whether to include flag values in telemetry signals
 - `maxValueLength` (integer): Maximum size for flag values before redaction
 - `shouldRedact` (function): Custom function to determine value redaction
+- `attributeMapper` (function): Custom function to add additional attributes to the signal
 
 ### Error Handling
 
@@ -121,7 +122,7 @@ This pattern can reduce code duplication and ensure consistency across different
 
 ## History
 
-Feature flags in the OpenTelemetry semantic conventions are currently in development and are marked as experimental.
+Feature flags in the OpenTelemetry semantic conventions are currently in development and are marked as a release candidate.
 The following table describes the history of changes to the OpenTelemetry feature flag event records as it progresses towards a stable release.
 
 | Original Field Name                     | New Field Name                | Semantic Convention Release                                                            |
@@ -140,3 +141,4 @@ The following table describes the history of changes to the OpenTelemetry featur
 
 [otel-ff-events]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
 [otel-span-event-deprecation-plan]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/4430-span-event-api-deprecation-plan.md
+[otle-record-error]: https://opentelemetry.io/docs/specs/semconv/general/recording-errors/
