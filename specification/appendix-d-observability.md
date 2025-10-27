@@ -72,7 +72,7 @@ Telemetry hooks can emit OpenTelemetry signals in three distinct ways:
 
 #### Before Stage
 
-The `before` hook stage is primarily used by standalone span hooks to create and store spans. When creating spans, it's recommended to store them in hook data using a consistent, documented key for easy retrieval in later stages.
+The `before` hook stage is primarily used by standalone span hooks to create and store spans. When creating spans, it's recommended to use the name `feature_flag.evaluation` and store them in hook data using a consistent, documented key for easy retrieval in later stages.
 
 #### Error Stage
 
@@ -88,7 +88,7 @@ When building telemetry attributes, implementations should extract and map well-
 
 ### Value Handling and Privacy
 
-Flag values can contain sensitive data, so implementations should provide configuration to control whether values are included in telemetry signals. A safe default that protects potentially sensitive data is recommended. When values are included, they need to be serialized appropriately for the telemetry backend.
+Flag values can contain large or sensitive data, so implementations should provide configuration to control whether values are included in telemetry signals. It's the users' responsibility to manage this configuration. When values are included, they need to be serialized appropriately for OpenTelemetry.
 
 Consider providing mechanisms to redact or obfuscate sensitive flag values, along with size limits to prevent telemetry bloat. This helps balance observability needs with privacy and performance concerns.
 
