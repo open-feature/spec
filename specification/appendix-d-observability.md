@@ -80,7 +80,7 @@ The `error` hook stage records exception information unless explicitly configure
 
 #### Finally Stage
 
-The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the attribute mapping tables above. It's also responsible for proper resource cleanup (like ending spans or closing connections) while ensuring it doesn't throw exceptions that could affect flag evaluation.
+The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the attribute mapping tables above. It's also responsible for proper resource cleanup (like ending spans or closing connections).
 
 ### Attribute Transformations
 
@@ -96,15 +96,14 @@ Consider providing mechanisms to redact or obfuscate sensitive flag values, alon
 
 For consistency across implementations, consider supporting a common set of configuration options:
 
-- `excludeExceptions` (boolean): Whether to exclude exception recording in telemetry
-- `includeValue` (boolean): Whether to include flag values in telemetry signals
-- `maxValueLength` (integer): Maximum size for flag values before redaction
-- `shouldRedact` (function): Custom function to determine value redaction
 - `attributeMapper` (function): Custom function to add additional attributes to the signal
+- `excludeAttributes` (list): List of attribute keys to exclude from the signal
+- `excludeExceptions` (boolean): Whether to omit exception details from error signals
+- `eventMutator` (function): Custom function to modify event attributes before sending
 
 ### Error Handling
 
-Hooks should be designed to never throw exceptions that interrupt flag evaluation. Any internal errors can be logged at appropriate levels (debug/trace) without affecting application execution. While the OpenFeature SDK has error handling to capture hook exceptions, it's best practice to handle errors gracefully within the hook itself.
+Hooks should be designed to never throw exceptions that interrupt flag evaluation. Any internal errors can be logged at appropriate levels (debug/trace) without affecting application execution.
 
 ### Implementation Patterns
 
