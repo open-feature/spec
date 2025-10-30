@@ -19,7 +19,7 @@ sidebar_position: 0
 - [Tracking](./sections/06-tracking.md)
 - [Appendix A: Included Utilities](./appendix-a-included-utilities.md)
 - [Appendix B: Gherkin Suites](./appendix-b-gherkin-suites.md)
-- [Appendix C: OFREP](./appendix-c-ofrep.md)
+- [Appendix C: OFREP](./appendix-c/index.md)
 - [Appendix D: Observability](./appendix-d-observability.md)
 
 ## Conformance
