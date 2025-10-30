@@ -141,4 +141,4 @@ The following table describes the history of changes to the OpenTelemetry featur
 
 [otel-ff-events]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
 [otel-span-event-deprecation-plan]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/4430-span-event-api-deprecation-plan.md
-[otle-record-error]: https://opentelemetry.io/docs/specs/semconv/general/recording-errors/
+[otel-record-error]: https://opentelemetry.io/docs/specs/semconv/general/recording-errors/
