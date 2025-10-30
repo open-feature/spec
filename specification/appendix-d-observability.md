@@ -76,7 +76,7 @@ The `before` hook stage is primarily used by standalone span hooks to create and
 
 #### Error Stage
 
-The `error` hook stage records exception information unless explicitly configured to exclude it. Implementations typically use [OpenTelemetry's standard exception][otle-record-error] recording semantics (`recordException` for spans, exception log events for event logging). Configuration options like `excludeExceptions` allow users to control this behavior based on their needs.
+The `error` hook stage records exception information unless explicitly configured to exclude it. Implementations typically use [OpenTelemetry's standard exception][otel-record-error] recording semantics (`recordException` for spans, exception log events for event logging). Configuration options like `excludeExceptions` allow users to control this behavior based on their needs.
 
 #### Finally Stage
 
