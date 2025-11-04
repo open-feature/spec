@@ -98,7 +98,7 @@ For consistency across implementations, consider supporting a common set of conf
 
 - `attributeMapper` (function): Custom function to add additional attributes to the signal
 - `excludeAttributes` (list): List of attribute keys to exclude from the signal
-- `excludeExceptions` (boolean): Whether to omit [exception details][otel-exception-details] from error signals using
+- `excludeExceptions` (boolean): Whether to omit [exception details][otel-exception-details] from error signals
 - `eventMutator` (function): Custom function to modify event attributes before sending
 
 ### Error Handling
