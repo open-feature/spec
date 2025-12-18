@@ -4,6 +4,9 @@ MD033:
   allowed_elements:
     - summary
     - details
+    - br
+    - li
+    - ul
 MD024:
   siblings_only: true
 MD025:
