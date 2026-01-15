@@ -382,7 +382,7 @@ This `flag metadata` field is intended as a mechanism for providers to surface a
 
 > The implementation language supports a mechanism for marking data as immutable.
 
-##### Conditional Requirement 1.4.14.1
+##### Conditional Requirement 1.4.15.1
 
 > Condition: `Flag metadata` **MUST** be immutable.
 
