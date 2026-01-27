@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,214,169
+/open-feature/spec/tree/main/specification,32,25
+/open-feature/spec/issues/359,32,14
+/open-feature/spec/pull/360,20,6
+/open-feature/spec/commits/main,18,5
+/open-feature/spec/issues,14,10
+/open-feature/spec/pulls,12,7
+/open-feature/spec/blob/main/specification/sections/01-flag-evaluation.md,10,8
+/open-feature/spec/blob/main/specification/sections/02-providers.md,10,7
+/open-feature/spec/pull/360/changes,9,5
