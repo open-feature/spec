@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,218,173
+/open-feature/spec/tree/main/specification,28,21
+/open-feature/spec/issues/359,20,9
+/open-feature/spec/issues,15,11
+/open-feature/spec/releases/tag/v0.8.0,12,12
+/open-feature/spec/pulls,12,8
+/open-feature/spec/blob/main/specification/glossary.md,11,7
+/open-feature/spec/tree/main/specification/assets/gherkin,11,7
+/open-feature/spec/blob/main/specification/sections/05-events.md,7,5
+/open-feature/spec/blob/main/specification/sections/02-providers.md,7,3
