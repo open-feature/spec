@@ -203,7 +203,7 @@ Pseudorandomly resolve flag values using a context property, such as a targeting
 
 ### Rule
 
-A rule is some criteria or logic used to determine which variant is assigned in an evaluation.
+A rule is some criteria or logic used to assign a variant during an evaluation.
 
 ## SDK Paradigms
 
