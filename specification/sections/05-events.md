@@ -172,10 +172,10 @@ See [provider initialization](./02-providers.md#24-initialization), [setting a p
 ### Event handlers and context reconciliation
 
 Providers built to conform to the static context paradigm feature two additional events: `PROVIDER_RECONCILING` and `PROVIDER_CONTEXT_CHANGED`.
-When the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the SDK emits `PROVIDER_RECONCILING` and transitions the provider into state `RECONCILING`.
+When the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the SDK transitions the provider into state `RECONCILING` and then emits `PROVIDER_RECONCILING`.
 This can be particularly useful for displaying loading indicators while the [evaluation context](./03-evaluation-context.md) is being reconciled.
 
-If the `on context changed` function terminates normally, the SDK emits (`PROVIDER_CONTEXT_CHANGED`) and transitions the provider into the `READY` state, otherwise it emits `PROVIDER_ERROR` and transitions the provider into `ERROR` state.
+If the `on context changed` function terminates normally, the SDK transitions the provider into the `READY` state and then emits `PROVIDER_CONTEXT_CHANGED`; otherwise it transitions the provider into the `ERROR` state and then emits `PROVIDER_ERROR`.
 The `PROVIDER_CONTEXT_CHANGED` is used to signal that the associated context has been changed, and flags should be re-evaluated.
 This can be particularly useful for triggering UI repaints in multiple components when one component updates the [evaluation context](./03-evaluation-context.md).
 
@@ -230,7 +230,7 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 #### Requirement 5.3.5
 
-> If the provider emits an event, the value of the client's `provider status` **MUST** be updated accordingly.
+> If the provider emits an event, the value of the client's `provider status` **MUST** be updated to the status associated with that event **before** the SDK invokes any event handlers for that event, so that handlers observe a consistent status.
 
 Some providers may emit events spontaneously, based on changes in their internal state (connections, caches, etc).
 The SDK must update its internal representation of the provider's state accordingly:
