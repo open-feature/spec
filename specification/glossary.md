@@ -128,10 +128,7 @@ An identifier which logically binds clients with providers, allowing for multipl
 
 ### Isolated API Instance
 
-An independent, non-singleton instance of the [Feature Flag API](#feature-flag-api) created via a factory function.
-Each isolated instance maintains its own state, including providers, evaluation context, hooks, and event handlers.
-Isolated instances do not share state with the global singleton or with each other.
-Intended for advanced use cases such as micro-frontend architectures, dependency injection frameworks, and testing scenarios.
+An independent, non-singleton instance of the [Feature Flag API](#feature-flag-api) created via a factory function. Each isolated instance maintains its own state, including providers, evaluation context, hooks, and event handlers. Isolated instances do not share state with the global singleton or with each other. Intended for advanced use cases such as micro-frontend architectures, dependency injection frameworks, and testing scenarios.
 
 ### Integration
 
