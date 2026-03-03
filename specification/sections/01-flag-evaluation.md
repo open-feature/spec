@@ -574,34 +574,10 @@ import { createIsolatedOpenFeatureAPI } from '@openfeature/web-sdk/isolated';
 
 #### Requirement 1.8.4
 
-> A `provider` instance **MUST NOT** be registered with more than one `API` instance simultaneously.
+> A `provider` instance **SHOULD NOT** be registered with more than one `API` instance simultaneously.
 
-Because the `API` instance manages the [lifecycle](./02-providers.md) of its associated providers (including initialization, shutdown, and event handling), binding a `provider` to more than one `API` instance could result in undefined behavior. A `provider` instance **MAY** be registered with multiple `domains` within a single `API` instance.
+Because the `API` instance manages the [lifecycle](./02-providers.md) of its associated providers (including initialization, shutdown, and event handling), binding a `provider` to more than one `API` instance could result in undefined behavior.
+A `provider` instance can be registered with multiple `domains` within a single `API` instance.
+When a provider is no longer associated with an `API` instance, it can be registered to another. 
 
 See [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.
-
-#### Requirement 1.8.5
-
-> The `provider mutator` **MUST** indicate an error if the specified `provider` instance is already bound to a different `API` instance.
-
-Implementations indicate an error in a manner idiomatic to the language in use (returning an error, throwing an exception, etc).
-
-```java
-// example: registering a provider already bound to another instance results in an error
-OpenFeatureAPI isolatedA = createIsolatedOpenFeatureAPI();
-OpenFeatureAPI isolatedB = createIsolatedOpenFeatureAPI();
-
-Provider myProvider = new MyProvider();
-isolatedA.setProvider(myProvider);
-isolatedB.setProvider(myProvider); // error: provider is already bound to a different API instance
-```
-
-#### Requirement 1.8.6
-
-> A `provider` **MUST** be unbound from an `API` instance when it is no longer registered with that instance.
-
-A `provider` is no longer registered when it has been replaced (by setting a new `provider` for the same `domain`), when `clearProviders` has been called, or when the `API`'s `shutdown` function has been called.
-Providers which remain registered under other `domains` within the same `API` instance are not unbound.
-Once unbound, a `provider` instance may be registered with any `API` instance.
-
-See [shutdown](#16-shutdown), [setting a provider](#setting-a-provider) for details.

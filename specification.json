@@ -389,22 +389,8 @@
         {
             "id": "Requirement 1.8.4",
             "machine_id": "requirement_1_8_4",
-            "content": "A `provider` instance MUST NOT be registered with more than one `API` instance simultaneously.",
-            "RFC 2119 keyword": "MUST NOT",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.8.5",
-            "machine_id": "requirement_1_8_5",
-            "content": "The `provider mutator` MUST indicate an error if the specified `provider` instance is already bound to a different `API` instance.",
-            "RFC 2119 keyword": "MUST",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.8.6",
-            "machine_id": "requirement_1_8_6",
-            "content": "A `provider` MUST be unbound from an `API` instance when it is no longer registered with that instance.",
-            "RFC 2119 keyword": "MUST",
+            "content": "A `provider` instance SHOULD NOT be registered with more than one `API` instance simultaneously.",
+            "RFC 2119 keyword": "SHOULD NOT",
             "children": []
         },
         {
