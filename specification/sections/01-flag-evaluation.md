@@ -530,3 +530,54 @@ see: [error codes](../types.md#error-code)
 > The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
 Regardless of the success of the provider's `shutdown` function, the `provider status` should convey the provider is no longer ready to use once the shutdown function terminates.
+
+### 1.8. Isolated API Instances
+
+[![experimental](https://img.shields.io/static/v1?label=Status&message=experimental&color=orange)](https://github.com/open-feature/spec/tree/main/specification#experimental)
+
+While the `API` [functions as a global singleton](#requirement-111) in the default case, certain use cases require independent instances of the `API` with fully isolated state. Examples include micro-frontend architectures (where separately developed applications coexist in a single runtime), dependency injection frameworks and IoC containers (which manage object lifecycles outside the singleton's scope), testing scenarios (where parallel tests mutating shared state can interfere with each other), and server-side applications composed of multiple submodules each requiring distinct providers.
+
+#### Requirement 1.8.1
+
+> The `API` **MUST** expose a factory function which creates and returns a new, independent instance of the `API`.
+
+Each instance returned by this factory function maintains its own state, including providers, `evaluation context`, hooks, event handlers, and transaction context propagators.
+Instances created by the factory function do not share state with the "default" global singleton or with each other.
+
+```java
+// example factory function
+OpenFeatureAPI isolated = createIsolatedOpenFeatureAPI();
+isolated.setProvider(new MyProvider());
+Client client = isolated.getClient();
+```
+
+See [application integrator](../glossary.md#application-integrator), [isolated API instance](../glossary.md#isolated-api-instance) for details.
+
+#### Requirement 1.8.2
+
+> Instances returned by the factory function **MUST** conform to the same `API` contract as the global singleton, including flag evaluation, provider management, context, hooks, events, and shutdown functionality.
+
+An isolated `API` instance is functionally equivalent to the global singleton, but with independent state.
+Application code which uses a `client` obtained from an isolated instance behaves identically to code using a `client` from the global singleton.
+
+#### Requirement 1.8.3
+
+> The factory function for creating isolated instances **SHOULD** be housed in a distinct module, import path, package, or namespace from the global singleton `API`.
+
+The factory function should be intentionally less discoverable than the default singleton, reducing the risk of `application authors` inadvertently creating isolated instances when the singleton would be more appropriate.
+The distinct import path serves as an explicit signal that the consumer is opting into advanced, non-default behavior.
+
+```typescript
+// example: the factory function is accessed from a distinct module
+import { createIsolatedOpenFeatureAPI } from '@openfeature/web-sdk/isolated';
+```
+
+#### Requirement 1.8.4
+
+> A `provider` instance **SHOULD NOT** be registered with more than one `API` instance simultaneously.
+
+Because the `API` instance manages the [lifecycle](./02-providers.md) of its associated providers (including initialization, shutdown, and event handling), binding a `provider` to more than one `API` instance could result in undefined behavior.
+A `provider` instance can be registered with multiple `domains` within a single `API` instance.
+When a provider is no longer associated with an `API` instance, it can be registered to another. 
+
+See [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.
