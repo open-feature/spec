@@ -290,7 +290,7 @@
         {
             "id": "Requirement 1.6.2",
             "machine_id": "requirement_1_6_2",
-            "content": "The API's `shutdown` function MUST reset all state of the API, removing all hooks, event handlers, and providers.",
+            "content": "The API's `shutdown` function MUST reset all state of the API, removing all hooks, event handlers, evaluation context, transaction context propagators, and providers.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

@@ -399,7 +399,7 @@ See [hooks](./04-hooks.md) for details.
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
 
 The API's `shutdown` function defines a means of graceful shutdown, calling the `shutdown` function on all providers, allowing them to flush telemetry, clean up connections, and release any relevant resources.
-It also provides a means of resetting the API object to its default state, removing all hooks, event handlers, providers, and setting a "No-op provider"; this is useful for testing purposes.
+It also provides a means of resetting the API object to its default state, removing all hooks, event handlers, evaluation context, transaction context propagators, providers, and setting a "No-op provider"; this is useful for testing purposes.
 It's recommended that application-authors call this function on application shutdown, and after the completion of test suites which make use of the SDK.
 
 #### Requirement 1.6.1
@@ -414,7 +414,7 @@ see: [`shutdown`](./02-providers.md#25-shutdown)
 
 #### Requirement 1.6.2
 
-> The API's `shutdown` function **MUST** reset all state of the API, removing all hooks, event handlers, and providers.
+> The API's `shutdown` function **MUST** reset all state of the API, removing all hooks, event handlers, evaluation context, transaction context propagators, and providers.
 
 After shutting down all providers, the `shutdown` function resets the state of the API.
 This is especially useful for testing purposes to restore the API to a known state.
