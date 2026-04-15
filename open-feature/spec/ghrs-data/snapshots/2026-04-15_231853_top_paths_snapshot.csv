@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,220,160
+/open-feature/spec/issues/365,56,10
+/open-feature/spec/issues,32,16
+/open-feature/spec/pulls,31,16
+/open-feature/spec/tree/main/specification,29,24
+/open-feature/spec/discussions,23,19
+/open-feature/spec/commits/main,18,12
+/open-feature/spec/pull/375,17,9
+/open-feature/spec/blob/main/specification/glossary.md,16,8
+/open-feature/spec/blob/main/specification/sections/02-providers.md,13,8
