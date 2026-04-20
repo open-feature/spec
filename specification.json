@@ -290,7 +290,7 @@
         {
             "id": "Requirement 1.6.2",
             "machine_id": "requirement_1_6_2",
-            "content": "The API's `shutdown` function MUST reset all state of the API, removing all hooks, event handlers, and providers.",
+            "content": "The API's `shutdown` function MUST reset all state of the API, removing all hooks, event handlers, evaluation context, transaction context propagators, and providers.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -363,6 +363,34 @@
             "machine_id": "requirement_1_7_9",
             "content": "The client's `provider status` accessor MUST indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.",
             "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.8.1",
+            "machine_id": "requirement_1_8_1",
+            "content": "The `API` MUST expose a factory function which creates and returns a new, independent instance of the `API`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.8.2",
+            "machine_id": "requirement_1_8_2",
+            "content": "Instances returned by the factory function MUST conform to the same `API` contract as the global singleton, including flag evaluation, provider management, context, hooks, events, and shutdown functionality.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.8.3",
+            "machine_id": "requirement_1_8_3",
+            "content": "The factory function for creating isolated instances SHOULD be housed in a distinct module, import path, package, or namespace from the global singleton `API`.",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
+            "id": "Requirement 1.8.4",
+            "machine_id": "requirement_1_8_4",
+            "content": "A `provider` instance SHOULD NOT be registered with more than one `API` instance simultaneously.",
+            "RFC 2119 keyword": "SHOULD NOT",
             "children": []
         },
         {
