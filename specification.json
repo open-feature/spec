@@ -1118,7 +1118,7 @@
         {
             "id": "Requirement 5.3.5",
             "machine_id": "requirement_5_3_5",
-            "content": "If the provider emits an event, the value of the client's `provider status` MUST be updated accordingly.",
+            "content": "If the provider emits an event, the value of the client's `provider status` MUST be updated to the status associated with that event **before** the SDK invokes any event handlers for that event, so that handlers observe a consistent status.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
