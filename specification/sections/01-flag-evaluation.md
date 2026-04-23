@@ -477,9 +477,9 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 1.7.2.1
 
-> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the `provider status` accessor must support possible value `RECONCILING`.
+> In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the `provider status` accessor **MUST** support possible value `RECONCILING`.
 
-In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
+In the static context paradigm, the implementation **MUST** define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
 
 #### Requirement 1.7.3
 

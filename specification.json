@@ -310,8 +310,8 @@
                 {
                     "id": "Conditional Requirement 1.7.2.1",
                     "machine_id": "conditional_requirement_1_7_2_1",
-                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the `provider status` accessor must support possible value `RECONCILING`.",
-                    "RFC 2119 keyword": null,
+                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the `provider status` accessor MUST support possible value `RECONCILING`.",
+                    "RFC 2119 keyword": "MUST",
                     "children": []
                 }
             ]
