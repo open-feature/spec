@@ -12,4 +12,5 @@ MD024:
 MD025:
   front_matter_title: ""
 MD028: false # no blank lines in block quote - disabling b/c it fires on 2 consecutive block quotes :/
+# MD060: false # table column style (compact vs aligned) - can disable if table formatting becomes a maintenance burden
 
