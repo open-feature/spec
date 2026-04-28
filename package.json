@@ -2,9 +2,12 @@
   "name": "@openfeature/specification",
   "private": true,
   "devDependencies": {
-    "markdown-link-check": "^3.10.2",
+    "markdown-link-check": "^3.14.2",
     "markdown-toc": "^1.2.0",
-    "markdownlint-cli": "^0.44.0",
+    "markdownlint-cli": "^0.48.0",
     "prettier": "^3.0.0"
+  },
+  "overrides": {
+    "lodash.template": "^4.18.0"
   }
 }
