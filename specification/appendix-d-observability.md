@@ -113,6 +113,15 @@ In object-oriented languages, you might find it helpful to create a base hook cl
 
 This pattern can reduce code duplication and ensure consistency across different hook implementations, though it's not required.
 
+### Propagation Metadata
+
+Feature Flags are propagated through different systems with different methods. Often these updates have an asynchronous nature to the evaluation and do not correlate directly (eg. cached values or in-process evaluations). For distributed systems it is important to reflect how changes are populated to all systems, and how those correlate with evaluations. In a simple manner the version could be used to achieve this, but it offers a more complex solution to correlate the data. Instead we are defining two additional metadata properties `propagationTraceId` and `propagationSpanId` which can be used to link evaluation spans to propagation spans.
+
+| Flag Metadata Key       | Requirement level | Type     | Notes                                  |
+| ----------------------- | ----------------- | -------- | -------------------------------------- |
+| `propagationSpanId`     | `Optional`        | `string` | The span id of the propagation event.  |
+| `propagationTraceId`    | `Optional`        | `string` | The trace id of the propagation event. |
+
 ## History
 
 Feature flags in the OpenTelemetry semantic conventions are currently in development and are marked as a release candidate. The following table describes the history of changes to the OpenTelemetry feature flag event records as it progresses towards a stable release.
