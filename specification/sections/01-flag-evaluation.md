@@ -463,7 +463,7 @@ stateDiagram-v2
 
 > The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.
 
-The client's `provider status` accessor delegates to the associated provider's `status` accessor, which the provider keeps in sync with the success/failure of the last lifecycle method (`initialize`, `shutdown`, `on context change`) or emitted event.
+The client's `provider status` accessor delegates to the associated provider's `status` accessor, which the provider keeps in sync with the last emitted event.
 
 see [provider status](../types.md#provider-status), [provider status requirements](./02-providers.md#28-provider-status)
 
