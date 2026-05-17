@@ -305,3 +305,60 @@ The track function performs side effects required to record the `tracking event`
 Providers should be careful to complete any communication or flush any relevant uncommitted tracking data before they shut down.
 
 See [shutdown](#25-shutdown).
+
+### 2.8. Provider status
+
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+
+Providers own their current status and any events associated with status transitions.
+This allows providers to atomically update their status and emit the corresponding event, avoiding races between lifecycle methods terminating and events or status updates produced by concurrent work (such as background threads or pollers) maintained by the provider.
+
+SDKs may provide a base class, wrapper, or other mechanism that maintains status on behalf of provider implementations which do not define it natively, for migration purposes.
+
+see: [provider lifecycle management](./01-flag-evaluation.md#17-provider-lifecycle-management), [provider events](./05-events.md#51-provider-events)
+
+#### Requirement 2.8.1
+
+> The provider **MUST** define a `status` accessor which indicates the provider's current readiness, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.
+
+The `status` accessor reflects the provider's readiness to evaluate flags.
+The client's `provider status` accessor (see [requirement 1.7.1](./01-flag-evaluation.md#requirement-171)) delegates to this accessor.
+
+see: [provider status](../types.md#provider-status)
+
+#### Condition 2.8.2
+
+> The implementation uses the static-context paradigm.
+
+see: [static-context paradigm](../glossary.md#static-context-paradigm)
+
+##### Conditional Requirement 2.8.2.1
+
+> In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the provider's `status` accessor **MUST** support possible value `RECONCILING`.
+
+In the static-context paradigm, the provider must define a `status` value indicating that it is reconciling its internal state due to a context change.
+
+see: [provider context reconciliation](#26-provider-context-reconciliation)
+
+#### Requirement 2.8.3
+
+> The provider's `status` **MUST** be `NOT_READY` before `initialize` is called and after `shutdown` terminates.
+
+Providers which do not define an `initialize` function are assumed to be ready at all times, and their `status` may be `READY` from construction.
+
+see: [initialization](#24-initialization), [shutdown](#25-shutdown)
+
+#### Requirement 2.8.4
+
+> The provider's `status` accessor **MUST** be safe for concurrent access.
+
+In languages supporting multi-threaded execution, the provider must ensure that concurrent reads of the `status` accessor do not observe torn or inconsistent values.
+
+#### Requirement 2.8.5
+
+> Status changes and any associated event emissions **MUST** be atomic from the perspective of external observers.
+
+When a provider transitions between statuses and emits an event associated with that transition, external observers (such as SDK event handlers) must observe a consistent view: the updated `status` value and the emitted event are visible together.
+This prevents ordering anomalies where, for example, a `PROVIDER_READY` handler runs while `status` still indicates `NOT_READY` or `ERROR`, or where the provider transitions out of a status before the associated event is dispatched.
+
+see: [provider events](./05-events.md#51-provider-events)

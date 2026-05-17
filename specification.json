@@ -310,8 +310,8 @@
                 {
                     "id": "Conditional Requirement 1.7.2.1",
                     "machine_id": "conditional_requirement_1_7_2_1",
-                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.",
-                    "RFC 2119 keyword": null,
+                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the `provider status` accessor MUST support possible value `RECONCILING`.",
+                    "RFC 2119 keyword": "MUST",
                     "children": []
                 }
             ]
@@ -319,21 +319,21 @@
         {
             "id": "Requirement 1.7.3",
             "machine_id": "requirement_1_7_3",
-            "content": "The client's `provider status` accessor MUST indicate `READY` if the `initialize` function of the associated provider terminates normally.",
+            "content": "The `provider status` MUST indicate `READY` if the `initialize` function of the associated provider terminates normally.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.7.4",
             "machine_id": "requirement_1_7_4",
-            "content": "The client's `provider status` accessor MUST indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.",
+            "content": "The `provider status` MUST indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 1.7.5",
             "machine_id": "requirement_1_7_5",
-            "content": "The client's `provider status` accessor MUST indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.",
+            "content": "The `provider status` MUST indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -361,7 +361,7 @@
         {
             "id": "Requirement 1.7.9",
             "machine_id": "requirement_1_7_9",
-            "content": "The client's `provider status` accessor MUST indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.",
+            "content": "The `provider status` MUST indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -562,6 +562,49 @@
             "machine_id": "condition_2_7_1",
             "content": "The `provider` MAY define a function for tracking the occurrence of a particular user action or application state, with parameters `tracking event name` (string, required), `evaluation context` (optional) and `tracking event details` (optional) which returns nothing.",
             "RFC 2119 keyword": "MAY",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.8.1",
+            "machine_id": "requirement_2_8_1",
+            "content": "The provider MUST define a `status` accessor which indicates the provider's current readiness, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Condition 2.8.2",
+            "machine_id": "condition_2_8_2",
+            "content": "The implementation uses the static-context paradigm.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 2.8.2.1",
+                    "machine_id": "conditional_requirement_2_8_2_1",
+                    "content": "In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the provider's `status` accessor MUST support possible value `RECONCILING`.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "Requirement 2.8.3",
+            "machine_id": "requirement_2_8_3",
+            "content": "The provider's `status` MUST be `NOT_READY` before `initialize` is called and after `shutdown` terminates.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.8.4",
+            "machine_id": "requirement_2_8_4",
+            "content": "The provider's `status` accessor MUST be safe for concurrent access.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
+            "id": "Requirement 2.8.5",
+            "machine_id": "requirement_2_8_5",
+            "content": "Status changes and any associated event emissions MUST be atomic from the perspective of external observers.",
+            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
@@ -984,7 +1027,7 @@
         {
             "id": "Requirement 5.1.1",
             "machine_id": "requirement_5_1_1",
-            "content": "The `provider` MAY define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload.",
+            "content": "The `provider` MAY define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED`, `PROVIDER_STALE`, `PROVIDER_RECONCILING`, and `PROVIDER_CONTEXT_CHANGED`, with a `provider event details` payload.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
@@ -1118,7 +1161,7 @@
         {
             "id": "Requirement 5.3.5",
             "machine_id": "requirement_5_3_5",
-            "content": "If the provider emits an event, the value of the client's `provider status` MUST be updated to the status associated with that event **before** the SDK invokes any event handlers for that event, so that handlers observe a consistent status.",
+            "content": "When a provider emits an event, the value of the `provider status` MUST reflect the status associated with that event **before** any event handlers for that event are invoked, so that handlers observe a consistent status.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

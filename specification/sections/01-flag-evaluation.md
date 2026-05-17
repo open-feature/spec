@@ -421,8 +421,8 @@ This is especially useful for testing purposes to restore the API to a known sta
 
 ### 1.7. Provider Lifecycle Management
 
-The implementation maintains an internal representation of the state of configured providers, tracking the lifecycle of each provider.
-This state of the provider is exposed on associated `clients`.
+Providers own their current status (see [provider status](./02-providers.md#28-provider-status)).
+The `client`'s `provider status` accessor delegates to the associated provider's `status` accessor, and SDKs surface provider-emitted events to registered handlers.
 
 The diagram below illustrates the possible states and transitions of the `state` field for a provider during the provider lifecycle.
 
@@ -463,9 +463,9 @@ stateDiagram-v2
 
 > The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.
 
-The SDK at all times maintains an up-to-date state corresponding to the success/failure of the last lifecycle method (`initialize`, `shutdown`, `on context change`) or emitted event.
+The client's `provider status` accessor delegates to the associated provider's `status` accessor, which the provider keeps in sync with the last emitted event.
 
-see [provider status](../types.md#provider-status)
+see [provider status](../types.md#provider-status), [provider status requirements](./02-providers.md#28-provider-status)
 
 #### Condition 1.7.2
 
@@ -477,25 +477,25 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 1.7.2.1
 
-> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.
+> In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the `provider status` accessor **MUST** support possible value `RECONCILING`.
 
-In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
+In the static context paradigm, the implementation **MUST** define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
 
 #### Requirement 1.7.3
 
-> The client's `provider status` accessor **MUST** indicate `READY` if the `initialize` function of the associated provider terminates normally.
+> The `provider status` **MUST** indicate `READY` if the `initialize` function of the associated provider terminates normally.
 
 Once the provider has initialized, the `provider status` should indicate the provider is ready to be used to evaluate flags.
 
 #### Requirement 1.7.4
 
-> The client's `provider status` accessor **MUST** indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.
+> The `provider status` **MUST** indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.
 
 If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
 
 #### Requirement 1.7.5
 
-> The client's `provider status` accessor **MUST** indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.
+> The `provider status` **MUST** indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.
 
 If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
 
@@ -527,7 +527,7 @@ see: [error codes](../types.md#error-code)
 
 #### Requirement 1.7.9
 
-> The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
+> The `provider status` **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
 Regardless of the success of the provider's `shutdown` function, the `provider status` should convey the provider is no longer ready to use once the shutdown function terminates.
 
