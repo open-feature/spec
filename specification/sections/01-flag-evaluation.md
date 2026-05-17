@@ -486,21 +486,18 @@ In the static context paradigm, the implementation **MUST** define a `provider s
 > The `provider status` **MUST** indicate `READY` if the `initialize` function of the associated provider terminates normally.
 
 Once the provider has initialized, the `provider status` should indicate the provider is ready to be used to evaluate flags.
-The provider is responsible for its own status transition; the client's `provider status` accessor reflects it.
 
 #### Requirement 1.7.4
 
 > The `provider status` **MUST** indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.
 
 If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
-The provider is responsible for its own status transition; the client's `provider status` accessor reflects it.
 
 #### Requirement 1.7.5
 
 > The `provider status` **MUST** indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.
 
 If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
-The provider is responsible for its own status transition; the client's `provider status` accessor reflects it.
 
 #### Requirement 1.7.6
 
@@ -533,7 +530,6 @@ see: [error codes](../types.md#error-code)
 > The `provider status` **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
 Regardless of the success of the provider's `shutdown` function, the `provider status` should convey the provider is no longer ready to use once the shutdown function terminates.
-The provider is responsible for its own status transition; the client's `provider status` accessor reflects it.
 
 ### 1.8. Isolated API Instances
 
