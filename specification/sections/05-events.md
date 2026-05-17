@@ -213,8 +213,8 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 > If the provider's `on context changed` function terminates normally, and no other invocations have yet to terminate, associated `PROVIDER_CONTEXT_CHANGED` handlers **MUST** run.
 
-`PROVIDER_CONTEXT_CHANGED` handlers associated with the provider must run after the provider has reconciled its state and returned from the `on context changed` function.
-It's possible that the `on context changed` function is invoked simultaneously or in quick succession; in this case `PROVIDER_CONTEXT_CHANGED` handlers only run after all reentrant invocations have terminated, and the last to terminate was successful (terminated normally).
+The provider must emit `PROVIDER_CONTEXT_CHANGED` after it has successfully reconciled the context.
+The `on context changed` function may be invoked simultaneously or in quick succession, the provider must be prepared for this eventuality.
 
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
@@ -222,8 +222,8 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 > If the provider's `on context changed` function terminates abnormally, and no other invocations have yet to terminate, associated `PROVIDER_ERROR` handlers **MUST** run.
 
-`PROVIDER_ERROR` handlers associated with the provider must run if the `on context changed` function throws or otherwise signals an error.
-It's possible that the `on context changed` function is invoked simultaneously or in quick succession; in this case `PROVIDER_ERROR` handlers only run after all reentrant invocations have terminated, and the last to terminate was unsuccessful (terminated abnormally).
+The provider must emit `PROVIDER_ERROR` if reconciling the context fails.
+The `on context changed` function may be invoked simultaneously or in quick succession, the provider must be prepared for this eventuality.
 
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
