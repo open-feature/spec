@@ -205,7 +205,7 @@ class MyProvider implements Provider {
 If a provider is unable to start up correctly, it should indicate abnormal execution by throwing an exception, returning an error, or otherwise indicating so by means idiomatic to the implementation language.
 If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) the `PROVIDER_FATAL` error code should be used.
 
-see: [error codes](../types.md#error-code)
+see: [error codes](../types.md#error-code), [provider status](#28-provider-status)
 
 ### 2.5. Shutdown
 
@@ -269,6 +269,8 @@ class MyProvider implements Provider {
 }
 ```
 
+see: [provider status](#28-provider-status)
+
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.
 Provider authors may implement a `shutdown` function to perform relevant clean-up actions.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
@@ -305,3 +307,52 @@ The track function performs side effects required to record the `tracking event`
 Providers should be careful to complete any communication or flush any relevant uncommitted tracking data before they shut down.
 
 See [shutdown](#25-shutdown).
+
+### 2.8. Provider status
+
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+
+The SDK derives provider status from events emitted by the provider.
+Providers signal all state transitions by emitting the appropriate event; the SDK updates its internal status accordingly and runs associated handlers.
+
+Providers that do not define lifecycle methods or an event emission mechanism cannot emit events by design; see Condition 2.8.5.
+Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods and an event emission mechanism.
+
+see: [provider lifecycle management](./01-flag-evaluation.md#17-provider-lifecycle-management), [provider events](./05-events.md#51-provider-events)
+
+#### Requirement 2.8.1
+
+> The provider **MUST** emit an event to signal each status transition, including transitions resulting from lifecycle methods (`initialize`, `shutdown`, `on context change`) and spontaneous transitions.
+
+Providers must not rely on the SDK to infer status from lifecycle method return values.
+Instead, the provider emits the appropriate event (e.g. `PROVIDER_READY` after successful initialization) to signal each transition.
+
+see: [provider events](./05-events.md#51-provider-events), [provider event types](../types.md#provider-events)
+
+#### Requirement 2.8.2
+
+> The provider **MUST** emit `PROVIDER_READY` if its `initialize` function terminates normally.
+
+#### Requirement 2.8.3
+
+> The provider **MUST** emit `PROVIDER_ERROR` if its `initialize` function terminates abnormally.
+
+If the error is irrecoverable, the error code must indicate `PROVIDER_FATAL`.
+
+see: [error codes](../types.md#error-code)
+
+#### Requirement 2.8.4
+
+> The provider **MUST** emit `PROVIDER_CONTEXT_CHANGED` if its `on context changed` function terminates normally, and `PROVIDER_ERROR` if it terminates abnormally.
+
+see: [provider context reconciliation](#26-provider-context-reconciliation)
+
+#### Condition 2.8.5
+
+> The provider does not define an `initialize` function or an event emission mechanism.
+
+##### Conditional Requirement 2.8.5.1
+
+> The SDK **MUST** treat such providers as `READY` from registration and **MUST** run `PROVIDER_READY` handlers on their behalf.
+
+Such providers cannot emit their own events by design.
