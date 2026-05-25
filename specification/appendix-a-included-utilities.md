@@ -255,7 +255,7 @@ As soon as a value is returned by a provider, the rest of the operation should s
 #### First Successful Strategy
 
 Similar to "First Match", except that errors from evaluated providers do not halt execution.
-Instead, it will return the first successful result from a provider that has a value (i.e. not `FLAG_NOT_FOUND` or `reason=DISABLED`). If no provider successfully responds with a value, it will throw an error result.
+Instead, it will return the first successful result from a provider that has a value (i.e. not `reason=DISABLED`). If no provider successfully responds with a value, it will throw an error result.
 
 [See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/FirstSuccessfulStrategy.ts)
 
