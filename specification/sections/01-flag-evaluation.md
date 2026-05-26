@@ -237,8 +237,8 @@ MyStruct myStruct = client.getObjectValue<MyStruct>('structured-flag', { text: '
 
 ```java
 int getIntValue(String flag, int defaultValue);
-
-long getFloatValue(String flag, long defaultValue);
+long getLongValue(String flag, long defaultValue);
+double getDoubleValue(String flag, double defaultValue);
 ```
 
 See [types](../types.md) for details.
