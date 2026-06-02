@@ -31,6 +31,7 @@ This document defines some terms that are used across this specification.
   - [Provider](#provider)
   - [Provider Lifecycle](#provider-lifecycle)
   - [Domain](#domain)
+  - [Isolated API Instance](#isolated-api-instance)
   - [Integration](#integration)
   - [Evaluation Context](#evaluation-context)
   - [Transaction Context Propagator](#transaction-context-propagator)
@@ -125,6 +126,10 @@ The possible states and transitions of a provider over the course of its usage, 
 
 An identifier which logically binds clients with providers, allowing for multiple providers to be used simultaneously within a single application. Domain binding is dynamic; it may change over the course of an application's lifetime (i.e.: a client associated with the default provider via an unbound domain will be bound to a new provider if a provider is subsequently assigned to that domain).
 
+### Isolated API Instance
+
+An independent, non-singleton instance of the [Feature Flag API](#feature-flag-api) created via a factory function. Each isolated instance maintains its own state, including providers, evaluation context, hooks, and event handlers. Isolated instances do not share state with the global singleton or with each other. Intended for advanced use cases such as micro-frontend architectures, dependency injection frameworks, and testing scenarios.
+
 ### Integration
 
 An SDK-compliant secondary function that is abstracted by the Feature Flag API, and requires only minimal configuration by the Application Author. Examples include telemetry, tracking, custom logging and monitoring.
@@ -203,7 +208,7 @@ Pseudorandomly resolve flag values using a context property, such as a targeting
 
 ### Rule
 
-A rule is some criteria that's used to determine which variant a particular context should be mapped to.
+A rule is some criteria or logic used to assign a variant during an evaluation.
 
 ## SDK Paradigms
 

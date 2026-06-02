@@ -1,5 +1,10 @@
 {
   "ignorePatterns": [
-    {"pattern": ".*split.io.*"}
+    {
+      "pattern": ".*split.io.*"
+    },
+    {
+      "pattern": ".*openfeature.dev/docs/reference/other-technologies/ofrep/openapi.*"
+    }
   ]
 }

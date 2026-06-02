@@ -488,9 +488,9 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
         And the hook order should be maintained
 
 
-  # Testing immutability requirements (Spec 1.4.15/1.4.14.1)
+  # Testing immutability requirements (Spec 1.4.15/1.4.15.1)
   # Testing: flag metadata must be immutable
-    @immutability @spec-1.4.14.1
+    @immutability @spec-1.4.15.1
     Scenario: Evaluation context immutability
         Given a Boolean-flag with key "boolean-flag" and a fallback value "false"
         And an evaluation context with modifiable data

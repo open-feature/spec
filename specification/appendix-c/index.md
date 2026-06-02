@@ -2,7 +2,7 @@
 id: appendix-c
 title: "Appendix C: OpenFeature Remote Evaluation Protocol"
 description: A unified protocol for feature flagging
-sidebar_position: 5
+sidebar_position: 0
 ---
 
 # Appendix C: OpenFeature Remote Evaluation Protocol
@@ -17,3 +17,7 @@ There is a dedicated [OpenFeature working group](https://github.com/open-feature
 - Reference implementations of the protocol
 
 If you are interested in this initiative, you can join the [`#openfeature-remote-evaluation-protocol`](https://cloud-native.slack.com/archives/C066A48LK35) Slack channel on the [CNCF Slack](https://communityinviter.com/apps/cloud-native/cncf) workspace.
+
+## API Specification
+
+View the full [OFREP API Specification](https://openfeature.dev/docs/reference/other-technologies/ofrep/openapi) with interactive documentation.

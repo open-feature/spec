@@ -49,7 +49,7 @@ The OpenFeature SDK provides a mechanism for interfacing
 with an external evaluation engine in a vendor agnostic way;
 it does **not** itself handle the flag evaluation logic.
 
-An up-to-date SDK compatibility overview can be found [here](https://openfeature.dev/docs/reference/technologies/sdk-compatibility).
+An up-to-date SDK compatibility overview can be found [here](https://openfeature.dev/docs/reference/sdks/sdk-compatibility).
 
 ### Tooling
 
@@ -57,7 +57,8 @@ This specification complies with [RFC 2119](https://datatracker.ietf.org/doc/htm
 
 In accordance with this, some basic tooling (donated graciously by [Diego Hurtado](https://github.com/ocelotl)) has been employed to parse the specification and output a JSON structure of concise requirements, highlighting the particular `RFC 2119` verb in question.
 
-To parse the specification, simply type `make`. Please review the generated JSON files, which will appear as siblings to any of the markdown files in the `/specification` folder.
+To parse the specification, simply type `make`.
+Please review the generated JSON files, which will appear as siblings to any of the markdown files in the `/specification` folder.
 
 ### Style Guide
 

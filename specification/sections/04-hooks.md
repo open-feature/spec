@@ -267,7 +267,7 @@ Given hooks A - H, each implementing the both the `before` and `after` stages, a
 The expected order of execution is:
 
 ```mermaid
-flowchart BT
+flowchart TB
     subgraph FlagResolution [Flag Resolution]
         flagResolution[flagResolution]
     end
