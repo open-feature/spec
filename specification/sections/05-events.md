@@ -33,7 +33,7 @@ see: [domain](../glossary.md#domain)
 
 > The `feature provider` interface **MUST** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED`, `PROVIDER_STALE`, `PROVIDER_RECONCILING`, and `PROVIDER_CONTEXT_CHANGED`, with a `provider event details` payload.
 
-Providers must emit events to signal all state transitions, including those resulting from lifecycle methods (initialize, shutdown, reconciliation).
+Providers must emit events to signal all state transitions, including those resulting from lifecycle methods (initialize, reconciliation).
 The SDK derives provider status from these events.
 Providers without lifecycle methods or an event emission mechanism cannot emit events by design; see [Condition 2.8.5](./02-providers.md#condition-285).
 

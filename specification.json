@@ -553,7 +553,7 @@
         {
             "id": "Requirement 2.8.1",
             "machine_id": "requirement_2_8_1",
-            "content": "The provider MUST emit an event to signal each status transition, including transitions resulting from lifecycle methods (`initialize`, `shutdown`, `on context change`) and spontaneous transitions.",
+            "content": "The provider MUST emit an event to signal each status transition, including transitions resulting from lifecycle methods (`initialize`, `on context changed`) and spontaneous transitions.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

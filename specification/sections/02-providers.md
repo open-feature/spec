@@ -322,7 +322,7 @@ see: [provider lifecycle management](./01-flag-evaluation.md#17-provider-lifecyc
 
 #### Requirement 2.8.1
 
-> The provider **MUST** emit an event to signal each status transition, including transitions resulting from lifecycle methods (`initialize`, `shutdown`, `on context change`) and spontaneous transitions.
+> The provider **MUST** emit an event to signal each status transition, including transitions resulting from lifecycle methods (`initialize`, `on context changed`) and spontaneous transitions.
 
 Providers must not rely on the SDK to infer status from lifecycle method return values.
 Instead, the provider emits the appropriate event (e.g. `PROVIDER_READY` after successful initialization) to signal each transition.
