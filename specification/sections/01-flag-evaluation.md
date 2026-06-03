@@ -501,31 +501,13 @@ see: [provider status requirements](./02-providers.md#28-provider-status), [even
 
 #### Requirement 1.7.6
 
-> The client **MUST** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.
-
-The client defaults and returns the `PROVIDER_NOT_READY` `error code` if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
-The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
-
-see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
-
-#### Requirement 1.7.7
-
-> The client **MUST** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `FATAL`.
-
-The client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
-The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
-
-see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
-
-#### Requirement 1.7.8
-
 > Implementations **SHOULD** propagate the `error code` returned from any provider lifecycle methods.
 
 The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
 
 see: [error codes](../types.md#error-code)
 
-#### Requirement 1.7.9
+#### Requirement 1.7.7
 
 > The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
