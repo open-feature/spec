@@ -214,12 +214,11 @@ see: [error codes](../types.md#error-code)
 When a provider is bound to a [domain](../glossary.md#domain), it may need to scope behavior to that domain, such as partitioning a persistent cache or labeling telemetry, so that multiple providers sharing the same storage do not collide.
 Supplying the `domain` at initialization mirrors how the global `evaluation context` is supplied (see [Requirement 2.4.1](#requirement-241)).
 
-```java
+```typescript
 class MyProvider implements Provider {
   // the global context and the bound domain are passed to the initialization function
-  void initialize(EvaluationContext initialContext, String domain) {
-    this.cacheKeyPrefix = domain; // scope persisted state to this domain
-    this.flagCache = this.restClient.bulkEvaluate(initialContext);
+  async initialize(initialContext: EvaluationContext, domain?: string): Promise<void> {
+    this.domain = domain;
   }
 }
 ```
