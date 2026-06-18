@@ -170,23 +170,26 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.1
 
-> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.
+> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` and the bound `domain` (if any) as arguments and performs initialization logic relevant to the provider.
 
 Many feature flag frameworks or SDKs require some initialization before they can be used.
 They might require the completion of an HTTP request, establishing persistent connections, or starting timers or worker threads.
 The initialization function is an ideal place for such logic.
 
-```java
+The `domain` the provider is registered under is also supplied, allowing the provider to scope domain-specific behavior, such as partitioning a persistent cache, so that multiple providers sharing the same storage do not collide.
+A `provider` instance is initialized only once, even when bound to multiple `domains`; in that case the `domain` supplied is the one under which it was first registered.
+The default provider, which is not bound to a domain, is initialized without one.
+
+```typescript
 // MyProvider implementation of the initialize function defined in Provider
 class MyProvider implements Provider {
   //...
 
-  // the global context is passed to the initialization function
-  void initialize(EvaluationContext initialContext) {
-    /*
-      A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
-    */
-    this.flagCache = this.restClient.bulkEvaluate(initialContext);
+  // the global context and the bound domain are passed to the initialization function
+  async initialize(initialContext: EvaluationContext, domain?: string): Promise<void> {
+    this.domain = domain;
+    // A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
+    this.flagCache = await this.restClient.bulkEvaluate(initialContext);
     this.startPolling();
   }
 
@@ -206,25 +209,6 @@ If a provider is unable to start up correctly, it should indicate abnormal execu
 If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) the `PROVIDER_FATAL` error code should be used.
 
 see: [error codes](../types.md#error-code)
-
-#### Requirement 2.4.3
-
-> The `provider` **MAY** define an initialization function which additionally accepts the `domain` it is registered under, if any.
-
-When a provider is bound to a [domain](../glossary.md#domain), it may need to scope behavior to that domain, such as partitioning a persistent cache or labeling telemetry, so that multiple providers sharing the same storage do not collide.
-Supplying the `domain` at initialization mirrors how the global `evaluation context` is supplied (see [Requirement 2.4.1](#requirement-241)).
-
-```typescript
-class MyProvider implements Provider {
-  // the global context and the bound domain are passed to the initialization function
-  async initialize(initialContext: EvaluationContext, domain?: string): Promise<void> {
-    this.domain = domain;
-  }
-}
-```
-
-A `provider` instance is initialized only once, even when bound to multiple `domains`; in that case the `domain` supplied is the one under which it was first registered.
-The default provider, which is not bound to a domain, is initialized without one.
 
 ### 2.5. Shutdown
 

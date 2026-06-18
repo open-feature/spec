@@ -17,7 +17,7 @@
         {
             "id": "Requirement 1.1.2.2",
             "machine_id": "requirement_1_1_2_2",
-            "content": "The `provider mutator` function MUST invoke the `initialize` function on the newly registered provider before using it to resolve flag values.",
+            "content": "The `provider mutator` function MUST invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the global `evaluation context` and the `domain` the provider is being registered under, if any.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
@@ -33,13 +33,6 @@
             "machine_id": "requirement_1_1_2_4",
             "content": "The `API` SHOULD provide functions to set a provider and wait for the `initialize` function to complete or abnormally terminate.",
             "RFC 2119 keyword": "SHOULD",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.1.2.5",
-            "machine_id": "requirement_1_1_2_5",
-            "content": "When the `provider mutator` invokes a provider's `initialize` function, the `API` MUST supply the `domain` the provider is being registered under, if any.",
-            "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
@@ -517,7 +510,7 @@
         {
             "id": "Requirement 2.4.1",
             "machine_id": "requirement_2_4_1",
-            "content": "The `provider` MAY define an initialization function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.",
+            "content": "The `provider` MAY define an initialization function which accepts the global `evaluation context` and the bound `domain` (if any) as arguments and performs initialization logic relevant to the provider.",
             "RFC 2119 keyword": "MAY",
             "children": []
         },
@@ -535,13 +528,6 @@
                     "children": []
                 }
             ]
-        },
-        {
-            "id": "Requirement 2.4.3",
-            "machine_id": "requirement_2_4_3",
-            "content": "The `provider` MAY define an initialization function which additionally accepts the `domain` it is registered under, if any.",
-            "RFC 2119 keyword": "MAY",
-            "children": []
         },
         {
             "id": "Requirement 2.5.1",

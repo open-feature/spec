@@ -38,7 +38,7 @@ See [provider](./02-providers.md), [creating clients](#creating-clients) for det
 
 #### Requirement 1.1.2.2
 
-> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
+> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the global `evaluation context` and the `domain` the provider is being registered under, if any.
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
 Provider instances which are already active (because they have been bound to another `domain` or otherwise) need not be initialized again.
@@ -75,14 +75,6 @@ Client client = OpenFeatureAPI.getInstance().getClient('domain-1');
 
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
 Implementations indicate an error in a manner idiomatic to the language in use (returning an error, throwing an exception, etc).
-
-#### Requirement 1.1.2.5
-
-> When the `provider mutator` invokes a provider's `initialize` function, the `API` **MUST** supply the `domain` the provider is being registered under, if any.
-
-This allows providers to scope domain-specific behavior, such as partitioning a persistent cache, to the `domain` they are bound to.
-
-See [provider initialization](./02-providers.md#24-initialization), [domain](../glossary.md#domain) for details.
 
 #### Requirement 1.1.3
 
