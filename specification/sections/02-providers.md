@@ -207,6 +207,26 @@ If the error is irrecoverable (perhaps due to bad credentials or invalid configu
 
 see: [error codes](../types.md#error-code)
 
+#### Requirement 2.4.3
+
+> The `provider` **MAY** define an initialization function which additionally accepts the `domain` it is registered under, if any.
+
+When a provider is bound to a [domain](../glossary.md#domain), it may need to scope behavior to that domain, such as partitioning a persistent cache or labeling telemetry, so that multiple providers sharing the same storage do not collide.
+Supplying the `domain` at initialization mirrors how the global `evaluation context` is supplied (see [Requirement 2.4.1](#requirement-241)).
+
+```java
+class MyProvider implements Provider {
+  // the global context and the bound domain are passed to the initialization function
+  void initialize(EvaluationContext initialContext, String domain) {
+    this.cacheKeyPrefix = domain; // scope persisted state to this domain
+    this.flagCache = this.restClient.bulkEvaluate(initialContext);
+  }
+}
+```
+
+A `provider` instance is initialized only once, even when bound to multiple `domains`; in that case the `domain` supplied is the one under which it was first registered.
+The default provider, which is not bound to a domain, is initialized without one.
+
 ### 2.5. Shutdown
 
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)

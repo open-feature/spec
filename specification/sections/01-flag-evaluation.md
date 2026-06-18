@@ -76,6 +76,14 @@ Client client = OpenFeatureAPI.getInstance().getClient('domain-1');
 Though it's possible to use [events](./05-events.md) to await provider readiness, such functions can make things simpler for `application authors` and `integrators`.
 Implementations indicate an error in a manner idiomatic to the language in use (returning an error, throwing an exception, etc).
 
+#### Requirement 1.1.2.5
+
+> When the `provider mutator` invokes a provider's `initialize` function, the `API` **MUST** supply the `domain` the provider is being registered under, if any.
+
+This allows providers to scope domain-specific behavior, such as partitioning a persistent cache, to the `domain` they are bound to.
+
+See [provider initialization](./02-providers.md#24-initialization), [domain](../glossary.md#domain) for details.
+
 #### Requirement 1.1.3
 
 > The `API` **MUST** provide a function to bind a given `provider` to one or more clients using a `domain`. If the domain already has a bound provider, it is overwritten with the new mapping.
