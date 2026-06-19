@@ -180,16 +180,18 @@ The `domain` the provider is registered under is also supplied, allowing the pro
 A `provider` instance is initialized only once, even when bound to multiple `domains`; in that case the `domain` supplied is the one under which it was first registered.
 The default provider, which is not bound to a domain, is initialized without one.
 
-```typescript
+```java
 // MyProvider implementation of the initialize function defined in Provider
 class MyProvider implements Provider {
   //...
 
   // the global context and the bound domain are passed to the initialization function
-  async initialize(initialContext: EvaluationContext, domain?: string): Promise<void> {
+  void initialize(EvaluationContext initialContext, String domain) {
     this.domain = domain;
-    // A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
-    this.flagCache = await this.restClient.bulkEvaluate(initialContext);
+    /*
+      A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
+    */
+    this.flagCache = this.restClient.bulkEvaluate(initialContext);
     this.startPolling();
   }
 
