@@ -71,6 +71,21 @@
             "children": []
         },
         {
+            "id": "Condition 1.1.8",
+            "machine_id": "condition_1_1_8",
+            "content": "The `provider` declares that it is `domain-scoped`.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 1.1.8.1",
+                    "machine_id": "conditional_requirement_1_1_8_1",
+                    "content": "The `provider mutator` MUST NOT bind a `domain-scoped` provider instance to more than one `domain`, rejecting any attempt to bind an already-bound instance to an additional `domain`.",
+                    "RFC 2119 keyword": "MUST NOT",
+                    "children": []
+                }
+            ]
+        },
+        {
             "id": "Requirement 1.2.1",
             "machine_id": "requirement_1_2_1",
             "content": "The client MUST provide a method to add `hooks` which accepts one or more API-conformant `hooks`, and appends them to the collection of any previously added hooks. When new hooks are added, previously added hooks are not removed.",
@@ -528,6 +543,13 @@
                     "children": []
                 }
             ]
+        },
+        {
+            "id": "Requirement 2.4.3",
+            "machine_id": "requirement_2_4_3",
+            "content": "The `provider` MAY declare that it is `domain-scoped`, indicating that it maintains state specific to a single `domain`, such as a persistent cache, that cannot be shared across `domains`.",
+            "RFC 2119 keyword": "MAY",
+            "children": []
         },
         {
             "id": "Requirement 2.5.1",
