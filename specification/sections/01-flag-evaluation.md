@@ -38,7 +38,7 @@ See [provider](./02-providers.md), [creating clients](#creating-clients) for det
 
 #### Requirement 1.1.2.2
 
-> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the global `evaluation context` and the `domain` the provider is being registered under, if any.
+> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the bound `domain`, if any.
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
 Provider instances which are already active (because they have been bound to another `domain` or otherwise) need not be initialized again.

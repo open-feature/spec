@@ -17,7 +17,7 @@
         {
             "id": "Requirement 1.1.2.2",
             "machine_id": "requirement_1_1_2_2",
-            "content": "The `provider mutator` function MUST invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the global `evaluation context` and the `domain` the provider is being registered under, if any.",
+            "content": "The `provider mutator` function MUST invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the bound `domain`, if any.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
