@@ -158,7 +158,6 @@ see: [Requirement 2.4.3](./02-providers.md#requirement-243)
 > The `provider mutator` **MUST NOT** bind a `domain-scoped` provider instance to more than one `domain`, rejecting any attempt to bind an already-bound instance to an additional `domain`.
 
 A `domain-scoped` provider keys per-`domain` state on the single `domain` supplied to its `initialize` function.
-Allowing the same instance to back a second `domain` would reintroduce the collision the declaration exists to prevent, so the `API` rejects the binding rather than sharing the instance.
 Rejection should occur in a manner idiomatic to the implementation language (throwing, returning an error, etc.), and leaves any existing binding intact.
 
 ### 1.2. Client Usage
