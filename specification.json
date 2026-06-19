@@ -552,6 +552,13 @@
             "children": []
         },
         {
+            "id": "Requirement 2.4.4",
+            "machine_id": "requirement_2_4_4",
+            "content": "A `provider` that declares itself `domain-scoped` MUST accept the bound `domain` during initialization.",
+            "RFC 2119 keyword": "MUST",
+            "children": []
+        },
+        {
             "id": "Requirement 2.5.1",
             "machine_id": "requirement_2_5_1",
             "content": "The provider MAY define a mechanism to gracefully shutdown and dispose of resources.",

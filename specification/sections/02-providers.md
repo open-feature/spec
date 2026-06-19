@@ -221,6 +221,13 @@ Most providers are stateless with respect to their `domain` and can safely back 
 Providers that persist or cache `domain`-specific data need a stable, unambiguous `domain` to key that state on.
 By declaring itself `domain-scoped`, such a provider signals that the `API` must bind it to at most one `domain` (see [Requirement 1.1.8](./01-flag-evaluation.md#condition-118)), guaranteeing the `domain` supplied to `initialize` is the only one the instance will ever serve.
 
+#### Requirement 2.4.4
+
+> A `provider` that declares itself `domain-scoped` **MUST** accept the bound `domain` during initialization.
+
+A `domain-scoped` declaration is only meaningful if the provider consumes the `domain` it is given to scope its state.
+This is a contract on the provider; implementations may not be able to detect or reject a violation automatically, so it is not guaranteed to surface as a runtime error.
+
 ### 2.5. Shutdown
 
 [![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
