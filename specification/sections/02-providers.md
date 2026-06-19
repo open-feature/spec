@@ -186,7 +186,7 @@ class MyProvider implements Provider {
   //...
 
   // the global context and the bound domain are passed to the initialization function
-  void initialize(EvaluationContext initialContext, String domain) {
+  void initialize(EvaluationContext initialContext, @Nullable String domain) {
     this.domain = domain;
     /*
       A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
