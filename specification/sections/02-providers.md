@@ -170,7 +170,7 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.1
 
-> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` and, optionally, the bound `domain` (if any), and performs initialization logic relevant to the provider.
+> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` and an optional bound `domain`, which performs initialization logic relevant to the provider.
 
 Many feature flag frameworks or SDKs require some initialization before they can be used.
 They might require the completion of an HTTP request, establishing persistent connections, or starting timers or worker threads.
