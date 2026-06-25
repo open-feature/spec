@@ -38,7 +38,7 @@ See [provider](./02-providers.md), [creating clients](#creating-clients) for det
 
 #### Requirement 1.1.2.2
 
-> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values.
+> The `provider mutator` function **MUST** invoke the `initialize` function on the newly registered provider before using it to resolve flag values, supplying the bound `domain`, if any.
 
 Application authors can await the newly set `provider's` readiness using the `PROVIDER_READY` event.
 Provider instances which are already active (because they have been bound to another `domain` or otherwise) need not be initialized again.
@@ -146,6 +146,19 @@ See [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) f
 > The client creation function **MUST NOT** throw, or otherwise abnormally terminate.
 
 Clients may be created in critical code paths, and even per-request in server-side HTTP contexts. Therefore, in keeping with the principle that OpenFeature should never cause abnormal execution of the first party application, this function should never throw. Abnormal execution in initialization should instead occur during provider registration.
+
+#### Condition 1.1.8
+
+> The `provider` declares that it is `domain-scoped`.
+
+see: [Requirement 2.4.3](./02-providers.md#requirement-243)
+
+##### Conditional Requirement 1.1.8.1
+
+> The `provider mutator` **MUST NOT** bind a `domain-scoped` provider instance to more than one `domain`, rejecting any attempt to bind an already-bound instance to an additional `domain`.
+
+A `domain-scoped` provider keys per-`domain` state on the single `domain` supplied to its `initialize` function.
+Rejection should occur in a manner idiomatic to the implementation language (throwing, returning an error, etc.), and leaves any existing binding intact.
 
 ### 1.2. Client Usage
 
@@ -577,7 +590,7 @@ import { createIsolatedOpenFeatureAPI } from '@openfeature/web-sdk/isolated';
 > A `provider` instance **SHOULD NOT** be registered with more than one `API` instance simultaneously.
 
 Because the `API` instance manages the [lifecycle](./02-providers.md) of its associated providers (including initialization, shutdown, and event handling), binding a `provider` to more than one `API` instance could result in undefined behavior.
-A `provider` instance can be registered with multiple `domains` within a single `API` instance.
+A `provider` instance can be registered with multiple `domains` within a single `API` instance, unless it declares itself `domain-scoped` (see [Requirement 2.4.3](./02-providers.md#requirement-243)), in which case it can be bound to at most one `domain`.
 When a provider is no longer associated with an `API` instance, it can be registered to another. 
 
 See [setting a provider](#setting-a-provider), [domain](../glossary.md#domain) for details.

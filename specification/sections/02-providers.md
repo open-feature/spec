@@ -170,19 +170,25 @@ class MyProvider implements Provider {
 
 #### Requirement 2.4.1
 
-> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` as an argument and performs initialization logic relevant to the provider.
+> The `provider` **MAY** define an initialization function which accepts the global `evaluation context` and an optional bound `domain`, which performs initialization logic relevant to the provider.
 
 Many feature flag frameworks or SDKs require some initialization before they can be used.
 They might require the completion of an HTTP request, establishing persistent connections, or starting timers or worker threads.
 The initialization function is an ideal place for such logic.
+
+The `domain` the provider is registered under is also supplied, allowing the provider to scope domain-specific behavior, such as partitioning a persistent cache, so that multiple providers sharing the same storage do not collide.
+A `provider` instance is initialized only once, even when bound to multiple `domains`; in that case the `domain` supplied is the one under which it was first registered.
+A provider that maintains `domain`-specific state can instead declare itself `domain-scoped` (see [Requirement 2.4.3](#requirement-243)), in which case it is restricted to a single `domain` and this ambiguity does not arise.
+The default provider, which is not bound to a domain, is initialized without one.
 
 ```java
 // MyProvider implementation of the initialize function defined in Provider
 class MyProvider implements Provider {
   //...
 
-  // the global context is passed to the initialization function
-  void initialize(EvaluationContext initialContext) {
+  // the global context and the bound domain are passed to the initialization function
+  void initialize(EvaluationContext initialContext, @Nullable String domain) {
+    this.domain = domain;
     /*
       A hypothetical initialization function: make an initial call doing some bulk initial evaluation, start a worker to do periodic updates
     */
@@ -206,6 +212,21 @@ If a provider is unable to start up correctly, it should indicate abnormal execu
 If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) the `PROVIDER_FATAL` error code should be used.
 
 see: [error codes](../types.md#error-code)
+
+#### Requirement 2.4.3
+
+> The `provider` **MAY** declare that it is `domain-scoped`, indicating that it maintains state specific to a single `domain`, such as a persistent cache, that cannot be shared across `domains`.
+
+Most providers are stateless with respect to their `domain` and can safely back multiple `domains` from a single instance.
+Providers that persist or cache `domain`-specific data need a stable, unambiguous `domain` to key that state on.
+By declaring itself `domain-scoped`, such a provider signals that the `API` must bind it to at most one `domain` (see [Requirement 1.1.8](./01-flag-evaluation.md#condition-118)), guaranteeing the `domain` supplied to `initialize` is the only one the instance will ever serve.
+
+#### Requirement 2.4.4
+
+> A `provider` that declares itself `domain-scoped` **MUST** accept the bound `domain` during initialization.
+
+A `domain-scoped` declaration is only meaningful if the provider consumes the `domain` it is given to scope its state.
+This is a contract on the provider; implementations may not be able to detect or reject a violation automatically, so it is not guaranteed to surface as a runtime error.
 
 ### 2.5. Shutdown
 
