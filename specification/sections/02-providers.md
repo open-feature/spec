@@ -95,6 +95,7 @@ As indicated in the definition of the [`resolution details`](../types.md#resolut
 > In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
 The provider might throw an exception, return an error, or populate the `error code` object on the returned `resolution details` structure to indicate a problem during flag value resolution.
+This includes situations where the provider is not yet initialized or has encountered an irrecoverable error; in such cases, the provider indicates the error (e.g. with error codes `PROVIDER_NOT_READY` or `PROVIDER_FATAL`), and the client returns the default value per Requirement 1.4.10.
 
 See [error code](../types.md#error-code) for details.
 
@@ -315,8 +316,8 @@ See [shutdown](#25-shutdown).
 The SDK derives provider status from events emitted by the provider.
 Providers signal all state transitions by emitting the appropriate event; the SDK updates its internal status accordingly and runs associated handlers.
 
-Providers that do not define lifecycle methods or an event emission mechanism cannot emit events by design; see Condition 2.8.5.
-Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods and an event emission mechanism.
+Providers that do not define an `initialize` function are not required to emit events for initialization; see Condition 2.8.5.
+Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods.
 
 see: [provider lifecycle management](./01-flag-evaluation.md#17-provider-lifecycle-management), [provider events](./05-events.md#51-provider-events)
 
@@ -349,10 +350,11 @@ see: [provider context reconciliation](#26-provider-context-reconciliation)
 
 #### Condition 2.8.5
 
-> The provider does not define an `initialize` function or an event emission mechanism.
+> The provider does not define an `initialize` function.
 
 ##### Conditional Requirement 2.8.5.1
 
 > The SDK **MUST** treat such providers as `READY` from registration and **MUST** run `PROVIDER_READY` handlers on their behalf.
 
-Such providers cannot emit their own events by design.
+Such providers have no initialization to wait for and no associated state transition to signal.
+Nothing in this specification prevents such a provider from emitting `PROVIDER_ERROR` (or other events) spontaneously to signal a problem encountered outside of initialization; SDKs handle such events as outlined elsewhere.

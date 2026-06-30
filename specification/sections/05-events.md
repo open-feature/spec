@@ -215,8 +215,8 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 > If the provider's `on context changed` function terminates normally, and no other invocations have yet to terminate, associated `PROVIDER_CONTEXT_CHANGED` handlers **MUST** run.
 
-The provider must emit `PROVIDER_CONTEXT_CHANGED` after it has successfully reconciled the context.
-The `on context changed` function may be invoked simultaneously or in quick succession; the provider must be prepared to handle this case.
+The provider emits `PROVIDER_CONTEXT_CHANGED` upon successful reconciliation; the SDK runs the associated handlers when it receives the event, satisfying this requirement.
+If `on context changed` is invoked simultaneously or in quick succession, the provider should emit `PROVIDER_CONTEXT_CHANGED` only after the last reentrant invocation terminates normally, to avoid spurious updates from intermediate reconciliations.
 
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
@@ -224,8 +224,8 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 > If the provider's `on context changed` function terminates abnormally, and no other invocations have yet to terminate, associated `PROVIDER_ERROR` handlers **MUST** run.
 
-The provider must emit `PROVIDER_ERROR` if reconciling the context fails.
-The `on context changed` function may be invoked simultaneously or in quick succession; the provider must be prepared to handle that.
+The provider emits `PROVIDER_ERROR` upon failed reconciliation; the SDK runs the associated handlers when it receives the event, satisfying this requirement.
+If `on context changed` is invoked simultaneously or in quick succession, the provider should emit `PROVIDER_ERROR` only after the last reentrant invocation terminates abnormally, to avoid spurious updates from intermediate reconciliations.
 
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
