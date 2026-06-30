@@ -610,7 +610,7 @@
         {
             "id": "Condition 2.8.5",
             "machine_id": "condition_2_8_5",
-            "content": "The provider does not define an `initialize` function or an event emission mechanism.",
+            "content": "The provider does not define an `initialize` function.",
             "RFC 2119 keyword": null,
             "children": [
                 {
