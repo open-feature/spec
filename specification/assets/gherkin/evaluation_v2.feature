@@ -189,10 +189,10 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
             | key          | type   | default    |
             | boolean-flag | Object | {\"a\": 1} |
 
-  # Spec 1.7.6: Testing PROVIDER_NOT_READY error when provider isn't initialized
-  # Testing: client must short-circuit and return error when provider not ready
+  # Spec 2.2.7: Testing PROVIDER_NOT_READY error when provider isn't initialized
+  # Testing: provider indicates error abnormally; client returns default per 1.4.10
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead)
-    @provider-status @spec-1.7.6 @spec-1.4.10
+    @provider-status @spec-2.2.7 @spec-1.4.10
     Scenario Outline: Provider not ready error
         Given a not ready provider
         And a <type>-flag with key "<key>" and a fallback value "<default>"
@@ -222,10 +222,10 @@ Feature: Flag Evaluations - Complete OpenFeature Specification Coverage
             | key         | type   | default    |
             | object-flag | Object | {\"a\": 1} |
 
-  # Spec 1.7.7: Testing PROVIDER_FATAL error when provider is in fatal state
-  # Testing: client must short-circuit and return error when provider is fatal
+  # Spec 2.2.7: Testing PROVIDER_FATAL error when provider is in fatal state
+  # Testing: provider indicates error abnormally; client returns default per 1.4.10
   # Implicitly tests: 1.4.10 (client never throws exceptions - returns default instead), 1.7.5 (FATAL status)
-    @provider-status @provider-status-fatal @spec-1.7.7 @spec-1.4.10 @spec-1.7.5
+    @provider-status @provider-status-fatal @spec-2.2.7 @spec-1.4.10 @spec-1.7.5
     Scenario Outline: Provider in fatal state error
         Given a fatal provider
         And a <type>-flag with key "<key>" and a fallback value "<default>"
