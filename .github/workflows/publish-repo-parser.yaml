@@ -39,7 +39,7 @@ jobs:
             type=raw,value=latest
 
       - name: Build and push
-        uses: docker/build-push-action@v7.2.0 # Immutable tag - https://github.com/docker/build-push-action/releases/tag/v7.2.0
+        uses: docker/build-push-action@v7.3.0 # Immutable tag - https://github.com/docker/build-push-action/releases/tag/v7.2.0
         with:
           context: tools/repo_parser
           push: true
