@@ -23,7 +23,7 @@ def main(f):
         try:
             for entry in entries:
                 if entry.get('RFC 2119 keyword') is None and \
-                   'condition' not in entry['id'].lower():
+                   'requirement' in entry['id'].lower():
                     print(f"{jsonfile.name}: Rule {entry['id']} is missing a RFC 2119 keyword", file=sys.stderr)
                     errors += 1
                 pass

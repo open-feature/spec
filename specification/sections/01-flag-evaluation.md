@@ -476,9 +476,9 @@ stateDiagram-v2
 
 > The `client` **MUST** define a `provider status` accessor which indicates the readiness of the associated provider, with possible values `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`.
 
-The SDK at all times maintains an up-to-date state corresponding to the success/failure of the last lifecycle method (`initialize`, `shutdown`, `on context change`) or emitted event.
+The SDK derives provider status from events emitted by the provider and keeps it up-to-date as events are received.
 
-see [provider status](../types.md#provider-status)
+see [provider status](../types.md#provider-status), [provider events](./05-events.md#51-provider-events)
 
 #### Condition 1.7.2
 
@@ -490,47 +490,29 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 ##### Conditional Requirement 1.7.2.1
 
-> In addition to `NOT_READY`, `READY`, `STALE`, or `ERROR`, the  `provider status` accessor must support possible value `RECONCILING`.
+> In addition to `NOT_READY`, `READY`, `STALE`, `ERROR`, or `FATAL`, the `provider status` accessor **MUST** support possible value `RECONCILING`.
 
 In the static context paradigm, the implementation must define a `provider status` indicating that a provider is reconciling its internal state due to a context change.
 
 #### Requirement 1.7.3
 
-> The client's `provider status` accessor **MUST** indicate `READY` if the `initialize` function of the associated provider terminates normally.
+> The client's `provider status` accessor **MUST** indicate `READY` after the provider emits `PROVIDER_READY` following initialization.
 
-Once the provider has initialized, the `provider status` should indicate the provider is ready to be used to evaluate flags.
+see: [provider status requirements](./02-providers.md#28-provider-status), [event-status mapping](./05-events.md#requirement-535)
 
 #### Requirement 1.7.4
 
-> The client's `provider status` accessor **MUST** indicate `ERROR` if the `initialize` function of the associated provider terminates abnormally.
+> The client's `provider status` accessor **MUST** indicate `ERROR` after the provider emits `PROVIDER_ERROR` following initialization.
 
-If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
+see: [provider status requirements](./02-providers.md#28-provider-status), [event-status mapping](./05-events.md#requirement-535)
 
 #### Requirement 1.7.5
 
-> The client's `provider status` accessor **MUST** indicate `FATAL` if the `initialize` function of the associated provider terminates abnormally and indicates `error code` `PROVIDER_FATAL`.
+> The client's `provider status` accessor **MUST** indicate `FATAL` after the provider emits `PROVIDER_ERROR` with error code `PROVIDER_FATAL` following initialization.
 
-If the provider has failed to initialize, the `provider status` should indicate the provider is in an error state.
+see: [provider status requirements](./02-providers.md#28-provider-status), [event-status mapping](./05-events.md#requirement-535)
 
 #### Requirement 1.7.6
-
-> The client **MUST** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `NOT_READY`.
-
-The client defaults and returns the `PROVIDER_NOT_READY` `error code` if evaluation is attempted before the provider is initialized (the provider is still in a `NOT_READY` state).
-The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
-
-see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
-
-#### Requirement 1.7.7
-
-> The client **MUST** default, run error hooks, and indicate an error if flag resolution is attempted while the provider is in `FATAL`.
-
-The client defaults and returns the `PROVIDER_FATAL` `error code` if evaluation is attempted after the provider has transitioned to an irrecoverable error state.
-The SDK avoids calling the provider's resolver functions entirely ("short-circuits") if the provider is in this state.
-
-see: [error codes](../types.md#error-code), [flag value resolution](./02-providers.md#22-flag-value-resolution)
-
-#### Requirement 1.7.8
 
 > Implementations **SHOULD** propagate the `error code` returned from any provider lifecycle methods.
 
@@ -538,7 +520,7 @@ The SDK ensures that if the provider's lifecycle methods terminate with an `erro
 
 see: [error codes](../types.md#error-code)
 
-#### Requirement 1.7.9
+#### Requirement 1.7.7
 
 > The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
