@@ -355,13 +355,6 @@
         {
             "id": "Requirement 1.7.6",
             "machine_id": "requirement_1_7_6",
-            "content": "Implementations SHOULD propagate the `error code` returned from any provider lifecycle methods.",
-            "RFC 2119 keyword": "SHOULD",
-            "children": []
-        },
-        {
-            "id": "Requirement 1.7.7",
-            "machine_id": "requirement_1_7_7",
             "content": "The client's `provider status` accessor MUST indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.",
             "RFC 2119 keyword": "MUST",
             "children": []

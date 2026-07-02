@@ -337,7 +337,7 @@ See [shutdown](#25-shutdown).
 The SDK derives provider status from events emitted by the provider.
 Providers signal all state transitions by emitting the appropriate event; the SDK updates its internal status accordingly and runs associated handlers.
 
-Shutdown is the exception: the SDK initiates the `shutdown` call and infers the `NOT_READY` transition itself, so no event from the provider is required (see [Requirement 1.7.7](./01-flag-evaluation.md#requirement-177)).
+Shutdown is the exception: the SDK initiates the `shutdown` call and infers the `NOT_READY` transition itself, so no event from the provider is required (see [Requirement 1.7.6](./01-flag-evaluation.md#requirement-176)).
 
 Providers that do not define an `initialize` function are not required to emit events for initialization; see Condition 2.8.5.
 Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods.
@@ -362,12 +362,17 @@ see: [provider events](./05-events.md#51-provider-events), [provider event types
 > The provider **MUST** emit `PROVIDER_ERROR` if its `initialize` function terminates abnormally.
 
 If the error is irrecoverable, the error code must indicate `PROVIDER_FATAL`.
+The provider is the sole source of this event; the SDK does not synthesize `PROVIDER_ERROR` on abnormal termination, even if `initialize` throws or returns an error.
+The `initialize` return (or thrown error) is treated by the SDK as a synchronization signal only (e.g. to unblock `setProviderAndWait`); the status transition to `ERROR` or `FATAL` occurs only when the SDK receives the provider-emitted `PROVIDER_ERROR`.
 
 see: [error codes](../types.md#error-code)
 
 #### Requirement 2.8.4
 
 > The provider **MUST** emit `PROVIDER_CONTEXT_CHANGED` if its `on context changed` function terminates normally, and `PROVIDER_ERROR` if it terminates abnormally.
+
+As with initialization, the provider is the sole source of these events; the SDK does not synthesize `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_ERROR` based on the return of `on context changed`.
+The `on context changed` return (or thrown error) is treated by the SDK as a synchronization signal only; the status transition and handler invocation occur only when the SDK receives the provider-emitted event.
 
 see: [provider context reconciliation](#26-provider-context-reconciliation)
 

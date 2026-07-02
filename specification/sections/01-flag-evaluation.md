@@ -514,14 +514,6 @@ see: [provider status requirements](./02-providers.md#28-provider-status), [even
 
 #### Requirement 1.7.6
 
-> Implementations **SHOULD** propagate the `error code` returned from any provider lifecycle methods.
-
-The SDK ensures that if the provider's lifecycle methods terminate with an `error code`, that error code is included in any associated error events and returned/thrown errors/exceptions.
-
-see: [error codes](../types.md#error-code)
-
-#### Requirement 1.7.7
-
 > The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
 Regardless of the success of the provider's `shutdown` function, the `provider status` should convey the provider is no longer ready to use once the shutdown function terminates.

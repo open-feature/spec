@@ -23,7 +23,7 @@ graph
 ```
 
 The `domain` of a provider constitutes a logical scope for events.
-Clients associated with a particular provider through a `domain` run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
+Clients associated with a particular provider through a `domain` run event handlers only when that provider emits events.
 
 see: [domain](../glossary.md#domain)
 
@@ -51,7 +51,7 @@ see: [provider event types](../types.md#provider-events), [`event details`](../t
 > When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers **MUST** run.
 
 Client event handlers respect the dynamic binding of clients to providers via `domains`.
-Client event handlers run when a lifecycle function terminates on the associated provider, or the associated provider emits an event.
+Client event handlers run when the associated provider emits an event.
 
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
@@ -60,7 +60,7 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 > When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
 Client event handlers respect the dynamic binding of clients to providers via `domains`.
-Client event handlers do not run when a lifecycle function terminates on an unassociated provider, or an unassociated provider emits an event.
+Client event handlers do not run when an unassociated provider emits an event.
 
 see [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
