@@ -337,6 +337,8 @@ See [shutdown](#25-shutdown).
 The SDK derives provider status from events emitted by the provider.
 Providers signal all state transitions by emitting the appropriate event; the SDK updates its internal status accordingly and runs associated handlers.
 
+Shutdown is the exception: the SDK initiates the `shutdown` call and infers the `NOT_READY` transition itself, so no event from the provider is required (see [Requirement 1.7.7](./01-flag-evaluation.md#requirement-177)).
+
 Providers that do not define an `initialize` function are not required to emit events for initialization; see Condition 2.8.5.
 Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods.
 

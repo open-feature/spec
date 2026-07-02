@@ -13,7 +13,7 @@ This appendix provides non-normative guidance for provider authors and SDK autho
 
 ### Background
 
-Prior to `v0.9.0`, the SDK emitted synthetic lifecycle events (`PROVIDER_READY`, `PROVIDER_ERROR`) on behalf of providers after lifecycle methods (`initialize`, `shutdown`, `on context change`) returned.
+Prior to `v0.9.0`, the SDK emitted synthetic lifecycle events (`PROVIDER_READY`, `PROVIDER_ERROR`) on behalf of providers after lifecycle methods (`initialize`, `shutdown`, `on context changed`) returned.
 This created a race condition in multi-threaded SDKs: the provider could emit events from background threads concurrently with SDK-emitted synthetic events, resulting in incorrect event ordering and inconsistent status.
 
 The spec now requires providers to emit their own lifecycle events.

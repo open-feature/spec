@@ -525,6 +525,7 @@ see: [error codes](../types.md#error-code)
 > The client's `provider status` accessor **MUST** indicate `NOT_READY` once the `shutdown` function of the associated provider terminates.
 
 Regardless of the success of the provider's `shutdown` function, the `provider status` should convey the provider is no longer ready to use once the shutdown function terminates.
+Unlike other status transitions, this shutdown is inferred by the SDK; because the SDK initiates the shutdown call, no event from the provider is required.
 
 ### 1.8. Isolated API Instances
 
