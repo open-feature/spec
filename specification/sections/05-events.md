@@ -23,7 +23,7 @@ graph
 ```
 
 The `domain` of a provider constitutes a logical scope for events.
-Clients associated with a particular provider through a `domain` run event handlers only when that provider emits events, or one of its lifecycle functions terminates.
+Clients associated with a particular provider through a `domain` run event handlers only when that provider emits events.
 
 see: [domain](../glossary.md#domain)
 
@@ -31,10 +31,11 @@ see: [domain](../glossary.md#domain)
 
 #### Requirement 5.1.1
 
-> The `provider` **MAY** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED` and `PROVIDER_STALE`, with a `provider event details` payload.
+> The `feature provider` interface **MUST** define a mechanism for signaling the occurrence of one of a set of events, including `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_CONFIGURATION_CHANGED`, `PROVIDER_STALE`, `PROVIDER_RECONCILING`, and `PROVIDER_CONTEXT_CHANGED`, with a `provider event details` payload.
 
-Providers cannot emit `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_RECONCILING` events.
-These are emitted only by the SDK during context reconciliation.
+Providers must emit events to signal all state transitions, including those resulting from lifecycle methods (initialize, reconciliation).
+The SDK derives provider status from these events.
+Providers without lifecycle methods or an event emission mechanism cannot emit events by design; see [Condition 2.8.5](./02-providers.md#condition-285).
 
 If available, native event-emitter or observable/observer language constructs can be used.
 
@@ -50,7 +51,7 @@ see: [provider event types](../types.md#provider-events), [`event details`](../t
 > When a `provider` signals the occurrence of a particular `event`, the associated `client` and `API` event handlers **MUST** run.
 
 Client event handlers respect the dynamic binding of clients to providers via `domains`.
-Client event handlers run when a lifecycle function terminates on the associated provider, or the associated provider emits an event.
+Client event handlers run when the associated provider emits an event.
 
 see: [provider event types](./../types.md#provider-events) and [event handlers](#52-event-handlers).
 
@@ -59,7 +60,7 @@ see: [provider event types](./../types.md#provider-events) and [event handlers](
 > When a `provider` signals the occurrence of a particular `event`, event handlers on clients which are not associated with that provider **MUST NOT** run.
 
 Client event handlers respect the dynamic binding of clients to providers via `domains`.
-Client event handlers do not run when a lifecycle function terminates on an unassociated provider, or an unassociated provider emits an event.
+Client event handlers do not run when an unassociated provider emits an event.
 
 see [setting a provider](./01-flag-evaluation.md#setting-a-provider), [domain](../glossary.md#domain) for details.
 
@@ -138,22 +139,21 @@ This means that the order of provider configuration and event handler addition i
 
 ### Event handlers and initialization
 
-Though providers themselves need not implement events, the `flag evaluation API` uses events to convey relevant state changes during configuration and initialization.
-Implementations automatically emit `PROVIDER_READY` or `PROVIDER_ERROR` events depending on the outcome of the `initialize` function, if the provider has implemented one (if none is implemented, `PROVIDER_READY` runs unconditionally).
+The provider signals successful or failed initialization by emitting `PROVIDER_READY` or `PROVIDER_ERROR` events respectively.
 _Application authors_ and _application integrators_ use these events to wait for proper initialization of the provider and to do basic monitoring and error handling.
 
 #### Requirement 5.3.1
 
-> If the provider's `initialize` function terminates normally, `PROVIDER_READY` handlers **MUST** run.
+> When the provider emits `PROVIDER_READY`, associated `PROVIDER_READY` handlers **MUST** run.
 
 See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
 
 #### Requirement 5.3.2
 
-> If the provider's `initialize` function terminates abnormally, `PROVIDER_ERROR` handlers **MUST** run.
+> When the provider emits `PROVIDER_ERROR`, associated `PROVIDER_ERROR` handlers **MUST** run.
 
 A failed initialization could represent an unrecoverable error, such as bad credentials or a missing file.
-If a failed initialization could also represent a transient error.
+A failed initialization could also represent a transient error.
 A provider which maintains a persistent connection to a remote `flag management system` may attempt to reconnect, and emit `PROVIDER_READY` after a failed initialization.
 
 See [provider initialization](./02-providers.md#24-initialization) and [setting a provider](./01-flag-evaluation.md#setting-a-provider).
@@ -166,16 +166,17 @@ Handlers may be attached at any point in the application lifecycle.
 Handlers should run immediately if the provider is already in the associated state.
 For instance, _application authors_ may attach readiness handlers to be confident that the system is ready to evaluate flags.
 If such handlers are attached after the provider underlying the client has already been initialized, they should run immediately.
+In multi-threaded environments, implementations should ensure that running a handler immediately upon registration does not result in out-of-order event processing (e.g. by holding a lock on the event queue).
 
 See [provider initialization](./02-providers.md#24-initialization), [setting a provider](./01-flag-evaluation.md#setting-a-provider).
 
 ### Event handlers and context reconciliation
 
 Providers built to conform to the static context paradigm feature two additional events: `PROVIDER_RECONCILING` and `PROVIDER_CONTEXT_CHANGED`.
-When the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the SDK transitions the provider into state `RECONCILING` and then emits `PROVIDER_RECONCILING`.
+When the provider is reconciling its internal state (the `on context changed` function is running and not yet terminated), the provider emits `PROVIDER_RECONCILING`.
 This can be particularly useful for displaying loading indicators while the [evaluation context](./03-evaluation-context.md) is being reconciled.
 
-If the `on context changed` function terminates normally, the SDK transitions the provider into the `READY` state and then emits `PROVIDER_CONTEXT_CHANGED`; otherwise it transitions the provider into the `ERROR` state and then emits `PROVIDER_ERROR`.
+If the `on context changed` function terminates normally, the provider emits `PROVIDER_CONTEXT_CHANGED`; otherwise it emits `PROVIDER_ERROR`.
 The `PROVIDER_CONTEXT_CHANGED` is used to signal that the associated context has been changed, and flags should be re-evaluated.
 This can be particularly useful for triggering UI repaints in multiple components when one component updates the [evaluation context](./03-evaluation-context.md).
 
@@ -205,8 +206,8 @@ see: [static-context paradigm](../glossary.md#static-context-paradigm)
 
 > While the provider's `on context changed` function is executing, associated `RECONCILING` handlers **MUST** run.
 
-The implementation must run any `RECONCILING` handlers associated with the provider while the provider is reconciling its state.
-In languages with asynchronous semantics, the emission of this event can be skipped if the `on context changed` function of the provider in question executes synchronously for a given provider, no other operations can take place while it runs.
+The provider must emit `PROVIDER_RECONCILING` while it is reconciling its state.
+In languages with asynchronous semantics, the emission of this event can be skipped if the `on context changed` function of the provider in question executes synchronously.
 
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
@@ -214,36 +215,36 @@ see: [provider event types](../types.md#provider-events), [provider events](#51-
 
 > If the provider's `on context changed` function terminates normally, and no other invocations have yet to terminate, associated `PROVIDER_CONTEXT_CHANGED` handlers **MUST** run.
 
-The implementation must run any `PROVIDER_CONTEXT_CHANGED` handlers associated with the provider after the provider has reconciled its state and returned from the `on context changed` function.
-The `PROVIDER_CONTEXT_CHANGED` is not emitted from the provider itself; the SDK implementation must run the `PROVIDER_CONTEXT_CHANGED` handlers if the `on context changed` function terminates normally.
-It's possible that the `on context changed` function is invoked simultaneously or in quick succession; in this case the SDK will only run the `PROVIDER_CONTEXT_CHANGED` handlers after all reentrant invocations have terminated, and the last to terminate was successful (terminated normally).
+The provider emits `PROVIDER_CONTEXT_CHANGED` upon successful reconciliation; the SDK runs the associated handlers when it receives the event, satisfying this requirement.
+If `on context changed` is invoked simultaneously or in quick succession, the provider should emit `PROVIDER_CONTEXT_CHANGED` only after the last reentrant invocation terminates normally, to avoid spurious updates from intermediate reconciliations.
+
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
 ##### Conditional Requirement 5.3.4.3
 
 > If the provider's `on context changed` function terminates abnormally, and no other invocations have yet to terminate, associated `PROVIDER_ERROR` handlers **MUST** run.
 
-The `PROVIDER_ERROR` is not emitted from the provider itself; the SDK implementation must run the `PROVIDER_ERROR` handlers if the `on context changed` throws or otherwise signals an error.
-It's possible that the `on context changed` function is invoked simultaneously or in quick succession; in this case the SDK will only run the `PROVIDER_ERROR` handlers after all reentrant invocations have terminated, and the last to terminate was unsuccessful (terminated abnormally).
+The provider emits `PROVIDER_ERROR` upon failed reconciliation; the SDK runs the associated handlers when it receives the event, satisfying this requirement.
+If `on context changed` is invoked simultaneously or in quick succession, the provider should emit `PROVIDER_ERROR` only after the last reentrant invocation terminates abnormally, to avoid spurious updates from intermediate reconciliations.
 
 see: [provider event types](../types.md#provider-events), [provider events](#51-provider-events), [provider context reconciliation](02-providers.md#26-provider-context-reconciliation)
 
 #### Requirement 5.3.5
 
-> If the provider emits an event, the value of the client's `provider status` **MUST** be updated to the status associated with that event **before** the SDK invokes any event handlers for that event, so that handlers observe a consistent status.
+> When a provider emits an event, the SDK **MUST** update the `provider status` to the status associated with that event **before** invoking any event handlers for that event, so that handlers observe a consistent status.
 
-Some providers may emit events spontaneously, based on changes in their internal state (connections, caches, etc).
-The SDK must update its internal representation of the provider's state accordingly:
+The SDK derives provider status entirely from events emitted by the provider.
+The table below summarizes the association between events and provider status:
 
-| Event                            | Associated Status                                       |
-| -------------------------------- | ------------------------------------------------------- |
-| `PROVIDER_READY`                 | `READY`                                                 |
-| `PROVIDER_STALE`                 | `STALE`                                                 |
-| `PROVIDER_ERROR`                 | `ERROR`/`FATAL`*                                        |
-| `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in its current state)             |
-| `PROVIDER_CONTEXT_CHANGED`       | N/A (only emitted by SDK during context reconciliation) |
-| `PROVIDER_RECONCILING`           | N/A (only emitted by SDK during context reconciliation) |
+| Event                            | Associated Status                           |
+| -------------------------------- | ------------------------------------------- |
+| `PROVIDER_READY`                 | `READY`                                     |
+| `PROVIDER_STALE`                 | `STALE`                                     |
+| `PROVIDER_ERROR`                 | `ERROR`/`FATAL`*                            |
+| `PROVIDER_CONFIGURATION_CHANGED` | N/A (provider remains in its current state) |
+| `PROVIDER_CONTEXT_CHANGED`       | `READY`                                     |
+| `PROVIDER_RECONCILING`           | `RECONCILING`                               |
 
 \* If the `error code` associated with the error indicates `PROVIDER_FATAL`, the state is set to `FATAL`
 
-see: [provider lifecycle management](01-flag-evaluation.md#17-provider-lifecycle-management), [provider status](../types.md#provider-status) [error codes](../types.md#error-code)
+see: [provider lifecycle management](01-flag-evaluation.md#17-provider-lifecycle-management), [provider status](../types.md#provider-status), [error codes](../types.md#error-code)

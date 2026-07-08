@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v4.2.0 # Immutable tag - https://github.com/docker/login-action/releases/tag/v4.2.0
+        uses: docker/login-action@v4.4.0 # Immutable tag - https://github.com/docker/login-action/releases/tag/v4.2.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -31,7 +31,7 @@ jobs:
 
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@v6.1.0 # Immutable tag - https://github.com/docker/metadata-action/releases/tag/v6.1.0
+        uses: docker/metadata-action@v6.2.0 # Immutable tag - https://github.com/docker/metadata-action/releases/tag/v6.1.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -39,7 +39,7 @@ jobs:
             type=raw,value=latest
 
       - name: Build and push
-        uses: docker/build-push-action@v7.2.0 # Immutable tag - https://github.com/docker/build-push-action/releases/tag/v7.2.0
+        uses: docker/build-push-action@v7.3.0 # Immutable tag - https://github.com/docker/build-push-action/releases/tag/v7.2.0
         with:
           context: tools/repo_parser
           push: true

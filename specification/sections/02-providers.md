@@ -95,6 +95,7 @@ As indicated in the definition of the [`resolution details`](../types.md#resolut
 > In cases of abnormal execution, the `provider` **MUST** indicate an error using the idioms of the implementation language, with an associated `error code` and optional associated `error message`.
 
 The provider might throw an exception, return an error, or populate the `error code` object on the returned `resolution details` structure to indicate a problem during flag value resolution.
+This includes situations where the provider is not yet initialized or has encountered an irrecoverable error; in such cases, the provider indicates the error (e.g. with error codes `PROVIDER_NOT_READY` or `PROVIDER_FATAL`), and the client returns the default value per Requirement 1.4.10.
 
 See [error code](../types.md#error-code) for details.
 
@@ -211,7 +212,7 @@ class MyProvider implements Provider {
 If a provider is unable to start up correctly, it should indicate abnormal execution by throwing an exception, returning an error, or otherwise indicating so by means idiomatic to the implementation language.
 If the error is irrecoverable (perhaps due to bad credentials or invalid configuration) the `PROVIDER_FATAL` error code should be used.
 
-see: [error codes](../types.md#error-code)
+see: [error codes](../types.md#error-code), [provider status](#28-provider-status)
 
 #### Requirement 2.4.3
 
@@ -290,6 +291,8 @@ class MyProvider implements Provider {
 }
 ```
 
+see: [provider status](#28-provider-status)
+
 Providers may maintain remote connections, timers, threads or other constructs that need to be appropriately disposed of.
 Provider authors may implement a `shutdown` function to perform relevant clean-up actions.
 Alternatively, implementations might leverage language idioms such as auto-disposable interfaces or some means of cancellation signal propagation to allow for graceful shutdown.
@@ -326,3 +329,60 @@ The track function performs side effects required to record the `tracking event`
 Providers should be careful to complete any communication or flush any relevant uncommitted tracking data before they shut down.
 
 See [shutdown](#25-shutdown).
+
+### 2.8. Provider status
+
+[![hardening](https://img.shields.io/static/v1?label=Status&message=hardening&color=yellow)](https://github.com/open-feature/spec/tree/main/specification#hardening)
+
+The SDK derives provider status from events emitted by the provider.
+Providers signal all state transitions by emitting the appropriate event; the SDK updates its internal status accordingly and runs associated handlers.
+
+Shutdown is the exception: the SDK initiates the `shutdown` call and infers the `NOT_READY` transition itself, so no event from the provider is required (see [Requirement 1.7.6](./01-flag-evaluation.md#requirement-176)).
+
+Providers that do not define an `initialize` function are not required to emit events for initialization; see Condition 2.8.5.
+Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods.
+
+see: [provider lifecycle management](./01-flag-evaluation.md#17-provider-lifecycle-management), [provider events](./05-events.md#51-provider-events)
+
+#### Requirement 2.8.1
+
+> The provider **MUST** emit an event to signal each status transition, including transitions resulting from lifecycle methods (`initialize`, `on context changed`) and spontaneous transitions.
+
+Providers must not rely on the SDK to infer status from lifecycle method return values.
+Instead, the provider emits the appropriate event (e.g. `PROVIDER_READY` after successful initialization) to signal each transition.
+
+see: [provider events](./05-events.md#51-provider-events), [provider event types](../types.md#provider-events)
+
+#### Requirement 2.8.2
+
+> The provider **MUST** emit `PROVIDER_READY` if its `initialize` function terminates normally.
+
+#### Requirement 2.8.3
+
+> The provider **MUST** emit `PROVIDER_ERROR` if its `initialize` function terminates abnormally.
+
+If the error is irrecoverable, the error code must indicate `PROVIDER_FATAL`.
+The provider is the sole source of this event; the SDK does not synthesize `PROVIDER_ERROR` on abnormal termination, even if `initialize` throws or returns an error.
+The `initialize` return (or thrown error) is treated by the SDK as a synchronization signal only (e.g. to unblock `setProviderAndWait`); the status transition to `ERROR` or `FATAL` occurs only when the SDK receives the provider-emitted `PROVIDER_ERROR`.
+
+see: [error codes](../types.md#error-code)
+
+#### Requirement 2.8.4
+
+> The provider **MUST** emit `PROVIDER_CONTEXT_CHANGED` if its `on context changed` function terminates normally, and `PROVIDER_ERROR` if it terminates abnormally.
+
+As with initialization, the provider is the sole source of these events; the SDK does not synthesize `PROVIDER_CONTEXT_CHANGED` or `PROVIDER_ERROR` based on the return of `on context changed`.
+The `on context changed` return (or thrown error) is treated by the SDK as a synchronization signal only; the status transition and handler invocation occur only when the SDK receives the provider-emitted event.
+
+see: [provider context reconciliation](#26-provider-context-reconciliation)
+
+#### Condition 2.8.5
+
+> The provider does not define an `initialize` function.
+
+##### Conditional Requirement 2.8.5.1
+
+> The SDK **MUST** treat such providers as `READY` from registration and **MUST** run `PROVIDER_READY` handlers on their behalf.
+
+Such providers have no initialization to wait for and no associated state transition to signal.
+Nothing in this specification prevents such a provider from emitting `PROVIDER_ERROR` (or other events) spontaneously to signal a problem encountered outside of initialization; SDKs handle such events as outlined elsewhere.
