@@ -57,9 +57,10 @@ see [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-p
 
 #### Requirement 1.1.2.4
 
-> The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to complete or abnormally terminate.
+> The `API` **SHOULD** provide functions to set a provider and wait for `initialize` to terminate and its resulting lifecycle event to be processed.
 
 This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
+Application event handlers need not complete before the function returns or settles.
 
 ```java
 // default provider
