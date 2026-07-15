@@ -358,15 +358,18 @@ see: [provider events](./05-events.md#51-provider-events), [provider event types
 
 > The provider **MUST** emit `PROVIDER_READY` before its `initialize` function terminates normally.
 
+The provider is the sole source of this event; the SDK does not synthesize it based on the return of `initialize`.
+
+see: [Requirement 1.1.2.4](./01-flag-evaluation.md#requirement-1124)
+
 #### Requirement 2.8.3
 
 > The provider **MUST** emit `PROVIDER_ERROR` before its `initialize` function terminates abnormally.
 
+The provider is the sole source of this event; the SDK does not synthesize it based on the return of `initialize`.
 If the error is irrecoverable, the error code must indicate `PROVIDER_FATAL`.
-The provider is the sole source of initialization events; the SDK does not synthesize them based on the return of `initialize`.
-For either outcome, the SDK waits for both `initialize` termination and the status update from the emitted event before settling a wait-for-provider operation (see [Requirement 1.1.2.4](./01-flag-evaluation.md#requirement-1124)).
 
-see: [error codes](../types.md#error-code)
+see: [error codes](../types.md#error-code), [Requirement 1.1.2.4](./01-flag-evaluation.md#requirement-1124)
 
 #### Requirement 2.8.4
 
