@@ -57,9 +57,11 @@ see [shutdown](./02-providers.md#25-shutdown), [setting a provider](#setting-a-p
 
 #### Requirement 1.1.2.4
 
-> The `API` **SHOULD** provide functions to set a provider and wait for the `initialize` function to complete or abnormally terminate.
+> The `API` **SHOULD** provide functions to set a provider and wait for `initialize` to terminate and its resulting lifecycle event to be processed.
 
 This function not only sets the provider, but ensures that the provider is ready (or in error) before returning or settling.
+The SDK waits for both `initialize` termination and the status update from the resulting `PROVIDER_READY` or `PROVIDER_ERROR` event (see [provider events](./05-events.md#51-provider-events)) before settling.
+Application event handlers need not complete before the function returns or settles.
 
 ```java
 // default provider

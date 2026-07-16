@@ -340,7 +340,8 @@ Providers signal all state transitions by emitting the appropriate event; the SD
 Shutdown is the exception: the SDK initiates the `shutdown` call and infers the `NOT_READY` transition itself, so no event from the provider is required (see [Requirement 1.7.6](./01-flag-evaluation.md#requirement-176)).
 
 Providers that do not define an `initialize` function are not required to emit events for initialization; see Condition 2.8.5.
-Requirements 2.8.1-2.8.4 apply only to providers that define lifecycle methods.
+Requirement 2.8.1 applies to all provider status transitions; Requirements 2.8.2-2.8.4 apply only when the provider defines the corresponding lifecycle method.
+Where practical, SDKs should couple lifecycle methods with event support so providers defining lifecycle methods can emit the required events.
 
 see: [provider lifecycle management](./01-flag-evaluation.md#17-provider-lifecycle-management), [provider events](./05-events.md#51-provider-events)
 
@@ -355,17 +356,20 @@ see: [provider events](./05-events.md#51-provider-events), [provider event types
 
 #### Requirement 2.8.2
 
-> The provider **MUST** emit `PROVIDER_READY` if its `initialize` function terminates normally.
+> The provider **MUST** emit `PROVIDER_READY` before its `initialize` function terminates normally.
+
+The provider is the sole source of this event; the SDK does not synthesize it based on the return of `initialize`.
+
+see: [Requirement 1.1.2.4](./01-flag-evaluation.md#requirement-1124)
 
 #### Requirement 2.8.3
 
-> The provider **MUST** emit `PROVIDER_ERROR` if its `initialize` function terminates abnormally.
+> The provider **MUST** emit `PROVIDER_ERROR` before its `initialize` function terminates abnormally.
 
+The provider is the sole source of this event; the SDK does not synthesize it based on the return of `initialize`.
 If the error is irrecoverable, the error code must indicate `PROVIDER_FATAL`.
-The provider is the sole source of this event; the SDK does not synthesize `PROVIDER_ERROR` on abnormal termination, even if `initialize` throws or returns an error.
-The `initialize` return (or thrown error) is treated by the SDK as a synchronization signal only (e.g. to unblock `setProviderAndWait`); the status transition to `ERROR` or `FATAL` occurs only when the SDK receives the provider-emitted `PROVIDER_ERROR`.
 
-see: [error codes](../types.md#error-code)
+see: [error codes](../types.md#error-code), [Requirement 1.1.2.4](./01-flag-evaluation.md#requirement-1124)
 
 #### Requirement 2.8.4
 

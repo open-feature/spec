@@ -41,8 +41,7 @@ Providers with no `initialize` function are handled per [Condition 2.8.5](./sect
 If `initialize` performs setup synchronously and returns when ready, emit `PROVIDER_READY` immediately before returning (or `PROVIDER_ERROR` before throwing).
 
 **Event-driven initialization.**
-If setup completes asynchronously (e.g. the underlying vendor SDK signals readiness via its own event), forward that signal as `PROVIDER_READY`.
-`initialize` may return before the event is emitted; the SDK treats the return as a synchronization signal only.
+If setup completes asynchronously (e.g. the underlying vendor SDK signals readiness via its own event), keep `initialize` pending until that signal arrives, emit the corresponding `PROVIDER_READY` or `PROVIDER_ERROR` event, then return or throw.
 
 **Context reconciliation.**
 The provider now owns the coalescing behavior previously handled by the SDK.
@@ -51,7 +50,7 @@ If `on context changed` may be invoked simultaneously or in quick succession, em
 #### Anti-patterns
 
 - Do not emit `PROVIDER_READY` before initialization work is complete.
-- Do not rely on `initialize`'s return being observed by the SDK for status transitions; it is a synchronization signal only.
+- Do not terminate `initialize` before emitting the corresponding `PROVIDER_READY` or `PROVIDER_ERROR` event.
 
 ### For SDK authors
 

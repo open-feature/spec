@@ -31,7 +31,7 @@
         {
             "id": "Requirement 1.1.2.4",
             "machine_id": "requirement_1_1_2_4",
-            "content": "The `API` SHOULD provide functions to set a provider and wait for the `initialize` function to complete or abnormally terminate.",
+            "content": "The `API` SHOULD provide functions to set a provider and wait for `initialize` to terminate and its resulting lifecycle event to be processed.",
             "RFC 2119 keyword": "SHOULD",
             "children": []
         },
@@ -582,14 +582,14 @@
         {
             "id": "Requirement 2.8.2",
             "machine_id": "requirement_2_8_2",
-            "content": "The provider MUST emit `PROVIDER_READY` if its `initialize` function terminates normally.",
+            "content": "The provider MUST emit `PROVIDER_READY` before its `initialize` function terminates normally.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
         {
             "id": "Requirement 2.8.3",
             "machine_id": "requirement_2_8_3",
-            "content": "The provider MUST emit `PROVIDER_ERROR` if its `initialize` function terminates abnormally.",
+            "content": "The provider MUST emit `PROVIDER_ERROR` before its `initialize` function terminates abnormally.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

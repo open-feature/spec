@@ -35,7 +35,8 @@ see: [domain](../glossary.md#domain)
 
 Providers must emit events to signal all state transitions, including those resulting from lifecycle methods (initialize, reconciliation).
 The SDK derives provider status from these events.
-Providers without lifecycle methods or an event emission mechanism cannot emit events by design; see [Condition 2.8.5](./02-providers.md#condition-285).
+Providers can emit spontaneous events without defining lifecycle methods.
+Providers that define `initialize` or `on context changed` must support event emission; see [provider status](./02-providers.md#28-provider-status).
 
 If available, native event-emitter or observable/observer language constructs can be used.
 
