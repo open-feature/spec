@@ -1,10 +1,21 @@
-from os.path import curdir, abspath, join, splitext
+from os.path import curdir, abspath, realpath, join, splitext, commonpath
 from os import walk
 import json
 import sys
 
 
+def _safe_path(f):
+    # resolve symlinks and reject paths that escape the current working directory
+    base = realpath(curdir)
+    target = realpath(f)
+    if commonpath([base, target]) != base:
+        print(f"Refusing to read path outside {base}: {f}", file=sys.stderr)
+        sys.exit(1)
+    return target
+
+
 def main(f):
+    f = _safe_path(f)
     errors = 0
     with open(f) as jsonfile:
         spec = json.load(jsonfile)
