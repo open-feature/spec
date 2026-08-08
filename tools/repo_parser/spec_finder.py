@@ -62,10 +62,11 @@ def get_spec(force_refresh: bool = False, path_prefix: str = './') -> dict[str, 
         with open(spec_path) as f:
             data = ''.join(f.readlines())
     else:
-        # TODO: Status code check
         spec_response = urllib.request.urlopen(
             'https://raw.githubusercontent.com/open-feature/spec/main/specification.json'
         )
+        if spec_response.status not in (200, 304):
+            raise RuntimeError(f'Failed to fetch spec: HTTP {spec_response.status}')
         raw = []
         for i in spec_response.readlines():
             raw.append(i.decode('utf-8'))
@@ -97,7 +98,7 @@ def specmap_from_file(actual_spec: dict[str, Any]) -> dict[str, str]:
 def find_covered_specs(config: Config, data: str) -> dict[str, str]:
     repo_specs = {}
     for match in re.findall(config['multiline_regex'], data, re.MULTILINE | re.DOTALL):
-        match = match.replace('\n', '').replace(config['inline_comment_prefix'], '')
+        match = match.replace('\n', '').replace(config.get('inline_comment_prefix') or '', '')
         # normalize whitespace
         match = re.sub(' {2,}', ' ', match.strip())
         number = re.findall(config['number_subregex'], match)[0]

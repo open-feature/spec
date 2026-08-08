@@ -1,0 +1,21 @@
+name: Spec compliance
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions: { }
+
+jobs:
+  spec-compliance:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      # Binding to the main branch is not secure. Replace this with the specific commit SHA of the repo_parser image you want to use for a more secure setup.
+      - uses: open-feature/spec/tools/repo_parser@main
