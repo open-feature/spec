@@ -433,3 +433,28 @@ Consider printing the evaluation context as a stringified JSON object, or using 
 > If the logger abstraction in the SDK supports a log level concept, the appropriate log level **SHOULD** be used for each stage (before/after: debug/info, error: error).
 
 Consider using `debug` or `info` levels for the `before` and `after` stages, and the `error` level for the `error` stage.
+
+## Code Readiness Hook
+
+The code readiness hook prevents enabling a feature flag in running binaries that are not ready. To protect against runtime errors during rollouts where binaries with different code versions can run, this hook compares the running binary version against a minimum code version defined in `flag metadata`. If the binary version is lower than the minimum code version, the hook throws an error during flag evaluation, causing the SDK to trigger fallback to the default flag value.
+
+This mechanism is particularly useful when evaluating [App Lifecycle Manager feature flags](https://docs.cloud.google.com/saas-runtime/docs/flags/flags-overview) during flag rollouts, ensuring that feature flags requiring newer code cannot be enabled on instances running older binary versions.
+
+The code readiness hook operates during the flag evaluation life-cycle as described below:
+
+| Stage   | Behavior                                                                                                                                    |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| before  | N/A                                                                                                                                         |
+| after   | Inspects `flag metadata` for the configured minimum code version key. If running binary version < minimum code version, throws an error.    |
+| error   | N/A                                                                                                                                         |
+| finally | N/A                                                                                                                                         |
+
+> The code readiness hook **MUST** be initialized with the running binary version.
+
+> The code readiness hook **SHOULD** support a configurable version key name for finding the minimum code version in `flag metadata` (default key: `minCodeVersion`).
+
+> During the `after` stage, if the running binary version is lower than the minimum code version, the hook **MUST** throw an error.
+
+Throwing an error during the `after` stage triggers fallback to the default flag value, ensuring that features requiring newer code are safely disabled on outdated instances.
+
+> Defaulting to using [Semantic Versioning 2.0.0](https://semver.org/) for comparing versions, the hook **SHOULD** allow configuring different version comparison strategies.
