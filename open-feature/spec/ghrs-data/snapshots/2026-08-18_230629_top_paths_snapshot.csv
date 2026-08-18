@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,208,157
+/open-feature/spec/tree/main/specification,33,21
+/open-feature/spec/issues,26,13
+/open-feature/spec/discussions/categories/ideas,20,20
+/open-feature/spec/pulls,15,6
+/open-feature/spec/blob/main/specification/glossary.md,13,8
+/open-feature/spec/blob/main/specification/types.md,11,9
+/open-feature/spec/blob/main/research/api-comparision.md,10,10
+/open-feature/spec/blob/main/research/existing-landscape.md,10,10
+/open-feature/spec/blob/main/specification/flag-evaluation/hooks.md,10,10
