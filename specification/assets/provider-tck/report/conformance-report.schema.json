@@ -99,7 +99,7 @@
     },
 
     "capabilities": {
-      "description": "Per-capability outcome, keyed by Gherkin tag including the leading at-sign.",
+      "description": "Per-capability outcome, keyed by Gherkin tag including the leading at-sign. This is a summary of the OPTIONAL contract only and is not a verdict: scenarios carrying no capability tag are mandatory, roll up into no capability, and are therefore invisible here. A provider can fail a mandatory scenario while every entry in this object reads 'passed', so a consumer deciding whether a provider conforms must read 'scenarios'. That is why per-scenario results are required and required to be complete.",
       "type": "object",
       "propertyNames": { "pattern": "^@[a-z0-9-]+$" },
       "additionalProperties": { "$ref": "#/$defs/capabilityResult" }
@@ -125,21 +125,15 @@
           "type": "object",
           "additionalProperties": false,
           "required": ["state"],
+          "if": { "properties": { "state": { "const": "passed" } } },
+          "else": { "required": ["reason"] },
           "properties": {
             "state": { "$ref": "#/$defs/outcome" },
             "reason": {
-              "description": "Why, in a form a human reading a comparison page can use. Required in practice for anything other than 'passed' -- 'this provider does not support configuration-change events' is useful information for someone choosing a provider.",
+              "description": "Why, in a form a human reading a comparison page can use. Required for anything other than 'passed', and enforced by this schema rather than left to convention -- 'this provider does not support configuration-change events' is useful information for someone choosing a provider, and a bare tag with no explanation is not.",
               "type": "string"
             },
-            "knownDeviation": {
-              "description": "Set when the provider fails a capability the specification does not treat as optional, and the gap is tracked. Distinguishes 'chose not to implement an optional feature' from 'has a known bug', which the tag vocabulary alone cannot express.",
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "issue": { "type": "string", "format": "uri" },
-                "summary": { "type": "string" }
-              }
-            }
+            "knownDeviation": { "$ref": "#/$defs/knownDeviation" }
           }
         }
       ]
@@ -149,6 +143,8 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["feature", "name", "outcome"],
+      "if": { "properties": { "outcome": { "const": "passed" } } },
+      "else": { "required": ["reason"] },
       "properties": {
         "feature": {
           "description": "The feature file, without extension, e.g. 'errors'.",
@@ -161,10 +157,21 @@
         },
         "outcome": { "$ref": "#/$defs/outcome" },
         "reason": {
-          "description": "For a skip, why it was skipped. For a failure, what failed.",
+          "description": "For a skip, why it was skipped. For a failure, what failed. Required whenever the outcome is not 'passed', and enforced rather than merely expected: 'not-declared' without a reason is the difference between a report a person can act on and a wall of tags.",
           "type": "string"
         },
-        "durationMs": { "type": "number", "minimum": 0 }
+        "durationMs": { "type": "number", "minimum": 0 },
+        "knownDeviation": { "$ref": "#/$defs/knownDeviation" }
+      }
+    },
+
+    "knownDeviation": {
+      "description": "Set when a provider fails something the specification does not treat as optional, and the gap is tracked. It distinguishes 'chose not to implement an optional feature' from 'has a known bug', which the tag vocabulary alone cannot express. It applies at both levels because the two are not the same claim: a capability-level deviation says the provider does not do X, while a scenario-level one pins the deviation to the single case that fails, which is what an implementation marking one expected failure has to record.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "issue": { "type": "string", "format": "uri" },
+        "summary": { "type": "string" }
       }
     }
   }
