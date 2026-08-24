@@ -62,10 +62,10 @@
           "description": "A human-readable spec release tag, when one applies. A commit is precise; a tag is what a person can reason about.",
           "type": "string"
         },
-        "gherkinDigest": {
-          "description": "Digest over the feature files and canonical flag set actually executed, as 'sha256:<hex>'. The revision is an assertion; this is a check. A recorded revision can be wrong if a vendored file was edited locally, and this is what catches that -- which is the drift the whole suite exists to prevent.",
+        "assetsTree": {
+          "description": "The git tree object ID of specification/assets/provider-tck at that revision, as 40 lowercase hex characters. Two things make this worth carrying alongside the revision. It is stable across unrelated spec commits, so two runs that executed identical assets report the same value even when pinned to different commits -- which is precisely the comparability question a consumer is asking. And it is checkable rather than merely asserted: `git rev-parse <specRevision>:specification/assets/provider-tck` must reproduce it, so a revision recorded wrongly does not go unnoticed. Note that it covers the whole asset directory including its documentation, so a README edit changes it; that errs towards reporting two comparable runs as different, rather than the reverse.",
           "type": "string",
-          "pattern": "^sha256:[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{40}$"
         }
       }
     },
