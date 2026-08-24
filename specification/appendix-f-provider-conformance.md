@@ -139,6 +139,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | Tag | Meaning |
 |---|---|
 | `@events` | emits lifecycle events at all |
+| `@lifecycle` | performs an initialisation that reaches its backend, with an observable outcome |
 | `@stale` | enters `STALE` and emits `PROVIDER_STALE` on backend loss |
 | `@configuration-change` | detects configuration changes and emits `PROVIDER_CONFIGURATION_CHANGED` |
 | `@object` | supports structured flag values |
@@ -148,6 +149,15 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@caching` | reserved; no scenarios yet |
 
 Untagged scenarios are mandatory and always run.
+
+`@lifecycle` and `@events` are deliberately separate, and conflating them is the mistake this
+vocabulary exists to prevent. Every SDK synthesises `PROVIDER_READY` for a provider that has no
+initialisation step -- the Go SDK's comment says so outright, *"a provider without state handling
+capability can be assumed to be ready immediately"* -- so a provider with no lifecycle passes the
+readiness scenario without demonstrating anything, exactly as a no-op provider would. A stateless
+HTTP provider such as OFREP is the common case: it observably emits nothing of its own and cannot
+fail initialisation, yet its client still reports `READY`. Such a provider declares neither tag, and
+the lifecycle scenarios are reported as skipped rather than passing vacuously.
 
 The design rule behind this: **a conformance suite that quietly goes green on scenarios it did not
 run is worse than no suite at all.** A TCK implementation must report unsupported capabilities as
