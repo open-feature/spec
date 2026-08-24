@@ -1,0 +1,82 @@
+{
+  "$comment": [
+    "The canonical flag set the TCK's feature files assume. A backend under test MUST serve an",
+    "equivalent set under the configuration named 'default'.",
+    "",
+    "Expressed in the flagd flag-definition format because that is the only widely implemented",
+    "vendor-neutral format today. The format is not what matters — the keys, types, variant",
+    "names and resolved values are. Seed them however your backend seeds flags.",
+    "",
+    "Two things are load-bearing and easy to get wrong:",
+    "  * 'missing-flag' MUST NOT exist. Its absence is what the FLAG_NOT_FOUND scenario tests.",
+    "  * No flag here has targeting rules. Every scenario expects reason STATIC, because the TCK",
+    "    tests the provider's mapping of a response, not the backend's evaluation logic."
+  ],
+  "flags": {
+    "boolean-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
+    "string-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "greeting": "hi",
+        "parting": "bye"
+      },
+      "defaultVariant": "greeting"
+    },
+    "integer-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "ten": 10
+      },
+      "defaultVariant": "ten"
+    },
+    "float-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "tenth": 0.1,
+        "half": 0.5
+      },
+      "defaultVariant": "half"
+    },
+    "object-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "empty": {},
+        "template": {
+          "showImages": true,
+          "title": "Check out these pics!",
+          "imagesPerPage": 100
+        }
+      },
+      "defaultVariant": "template"
+    },
+    "wrong-flag": {
+      "$comment": "A string flag, evaluated as a boolean by the TYPE_MISMATCH scenario.",
+      "state": "ENABLED",
+      "variants": {
+        "one": "uno",
+        "two": "dos"
+      },
+      "defaultVariant": "one"
+    },
+    "changing-flag": {
+      "$comment": [
+        "The flag POST /change mutates. The TCK asserts only that its resolved value differs",
+        "after the change, so which of the two variants you start from does not matter."
+      ],
+      "state": "ENABLED",
+      "variants": {
+        "foo": "foo",
+        "bar": "bar"
+      },
+      "defaultVariant": "foo"
+    }
+  }
+}
