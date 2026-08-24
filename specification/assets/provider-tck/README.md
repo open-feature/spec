@@ -15,6 +15,7 @@ These validate a **provider** against a real backend. For assets that validate a
 | [`gherkin/metadata.feature`](./gherkin/metadata.feature) | the provider identifies itself by name |
 | [`flags/canonical-flags.json`](./flags/canonical-flags.json) | the flag set every scenario assumes |
 | [`openapi/control-api.yaml`](./openapi/control-api.yaml) | the HTTP surface a backend under test must expose |
+| [`report/conformance-report.schema.json`](./report/conformance-report.schema.json) | the shape of a machine-readable conformance report |
 
 ## These three travel together
 
