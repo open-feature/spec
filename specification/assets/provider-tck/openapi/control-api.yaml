@@ -1,0 +1,368 @@
+openapi: 3.0.3
+
+info:
+  title: OpenFeature Provider TCK — Backend Control API
+  version: 0.0.1
+  description: |
+    The control API that a **backend under test** must expose so the OpenFeature
+    Provider TCK can drive it.
+
+    The TCK verifies the *provider contract*: how a provider maps backend
+    responses to typed resolution details, lifecycle states and events. To do
+    that it must be able to put the backend into specific states on demand —
+    running, unreachable, reconfigured. This document standardises how.
+
+    This specification is derived from the control endpoints already implemented
+    by [`flagd-testbed`](https://github.com/open-feature/flagd-testbed)'s
+    "launchpad" server, which is the reference implementation.
+
+    ## Where this document should live
+
+    This file currently ships inside the Java `provider-tck` artifact, but it is
+    not a Java artifact: it is a language-agnostic contract that every language's
+    TCK must implement identically, and that backend vendors implement in
+    whatever language their testbed is written in (Go, for flagd).
+
+    It therefore belongs in the OpenFeature **spec** repository
+    (`open-feature/spec`), alongside the canonical Gherkin feature files and the
+    canonical flag set. Those three artifacts are a single unit — a feature file
+    that evaluates `boolean-flag` is meaningless without the flag definition, and
+    a disconnect scenario is meaningless without the endpoint that produces the
+    disconnect. Splitting them across repositories would let them drift.
+
+    Each language's TCK then vendors the spec repo (git submodule or equivalent)
+    and packages these files into its own distribution format, so that adopting a
+    TCK never requires a consumer to check out a submodule of their own.
+
+    ## Conformance language
+
+    The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT and MAY are to be
+    interpreted as described in RFC 2119.
+
+    Each operation below is tagged **REQUIRED** or **OPTIONAL**. A backend that
+    implements every REQUIRED operation can run the full TCK. OPTIONAL operations
+    have a defined fallback that the TCK applies automatically, so omitting them
+    costs nothing but precision.
+
+    ---
+
+    ## Normative requirement 1 — the no-container-restart invariant
+
+    > **Container lifecycle operations MUST NOT be used to simulate backend
+    > unavailability. Backend unavailability MUST be simulated from inside the
+    > running stack.**
+
+    The TCK starts the vendor's Docker Compose stack **once per test suite** and
+    reads the dynamically mapped host ports. Testcontainers cannot reliably
+    preserve mapped ports across a container stop/start in all language
+    bindings — a restarted container generally comes back on a *different* host
+    port, which silently invalidates every provider instance already pointed at
+    the old one. Any TCK implementation in any language hits this, so the
+    constraint is part of the contract rather than a Java detail.
+
+    Therefore an implementation of `/stop`, `/restart` or any other outage
+    simulation MUST achieve the outage by one of:
+
+      * killing or suspending the backend **process** inside its container
+        (the reference behaviour — this is what flagd-testbed does);
+      * a proxy in the stack refusing or blackholing connections
+        (e.g. a toxiproxy toxic, an envoy `direct_response`);
+      * an in-container firewall or socket-level block.
+
+    An implementation MUST NOT `docker stop`, `docker kill`, `docker rm` or
+    recreate any container in the stack while the suite is running. The stack is
+    brought up before the first scenario and torn down after the last one, and
+    the mapped ports MUST remain stable for that entire window.
+
+    ---
+
+    ## Normative requirement 2 — flag state semantics across outages
+
+    Outage simulation and flag-state seeding are orthogonal, and the TCK relies
+    on that separation for scenario isolation:
+
+      * `POST /start` **MUST** (re)seed flag state to the baseline defined by the
+        named configuration. Any mutation previously applied by `POST /change`
+        MUST be discarded. This is what makes `/start` usable as a reset.
+      * `POST /restart` and a `POST /stop` followed by a `POST /start` **of the
+        same configuration** MUST leave the backend serving the same baseline
+        flag state it served before the outage. An outage MUST NOT be observable
+        as a change in flag *values* — only as a change in *availability*.
+      * `POST /change` mutations persist until the next `/start` or `/reset`.
+
+    ---
+
+    ## Normative requirement 3 — compose stack conventions
+
+    The backend under test is delivered as a **Docker Compose stack**, not a
+    single image, so vendors can compose proxies, edge services or several
+    containers. The TCK only relies on these conventions:
+
+      * One service — by default named `backend`, overridable by the provider
+        author — exposes the control API on container-internal port `8080`
+        (also overridable).
+      * The same stack exposes whatever port(s) the provider connects to.
+      * **All external ports are dynamically mapped.** A stack MUST NOT pin host
+        ports; the TCK discovers them after startup and hands them to the
+        provider factory.
+      * The stack MAY contain any number of additional services.
+
+    ---
+
+    ## Known gap — evaluation context passthrough
+
+    There is currently no operation for asserting that an evaluation context sent
+    by the provider actually reached the backend intact. Verifying that requires
+    an echo mechanism (e.g. `GET /last-evaluation` returning the most recent
+    request the backend received). Until such an operation exists, context
+    passthrough is out of scope for the TCK.
+
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://{host}:{port}
+    description: |
+      Resolved at runtime from the Compose stack. `host` is the Docker host and
+      `port` is the dynamically mapped host port for the control service's
+      internal port 8080.
+    variables:
+      host:
+        default: localhost
+      port:
+        default: "8080"
+
+tags:
+  - name: lifecycle
+    description: Start and stop the backend process.
+  - name: availability
+    description: Simulate outages without touching containers.
+  - name: flags
+    description: Seed and mutate flag configuration.
+  - name: health
+    description: Readiness of the control API itself.
+
+paths:
+
+  /start:
+    post:
+      tags: [lifecycle]
+      operationId: start
+      summary: "[REQUIRED] Start the backend and seed flags to a named baseline"
+      description: |
+        Starts the backend process using the named configuration and seeds flag
+        state to that configuration's baseline.
+
+        MUST be idempotent in the sense that calling it while the backend is
+        already running is not an error: the implementation restarts the process
+        (or otherwise ensures it is running) with the requested configuration.
+
+        Because this operation resets flag state, the TCK uses it as its default
+        scenario-isolation mechanism when `/reset` is not implemented.
+
+        The set of valid configuration names is vendor-defined. Every
+        implementation MUST support the name `default`, which MUST serve the
+        canonical flag set the TCK's feature files assume.
+
+        Reference implementation: flagd-testbed launches the `flagd` binary with
+        the config file of that name from `launchpad/configs` and rewrites
+        `/flags/allFlags.json`.
+      parameters:
+        - name: config
+          in: query
+          required: false
+          description: |
+            Name of the configuration to start with. Defaults to `default`.
+          schema:
+            type: string
+            default: default
+          example: default
+      responses:
+        "200":
+          description: Backend started and flag state seeded.
+        "400":
+          description: Unknown configuration name.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /stop:
+    post:
+      tags: [availability]
+      operationId: stop
+      summary: "[REQUIRED] Make the backend unreachable"
+      description: |
+        Makes the backend unreachable to the provider, simulating an outage.
+
+        **MUST NOT stop the container.** See normative requirement 1. The
+        reference implementation kills the flagd process while its container
+        keeps running.
+
+        The backend stays unreachable until a subsequent `POST /start`. Calling
+        `/stop` when the backend is already stopped MUST succeed.
+
+        The TCK uses this to drive providers into `STALE` and `ERROR` states and
+        to assert `PROVIDER_STALE` / `PROVIDER_ERROR` events.
+      responses:
+        "200":
+          description: Backend is now unreachable; container still running.
+
+  /restart:
+    post:
+      tags: [availability]
+      operationId: restart
+      summary: "[REQUIRED] Simulate an outage of a bounded duration"
+      description: |
+        Makes the backend unreachable, waits `seconds`, then starts it again with
+        the configuration currently in effect.
+
+        Flag state MUST be preserved across the outage — see normative
+        requirement 2. This is what distinguishes `/restart` from
+        `/stop` + `/start`: the former is an availability event, the latter is
+        also a reset.
+
+        This operation MAY return as soon as the outage has begun rather than
+        blocking for the full duration; the TCK does not rely on the response
+        being delayed. It awaits provider events instead.
+
+        The TCK uses this for the disconnect/reconnect scenarios: `STALE` →
+        `PROVIDER_STALE`, then back to `READY` → `PROVIDER_READY`.
+      parameters:
+        - name: seconds
+          in: query
+          required: false
+          description: |
+            How long the backend stays unreachable. Defaults to 5.
+
+            Providers differ enormously in how fast they notice an outage —
+            a streaming provider may see it in milliseconds while a polling
+            provider needs up to a full poll interval. Feature files therefore
+            parameterise this value and provider authors tune the matching
+            await timeouts.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 5
+          example: 5
+      responses:
+        "200":
+          description: Outage started (and, for blocking implementations, ended).
+
+  /change:
+    post:
+      tags: [flags]
+      operationId: change
+      summary: "[REQUIRED] Mutate flag configuration so the provider observes a change"
+      description: |
+        Mutates the flag configuration such that a conforming provider observes a
+        configuration change and, on re-evaluation, resolves a **different value**
+        for the affected flag.
+
+        The implementation MUST:
+
+          * change the resolved value of the flag with key `changing-flag`;
+          * do so without restarting the backend process, so that a provider sees
+            a configuration-change signal rather than a reconnect;
+          * make the change durable until the next `/start` or `/reset`.
+
+        The implementation SHOULD toggle between exactly two known values so that
+        repeated calls are meaningful and the test remains deterministic
+        regardless of how many times it has run against the same stack. The
+        reference implementation toggles `changing-flag`'s `defaultVariant`
+        between `foo` and `bar`.
+
+        The TCK uses this to assert `PROVIDER_CONFIGURATION_CHANGED`, that the
+        changed flag key appears in the event payload, and that a subsequent
+        evaluation returns the new value.
+      responses:
+        "200":
+          description: Flag configuration mutated.
+
+  /reset:
+    post:
+      tags: [flags]
+      operationId: reset
+      summary: "[OPTIONAL] Restore the seeded baseline without an outage"
+      description: |
+        Restores flag state to the baseline of the configuration currently in
+        effect, discarding any mutation applied by `/change`, **without** making
+        the backend unreachable at any point.
+
+        This is the preferred scenario-isolation primitive: unlike `/start` it
+        causes no availability blip, so it cannot inject spurious lifecycle
+        events into the next scenario.
+
+        **Scope.** This operation resets flag state only. It MUST NOT be
+        expected to start a backend that is currently stopped — that is what
+        `/start` is for. A TCK therefore uses `/reset` only when the backend is
+        known to be running, and `/start` otherwise. The reference client tracks
+        this: `/stop` and `/restart` mark the backend as possibly-unreachable, so
+        the scenario that follows either of them is prepared with `/start`.
+
+        **Fallback when not implemented.** A backend that does not implement this
+        operation MUST respond `404` or `501`. The TCK then falls back to
+        `POST /start?config={defaultConfig}`, which resets flag state at the cost
+        of a process restart. The fallback is detected once per suite and cached.
+
+        Implementing `/reset` is RECOMMENDED for providers whose reconnect
+        behaviour makes the `/start` blip hard to distinguish from a real event.
+      responses:
+        "200":
+          description: Flag state restored to the baseline.
+        "404":
+          description: Not implemented; the TCK falls back to `/start`.
+        "501":
+          description: Not implemented; the TCK falls back to `/start`.
+
+  /healthz:
+    get:
+      tags: [health]
+      operationId: health
+      summary: "[OPTIONAL] Readiness of the control API"
+      description: |
+        Reports whether the control API is ready to accept commands.
+
+        **Fallback when not implemented.** Readiness defaults to "the control
+        port accepts a TCP connection", which the TCK establishes with a
+        Testcontainers listening-port wait strategy before the first scenario. A
+        `404` here is therefore not a failure, and the reference implementation
+        does not serve this path.
+
+        Note this reports the health of the **control API**, not of the backend.
+        The backend is deliberately unhealthy during outage scenarios while the
+        control API must stay reachable — otherwise the TCK could not end the
+        outage.
+      responses:
+        "200":
+          description: Control API ready.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        "404":
+          description: Not implemented; readiness falls back to a TCP port check.
+        "503":
+          description: Control API not ready yet.
+
+components:
+  schemas:
+
+    Health:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok]
+          description: Present and equal to `ok` when the control API is ready.
+      required: [status]
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable explanation. Never interpreted by the TCK.
+      required: [message]
