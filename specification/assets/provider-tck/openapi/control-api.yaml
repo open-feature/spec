@@ -158,6 +158,26 @@ paths:
         already running is not an error: the implementation restarts the process
         (or otherwise ensures it is running) with the requested configuration.
 
+        **MUST NOT return until the seeded flag state is actually being served.**
+        A 200 is a promise that the very next evaluation will resolve against the
+        new baseline. Returning as soon as the process reports healthy is not
+        enough: a backend can accept connections and answer a readiness probe
+        while its flag store is still empty, and an evaluation in that window
+        gets `FLAG_NOT_FOUND` for a flag the configuration plainly defines.
+
+        This is easy to get wrong and easy to miss. A provider that blocks during
+        initialisation -- streaming, or syncing a ruleset -- absorbs the window
+        and never sees it. A **stateless** provider, which evaluates over HTTP
+        with no initialisation at all, has nothing to hide it behind and fails
+        essentially every scenario, which reads as a catastrophically broken
+        provider rather than as a racing testbed. The reference implementation
+        exhibits this: its `/start` returns roughly 40ms before flagd's file
+        sources reach the flag store.
+
+        A TCK MAY defensively probe after `/start`, but it should not have to,
+        and requiring every stateless adopter to reimplement that probe is worse
+        than stating the requirement here.
+
         Because this operation resets flag state, the TCK uses it as its default
         scenario-isolation mechanism when `/reset` is not implemented.
 
