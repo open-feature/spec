@@ -1,8 +1,15 @@
-@events
+@lifecycle
 Feature: Provider lifecycle
 
   # Verifies the two terminal outcomes of provider initialisation: reaching READY against a
   # healthy backend, and settling into ERROR against one that cannot be reached.
+  #
+  # Gated by @lifecycle rather than @events, and the distinction is load-bearing. Every SDK
+  # synthesises PROVIDER_READY for a provider that has no initialisation step, so a provider
+  # without a lifecycle passes the readiness scenario below without demonstrating anything --
+  # a NoOpProvider passes it identically. @lifecycle asserts that the provider actually reaches
+  # its backend during initialisation and that the outcome is observable; a provider that merely
+  # emits events does not necessarily do that.
   #
   # The failure case matters more than it looks. A provider that blocks forever, or throws out
   # of provider registration, takes the host application down with it — so the requirement is
