@@ -15,7 +15,7 @@ Feature: Provider lifecycle
   # of provider registration, takes the host application down with it — so the requirement is
   # not merely that initialisation fails, but that it fails observably and promptly.
 
-  Scenario: A provider reaching its backend becomes ready
+  Scenario: A provider that successfully initializes becomes ready
     Given a stable provider
     And a ready event handler
     Then the ready event handler should have been executed
