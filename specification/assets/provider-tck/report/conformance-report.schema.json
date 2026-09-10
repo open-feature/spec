@@ -133,7 +133,7 @@
       ],
       "properties": {
         "declared": {
-          "description": "Capabilities the provider declares. A scenario tagged with anything absent from this list is expected to be skipped in the results payload.",
+          "description": "Capabilities the provider declares AND that the executed suite gates on. A scenario tagged with anything absent from this list is expected to be skipped in the results payload.\n\nA capability that no executed scenario carries MUST NOT appear here, even when the provider genuinely supports it. Such a capability cannot produce a skip, so it plays no part in interpreting the results -- and listing it invites a reader to believe it was verified when nothing examined it. That is the vacuous conformance claim the capability vocabulary exists to prevent, and it is easy to reintroduce: an adopter declaring 'everything except X' picks up every reserved tag in the vocabulary along the way.\n\nAn implementation that finds a declared capability the suite does not test should say so where the adopter will see it -- a warning or a failed run -- rather than quietly passing it through to the report. Silence in the report and silence to the adopter are not the same thing.",
           "type": "array",
           "items": {
             "type": "string",
