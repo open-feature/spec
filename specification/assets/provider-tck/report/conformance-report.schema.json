@@ -97,7 +97,7 @@
           "minLength": 1
         },
         "specRevision": {
-          "description": "The open-feature/spec commit the executed assets came from.",
+          "description": "The open-feature/spec commit the executed assets came from.\n\nFor the feature files this is corroborated rather than merely asserted, because a Cucumber Messages stream carries the executed source and a consumer can compare it. For the canonical flag set and the control API description it stands alone: the stream says nothing about either, and a scenario asserting that integer-flag resolves to 10 depends entirely on the flag set it was run against. An earlier draft carried a hash of the whole asset directory to close that gap; it was dropped because every TCK implementation either reads the assets from the submodule directly or regenerates and diffs its vendored copy in CI, so drift is caught where it happens rather than re-detected in every report.",
           "type": "string",
           "minLength": 7
         },
@@ -163,7 +163,7 @@
       ],
       "properties": {
         "format": {
-          "description": "The results format. 'cucumber-messages' is the ndjson protocol at https://github.com/cucumber/messages -- the expected value, and the only one that carries the executed feature source and an exact Scenario Outline row identity. The others are admitted because a runner may not emit Messages yet, and are lossier: 'cucumber-json' identifies outline rows only by line number, and 'junit-xml' carries no tags at all, which leaves the capability that gated a skip unrecoverable.",
+          "description": "The results format. 'cucumber-messages' is the ndjson protocol at https://github.com/cucumber/messages -- the expected value, and the only one that carries the executed feature source and an exact Scenario Outline row identity. The others are admitted because a runner may not emit Messages yet, and are lossier: 'cucumber-json' identifies outline rows only by line number, and 'junit-xml' carries no tags at all, which leaves the capability that gated a skip unrecoverable.\n\nOne thing to know before reading a Messages stream: a testCaseFinished message carries no status. A scenario's outcome is the most severe testStepResult among its steps, hooks included, on the ordering UNKNOWN < PASSED < SKIPPED < PENDING < UNDEFINED < AMBIGUOUS < FAILED. That ordering is what makes a capability skip visible -- a gate that aborts in a before-hook produces a SKIPPED hook result outranking the PASSED steps it prevented -- and a consumer reading only testCaseFinished will see no outcome at all.",
           "enum": [
             "cucumber-messages",
             "cucumber-json",
