@@ -145,10 +145,22 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@object` | supports structured flag values |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@strict-numeric-typing` | does not coerce between integer and float |
-| `@targeting` | reserved; no scenarios yet |
-| `@caching` | reserved; no scenarios yet |
+| `@targeting` | reserved; **not declarable** -- no scenarios yet |
+| `@caching` | reserved; **not declarable** -- no scenarios yet |
 
 Untagged scenarios are mandatory and always run.
+
+A reserved tag is documented so the vocabulary has a place for the capability when scenarios exist,
+but it **must not be declared** and must not appear in a conformance report's declaration. No
+scenario carries it, so declaring it cannot be verified, cannot produce a skip, and tells a reader
+only that something was claimed and nothing examined -- the vacuous conformance claim this whole
+vocabulary exists to prevent.
+
+This is easy to reintroduce by accident rather than by intent. An adopter who declares "every
+capability except X" picks up every reserved tag on the way past, which is exactly how one
+implementation came to report `@targeting` and `@caching` as declared. An implementation offering a
+"declare everything" convenience should exclude reserved tags from it, and should tell an adopter who
+names one directly rather than passing it silently into a report.
 
 `@lifecycle` and `@events` are deliberately separate, and conflating them is the mistake this
 vocabulary exists to prevent. Every SDK synthesises `PROVIDER_READY` for a provider that has no
