@@ -16,7 +16,7 @@ There is a dedicated [OpenFeature working group](https://github.com/open-feature
 - Telemetry enrichment of the evaluations
 - Reference implementations of the protocol
 
-If you are interested in this initiative, you can join the [`#openfeature-remote-evaluation-protocol`](https://cloud-native.slack.com/archives/C066A48LK35) Slack channel on the [CNCF Slack](https://slack.cncf.io/) workspace.
+If you are interested in this initiative, you can join the `#openfeature-remote-evaluation-protocol` Slack channel on the [CNCF Slack](https://slack.cncf.io/) workspace.
 
 ## API Specification
 
