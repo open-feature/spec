@@ -2,57 +2,100 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openfeature.dev/schema/provider-tck/conformance-report-1.json",
   "title": "OpenFeature provider conformance report",
-  "description": "The machine-readable result of one run of the provider conformance suite (Appendix F) against one provider in one configuration. Emitted by a TCK implementation; consumed by anything that aggregates or displays conformance. See https://github.com/open-feature/spec/issues/424.",
+  "description": "The machine-readable result of one run of the provider conformance suite (Appendix F) against one provider in one configuration. This document is an envelope: it identifies what was tested, what the provider claims, and where the executed results are. The results themselves are a standard format (Cucumber Messages), not something this specification defines. See https://github.com/open-feature/spec/issues/424.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "provider", "sdk", "tck", "capabilities", "scenarios"],
+  "required": [
+    "schemaVersion",
+    "provider",
+    "sdk",
+    "tck",
+    "declaration",
+    "results"
+  ],
   "properties": {
     "schemaVersion": {
       "description": "The version of this schema the report conforms to. Integer-as-string so that a consumer can reject a report it does not understand rather than guessing.",
       "type": "string",
       "pattern": "^[1-9][0-9]*$"
     },
-
     "provider": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "language"],
+      "required": [
+        "name",
+        "language"
+      ],
       "properties": {
-        "name": { "type": "string", "minLength": 1 },
-        "version": { "type": "string" },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string"
+        },
         "language": {
-          "enum": ["go", "java", "javascript", "dotnet", "python", "php", "ruby", "kotlin", "swift", "rust", "other"]
+          "enum": [
+            "go",
+            "java",
+            "javascript",
+            "dotnet",
+            "python",
+            "php",
+            "ruby",
+            "kotlin",
+            "swift",
+            "rust",
+            "other"
+          ]
         },
         "configuration": {
           "description": "Which configuration of the provider was tested, when a provider has more than one materially different mode. One provider may therefore produce several reports, and they are not interchangeable: flagd's RPC and in-process resolvers differ in whether they emit PROVIDER_STALE, so a report keyed on provider name alone would have to pick one and misrepresent the other.",
           "type": "string"
         },
-        "repository": { "type": "string", "format": "uri" }
+        "repository": {
+          "type": "string",
+          "format": "uri"
+        }
       }
     },
-
     "sdk": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
-        "name": { "type": "string", "minLength": 1 },
-        "version": { "type": "string", "minLength": 1 }
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
-
     "tck": {
       "description": "What asked the questions, and which questions. The spec revision is a property of the TCK artifact rather than an independent assertion: a given TCK build consumes exactly one revision of the assets.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["implementation", "version", "specRevision"],
+      "required": [
+        "implementation",
+        "version",
+        "specRevision"
+      ],
       "properties": {
         "implementation": {
           "description": "Which TCK implementation produced this, e.g. 'go-sdk-contrib/tools/provider-tck'.",
           "type": "string",
           "minLength": 1
         },
-        "version": { "type": "string", "minLength": 1 },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
         "specRevision": {
           "description": "The open-feature/spec commit the executed assets came from.",
           "type": "string",
@@ -69,115 +112,129 @@
         }
       }
     },
-
     "backend": {
       "description": "What the provider was pointed at. Omitted for a provider with no backend, which is itself informative.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "description": { "type": "string" },
+        "description": {
+          "type": "string"
+        },
         "controlApi": {
           "description": "How the backend was driven. 'http' means the normative control API; 'in-process' is the narrow allowance for providers with no backend, and a report claiming it for a provider that has one should be treated with suspicion.",
-          "enum": ["http", "in-process"]
+          "enum": [
+            "http",
+            "in-process"
+          ]
         }
       }
     },
-
+    "declaration": {
+      "description": "The capability set this provider claims, as Gherkin tags including the leading at-sign. This is an INPUT to reading the results, not a summary of them, which is why it cannot be derived from the results payload and has to be stated here. A skipped scenario in the payload says the question was not put to this provider; only the declaration says whether that is because the provider declines the capability. Given the declaration and a scenario's tags, the reason for a skip follows without needing to be transported per scenario.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared"
+      ],
+      "properties": {
+        "declared": {
+          "description": "Capabilities the provider declares. A scenario tagged with anything absent from this list is expected to be skipped in the results payload.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^@[a-z0-9-]+$"
+          }
+        },
+        "notApplicable": {
+          "description": "Capabilities that cannot hold for this provider rather than merely being undeclared, each with a reason. Kept separate because collapsing the two misrepresents whole languages: @strict-numeric-typing is unsatisfiable in JavaScript because the language has no integer type, and reporting that as an undeclared choice would show every JavaScript provider as missing something none of them can have. Where the impossibility is a property of the language rather than of the provider it is better recorded once in the capability documentation than repeated in every report, so this is for provider-specific cases.",
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^@[a-z0-9-]+$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "results": {
+      "description": "Where the executed results live, and in what format. The results themselves are deliberately NOT defined by this schema: per-scenario outcomes, tags, Scenario Outline row identity and the executed feature source are all already specified by Cucumber Messages, and defining them again here would create a second format to maintain and version and two places for the same fact to disagree.\n\nIt is referenced rather than inlined because a Messages stream carries the feature sources and so is far larger than this envelope, and because a consumer deciding whether it cares about a report should not have to download the whole run to find out.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "location"
+      ],
+      "properties": {
+        "format": {
+          "description": "The results format. 'cucumber-messages' is the ndjson protocol at https://github.com/cucumber/messages -- the expected value, and the only one that carries the executed feature source and an exact Scenario Outline row identity. The others are admitted because a runner may not emit Messages yet, and are lossier: 'cucumber-json' identifies outline rows only by line number, and 'junit-xml' carries no tags at all, which leaves the capability that gated a skip unrecoverable.",
+          "enum": [
+            "cucumber-messages",
+            "cucumber-json",
+            "junit-xml"
+          ]
+        },
+        "location": {
+          "description": "Where to fetch the results: a URI, or a path relative to this document.",
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "description": "Digest over the results payload as 'sha256:<hex>', so a consumer can tell that what it fetched is what this envelope describes.",
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "knownDeviations": {
+      "description": "Deviations the provider acknowledges. Optional, and an empty list is not the same as an absent one: stating none is a claim, omitting the field is silence.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/knownDeviation"
+      }
+    },
     "provenance": {
       "description": "Where this report came from. A report is a claim, not an audit, and this is what lets a consumer decide how much to trust it.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "runUrl": { "type": "string", "format": "uri" },
-        "commit": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" },
+        "runUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
         "attestation": {
           "description": "An optional signed attestation (e.g. sigstore bundle) covering this document.",
           "type": "string"
         }
       }
-    },
-
-    "capabilities": {
-      "description": "Per-capability outcome, keyed by Gherkin tag including the leading at-sign. This is a summary of the OPTIONAL contract only and is not a verdict: scenarios carrying no capability tag are mandatory, roll up into no capability, and are therefore invisible here. A provider can fail a mandatory scenario while every entry in this object reads 'passed', so a consumer deciding whether a provider conforms must read 'scenarios'. That is why per-scenario results are required and required to be complete.",
-      "type": "object",
-      "propertyNames": { "pattern": "^@[a-z0-9-]+$" },
-      "additionalProperties": { "$ref": "#/$defs/capabilityResult" }
-    },
-
-    "scenarios": {
-      "description": "Per-scenario outcome. Required, and required to be complete: it is what makes 'a skipped scenario is never reported as passed' checkable rather than a promise. A runner whose own summary counts skips as passes still produces a truthful report here. An entry is identified by feature, name and example together -- not by feature and name, which are shared by every row of a Scenario Outline.",
-      "type": "array",
-      "items": { "$ref": "#/$defs/scenarioResult" }
     }
   },
-
   "$defs": {
-    "outcome": {
-      "description": "Four outcomes, not two. 'not-declared' and 'not-applicable' are distinct and collapsing them misrepresents a provider: @strict-numeric-typing is unsatisfiable in JavaScript because the language has no integer type, so reporting it as 'not-declared' would show every JS provider as missing something no JS provider can have.",
-      "enum": ["passed", "failed", "not-declared", "not-applicable"]
-    },
-
-    "capabilityResult": {
-      "oneOf": [
-        { "$ref": "#/$defs/outcome" },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["state"],
-          "if": { "properties": { "state": { "const": "passed" } } },
-          "else": { "required": ["reason"] },
-          "properties": {
-            "state": { "$ref": "#/$defs/outcome" },
-            "reason": {
-              "description": "Why, in a form a human reading a comparison page can use. Required for anything other than 'passed', and enforced by this schema rather than left to convention -- 'this provider does not support configuration-change events' is useful information for someone choosing a provider, and a bare tag with no explanation is not.",
-              "type": "string"
-            },
-            "knownDeviation": { "$ref": "#/$defs/knownDeviation" }
-          }
-        }
-      ]
-    },
-
-    "scenarioResult": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["feature", "name", "outcome"],
-      "if": { "properties": { "outcome": { "const": "passed" } } },
-      "else": { "required": ["reason"] },
-      "properties": {
-        "feature": {
-          "description": "The feature file, without extension, e.g. 'errors'.",
-          "type": "string"
-        },
-        "name": { "type": "string", "minLength": 1 },
-        "example": {
-          "description": "The Examples row this entry came from, as the row's parameters keyed by column header. Required for a scenario originating from a Scenario Outline, omitted otherwise.\n\nWithout it a report is ambiguous exactly where it matters most. Every row of an outline shares one scenario name, so eleven rows of a type-mismatch matrix produce eleven entries with identical feature and name; if one fails and ten pass, the report cannot say which failed, and a consumer keying on feature and name keeps whichever row it saw last.\n\nIt is a field rather than a naming convention because the parameters are the identity, and they come from the feature file rather than from any runner. Mandating a mangled name instead would put a separator, an ordering and an escaping rule into normative text that every implementation must reproduce byte-for-byte, and drift there is invisible until two reports silently fail to line up. Implementations were observed diverging on precisely this point before the field existed: one emitted the bare scenario name for all eleven rows, another appended its runner's example id, a third its runner's expanded title.\n\nValues are the cell contents verbatim, as strings, because Gherkin has no types -- no coercion, no trimming beyond what the parser does, so the report says what the table said.\n\nKey order is not significant and implementations are not required to agree on it: a JSON object is unordered, and implementations observed so far differ (one emits Examples column order, another sorts alphabetically because its language sorts map keys when marshalling). Compare these by parsing, not by comparing bytes. If byte-level reproducibility is ever needed -- for an attestation over the document, say -- that is a canonicalisation concern for the whole report rather than something to solve in this one field.",
-          "type": "object",
-          "minProperties": 1,
-          "additionalProperties": { "type": "string" }
-        },
-        "tags": {
-          "type": "array",
-          "items": { "type": "string", "pattern": "^@[a-z0-9-]+$" }
-        },
-        "outcome": { "$ref": "#/$defs/outcome" },
-        "reason": {
-          "description": "For a skip, why it was skipped. For a failure, what failed. Required whenever the outcome is not 'passed', and enforced rather than merely expected: 'not-declared' without a reason is the difference between a report a person can act on and a wall of tags.",
-          "type": "string"
-        },
-        "durationMs": { "type": "number", "minimum": 0 },
-        "knownDeviation": { "$ref": "#/$defs/knownDeviation" }
-      }
-    },
-
     "knownDeviation": {
-      "description": "Set when a provider fails something the specification does not treat as optional, and the gap is tracked. It distinguishes 'chose not to implement an optional feature' from 'has a known bug', which the tag vocabulary alone cannot express. It applies at both levels because the two are not the same claim: a capability-level deviation says the provider does not do X, while a scenario-level one pins the deviation to the single case that fails, which is what an implementation marking one expected failure has to record.",
+      "description": "A gap the provider is known to have against something the specification does not treat as optional, with the gap tracked somewhere. It is distinct from an undeclared capability, which is a choice, and from a not-applicable one, which is impossible -- this is a defect that is acknowledged rather than hidden. Three of the four implementations needed it before it existed: flagd narrows floats to integers in two languages, and one Python scenario is marked as an expected failure against an SDK bug.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "issue": { "type": "string", "format": "uri" },
-        "summary": { "type": "string" }
+        "capability": {
+          "description": "The capability the deviation concerns, if it maps to one. Omitted when the deviation is against a mandatory scenario, which belongs to no capability.",
+          "type": "string",
+          "pattern": "^@[a-z0-9-]+$"
+        },
+        "issue": {
+          "type": "string",
+          "format": "uri"
+        },
+        "summary": {
+          "type": "string"
+        }
       }
     }
   }
