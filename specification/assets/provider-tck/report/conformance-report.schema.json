@@ -104,11 +104,6 @@
         "specRelease": {
           "description": "A human-readable spec release tag, when one applies. A commit is precise; a tag is what a person can reason about.",
           "type": "string"
-        },
-        "assetsTree": {
-          "description": "The git tree object ID of specification/assets/provider-tck at that revision, as 40 lowercase hex characters. Two things make this worth carrying alongside the revision. It is stable across unrelated spec commits, so two runs that executed identical assets report the same value even when pinned to different commits -- which is precisely the comparability question a consumer is asking. And it is checkable rather than merely asserted: `git rev-parse <specRevision>:specification/assets/provider-tck` must reproduce it, so a revision recorded wrongly does not go unnoticed. Note that it covers the whole asset directory including its documentation, so a README edit changes it; that errs towards reporting two comparable runs as different, rather than the reverse.",
-          "type": "string",
-          "pattern": "^[0-9a-f]{40}$"
         }
       }
     },
@@ -174,6 +169,11 @@
             "cucumber-json",
             "junit-xml"
           ]
+        },
+        "formatVersion": {
+          "description": "The version of the results format, for a format that has versions. Cucumber Messages does: implementations pin different releases -- one TCK builds against messages v21 while another's runner ships a much later one -- and the message types differ between them. Without this a consumer validating a stream has to guess which schema to validate against, and guessing wrong is worse than not checking, because a later schema accepts messages an earlier producer could not have emitted and an earlier one rejects messages that are perfectly valid. Record what the producer actually built against.",
+          "type": "string",
+          "minLength": 1
         },
         "location": {
           "description": "Where to fetch the results: a URI, or a path relative to this document.",
