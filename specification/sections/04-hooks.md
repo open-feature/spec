@@ -345,6 +345,14 @@ In languages with try/catch semantics, this means that exceptions thrown in `err
 
 Before hooks can impact evaluation by various means, such as mutating the `evaluation context`. Therefore, an error in the `before` hooks is considered abnormal execution, and the default should be returned.
 
+#### Requirement 4.4.8
+
+> If an error occurs in the `after` hooks, the default value **MUST** be returned.
+
+After hooks can reject a resolution they consider invalid, which is what the validating hook pattern relies on. An error in the `after` hooks is therefore also abnormal execution, and the default should be returned.
+
+Errors in `error` and `finally` hooks are different: they are contained by [Requirement 4.4.4](#requirement-444) and [Requirement 4.4.3](#requirement-443) respectively, and do not change the value returned to the application author.
+
 ### [Flag evaluation options](../types.md#evaluation-options)
 
 Usage might look something like:
