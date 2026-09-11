@@ -54,11 +54,22 @@ Feature: Provider lifecycle
     And the provider is shut down
     Then no exception should have been thrown
 
+  @reinitialization
   Scenario: A provider that was shut down can be initialized again
-    # Requirement 2.5.2: after shutdown the provider reverts to its uninitialized state, which
-    # is observable as exactly one thing -- it can be initialized again and then serves flags.
-    # A provider that shuts down by discarding its client and never recreating it passes the
-    # scenario above and fails this one.
+    # Requirement 2.5.2 says a provider SHOULD revert to its uninitialized state after shutdown,
+    # and its supporting text says "some providers MAY allow reinitialization from this state".
+    # Reuse is therefore permitted, not required, and this scenario is gated accordingly: a
+    # provider that shuts down by discarding its client and never recreating it is making a
+    # choice the specification allows, not exhibiting a defect.
+    #
+    # What the tag buys is the other direction. A provider that does claim to be reusable has
+    # somewhere to be held to it, because "shutdown() releases the client and initialize()
+    # returns early because an initialised flag was never cleared" is easy to write and leaves
+    # the provider evaluating against a closed connection rather than failing outright.
+    #
+    # Reverting the state itself is not separately observable: a provider that reverts but
+    # refuses reuse presents exactly as one that did neither. So this is the only assertion the
+    # requirement admits, and it only applies where reuse is offered.
     Given a stable provider
     And a Boolean-flag with key "boolean-flag" and a default value "false"
     When the provider is shut down

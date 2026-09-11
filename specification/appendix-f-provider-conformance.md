@@ -153,6 +153,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
+| `@reinitialization` | can be initialised again after `shutdown`, which [Requirement 2.5.2](./sections/02-providers.md#requirement-252) permits rather than requires |
 | `@targeting` | reserved; **not declarable** -- no scenarios yet |
 | `@caching` | reserved; **not declarable** -- no scenarios yet |
 
@@ -179,9 +180,32 @@ HTTP provider such as OFREP is the common case: it observably emits nothing of i
 fail initialisation, yet its client still reports `READY`. Such a provider declares neither tag, and
 the lifecycle scenarios are reported as skipped rather than passing vacuously.
 
+`@reinitialization` is separate from `@lifecycle` for a subtler reason, and it is worth recording how
+it came to be separate. [Requirement 2.5.2](./sections/02-providers.md#requirement-252) says a
+provider **SHOULD** revert to its uninitialized state after `shutdown`, and its supporting text adds
+that *"some providers **may** allow reinitialization from this state"*. Reuse is therefore permitted,
+not required. A provider that releases its client on shutdown and refuses to be started again is
+exercising a choice the specification offers it.
+
+The scenario was originally untagged, on the reading that reverting to the uninitialized state "is
+observable as exactly one thing — it can be initialized again and then serves flags". That inference
+does not hold, and the cost of it was concrete: a provider making a permitted choice was reported as
+failing conformance, and the failure was on its way to being filed as a defect against the
+implementation. A false failure is the mirror image of a vacuous pass, and this appendix cares about
+both.
+
+Reverting the state is not separately observable either — a provider that reverts but refuses reuse
+presents exactly as one that did neither — so a gated reuse scenario is the only assertion the
+requirement admits. It is worth keeping for the providers that do offer reuse, because releasing the
+client on shutdown while leaving an initialised flag set is easy to write and leaves the provider
+evaluating against a closed connection rather than failing outright.
+
 The design rule behind this: **a conformance suite that quietly goes green on scenarios it did not
-run is worse than no suite at all.** A TCK implementation must report unsupported capabilities as
-skipped and surface the reason, not silently pass or silently omit them.
+run is worse than no suite at all** — and, learned later and at some cost, one that reports a
+permitted choice as a failure is not much better. A TCK implementation must report unsupported
+capabilities as skipped and surface the reason, not silently pass or silently omit them; and a
+scenario must be gated whenever the behaviour it asserts is one the specification allows a provider
+to decline.
 
 `@numeric-coercion` deserves a note, because it is the one capability here that **the specification
 does not define**, and readers should not mistake it for one that does.
