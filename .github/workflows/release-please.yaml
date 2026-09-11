@@ -1,0 +1,31 @@
+name: Run Release Please
+
+# Releases the versioned artifacts kept in this repository. It does NOT release the
+# specification itself: the specification's own vX.Y.Z tags are cut by hand, and no root
+# package is configured here, so release-please neither creates nor advances them.
+#
+# Today the one package is specification/assets/provider-tck, the provider conformance
+# assets. Those are consumed by four language suites which each have to pin a revision of
+# them, and a pinned revision needs a name a human can read and a bot can compare. See
+# release-please-config.json.
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          command: manifest
+          token: ${{ secrets.GITHUB_TOKEN }}
+          default-branch: main
+          # This repository enforces DCO, so the bot's own commits need a sign-off too.
+          signoff: "OpenFeature Bot <109696520+openfeaturebot@users.noreply.github.com>"
