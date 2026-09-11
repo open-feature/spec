@@ -27,9 +27,11 @@ asserts are in
 [Appendix F](../../appendix-f-provider-conformance.md#capabilities-how-a-provider-says-what-it-cannot-do),
 which owns them; repeating the table here would give it two homes that can disagree.
 
-## These three travel together
+## The three inputs travel together
 
 A feature file that evaluates `boolean-flag` is meaningless without the flag definition, and a disconnect scenario is meaningless without the control endpoint that produces the disconnect. Changing one without the others breaks the suite in every language at once.
+
+The report schema is not one of the three: it describes what a run *emits*, not what a run needs, and a suite that never writes a report is no less conformant for it.
 
 ## Five properties that are load-bearing
 
