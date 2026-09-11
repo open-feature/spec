@@ -23,7 +23,7 @@ A feature file that evaluates `boolean-flag` is meaningless without the flag def
 ## Four properties that are load-bearing
 
 - **`missing-flag` must not exist** in the flag set. Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding it turns that scenario green for the wrong reason.
-- **No flag has targeting rules.** Every scenario expects reason `STATIC`, because the suite tests the provider's mapping of a backend response, not the backend's evaluation logic.
+- **Only `targeted-flag` has a targeting rule.** Every other flag resolves to its default variant whatever the evaluation context, which is what lets the untargeted scenarios expect reason `STATIC`. Seeding targeting onto any other flag breaks them in every language at once. `targeted-flag`'s rule is specified by behaviour — resolve `targeted` when the targeting key is exactly `tck-targeted-user`, `untargeted` otherwise — so express it however your backend expresses targeting.
 - **`boolean-zero-flag`, `integer-zero-flag` and `string-zero-flag` resolve to falsy values on purpose.** A seeding step that treats `false`, `0` or `""` as "unset" and drops them turns the falsy-value scenarios into `FLAG_NOT_FOUND` failures that look like provider defects. These names, and their `zero`/`non-zero` variants, are the ones [Appendix B's SDK suite](../gherkin/test-flags.json) already uses, so a backend serving that flag set already serves these.
 - **`integral-float-flag` is a float and `huge-integer-flag` is an integer.** Seeding `10.0` as `10` makes the lossless-coercion scenario pass without coercing; seeding `9007199254740991` through a float rounds it.
 
