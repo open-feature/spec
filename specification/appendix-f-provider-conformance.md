@@ -187,7 +187,7 @@ skipped and surface the reason, not silently pass or silently omit them.
 does not define**, and readers should not mistake it for one that does.
 
 OpenFeature has a single numeric type, deliberately: `number` is
-[*"a numeric value of unspecified type or size"*](../types.md), and implementation languages **may**
+[*"a numeric value of unspecified type or size"*](./types.md#number), and implementation languages **may**
 further differentiate between integers and floating point numbers *"as idioms dictate"*. Both the
 client and provider requirements say "boolean, numeric, string, and structure" — one numeric type,
 not two. Typed-language SDKs take up that idiom and expose two accessors anyway, and at that point
