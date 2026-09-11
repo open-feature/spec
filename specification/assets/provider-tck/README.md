@@ -25,3 +25,15 @@ A feature file that evaluates `boolean-flag` is meaningless without the flag def
 - **No flag has targeting rules.** Every scenario expects reason `STATIC`, because the suite tests the provider's mapping of a backend response, not the backend's evaluation logic.
 
 The flag set is expressed in the flagd flag-definition format because that is the only widely implemented vendor-neutral format today. The format is not what matters — the keys, types, variant names and resolved values are. Seed them however your backend seeds flags.
+
+## Consuming from Go
+
+This directory is also a Go module, `github.com/open-feature/spec/specification/assets/provider-tck`, whose only content is an `embed.FS` of the artifacts above. The Go conformance suite depends on it instead of vendoring a copy: a Go module ships as a zip of the VCS tree, in which a git submodule is only a gitlink, so an embed from a submodule would arrive empty for anyone running `go get`. The other languages build from a working tree and keep using the submodule; `go.mod` and `embed.go` are inert for them.
+
+A consumer pins a revision the usual way, by tag or by commit:
+
+```console
+go get github.com/open-feature/spec/specification/assets/provider-tck@<commit>
+```
+
+Nested Go modules are tagged with their path as a prefix, so a release of these assets is tagged `specification/assets/provider-tck/vX.Y.Z`; the specification's own `vX.Y.Z` tags do not apply to it.

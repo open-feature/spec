@@ -4,3 +4,7 @@
 *.feature text eol=lf
 *.json    text eol=lf
 *.yaml    text eol=lf
+
+# embed.go ships inside the Go module zip, whose checksum is content-addressed, so it too
+# must be identical whichever platform it is committed from.
+*.go      text eol=lf
