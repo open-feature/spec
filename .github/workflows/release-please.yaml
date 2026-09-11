@@ -7,6 +7,10 @@ name: Run Release Please
 # The tag shape is unchanged: include-component-in-tag is false in release-please-config.json,
 # so a release is tagged vX.Y.Z, continuing from v0.9.0 rather than restarting. Versioning
 # stays below 1.0.0 for now, so a breaking change bumps the minor.
+#
+# This repository enforces DCO, so the bot's own commits need a sign-off too. That is the
+# signoff key in release-please-config.json: as of v5 it is a configuration-file option, and
+# an action input of the same name is ignored.
 
 on:
   push:
@@ -15,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
 
 jobs:
@@ -23,8 +28,5 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v5
         with:
-          command: manifest
           token: ${{ secrets.GITHUB_TOKEN }}
-          default-branch: main
-          # This repository enforces DCO, so the bot's own commits need a sign-off too.
-          signoff: "OpenFeature Bot <109696520+openfeaturebot@users.noreply.github.com>"
+          target-branch: main
