@@ -30,10 +30,47 @@ The flag set is expressed in the flagd flag-definition format because that is th
 
 This directory is also a Go module, `github.com/open-feature/spec/specification/assets/provider-tck`, whose only content is an `embed.FS` of the artifacts above. The Go conformance suite depends on it instead of vendoring a copy: a Go module ships as a zip of the VCS tree, in which a git submodule is only a gitlink, so an embed from a submodule would arrive empty for anyone running `go get`. The other languages build from a working tree and keep using the submodule; `go.mod` and `embed.go` are inert for them.
 
-A consumer pins a revision the usual way, by tag or by commit:
+A consumer pins a release the usual way:
 
 ```console
-go get github.com/open-feature/spec/specification/assets/provider-tck@<commit>
+go get github.com/open-feature/spec/specification/assets/provider-tck@v0.1.0
 ```
 
-Nested Go modules are tagged with their path as a prefix, so a release of these assets is tagged `specification/assets/provider-tck/vX.Y.Z`; the specification's own `vX.Y.Z` tags do not apply to it.
+## Releases
+
+These assets are released independently of the specification, by [release-please](../../../release-please-config.json). A nested Go module is tagged with its path as a prefix, so a release is tagged `specification/assets/provider-tck/vX.Y.Z` — the same shape as `providers/flagd/v0.6.0` in the SDK contrib repositories. The specification's own `vX.Y.Z` tags are cut by hand and do not apply here; nothing about the two numbering schemes is related.
+
+What a bump means is not the usual thing, because this is a test suite rather than a library:
+
+- **A minor bump may turn a passing suite red.** Adding a scenario, or tightening one, raises the bar a provider has to clear. Nothing changed on the adopter's side and their build can still go from green to red, which is the point of adopting a conformance suite and is why new scenarios are released as minors rather than as patches.
+- **A patch bump cannot.** Patches are editorial: a clarified scenario name, a comment, a fix to something that never ran.
+
+So pinning is not optional bookkeeping. A suite that floats on the latest assets cannot distinguish a regression in the provider from a new question being asked of it.
+
+## Consuming from the other three languages
+
+Java, Python and JavaScript reach these files through a git submodule of this repository, because a JAR, a wheel and an npm package are all built from a working tree where the submodule is present. A submodule can track the release tag rather than a bare commit, which makes the pin readable in review:
+
+```ini
+[submodule "spec"]
+  path = tools/provider-tck/spec
+  url = https://github.com/open-feature/spec.git
+  branch = specification/assets/provider-tck/v0.1.0
+```
+
+The recorded gitlink is still a commit, so `git submodule update --init` and `actions/checkout` with `submodules: recursive` behave exactly as before. Only `git submodule update --remote` is affected, which resolves `branch` and will report that the tag is not a branch — do not use it on a submodule pinned this way.
+
+## Keeping a pin current
+
+Both forms are updatable by [Renovate](https://docs.renovatebot.com), so an adopting repository is told about a new release rather than discovering it:
+
+- Go: the `gomod` manager, on by default, raises a PR for a new `specification/assets/provider-tck/vX.Y.Z`.
+- The submodule: the `git-submodules` manager, which is opt-in and reads the tag out of `branch` above.
+
+```json
+{
+  "git-submodules": { "enabled": true }
+}
+```
+
+Let those PRs run the suite. A red one is the report that conformance narrowed, and reading it is the work — which is why it is worth *not* automerging these.

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "monorepo-tags": true,
+  "tag-separator": "/",
+  "bootstrap-sha": "dd235837f7b2ddb1120ab6e1bde940bf4d532313",
+  "separate-pull-requests": true,
+  "packages": {
+    "specification/assets/provider-tck": {
+      "release-type": "go",
+      "package-name": "specification/assets/provider-tck",
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": true,
+      "versioning": "default",
+      "extra-files": []
+    }
+  }
+}
