@@ -1,13 +1,15 @@
 name: Run Release Please
 
-# Releases the versioned artifacts kept in this repository. It does NOT release the
-# specification itself: the specification's own vX.Y.Z tags are cut by hand, and no root
-# package is configured here, so release-please neither creates nor advances them.
+# Releases everything versioned in this repository. Two packages are configured in
+# release-please-config.json, each with its own release pull request:
 #
-# Today the one package is specification/assets/provider-tck, the provider conformance
-# assets. Those are consumed by four language suites which each have to pin a revision of
-# them, and a pinned revision needs a name a human can read and a bot can compare. See
-# release-please-config.json.
+#   .                                 the specification, tagged vX.Y.Z as it always has been
+#   specification/assets/provider-tck the provider conformance assets, tagged with their path
+#
+# The two are independent. The specification package excludes the conformance assets, so a
+# change confined to the suite never bumps the specification; the assets carry their own
+# version because four language suites pin a revision of them, and a pinned revision needs a
+# name a human can read and a bot can compare.
 
 on:
   push:
