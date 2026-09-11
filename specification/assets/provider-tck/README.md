@@ -17,9 +17,11 @@ These validate a **provider** against a real backend. For assets that validate a
 | [`openapi/control-api.yaml`](./openapi/control-api.yaml) | the HTTP surface a backend under test must expose |
 | [`report/conformance-report.schema.json`](./report/conformance-report.schema.json) | the shape of a machine-readable conformance report |
 
-## These three travel together
+## The three inputs travel together
 
 A feature file that evaluates `boolean-flag` is meaningless without the flag definition, and a disconnect scenario is meaningless without the control endpoint that produces the disconnect. Changing one without the others breaks the suite in every language at once.
+
+The report schema is not one of the three: it describes what a run *emits*, not what a run needs, and a suite that never writes a report is no less conformant for it.
 
 ## Four properties that are load-bearing
 
