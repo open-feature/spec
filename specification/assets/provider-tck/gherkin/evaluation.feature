@@ -157,13 +157,17 @@ Feature: Provider flag evaluation
     # string-flag has no targeting rule, so the context cannot change the outcome. What is
     # under test is only that supplying one is harmless.
     #
+    # The step wording is Appendix B's, and the Java TCK already carries a step definition for
+    # it, because inventing a second way to say "a context containing a targeting key" is the
+    # kind of divergence this appendix exists to prevent.
+    #
     # Deliberately asserts the value and the absence of an error rather than the reason.
     # 2.2.3 makes the value a MUST and 2.2.6 forbids an error code in normal execution, while
     # the reason is a SHOULD that 2.2.5 lets a provider populate with "some other string" —
     # and with a context supplied and nothing matching, both "STATIC" and "DEFAULT" are
     # defensible readings.
     Given a String-flag with key "string-flag" and a default value "bye"
-    And an evaluation context with targeting key "tck-other-user"
+    And a context containing a targeting key with value "tck-other-user"
     When the flag was evaluated with details
     Then the resolved details value should be "hi"
     And the error-code should be ""
@@ -181,7 +185,7 @@ Feature: Provider flag evaluation
     # targeting key is exactly "tck-targeted-user", "untargeted" otherwise. Express it however
     # your backend expresses targeting.
     Given a String-flag with key "targeted-flag" and a default value "fallback"
-    And an evaluation context with targeting key "tck-targeted-user"
+    And a context containing a targeting key with value "tck-targeted-user"
     When the flag was evaluated with details
     Then the resolved details value should be "targeted"
     And the error-code should be ""
@@ -193,7 +197,7 @@ Feature: Provider flag evaluation
     # that always returned the targeted value would pass that one. This is what pins down that
     # the rule was evaluated rather than the targeted variant simply being served.
     Given a String-flag with key "targeted-flag" and a default value "fallback"
-    And an evaluation context with targeting key "tck-other-user"
+    And a context containing a targeting key with value "tck-other-user"
     When the flag was evaluated with details
     Then the resolved details value should be "untargeted"
     And the error-code should be ""
