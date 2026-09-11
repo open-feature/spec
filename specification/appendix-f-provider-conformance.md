@@ -207,6 +207,39 @@ capabilities as skipped and surface the reason, not silently pass or silently om
 scenario must be gated whenever the behaviour it asserts is one the specification allows a provider
 to decline.
 
+### Rules for declaring
+
+The four rules below are stated rather than implied because each was discovered by four
+implementations answering the same question differently. They are what makes two reports comparable.
+
+**A scenario is gated by every capability tag that applies to it, including tags inherited from its
+feature.** Tags compose: a tag on a `Feature` applies to every scenario in it, and a scenario
+carrying its own tag is gated by both. A scenario runs only when **all** of its capabilities are
+declared, and is otherwise reported as skipped naming one of the undeclared ones. This matters for
+reading a result: `lifecycle.feature` carries `@lifecycle` at feature level, so the re-initialization
+scenario inside it needs `@lifecycle` *and* `@reinitialization`, and declaring only the second leaves
+it skipped — a declaration that looks satisfied and examines nothing.
+
+**Declare a capability only on evidence from running the suite, never from reading the provider's
+source.** Source inspection is unreliable here in both directions, and demonstrably so: one
+provider's shutdown explicitly reverts its own initialised flag, which reads as support for reuse,
+while the transport underneath cannot be restarted and initialization fails on a deadline. Another
+closes its client with nothing visibly reconstructing it, which reads as a refusal, and works. Run
+the cycle.
+
+**A `knownDeviations` entry is for a behaviour the provider is required to have and does not.** The
+requirement must be a numbered `MUST`, or a rule the implementation has bound itself to elsewhere —
+a vendor's own architecture decision, say. Where the specification permits the choice, withholding
+the capability *is* the honest report and a deviation entry would assert a defect that does not
+exist. A false failure is the mirror image of a vacuous pass, and a reader cannot tell them apart
+from the outside. When a scenario fails, find the numbered requirement before concluding anything:
+check whether it is a `MUST`, a `SHOULD`, or explicitly optional.
+
+**Emit `knownDeviations` only when there is at least one.** An empty array and an absent field are
+not the same claim: stating none asserts that deviations were considered and none found, which no
+suite can know on the adopter's behalf. Omit the field when the list is empty, and never synthesise
+an empty one.
+
 `@numeric-coercion` deserves a note, because it is the one capability here that **the specification
 does not define**, and readers should not mistake it for one that does.
 
@@ -308,9 +341,24 @@ keep an extension from quietly becoming a conformance claim.
 
 **Extension scenarios must be distinguishable from canonical ones.** A results payload that mixes
 them with no way to tell which is which lets an adopter's own passing scenarios flatter the
-conformance result. Partitioning by path is enough — canonical features keep the path they have in
-this repository and extensions mount under a reserved prefix — and it is what a consumer reads to
-separate the two.
+conformance result. Partitioning by path is enough, and it is what a consumer reads to separate the
+two:
+
+- a canonical feature is identified by its path **relative to this asset directory** —
+  `gherkin/errors.feature`, not a path relative to the repository root;
+- an extension mounts under the reserved prefix **`extensions/`**.
+
+Both are stated exactly because a phrasing that merely implied them produced three different answers
+in four implementations. "The path it has in this repository" is the phrasing that did it, and it is
+wrong in a way worth recording: these assets are also consumed as a released Go module, where the
+module root *is* this directory and nothing inside it knows or should know where the directory sits
+in a repository. `gherkin/errors.feature` is the only form every consumer can produce from what it
+actually has.
+
+Compare on the **path component**, after any URI scheme. A runner that resolves features from a
+classpath or a bundle legitimately reports `classpath:gherkin/errors.feature`; the scheme belongs to
+the runner and the results format, neither of which this appendix defines, and stripping it is the
+consumer's job rather than the implementation's.
 
 **An extension must not shadow a canonical scenario.** The same partition provides this: an
 extension file cannot occupy a canonical path, so it can add questions but never replace one.
