@@ -317,7 +317,17 @@ belong here rather than in any one implementation:
   designated flag. Finer-grained flag manipulation would need new endpoints.
 - **Caching.** Whether a stale provider keeps serving last-known values during an outage depends on
   whether it holds a local copy of the ruleset. The `@caching` tag is reserved; no scenarios yet.
-- **Hooks and flag metadata.** Not covered.
+- **Coverage of the numbered requirements.** Mapped against
+  [the provider requirements](./sections/02-providers.md), leaving out 2.8.5.1 (it constrains the SDK)
+  and 2.2.8.1 (a language-binding property, not observable at runtime), the suite covers 8 of the 14
+  `MUST` requirements in scope, 3 of 5 `SHOULD`, and 1 of 6 `MAY`. The `MUST` gaps are 2.1.1 (a
+  non-empty metadata `name`), 2.3.1 (the provider hook mechanism), 2.3.2 (no `error message` on
+  normal execution), 2.2.10 (flag metadata structure), 2.4.4 (a domain-scoped provider accepts its
+  bound domain) and 2.8.4 (`PROVIDER_CONTEXT_CHANGED`). Shutdown is not tested at all (2.5.2 and
+  2.5.3, both `SHOULD`), although the suite already performs one to release connections at the end of
+  a run. Flag metadata (2.2.9, 2.2.10) is blocked on the canonical flag set defining none. Of these,
+  2.8.4 is the largest hole: context reconciliation is where a provider is most likely to serve values
+  computed for the *previous* context, and the failure is silent.
 - **Normative status.** Nothing in this appendix is currently expressed as a numbered requirement.
   Whether the control API contract and the capability vocabulary should become normative sections is
   a decision for the TSC.
