@@ -279,7 +279,21 @@ and expects `TYPE_MISMATCH`; the lossless half asks for `integral-float-flag` (`
 and for `integer-flag` (`10`) as a float, and expects both to succeed. A provider declaring the tag
 must satisfy all three — rejecting every float is an easy way to pass the first, and the other two
 are what stop it. A provider whose SDK has a single numeric type, such as JavaScript, cannot
-distinguish the cases and reports the tag as not applicable rather than declaring it.
+distinguish the cases at all, so it leaves the tag undeclared and the scenarios are reported as
+skipped with that reason.
+
+**Where a capability cannot hold in a language, this appendix is where that is recorded** — not a
+field in every report. `@numeric-coercion` in a single-numeric-type language and `@large-integers` on
+a 32-bit accessor are properties of the SDK, true of every provider written against it and for as
+long as the accessor is what it is. Stating them here says it once; a per-report field would restate
+a language fact on every provider's behalf, and would still say nothing in a run where no scenario
+carried the tag.
+
+That leaves one skip, carrying its reason, as the whole mechanism. A results payload does not need a
+second status to distinguish "undeclared" from "cannot apply": both are skips, the reason says which,
+and the scenario's own tags say what was being asked. Splitting them into separate statuses, or into
+a parallel declaration field, multiplies the vocabulary that four implementations have to agree on
+without telling a reader anything the reason does not.
 
 **Accessor width** is the related property the ADR distinguishes, and it is modelled separately
 because it is a property of the SDK rather than of the provider. Every language's integer accessor
