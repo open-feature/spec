@@ -41,7 +41,7 @@ go get github.com/open-feature/spec/specification/assets/provider-tck@v0.1.0
 
 ## Releases
 
-These assets are released independently of the specification, by [release-please](../../../release-please-config.json). A nested Go module is tagged with its path as a prefix, so a release is tagged `specification/assets/provider-tck/vX.Y.Z` — the same shape as `providers/flagd/v0.6.0` in the SDK contrib repositories. The specification's own `vX.Y.Z` tags are cut by hand and do not apply here; nothing about the two numbering schemes is related.
+These assets are released independently of the specification, by [release-please](../../../release-please-config.json). A nested Go module is tagged with its path as a prefix, so a release is tagged `specification/assets/provider-tck/vX.Y.Z` — the same shape as `providers/flagd/v0.6.0` in the SDK contrib repositories. The specification's own `vX.Y.Z` tags are cut by release-please too, from a separate release pull request that excludes this directory, and do not apply here; nothing about the two numbering schemes is related.
 
 What a bump means is not the usual thing, because this is a test suite rather than a library:
 
