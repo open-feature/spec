@@ -144,7 +144,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@configuration-change` | detects configuration changes and emits `PROVIDER_CONFIGURATION_CHANGED` |
 | `@object` | supports structured flag values |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
-| `@strict-numeric-typing` | does not coerce between integer and float |
+| `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
 | `@targeting` | reserved; **not declarable** -- no scenarios yet |
 | `@caching` | reserved; **not declarable** -- no scenarios yet |
 
@@ -175,13 +175,32 @@ The design rule behind this: **a conformance suite that quietly goes green on sc
 run is worse than no suite at all.** A TCK implementation must report unsupported capabilities as
 skipped and surface the reason, not silently pass or silently omit them.
 
-`@strict-numeric-typing` deserves a note, because unlike the others it is **not** an optional
-feature. The specification requires a provider to report `TYPE_MISMATCH` when the requested type
-cannot be satisfied, and narrowing `0.5` to `0` to satisfy an integer request loses information
-silently — the worst failure mode for a feature flag, because the application sees a plausible value
-and no error. It is a capability only so that a provider with this defect can adopt the suite today
-and see the gap reported explicitly rather than being unable to adopt at all. Not declaring it is an
-admission of a known bug.
+`@numeric-coercion` deserves a note, because unlike the others it is **not** an optional feature.
+The specification requires a provider to report `TYPE_MISMATCH` when the requested type cannot be
+satisfied, and narrowing `0.5` to `0` to satisfy an integer request loses information silently — the
+worst failure mode for a feature flag, because the application sees a plausible value and no error.
+It is a capability only so that a provider with this defect can adopt the suite today and see the
+gap reported explicitly rather than being unable to adopt at all. Not declaring it is an admission
+of a known bug.
+
+The rule is **lossless coercion is permitted; lossy coercion must fail**, and not the stricter "never
+coerce" this tag was originally named for. An integral float such as `10.0` requested as an integer
+must succeed; `0.5` must not. The distinction is flagd's
+[numeric coercion ADR](https://github.com/open-feature/flagd/blob/main/docs/architecture-decisions/numeric-coercion.md),
+and the tag was renamed from `@strict-numeric-typing` to match it rather than leave two vocabularies
+describing one property — flagd's own testbed is gaining `@numeric-coercion` scenarios, and a
+capability vocabulary that disagrees with the reference implementation about the name of a rule is
+worse than having no name for it.
+
+Two gaps follow from adopting that rule, and both are open rather than fixed here:
+
+- **The lossless case has no scenario.** Only the lossy half is tested, so a provider that wrongly
+  rejects `10.0` as an integer passes. Closing it needs an integral float in the canonical flag set,
+  which changes the flag set for every language at once.
+- **Accessor width is not modelled.** The ADR distinguishes the width of a language's integer
+  accessor — Go's `ResolveIntValue` is `int64` and so is the canonical `Long`, whereas a 32-bit
+  accessor needs its own scenarios, which flagd's testbed tags `@int32-bounded`. This appendix has
+  nothing equivalent, and it is a real source of cross-language disagreement.
 
 ## Implementing the suite in a language
 

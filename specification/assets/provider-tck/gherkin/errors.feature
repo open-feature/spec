@@ -14,7 +14,7 @@ Feature: Provider error handling
 
   Scenario Outline: Requesting the wrong type returns the code default
     # The full non-numeric mismatch matrix. Numeric coercion is a separate question and is covered
-    # by the @strict-numeric-typing scenarios below, because "is 0.5 an integer?" has a defensible
+    # by the @numeric-coercion scenarios below, because "is 0.5 an integer?" has a defensible
     # wrong answer whereas "is a string a boolean?" does not.
     Given a <requested>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
@@ -59,10 +59,16 @@ Feature: Provider error handling
       | Integer   | 1        |
       | Float     | 0.1      |
 
-  @strict-numeric-typing
+  @numeric-coercion
   Scenario: A float flag is not silently narrowed to an integer
     # 'float-flag' resolves to 0.5. Narrowing that to an integer would lose information
     # silently, so it must be reported as a type mismatch rather than rounded.
+    #
+    # This is the lossy half of the coercion contract. The lossless half -- that an
+    # integral float such as 10.0 requested as an integer MUST succeed -- has no scenario
+    # yet, because the canonical flag set has no integral float to ask it of. Adding one
+    # is a change to the flag set and so to every language at once; see the tag's entry in
+    # Appendix F.
     Given a Integer-flag with key "float-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "1"
