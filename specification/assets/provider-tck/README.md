@@ -20,14 +20,14 @@ These validate a **provider** against a real backend. For assets that validate a
 
 A feature file that evaluates `boolean-flag` is meaningless without the flag definition, and a disconnect scenario is meaningless without the control endpoint that produces the disconnect. Changing one without the others breaks the suite in every language at once.
 
-## Two properties that are load-bearing
+## Four properties that are load-bearing
 
 - **`missing-flag` must not exist** in the flag set. Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding it turns that scenario green for the wrong reason.
 - **No flag has targeting rules.** Every scenario expects reason `STATIC`, because the suite tests the provider's mapping of a backend response, not the backend's evaluation logic.
-
-The flag set is expressed in the flagd flag-definition format because that is the only widely implemented vendor-neutral format today. The format is not what matters — the keys, types, variant names and resolved values are. Seed them however your backend seeds flags.
 - **`false-flag`, `zero-flag` and `empty-string-flag` resolve to falsy values on purpose.** A seeding step that treats `false`, `0` or `""` as "unset" and drops them turns the falsy-value scenarios into `FLAG_NOT_FOUND` failures that look like provider defects.
 - **`integral-float-flag` is a float and `huge-integer-flag` is an integer.** Seeding `10.0` as `10` makes the lossless-coercion scenario pass without coercing; seeding `9007199254740991` through a float rounds it.
+
+The flag set is expressed in the flagd flag-definition format because that is the only widely implemented vendor-neutral format today. The format is not what matters — the keys, types, variant names and resolved values are. Seed them however your backend seeds flags.
 
 ## Consuming from Go
 
