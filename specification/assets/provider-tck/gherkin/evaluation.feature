@@ -48,9 +48,9 @@ Feature: Provider flag evaluation
 
     Examples:
       | key               | type    | default  | value | variant |
-      | false-flag        | Boolean | true     | false | off     |
-      | zero-flag         | Integer | 1        | 0     | zero    |
-      | empty-string-flag | String  | fallback |       | empty   |
+      | boolean-zero-flag | Boolean | true     | false | zero    |
+      | integer-zero-flag | Integer | 1        | 0     | zero    |
+      | string-zero-flag  | String  | fallback |       | zero    |
 
   Scenario: A large integer resolves without loss of precision
     # 2147483647 is 2^31 - 1, the largest 32-bit signed integer, so every language's integer
