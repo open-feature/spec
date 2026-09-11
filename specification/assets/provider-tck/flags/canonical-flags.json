@@ -10,7 +10,19 @@
     "Two things are load-bearing and easy to get wrong:",
     "  * 'missing-flag' MUST NOT exist. Its absence is what the FLAG_NOT_FOUND scenario tests.",
     "  * No flag here has targeting rules. Every scenario expects reason STATIC, because the TCK",
-    "    tests the provider's mapping of a response, not the backend's evaluation logic."
+    "    tests the provider's mapping of a response, not the backend's evaluation logic.",
+    "",
+    "Three more are easy to lose in translation, because a seeding step that 'cleans up' values",
+    "destroys exactly what they test:",
+    "  * 'false-flag', 'zero-flag' and 'empty-string-flag' resolve to false, 0 and \"\". They are",
+    "    values, not absences. A backend that drops them, or a provider that treats them as",
+    "    missing, is what the falsy-value scenarios catch.",
+    "  * 'large-integer-flag' resolves to 9007199254740991, which is 2^53 - 1: the largest integer",
+    "    every language can represent exactly, including JavaScript. Seed it as an integer, not a",
+    "    float, and do not round it.",
+    "  * 'integral-float-flag' resolves to 10.0, a float with no fractional part. It MUST be seeded",
+    "    as a float. A backend that stores it as the integer 10 makes the lossless-coercion scenario",
+    "    pass without coercing anything."
   ],
   "flags": {
     "boolean-flag": {
@@ -44,6 +56,60 @@
         "half": 0.5
       },
       "defaultVariant": "half"
+    },
+    "large-integer-flag": {
+      "$comment": "2^31 - 1, the largest 32-bit signed integer. Every language represents it exactly; a float32 round trip does not.",
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "max-int32": 2147483647
+      },
+      "defaultVariant": "max-int32"
+    },
+    "huge-integer-flag": {
+      "$comment": "2^53 - 1, the largest integer JavaScript represents exactly. Only asked for under @large-integers, because a 32-bit integer accessor cannot request it at all.",
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "max-safe": 9007199254740991
+      },
+      "defaultVariant": "max-safe"
+    },
+    "integral-float-flag": {
+      "$comment": "A float with no fractional part, for the lossless half of @numeric-coercion. Seed as a float.",
+      "state": "ENABLED",
+      "variants": {
+        "tenth": 0.1,
+        "ten": 10.0
+      },
+      "defaultVariant": "ten"
+    },
+    "false-flag": {
+      "$comment": "Resolves to false. The default in the scenario is true, so a provider that treats false as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "off"
+    },
+    "zero-flag": {
+      "$comment": "Resolves to 0. The default in the scenario is 1, so a provider that treats 0 as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "zero": 0
+      },
+      "defaultVariant": "zero"
+    },
+    "empty-string-flag": {
+      "$comment": "Resolves to the empty string. The default in the scenario is 'fallback', so a provider that treats \"\" as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "greeting": "hi",
+        "empty": ""
+      },
+      "defaultVariant": "empty"
     },
     "object-flag": {
       "state": "ENABLED",
