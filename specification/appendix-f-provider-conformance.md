@@ -175,24 +175,41 @@ The design rule behind this: **a conformance suite that quietly goes green on sc
 run is worse than no suite at all.** A TCK implementation must report unsupported capabilities as
 skipped and surface the reason, not silently pass or silently omit them.
 
-`@numeric-coercion` deserves a note, because unlike the others it is **not** an optional feature.
-The specification requires a provider to report `TYPE_MISMATCH` when the requested type cannot be
-satisfied, and narrowing `0.5` to `0` to satisfy an integer request loses information silently — the
-worst failure mode for a feature flag, because the application sees a plausible value and no error.
-It is a capability only so that a provider with this defect can adopt the suite today and see the
-gap reported explicitly rather than being unable to adopt at all. Not declaring it is an admission
-of a known bug.
+`@numeric-coercion` deserves a note, because it is the one capability here that **the specification
+does not define**, and readers should not mistake it for one that does.
 
-The rule is **lossless coercion is permitted; lossy coercion must fail**, and not the stricter "never
-coerce" this tag was originally named for. An integral float such as `10.0` requested as an integer
-must succeed; `0.5` must not. The distinction is flagd's
+OpenFeature has a single numeric type, deliberately: `number` is
+[*"a numeric value of unspecified type or size"*](../types.md), and implementation languages **may**
+further differentiate between integers and floating point numbers *"as idioms dictate"*. Both the
+client and provider requirements say "boolean, numeric, string, and structure" — one numeric type,
+not two. Typed-language SDKs take up that idiom and expose two accessors anyway, and at that point
+no requirement answers the obvious question: what must a provider do when a value does not fit the
+accessor it was asked through? `0.5` requested as an integer is not a corner case, it is the ordinary
+consequence of a two-accessor SDK over a one-type wire format. That gap is
+[open-feature/spec#430](https://github.com/open-feature/spec/issues/430).
+
+So the rule this tag is tested against is **borrowed, not normative**: lossless coercion is
+permitted, lossy coercion must return `TYPE_MISMATCH`. An integral float such as `10.0` requested as
+an integer must succeed; `0.5` must not. It comes from flagd's
 [numeric coercion ADR](https://github.com/open-feature/flagd/blob/main/docs/architecture-decisions/numeric-coercion.md),
-and the tag was renamed from `@strict-numeric-typing` to match it rather than leave two vocabularies
-describing one property — flagd's own testbed is gaining `@numeric-coercion` scenarios, and a
-capability vocabulary that disagrees with the reference implementation about the name of a rule is
-worse than having no name for it.
+which is scoped to flagd's own implementations, and the tag took the ADR's name — it was
+`@strict-numeric-typing` — because flagd's testbed is gaining `@numeric-coercion` scenarios and two
+vocabularies for one observable property is worse than one borrowed name. **A provider that behaves
+differently is not violating the specification**, and this suite must not be read as saying it is.
 
-Two gaps follow from adopting that rule, and both are open rather than fixed here:
+That is also why the capability is genuinely optional, rather than optional as a concession to a
+known defect. An earlier draft of this appendix claimed the specification required the behaviour and
+that not declaring the tag was "an admission of a known bug". That was wrong on the first count, and
+therefore on the second.
+
+What remains true is that the observed behaviour is bad for users: flagd narrows `0.5` to `0` with no
+error code at all, in Go and in Java, in both resolvers, so an application receives a plausible value
+and no signal. That is being fixed in
+[open-feature/flagd#1996](https://github.com/open-feature/flagd/issues/1996). A provider withholding
+this capability should say which it is — a deliberate choice, or a tracked defect — and a conformance
+report has `knownDeviations` for the second.
+
+Two further gaps, both open rather than fixed here:
 
 - **The lossless case has no scenario.** Only the lossy half is tested, so a provider that wrongly
   rejects `10.0` as an integer passes. Closing it needs an integral float in the canonical flag set,
