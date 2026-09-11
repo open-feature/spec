@@ -76,16 +76,18 @@ others breaks the suite in every language at once.
 
 ### Gherkin scenarios
 
-Four feature files:
+Five feature files:
 
 - [`evaluation.feature`](./assets/provider-tck/gherkin/evaluation.feature) — resolving each type with
-  the right value, variant and reason
-- [`errors.feature`](./assets/provider-tck/gherkin/errors.feature) — the type-mismatch matrix and the
-  unknown-flag case
+  the right value, variant and reason; falsy values; integer precision
+- [`errors.feature`](./assets/provider-tck/gherkin/errors.feature) — the type-mismatch matrix, numeric
+  coercion and the unknown-flag case
 - [`events.feature`](./assets/provider-tck/gherkin/events.feature) — configuration change, and the
   stale/ready transition across an outage
 - [`lifecycle.feature`](./assets/provider-tck/gherkin/lifecycle.feature) — initialisation against a
-  healthy backend and against an unreachable one
+  healthy backend and against an unreachable one; shutdown
+- [`metadata.feature`](./assets/provider-tck/gherkin/metadata.feature) — the provider identifies
+  itself by name
 
 The step vocabulary is inherited from the
 [flagd test harness](https://github.com/open-feature/test-harness) wherever it was already
