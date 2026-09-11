@@ -17,9 +17,9 @@
     "  * 'false-flag', 'zero-flag' and 'empty-string-flag' resolve to false, 0 and \"\". They are",
     "    values, not absences. A backend that drops them, or a provider that treats them as",
     "    missing, is what the falsy-value scenarios catch.",
-    "  * 'large-integer-flag' resolves to 9007199254740991, which is 2^53 - 1: the largest integer",
-    "    every language can represent exactly, including JavaScript. Seed it as an integer, not a",
-    "    float, and do not round it.",
+    "  * 'large-integer-flag' and 'huge-integer-flag' resolve to 2147483647 (2^31 - 1) and",
+    "    9007199254740991 (2^53 - 1). Seed both as integers, not floats, and do not round them: a",
+    "    float32 round trip changes the first, and a 32-bit integer cannot hold the second.",
     "  * 'integral-float-flag' resolves to 10.0, a float with no fractional part. It MUST be seeded",
     "    as a float. A backend that stores it as the integer 10 makes the lossless-coercion scenario",
     "    pass without coercing anything."
