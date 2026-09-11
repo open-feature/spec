@@ -2,9 +2,10 @@ Feature: Provider flag evaluation
 
   # Verifies that a provider maps backend responses onto typed resolution details correctly.
   #
-  # This does NOT test the backend's evaluation logic. Every flag in the canonical set resolves
-  # to its default variant with no targeting involved, so what is under test is purely the
-  # provider's mapping of a backend response to a value, a variant and a reason.
+  # This does NOT test the backend's evaluation logic. Every flag in the canonical set except
+  # targeted-flag resolves to its default variant whatever the context, so what is under test is
+  # purely the provider's mapping of a backend response to a value, a variant and a reason.
+  # targeted-flag carries the one rule, and only to show the context reached the backend.
   #
   # Every success path also asserts that no error message was set (requirement 2.3.2). A
   # provider that reports a value AND an error message is sending two contradictory signals,
@@ -147,3 +148,63 @@ Feature: Provider flag evaluation
       | showImages    | Boolean | true                  |
       | title         | String  | Check out these pics! |
       | imagesPerPage | Integer | 100                   |
+  Scenario: Supplying an evaluation context does not disturb an untargeted resolution
+    # Mandatory, and the only scenario that passes a context to a provider with no targeting
+    # involved. Requirement 2.2.1 makes the evaluation context a parameter of every resolve
+    # method, but until this scenario existed no scenario supplied one — so a provider that
+    # threw on any context, or serialised it into a malformed request, passed the whole suite.
+    #
+    # string-flag has no targeting rule, so the context cannot change the outcome. What is
+    # under test is only that supplying one is harmless.
+    #
+    # Deliberately asserts the value and the absence of an error rather than the reason.
+    # 2.2.3 makes the value a MUST and 2.2.6 forbids an error code in normal execution, while
+    # the reason is a SHOULD that 2.2.5 lets a provider populate with "some other string" —
+    # and with a context supplied and nothing matching, both "STATIC" and "DEFAULT" are
+    # defensible readings.
+    Given a String-flag with key "string-flag" and a default value "bye"
+    And an evaluation context with targeting key "tck-other-user"
+    When the flag was evaluated with details
+    Then the resolved details value should be "hi"
+    And the error-code should be ""
+    And the error message should be empty
+    And no exception should have been thrown
+
+  @targeting
+  Scenario: A matching evaluation context resolves the targeted variant
+    # This is what makes context passthrough observable. Every other flag resolves the same way
+    # whatever the context, so a provider that drops the context entirely passes them all. Here
+    # a matching context resolves to a different value, so dropping it is caught by the resolved
+    # value itself — no echo endpoint on the control API required.
+    #
+    # targeted-flag's rule is specified by behaviour, not by syntax: resolve "targeted" when the
+    # targeting key is exactly "tck-targeted-user", "untargeted" otherwise. Express it however
+    # your backend expresses targeting.
+    Given a String-flag with key "targeted-flag" and a default value "fallback"
+    And an evaluation context with targeting key "tck-targeted-user"
+    When the flag was evaluated with details
+    Then the resolved details value should be "targeted"
+    And the error-code should be ""
+    And no exception should have been thrown
+
+  @targeting
+  Scenario: A non-matching evaluation context resolves the default variant
+    # Paired with the scenario above, and the reason it is not enough on its own: a provider
+    # that always returned the targeted value would pass that one. This is what pins down that
+    # the rule was evaluated rather than the targeted variant simply being served.
+    Given a String-flag with key "targeted-flag" and a default value "fallback"
+    And an evaluation context with targeting key "tck-other-user"
+    When the flag was evaluated with details
+    Then the resolved details value should be "untargeted"
+    And the error-code should be ""
+    And no exception should have been thrown
+
+  @targeting
+  Scenario: No evaluation context resolves the default variant
+    # A targeting rule that cannot match must not error. A provider that requires a targeting
+    # key, or that fails to evaluate a rule when the context is absent, is caught here.
+    Given a String-flag with key "targeted-flag" and a default value "fallback"
+    When the flag was evaluated with details
+    Then the resolved details value should be "untargeted"
+    And the error-code should be ""
+    And no exception should have been thrown

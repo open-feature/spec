@@ -55,9 +55,11 @@ claims, and a language needs both suites to make both.
 
 **Out of scope:**
 
-- **Backend evaluation logic**, targeting and bucketing correctness. Every flag in the canonical set
-  resolves to its default variant with no targeting involved, so what is under test is the
-  provider's mapping of a response, not the backend's decision.
+- **Backend evaluation logic**, bucketing and rule-language correctness. Every flag in the canonical
+  set except `targeted-flag` resolves to its default variant whatever the context, so what is under
+  test is the provider's mapping of a response, not the backend's decision. `targeted-flag` carries
+  the one rule, and it is there to prove the context reached the backend rather than to test how the
+  backend evaluated it — which is why the rule is stated as behaviour and not as a syntax.
 - **The provider↔backend wire protocol.** How a provider talks to its backend is its own business.
 - **SDK behaviour.** That is Appendix B.
 
@@ -104,8 +106,9 @@ Two properties are load-bearing and easy to break by accident:
 
 - **`missing-flag` must not exist.** Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding
   it turns that scenario green for the wrong reason.
-- **No flag has targeting rules.** Every scenario expects reason `STATIC`, because the suite tests
-  the provider's mapping of a response, not the backend's decision.
+- **Only `targeted-flag` has a targeting rule.** Every other flag resolves to its default variant
+  whatever the evaluation context, which is what lets the untargeted scenarios expect reason
+  `STATIC`. Seeding targeting onto any other flag breaks them in every language at once.
 
 ### The control API
 
@@ -155,7 +158,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
 | `@reinitialization` | can be initialised again after `shutdown`, which [Requirement 2.5.2](./sections/02-providers.md#requirement-252) permits rather than requires |
-| `@targeting` | reserved; **not declarable** -- no scenarios yet |
+| `@targeting` | resolves a flag differently for a matching evaluation context |
 | `@caching` | reserved; **not declarable** -- no scenarios yet |
 
 Untagged scenarios are mandatory and always run.
@@ -164,13 +167,14 @@ A reserved tag is documented so the vocabulary has a place for the capability wh
 but it **must not be declared** and must not appear in a conformance report's declaration. No
 scenario carries it, so declaring it cannot be verified, cannot produce a skip, and tells a reader
 only that something was claimed and nothing examined -- the vacuous conformance claim this whole
-vocabulary exists to prevent.
+vocabulary exists to prevent. `@caching` is the only reserved tag left.
 
 This is easy to reintroduce by accident rather than by intent. An adopter who declares "every
 capability except X" picks up every reserved tag on the way past, which is exactly how one
-implementation came to report `@targeting` and `@caching` as declared. An implementation offering a
-"declare everything" convenience should exclude reserved tags from it, and should tell an adopter who
-names one directly rather than passing it silently into a report.
+implementation came to report `@targeting` and `@caching` as declared -- back when both were
+reserved. An implementation offering a "declare everything" convenience should exclude reserved tags
+from it, and should tell an adopter who names one directly rather than passing it silently into a
+report.
 
 `@lifecycle` and `@events` are deliberately separate, and conflating them is the mistake this
 vocabulary exists to prevent. Every SDK synthesises `PROVIDER_READY` for a provider that has no
@@ -418,10 +422,14 @@ flagd provider for both its RPC and in-process resolvers. It is in review alongs
 This appendix is a proof of concept. Known gaps, all of which affect every language equally and so
 belong here rather than in any one implementation:
 
-- **Evaluation context passthrough.** The scenarios build evaluation contexts but cannot assert the
-  context *reached* the backend intact. That needs an echo operation on the control API — something
-  like `GET /last-evaluation` returning the request the backend last received. Until then a provider
-  that silently drops the context passes. The `@targeting` tag is reserved for these scenarios.
+- **Evaluation context passthrough, beyond the targeting key.** `targeted-flag` resolves differently
+  for a matching context, so a provider that drops the context is caught by the resolved value
+  itself — no echo operation needed for the basic case, which is how the `@targeting` scenarios
+  work. What is still unverified is that the *whole* context arrives intact: a provider that
+  forwards the targeting key and silently discards every other attribute passes. Asserting that
+  needs either an echo operation on the control API, something like `GET /last-evaluation` returning
+  the request the backend last received, or a second flag whose rule keys on a custom attribute.
+  The latter is cheaper and worth doing first, since attributes are where dropping is most likely.
 - **Setting and removing individual flags.** The control API can reset to a baseline and mutate one
   designated flag. Finer-grained flag manipulation would need new endpoints.
 - **Caching.** Whether a stale provider keeps serving last-known values during an outage depends on

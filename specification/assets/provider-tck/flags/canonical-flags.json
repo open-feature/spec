@@ -132,6 +132,34 @@
       },
       "defaultVariant": "one"
     },
+    "targeted-flag": {
+      "$comment": [
+        "The one flag in this set with a targeting rule. Everything else resolves to its",
+        "defaultVariant regardless of context, which is what lets every other scenario expect",
+        "reason STATIC.",
+        "",
+        "The rule is specified by its behaviour, not by this encoding: resolve variant",
+        "'targeted' when the evaluation context's targeting key is exactly 'tck-targeted-user',",
+        "and 'untargeted' otherwise. Express that however your backend expresses targeting.",
+        "",
+        "It is what makes context passthrough observable. A matching context resolves to a",
+        "different variant and value, so a provider that drops the context on the floor is",
+        "caught by the resolved value itself rather than needing an echo endpoint."
+      ],
+      "state": "ENABLED",
+      "variants": {
+        "untargeted": "untargeted",
+        "targeted": "targeted"
+      },
+      "defaultVariant": "untargeted",
+      "targeting": {
+        "if": [
+          { "==": [{ "var": "targetingKey" }, "tck-targeted-user"] },
+          "targeted",
+          null
+        ]
+      }
+    },
     "changing-flag": {
       "$comment": [
         "The flag POST /change mutates. The TCK asserts only that its resolved value differs",
