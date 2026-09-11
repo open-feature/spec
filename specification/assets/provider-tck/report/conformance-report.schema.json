@@ -125,7 +125,7 @@
       }
     },
     "declaration": {
-      "description": "The capability set this provider claims, as Gherkin tags including the leading at-sign. This is an INPUT to reading the results, not a summary of them, which is why it cannot be derived from the results payload and has to be stated here. A skipped scenario in the payload says the question was not put to this provider; only the declaration says whether that is because the provider declines the capability. Given the declaration and a scenario's tags, the reason for a skip follows without needing to be transported per scenario.",
+      "description": "The capability set this provider claims, as Gherkin tags including the leading at-sign. This is an INPUT to reading the results, not a summary of them, which is why it cannot be derived from the results payload and has to be stated here. A skipped scenario in the payload says the question was not put to this provider; only the declaration says whether that is because the provider declines the capability. Given the declaration and a scenario's tags, the reason for a skip follows without needing to be transported per scenario. A capability that cannot hold in a language at all -- @numeric-coercion where the language has a single numeric type, @large-integers on a 32-bit accessor -- is a property of the SDK rather than of the provider, and is recorded in Appendix F rather than restated in every report; in a run it is simply undeclared, and the skip carries the reason.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -138,17 +138,6 @@
           "items": {
             "type": "string",
             "pattern": "^@[a-z0-9-]+$"
-          }
-        },
-        "notApplicable": {
-          "description": "Capabilities that cannot hold for this provider rather than merely being undeclared, each with a reason. Kept separate because collapsing the two misrepresents whole languages: @numeric-coercion is unsatisfiable in JavaScript because the language has no integer type, and reporting that as an undeclared choice would show every JavaScript provider as missing something none of them can have. Where the impossibility is a property of the language rather than of the provider it is better recorded once in the capability documentation than repeated in every report, so this is for provider-specific cases.",
-          "type": "object",
-          "propertyNames": {
-            "pattern": "^@[a-z0-9-]+$"
-          },
-          "additionalProperties": {
-            "type": "string",
-            "minLength": 1
           }
         }
       }
