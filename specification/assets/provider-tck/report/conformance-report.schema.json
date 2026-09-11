@@ -141,7 +141,7 @@
           }
         },
         "notApplicable": {
-          "description": "Capabilities that cannot hold for this provider rather than merely being undeclared, each with a reason. Kept separate because collapsing the two misrepresents whole languages: @strict-numeric-typing is unsatisfiable in JavaScript because the language has no integer type, and reporting that as an undeclared choice would show every JavaScript provider as missing something none of them can have. Where the impossibility is a property of the language rather than of the provider it is better recorded once in the capability documentation than repeated in every report, so this is for provider-specific cases.",
+          "description": "Capabilities that cannot hold for this provider rather than merely being undeclared, each with a reason. Kept separate because collapsing the two misrepresents whole languages: @numeric-coercion is unsatisfiable in JavaScript because the language has no integer type, and reporting that as an undeclared choice would show every JavaScript provider as missing something none of them can have. Where the impossibility is a property of the language rather than of the provider it is better recorded once in the capability documentation than repeated in every report, so this is for provider-specific cases.",
           "type": "object",
           "propertyNames": {
             "pattern": "^@[a-z0-9-]+$"
