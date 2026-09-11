@@ -8,7 +8,7 @@ These validate a **provider** against a real backend. For assets that validate a
 
 | Path | What it is |
 | --- | --- |
-| [`gherkin/evaluation.feature`](./gherkin/evaluation.feature) | resolving each type with the right value, variant and reason; falsy values; integer precision |
+| [`gherkin/evaluation.feature`](./gherkin/evaluation.feature) | resolving each type with the right value and reason; the variant where the backend names one; falsy values; integer precision |
 | [`gherkin/errors.feature`](./gherkin/errors.feature) | the type-mismatch matrix, numeric coercion and the unknown-flag case |
 | [`gherkin/events.feature`](./gherkin/events.feature) | configuration change, and the stale/ready transition across an outage |
 | [`gherkin/lifecycle.feature`](./gherkin/lifecycle.feature) | initialisation against a healthy backend and against an unreachable one; shutdown |

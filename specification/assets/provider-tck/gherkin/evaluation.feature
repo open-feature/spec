@@ -15,22 +15,21 @@ Feature: Provider flag evaluation
   Background:
     Given a stable provider
 
-  Scenario Outline: Resolve values with variant and reason
+  Scenario Outline: Resolve values with reason
     Given a <type>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
     Then the resolved details value should be "<value>"
-    And the variant should be "<variant>"
     And the reason should be "<reason>"
     And the error-code should be ""
     And the error message should be empty
     And no exception should have been thrown
 
     Examples:
-      | key          | type    | default | value | variant  | reason |
-      | boolean-flag | Boolean | false   | true  | on       | STATIC |
-      | string-flag  | String  | bye     | hi    | greeting | STATIC |
-      | integer-flag | Integer | 1       | 10    | ten      | STATIC |
-      | float-flag   | Float   | 0.1     | 0.5   | half     | STATIC |
+      | key          | type    | default | value | reason |
+      | boolean-flag | Boolean | false   | true  | STATIC |
+      | string-flag  | String  | bye     | hi    | STATIC |
+      | integer-flag | Integer | 1       | 10    | STATIC |
+      | float-flag   | Float   | 0.1     | 0.5   | STATIC |
 
   Scenario Outline: A falsy value is a value, not an absence
     # false, 0 and "" are the values most likely to be mistaken for "nothing came back": a
@@ -40,17 +39,52 @@ Feature: Provider flag evaluation
     Given a <type>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
     Then the resolved details value should be "<value>"
-    And the variant should be "<variant>"
     And the reason should be "STATIC"
     And the error-code should be ""
     And the error message should be empty
     And no exception should have been thrown
 
     Examples:
-      | key               | type    | default  | value | variant |
-      | boolean-zero-flag | Boolean | true     | false | zero    |
-      | integer-zero-flag | Integer | 1        | 0     | zero    |
-      | string-zero-flag  | String  | fallback |       | zero    |
+      | key               | type    | default  | value |
+      | boolean-zero-flag | Boolean | true     | false |
+      | integer-zero-flag | Integer | 1        | 0     |
+      | string-zero-flag  | String  | fallback |       |
+
+  @variants
+  Scenario Outline: The resolved details name the variant
+    # Gated, because a variant is optional rather than required. types.md declares the field
+    # "variant (string, optional)", and Requirement 2.2.4 is a SHOULD: in normal execution a
+    # provider "SHOULD populate the resolution details structure's variant field". The same
+    # section goes further and says the value "might only be meaningful in the context of the
+    # flag management system associated with the provider".
+    #
+    # Some systems have no variant concept for a plain flag at all. Their evaluation response
+    # carries no such key, so the provider never receives one and no amount of seeding can
+    # produce one. Asserting a variant in every scenario failed such a backend ten times over
+    # for something that is not a defect and that no provider author can fix — and left nothing
+    # to record as a known deviation, because there was no capability to hang one on.
+    #
+    # A provider whose backend names its variants declares this tag and these rows run. One
+    # whose backend does not leaves it undeclared, and they are skipped with that reason rather
+    # than passed. Either way the value and reason assertions above are unaffected: they are
+    # untagged, and 2.2.3 makes the value a MUST.
+    Given a <type>-flag with key "<key>" and a default value "<default>"
+    When the flag was evaluated with details
+    Then the variant should be "<variant>"
+    And the error-code should be ""
+    And the error message should be empty
+    And no exception should have been thrown
+
+    Examples:
+      | key                | type    | default  | variant   |
+      | boolean-flag       | Boolean | false    | on        |
+      | string-flag        | String  | bye      | greeting  |
+      | integer-flag       | Integer | 1        | ten       |
+      | float-flag         | Float   | 0.1      | half      |
+      | boolean-zero-flag  | Boolean | true     | zero      |
+      | integer-zero-flag  | Integer | 1        | zero      |
+      | string-zero-flag   | String  | fallback | zero      |
+      | large-integer-flag | Integer | 1        | max-int32 |
 
   Scenario: A large integer resolves without loss of precision
     # 2147483647 is 2^31 - 1, the largest 32-bit signed integer, so every language's integer
@@ -59,7 +93,6 @@ Feature: Provider flag evaluation
     Given a Integer-flag with key "large-integer-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "2147483647"
-    And the variant should be "max-int32"
     And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
@@ -78,7 +111,6 @@ Feature: Provider flag evaluation
     Given a Integer-flag with key "huge-integer-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "9007199254740991"
-    And the variant should be "max-safe"
     And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
@@ -106,8 +138,7 @@ Feature: Provider flag evaluation
   Scenario: Resolve a structured value
     Given a Object-flag with key "object-flag" and a default value "{}"
     When the flag was evaluated with details
-    Then the variant should be "template"
-    And the reason should be "STATIC"
+    Then the reason should be "STATIC"
     And the error-code should be ""
     And the error message should be empty
     And no exception should have been thrown

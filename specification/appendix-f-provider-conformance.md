@@ -150,6 +150,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@stale` | enters `STALE` and emits `PROVIDER_STALE` on backend loss |
 | `@configuration-change` | detects configuration changes and emits `PROVIDER_CONFIGURATION_CHANGED` |
 | `@object` | supports structured flag values |
+| `@variants` | names the variant it resolved, which [Requirement 2.2.4](./sections/02-providers.md#requirement-224) makes a `SHOULD` and `types.md` types as optional |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
@@ -234,6 +235,14 @@ the capability *is* the honest report and a deviation entry would assert a defec
 exist. A false failure is the mirror image of a vacuous pass, and a reader cannot tell them apart
 from the outside. When a scenario fails, find the numbered requirement before concluding anything:
 check whether it is a `MUST`, a `SHOULD`, or explicitly optional.
+
+`@variants` is the clearest case, and it was found the hard way. Every evaluation scenario asserted
+a variant, which reads as obviously correct until a backend with no variant concept for a plain flag
+is put under test: its evaluation response carries no such key, the provider never receives one, and
+no seeding can produce one. Ten scenarios failed a conformant provider for something its author
+could not fix, and nothing could be recorded as a known deviation because there was no capability to
+hang one on. [Requirement 2.2.4](./sections/02-providers.md#requirement-224) is a `SHOULD` and
+`types.md` types the field as optional; the suite was asserting a `MUST` neither of them states.
 
 **Emit `knownDeviations` only when there is at least one.** An empty array and an absent field are
 not the same claim: stating none asserts that deviations were considered and none found, which no
@@ -420,9 +429,10 @@ belong here rather than in any one implementation:
 - **Coverage of the numbered requirements.** Mapped against
   [the provider requirements](./sections/02-providers.md), leaving out 2.8.5.1 (it constrains the SDK)
   and 2.2.8.1 (a language-binding property, not observable at runtime), the suite covers 10 of the
-  14 `MUST` requirements in scope, all 5 `SHOULD`, and 1 of 6 `MAY`. The `MUST` gaps are 2.3.1 (the
-  provider hook mechanism, a compile-time property in typed languages with little to observe at
-  runtime), 2.2.10 (flag metadata structure, blocked with 2.2.9 on the canonical flag set defining
+  14 `MUST` requirements in scope, all 5 `SHOULD` — 2.2.4 only for a provider declaring `@variants`
+  — and 1 of 6 `MAY`. The `MUST` gaps are 2.3.1 (the provider hook mechanism, a compile-time
+  property in typed languages with little to observe at runtime), 2.2.10 (flag metadata structure,
+  blocked with 2.2.9 on the canonical flag set defining
   none), 2.4.4 (a domain-scoped provider accepts its bound domain, which is as much SDK as provider
   behaviour) and 2.8.4 (`PROVIDER_CONTEXT_CHANGED`). The last is the largest hole: context
   reconciliation is where a provider is most likely to serve values computed for the *previous*
