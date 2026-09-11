@@ -255,6 +255,49 @@ control path should **fail loudly** if a connection operation is reached anyway 
 capability was declared that the harness cannot back up, which is a test-configuration bug rather
 than a provider defect.
 
+## Extending the suite
+
+A provider often has behaviour this specification does not describe — flagd's fractional targeting,
+a vendor's own segment rules — and no way to test it inside this suite. The alternative an adopter
+reaches for is a parallel harness that reimplements provider registration, the readiness wait and
+the per-scenario backend reset, and then drifts from the one here. So a TCK implementation **MAY**
+offer an extension point: the adopter supplies feature files and step definitions, and they run
+inside the same suite, against the same backend, in the same lifecycle.
+
+The mechanism is the implementation's own — a classpath scan, a `conftest.py`, two configuration
+fields — and this appendix does not prescribe one. What it does prescribe is the four properties that
+keep an extension from quietly becoming a conformance claim.
+
+**Extension scenarios must be distinguishable from canonical ones.** A results payload that mixes
+them with no way to tell which is which lets an adopter's own passing scenarios flatter the
+conformance result. Partitioning by path is enough — canonical features keep the path they have in
+this repository and extensions mount under a reserved prefix — and it is what a consumer reads to
+separate the two.
+
+**An extension must not shadow a canonical scenario.** The same partition provides this: an
+extension file cannot occupy a canonical path, so it can add questions but never replace one.
+
+**Extension scenarios must never satisfy a canonical scenario.** An adopter's feature is an addition
+to the canonical set, not a substitute for part of it. A rule under which supplying enough scenarios
+of your own made the canonical ones optional would defeat the point of having a canonical set.
+
+**A run that did not execute the canonical set in full must fail.** This is the one that needs
+stating because it is not obvious, and because it was found by accident rather than by design: a
+test selector matching a single scenario name produced a green suite and a **well-formed conformance
+report describing one scenario out of twenty-nine**. A mis-wired extension filesystem does the same.
+There is no field in the report a consumer could read to notice — the schema is closed and the
+envelope carries no expected count — so failing the run is the only lever the implementation has.
+
+Two details of that check are worth recording, because both are easy to get wrong:
+
+- **The expectation must come from the same parser the runner uses**, not a second one written for
+  the check. A parser of the implementation's own will disagree with the runner about exactly the
+  cases that matter — an `Examples` block carrying its own tags, scenarios nested in a `Rule` — and
+  the expectation has to be what a full run would actually have produced.
+- **A capability-gated skip is not a gap.** The scenario ran the gate and is reported as skipped with
+  its reason, so the question was put and declined. Treating that as a gap would force every provider
+  to declare every capability, which is the opposite of what the vocabulary is for.
+
 ## Reference implementation
 
 The first implementation is `tools/provider-tck` in
