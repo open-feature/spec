@@ -26,8 +26,8 @@ asked of every provider in every language and get comparable answers.
 
 [Appendix B](./appendix-b-gherkin-suites.md) also contains Gherkin, and the distinction matters:
 
-|  | Appendix B | Appendix F |
-|---|---|---|
+| | Appendix B | Appendix F |
+| --- | --- | --- |
 | Subject under test | the **SDK** | the **provider** |
 | Harness | an [in-memory provider](./appendix-a-included-utilities.md#in-memory-provider) | the provider under test, against a real backend |
 | Answers | does this SDK implement the Evaluation API, hooks and events correctly? | does this provider map its backend onto the provider contract correctly? |
@@ -64,7 +64,7 @@ meaningless without the control endpoint that produces the disconnect. Changing 
 others breaks the suite in every language at once.
 
 | Artifact | Location | What it defines |
-|---|---|---|
+| --- | --- | --- |
 | Gherkin scenarios | [`assets/provider-tck/gherkin/`](./assets/provider-tck/README.md) | the test cases themselves |
 | Canonical flag set | [`assets/provider-tck/flags/canonical-flags.json`](./assets/provider-tck/flags/canonical-flags.json) | the flags those cases assume |
 | Control API | [`assets/provider-tck/openapi/control-api.yaml`](./assets/provider-tck/openapi/control-api.yaml) | what a backend under test must expose |
@@ -106,7 +106,7 @@ Scenarios need to change flags and simulate outages, and they need to do it iden
 vendors. The control API is a small HTTP surface the backend under test exposes for that purpose:
 
 | Endpoint | Required | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `POST /start?config=<name>` | yes | start the backend, seeding flags to a named baseline |
 | `POST /stop` | yes | make the backend unreachable |
 | `POST /restart?seconds=<n>` | yes | simulate an outage of a bounded duration |
@@ -137,7 +137,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 **skipped, with the reason** — never as passed.
 
 | Tag | Meaning |
-|---|---|
+| --- | --- |
 | `@events` | emits lifecycle events at all |
 | `@lifecycle` | performs an initialisation that reaches its backend, with an observable outcome |
 | `@stale` | enters `STALE` and emits `PROVIDER_STALE` on backend loss |
