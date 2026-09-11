@@ -14,9 +14,9 @@
     "",
     "Three more are easy to lose in translation, because a seeding step that 'cleans up' values",
     "destroys exactly what they test:",
-    "  * 'false-flag', 'zero-flag' and 'empty-string-flag' resolve to false, 0 and \"\". They are",
-    "    values, not absences. A backend that drops them, or a provider that treats them as",
-    "    missing, is what the falsy-value scenarios catch.",
+    "  * 'boolean-zero-flag', 'integer-zero-flag' and 'string-zero-flag' resolve to false, 0 and",
+    "    \"\". They are values, not absences. A backend that drops them, or a provider that",
+    "    treats them as missing, is what the falsy-value scenarios catch.",
     "  * 'large-integer-flag' and 'huge-integer-flag' resolve to 2147483647 (2^31 - 1) and",
     "    9007199254740991 (2^53 - 1). Seed both as integers, not floats, and do not round them: a",
     "    float32 round trip changes the first, and a 32-bit integer cannot hold the second.",
@@ -84,32 +84,32 @@
       },
       "defaultVariant": "ten"
     },
-    "false-flag": {
+    "boolean-zero-flag": {
       "$comment": "Resolves to false. The default in the scenario is true, so a provider that treats false as missing is caught.",
       "state": "ENABLED",
       "variants": {
-        "on": true,
-        "off": false
-      },
-      "defaultVariant": "off"
-    },
-    "zero-flag": {
-      "$comment": "Resolves to 0. The default in the scenario is 1, so a provider that treats 0 as missing is caught.",
-      "state": "ENABLED",
-      "variants": {
-        "one": 1,
-        "zero": 0
+        "zero": false,
+        "non-zero": true
       },
       "defaultVariant": "zero"
     },
-    "empty-string-flag": {
+    "integer-zero-flag": {
+      "$comment": "Resolves to 0. The default in the scenario is 1, so a provider that treats 0 as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "zero": 0,
+        "non-zero": 1
+      },
+      "defaultVariant": "zero"
+    },
+    "string-zero-flag": {
       "$comment": "Resolves to the empty string. The default in the scenario is 'fallback', so a provider that treats \"\" as missing is caught.",
       "state": "ENABLED",
       "variants": {
-        "greeting": "hi",
-        "empty": ""
+        "zero": "",
+        "non-zero": "str"
       },
-      "defaultVariant": "empty"
+      "defaultVariant": "zero"
     },
     "object-flag": {
       "state": "ENABLED",
