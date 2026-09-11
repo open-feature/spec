@@ -64,16 +64,37 @@ Feature: Provider error handling
     # 'float-flag' resolves to 0.5. Narrowing that to an integer would lose information
     # silently, so it must be reported as a type mismatch rather than rounded.
     #
-    # This is the lossy half of the coercion contract. The lossless half -- that an
-    # integral float such as 10.0 requested as an integer MUST succeed -- has no scenario
-    # yet, because the canonical flag set has no integral float to ask it of. Adding one
-    # is a change to the flag set and so to every language at once; see the tag's entry in
-    # Appendix F.
+    # This is the lossy half of the coercion contract; the two scenarios that follow are the
+    # lossless half. A provider declaring @numeric-coercion must satisfy all three. Rejecting
+    # 0.5 is easy to get right by rejecting every float, and the lossless scenarios are what
+    # stop that shortcut from passing.
     Given a Integer-flag with key "float-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "1"
     And the reason should be "ERROR"
     And the error-code should be "TYPE_MISMATCH"
+    And no exception should have been thrown
+
+  @numeric-coercion
+  Scenario: An integral float requested as an integer is coerced without loss
+    # 'integral-float-flag' resolves to 10.0. Nothing is lost by returning it as the integer
+    # 10, so the coercion rule permits it and a provider declaring the tag must perform it.
+    Given a Integer-flag with key "integral-float-flag" and a default value "1"
+    When the flag was evaluated with details
+    Then the resolved details value should be "10"
+    And the reason should be "STATIC"
+    And the error-code should be ""
+    And no exception should have been thrown
+
+  @numeric-coercion
+  Scenario: An integer requested as a float is widened without loss
+    # The other direction. 'integer-flag' resolves to 10; every integer this suite asks for
+    # is exactly representable as a float, so a provider declaring the tag must widen it.
+    Given a Float-flag with key "integer-flag" and a default value "0.1"
+    When the flag was evaluated with details
+    Then the resolved details value should be "10"
+    And the reason should be "STATIC"
+    And the error-code should be ""
     And no exception should have been thrown
 
   Scenario: An unknown flag key returns the code default

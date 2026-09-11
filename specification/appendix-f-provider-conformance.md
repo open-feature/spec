@@ -39,11 +39,16 @@ claims, and a language needs both suites to make both.
 
 **In scope — the provider contract:**
 
-- mapping backend responses onto typed resolution details: value, variant, reason, error code
+- mapping backend responses onto typed resolution details: value, variant, reason, error code, and
+  no error message on a normal evaluation
+- the values most often mistaken for an absence — `false`, `0` and `""` — resolving as values
+- integer precision: a 32-bit maximum for every language, and 2^53 − 1 where the accessor allows it
 - keeping the integer and float types distinct rather than coercing between them
 - error handling: a type mismatch and an unknown flag return the code default, report the right
   error code, and never throw
-- lifecycle: reaching `READY`, and settling into `ERROR` against an unreachable backend
+- identity: a non-empty metadata name
+- lifecycle: reaching `READY`, settling into `ERROR` against an unreachable backend, and a shutdown
+  that is idempotent, reversible by initialising again, and prompt when the backend is gone
 - events: `PROVIDER_READY`, `PROVIDER_ERROR`, `PROVIDER_STALE`, `PROVIDER_CONFIGURATION_CHANGED`
 - that a signalled configuration change is actually **applied** on re-evaluation, not merely
   signalled
@@ -145,6 +150,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@object` | supports structured flag values |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
+| `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
 | `@targeting` | reserved; **not declarable** -- no scenarios yet |
 | `@caching` | reserved; **not declarable** -- no scenarios yet |
 
@@ -209,15 +215,21 @@ and no signal. That is being fixed in
 this capability should say which it is — a deliberate choice, or a tracked defect — and a conformance
 report has `knownDeviations` for the second.
 
-Two further gaps, both open rather than fixed here:
+Both halves of the rule have scenarios. The lossy half asks for `float-flag` (`0.5`) as an integer
+and expects `TYPE_MISMATCH`; the lossless half asks for `integral-float-flag` (`10.0`) as an integer
+and for `integer-flag` (`10`) as a float, and expects both to succeed. A provider declaring the tag
+must satisfy all three — rejecting every float is an easy way to pass the first, and the other two
+are what stop it. A provider whose SDK has a single numeric type, such as JavaScript, cannot
+distinguish the cases and reports the tag as not applicable rather than declaring it.
 
-- **The lossless case has no scenario.** Only the lossy half is tested, so a provider that wrongly
-  rejects `10.0` as an integer passes. Closing it needs an integral float in the canonical flag set,
-  which changes the flag set for every language at once.
-- **Accessor width is not modelled.** The ADR distinguishes the width of a language's integer
-  accessor — Go's `ResolveIntValue` is `int64` and so is the canonical `Long`, whereas a 32-bit
-  accessor needs its own scenarios, which flagd's testbed tags `@int32-bounded`. This appendix has
-  nothing equivalent, and it is a real source of cross-language disagreement.
+**Accessor width** is the related property the ADR distinguishes, and it is modelled separately
+because it is a property of the SDK rather than of the provider. Every language's integer accessor
+can ask for 2^31 − 1, so that precision scenario is untagged. Only some can ask for 2^53 − 1: Go's
+`ResolveIntValue` is `int64`, but Java's accessor is a 32-bit `Integer`, and a provider cannot
+resolve a value the accessor has no room for. That scenario carries `@large-integers`, which a
+provider on a 32-bit accessor leaves undeclared. Nothing above 2^53 − 1 is asked for: JavaScript
+cannot represent it, and what a provider owes a value that does not fit the requested accessor is
+the open question in [open-feature/spec#430](https://github.com/open-feature/spec/issues/430).
 
 ## Implementing the suite in a language
 
@@ -319,15 +331,16 @@ belong here rather than in any one implementation:
   whether it holds a local copy of the ruleset. The `@caching` tag is reserved; no scenarios yet.
 - **Coverage of the numbered requirements.** Mapped against
   [the provider requirements](./sections/02-providers.md), leaving out 2.8.5.1 (it constrains the SDK)
-  and 2.2.8.1 (a language-binding property, not observable at runtime), the suite covers 8 of the 14
-  `MUST` requirements in scope, 3 of 5 `SHOULD`, and 1 of 6 `MAY`. The `MUST` gaps are 2.1.1 (a
-  non-empty metadata `name`), 2.3.1 (the provider hook mechanism), 2.3.2 (no `error message` on
-  normal execution), 2.2.10 (flag metadata structure), 2.4.4 (a domain-scoped provider accepts its
-  bound domain) and 2.8.4 (`PROVIDER_CONTEXT_CHANGED`). Shutdown is not tested at all (2.5.2 and
-  2.5.3, both `SHOULD`), although the suite already performs one to release connections at the end of
-  a run. Flag metadata (2.2.9, 2.2.10) is blocked on the canonical flag set defining none. Of these,
-  2.8.4 is the largest hole: context reconciliation is where a provider is most likely to serve values
-  computed for the *previous* context, and the failure is silent.
+  and 2.2.8.1 (a language-binding property, not observable at runtime), the suite covers 10 of the
+  14 `MUST` requirements in scope, all 5 `SHOULD`, and 1 of 6 `MAY`. The `MUST` gaps are 2.3.1 (the
+  provider hook mechanism, a compile-time property in typed languages with little to observe at
+  runtime), 2.2.10 (flag metadata structure, blocked with 2.2.9 on the canonical flag set defining
+  none), 2.4.4 (a domain-scoped provider accepts its bound domain, which is as much SDK as provider
+  behaviour) and 2.8.4 (`PROVIDER_CONTEXT_CHANGED`). The last is the largest hole: context
+  reconciliation is where a provider is most likely to serve values computed for the *previous*
+  context, and the failure is silent. It wants its own capability tag, and until the control API has
+  an echo operation a scenario can show only that reconciliation was signalled, not that the values
+  that follow are the new context's.
 - **Normative status.** Nothing in this appendix is currently expressed as a numbered requirement.
   Whether the control API contract and the capability vocabulary should become normative sections is
   a decision for the TSC.
