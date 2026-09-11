@@ -3,9 +3,10 @@ Feature: Provider flag evaluation
   # Verifies that a provider maps backend responses onto typed resolution details correctly.
   #
   # This does NOT test the backend's evaluation logic. Every flag in the canonical set except
-  # targeted-flag resolves to its default variant whatever the context, so what is under test is
-  # purely the provider's mapping of a backend response to a value, a variant and a reason.
-  # targeted-flag carries the one rule, and only to show the context reached the backend.
+  # targeting-key-flag resolves to its default variant whatever the context, so what is under
+  # test is purely the provider's mapping of a backend response to a value, a variant and a
+  # reason. targeting-key-flag carries the one rule, only to show the context reached the
+  # backend.
   #
   # Every success path also asserts that no error message was set (requirement 2.3.2). A
   # provider that reports a value AND an error message is sending two contradictory signals,
@@ -167,7 +168,7 @@ Feature: Provider flag evaluation
     # and with a context supplied and nothing matching, both "STATIC" and "DEFAULT" are
     # defensible readings.
     Given a String-flag with key "string-flag" and a default value "bye"
-    And a context containing a targeting key with value "tck-other-user"
+    And a context containing a targeting key with value "f20bd32d-703b-48b6-bc8e-79d53c85134a"
     When the flag was evaluated with details
     Then the resolved details value should be "hi"
     And the error-code should be ""
@@ -181,13 +182,19 @@ Feature: Provider flag evaluation
     # a matching context resolves to a different value, so dropping it is caught by the resolved
     # value itself — no echo endpoint on the control API required.
     #
-    # targeted-flag's rule is specified by behaviour, not by syntax: resolve "targeted" when the
-    # targeting key is exactly "tck-targeted-user", "untargeted" otherwise. Express it however
-    # your backend expresses targeting.
-    Given a String-flag with key "targeted-flag" and a default value "fallback"
-    And a context containing a targeting key with value "tck-targeted-user"
+    # targeting-key-flag's rule is specified by behaviour, not by syntax: resolve "hit" when the
+    # targeting key is exactly this uuid, "miss" otherwise. Express it however your backend
+    # expresses targeting. The flag, its variants and the uuid are flagd-testbed's own, so a
+    # backend serving that harness already serves this one.
+    #
+    # Asserts the value, not the reason. Elsewhere the suite does pin the reason, deliberately
+    # — see Appendix F. Here it cannot: flagd reports TARGETING_MATCH for this hit and DEFAULT
+    # for the miss below, and with a rule present but unmatched both readings are right, so
+    # there is no single value to pin. The resolved value carries the whole signal anyway.
+    Given a String-flag with key "targeting-key-flag" and a default value "fallback"
+    And a context containing a targeting key with value "5c3d8535-f81a-4478-a6d3-afaa4d51199e"
     When the flag was evaluated with details
-    Then the resolved details value should be "targeted"
+    Then the resolved details value should be "hit"
     And the error-code should be ""
     And no exception should have been thrown
 
@@ -196,10 +203,10 @@ Feature: Provider flag evaluation
     # Paired with the scenario above, and the reason it is not enough on its own: a provider
     # that always returned the targeted value would pass that one. This is what pins down that
     # the rule was evaluated rather than the targeted variant simply being served.
-    Given a String-flag with key "targeted-flag" and a default value "fallback"
-    And a context containing a targeting key with value "tck-other-user"
+    Given a String-flag with key "targeting-key-flag" and a default value "fallback"
+    And a context containing a targeting key with value "f20bd32d-703b-48b6-bc8e-79d53c85134a"
     When the flag was evaluated with details
-    Then the resolved details value should be "untargeted"
+    Then the resolved details value should be "miss"
     And the error-code should be ""
     And no exception should have been thrown
 
@@ -207,8 +214,8 @@ Feature: Provider flag evaluation
   Scenario: No evaluation context resolves the default variant
     # A targeting rule that cannot match must not error. A provider that requires a targeting
     # key, or that fails to evaluate a rule when the context is absent, is caught here.
-    Given a String-flag with key "targeted-flag" and a default value "fallback"
+    Given a String-flag with key "targeting-key-flag" and a default value "fallback"
     When the flag was evaluated with details
-    Then the resolved details value should be "untargeted"
+    Then the resolved details value should be "miss"
     And the error-code should be ""
     And no exception should have been thrown

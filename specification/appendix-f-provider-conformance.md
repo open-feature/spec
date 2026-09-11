@@ -56,8 +56,8 @@ claims, and a language needs both suites to make both.
 **Out of scope:**
 
 - **Backend evaluation logic**, bucketing and rule-language correctness. Every flag in the canonical
-  set except `targeted-flag` resolves to its default variant whatever the context, so what is under
-  test is the provider's mapping of a response, not the backend's decision. `targeted-flag` carries
+  set except `targeting-key-flag` resolves to its default variant whatever the context, so what is
+  under test is the provider's mapping of a response, not the backend's decision. It carries
   the one rule, and it is there to prove the context reached the backend rather than to test how the
   backend evaluated it — which is why the rule is stated as behaviour and not as a syntax.
 - **The provider↔backend wire protocol.** How a provider talks to its backend is its own business.
@@ -106,7 +106,7 @@ Two properties are load-bearing and easy to break by accident:
 
 - **`missing-flag` must not exist.** Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding
   it turns that scenario green for the wrong reason.
-- **Only `targeted-flag` has a targeting rule.** Every other flag resolves to its default variant
+- **Only `targeting-key-flag` has a targeting rule.** Every other flag resolves to its default variant
   whatever the evaluation context, which is what lets the untargeted scenarios expect reason
   `STATIC`. Seeding targeting onto any other flag breaks them in every language at once.
 
@@ -239,6 +239,25 @@ the capability *is* the honest report and a deviation entry would assert a defec
 exist. A false failure is the mirror image of a vacuous pass, and a reader cannot tell them apart
 from the outside. When a scenario fails, find the numbered requirement before concluding anything:
 check whether it is a `MUST`, a `SHOULD`, or explicitly optional.
+
+**The `reason` field is the deliberate exception, and it is stated here so it is a decision rather
+than an oversight.** [Requirement 2.2.5](./sections/02-providers.md#requirement-225) is also a
+`SHOULD`, and it goes further than 2.2.4 does: it lets a provider populate the field with one of the
+listed values *"or some other string indicating the semantic reason for the returned flag value"*.
+The suite nonetheless requires a reason, and requires a specific one, in every scenario that asserts
+it. A provider whose backend reports vendor-specific reason strings will fail those scenarios.
+
+That is a narrowing of the specification, and it is accepted for now because the reason is the
+suite's cheapest diagnosis of a whole class of silent failure: a provider that quietly falls back to
+the code default reports a different reason, and the assertion names the problem where a value
+assertion alone only says the number was wrong. Gating it would mean a second capability, a second
+set of scenarios to keep in step, and a declaration nearly every provider would make anyway.
+
+A reader comparing reports should therefore treat a reason failure differently from a value failure:
+the value assertions rest on `MUST` requirements, the reason assertions rest on a house rule. If a
+conformant provider is failed by one, that is this suite's narrowing and not that provider's defect
+-- and the right response is to revisit this decision, not to record a deviation against the
+provider.
 
 `@variants` is the clearest case, and it was found the hard way. Every evaluation scenario asserted
 a variant, which reads as obviously correct until a backend with no variant concept for a plain flag
@@ -422,7 +441,7 @@ flagd provider for both its RPC and in-process resolvers. It is in review alongs
 This appendix is a proof of concept. Known gaps, all of which affect every language equally and so
 belong here rather than in any one implementation:
 
-- **Evaluation context passthrough, beyond the targeting key.** `targeted-flag` resolves differently
+- **Evaluation context passthrough, beyond the targeting key.** `targeting-key-flag` resolves differently
   for a matching context, so a provider that drops the context is caught by the resolved value
   itself — no echo operation needed for the basic case, which is how the `@targeting` scenarios
   work. What is still unverified is that the *whole* context arrives intact: a provider that
