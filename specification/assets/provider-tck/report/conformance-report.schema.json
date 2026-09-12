@@ -10,6 +10,7 @@
     "provider",
     "sdk",
     "tck",
+    "backend",
     "declaration",
     "results"
   ],
@@ -108,15 +109,19 @@
       }
     },
     "backend": {
-      "description": "What the provider was pointed at. Omitted for a provider with no backend, which is itself informative.",
+      "description": "What the provider was pointed at, and how the suite drove it. Present for every run: a provider with no backend still had its flag state manipulated somehow, and which of the two ways that was is the single most important thing a reader needs in order to know what the results are worth.",
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "controlApi"
+      ],
       "properties": {
         "description": {
+          "description": "A short description of what was being controlled, as the control itself reports it. Free text, for a person: a container image and tag, an in-memory store, a named environment.",
           "type": "string"
         },
         "controlApi": {
-          "description": "How the backend was driven. 'http' means the normative control API; 'in-process' is the narrow allowance for providers with no backend, and a report claiming it for a provider that has one should be treated with suspicion.",
+          "description": "How the backend was driven. 'http' means the normative control API, the contract that makes a conformance claim portable between languages; 'in-process' is the narrow allowance for providers with no backend, where the flag state is a data structure in the test process. A report claiming 'in-process' for a provider that does have a backend should be treated with suspicion -- the path it exercised is not the path the contract describes. Required, and required to come from the control rather than be inferred: nothing outside the control can tell which of the two it was, so a harness that guesses will eventually guess wrong about a custom control, and an absent value is not neutral -- every run is one or the other, so silence here reads as a claim that cannot be checked.",
           "enum": [
             "http",
             "in-process"
