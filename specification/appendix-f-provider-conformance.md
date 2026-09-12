@@ -421,6 +421,16 @@ control path should **fail loudly** if a connection operation is reached anyway 
 capability was declared that the harness cannot back up, which is a test-configuration bug rather
 than a provider defect.
 
+**Which of the two paths a run used is stated by the control, not inferred by the harness, and it is
+not optional.** It is the one fact that decides what everything else in a result is worth: the same
+scenarios passing over the normative control API and passing through in-process manipulation of a
+provider that has a real backend are not the same claim. Nothing outside the control can tell the
+two apart — a harness that infers it from the control's concrete type is right about its own two
+built-in controls and silently wrong about an adopter's custom one, which is the case where the
+answer actually matters. Nor is an absent value neutral: every run is one or the other, so an
+omitted value is not "no claim made", it is an unfalsifiable one. A control that cannot say which
+path it used is not finished.
+
 ## Extending the suite
 
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
