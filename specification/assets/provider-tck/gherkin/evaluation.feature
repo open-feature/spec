@@ -136,6 +136,42 @@ Feature: Provider flag evaluation
     And the error message should be empty
     And no exception should have been thrown
 
+  @disabled-flags
+  Scenario Outline: A disabled flag resolves to the code default
+    # Gated, because what a disabled flag resolves to is a property of where the substitution
+    # happens rather than of provider quality. A provider that evaluates locally — flagd's RPC
+    # and in-process resolvers, an in-memory provider — can substitute the value the caller
+    # passed in. A provider whose backend decides, such as one speaking OFREP, cannot: the
+    # server never sees the caller's default, so it has no way to return it. The same flag
+    # cannot behave the same way across those two architectures, and neither is wrong.
+    #
+    # Nothing in the specification says what a provider owes a disabled flag. Requirement
+    # 1.4.7 is about the SDK propagating whatever reason arrived, and 2.2.5 only lists
+    # DISABLED among the reason strings a provider may use. So this appendix states the
+    # behaviour, the way it does for @numeric-coercion, and gates it.
+    #
+    # Asserts the value and the absence of an error, not the reason. Each row's caller default
+    # differs from the flag's configured value, so a provider that ignores the state returns
+    # the configured value and fails on the value alone — which rests on 2.2.3, a MUST.
+    # Pinning reason "DISABLED" would rest on 2.2.5, a SHOULD that permits "some other
+    # string".
+    #
+    # No variant is asserted. A disabled flag has resolved no variant, so there is none to
+    # name; this scenario and @variants deliberately do not compose.
+    Given a <type>-flag with key "<key>" and a default value "<default>"
+    When the flag was evaluated with details
+    Then the resolved details value should be "<default>"
+    And the error-code should be ""
+    And the error message should be empty
+    And no exception should have been thrown
+
+    Examples:
+      | key                   | type    | default |
+      | disabled-boolean-flag | Boolean | false   |
+      | disabled-string-flag  | String  | bye     |
+      | disabled-integer-flag | Integer | 1       |
+      | disabled-float-flag   | Float   | 0.1     |
+
   @object
   Scenario: Resolve a structured value
     Given a Object-flag with key "object-flag" and a default value "{}"
