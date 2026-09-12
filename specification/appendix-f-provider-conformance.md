@@ -138,6 +138,24 @@ Two invariants are worth stating here because they are the ones a TCK implementa
   already pointed at the old port. The failure looks like a flaky provider.
 - **Scenario isolation comes from the control API**, not from cycling the stack. The backend is
   started once per suite and reset before each scenario.
+- **An endpoint that changes flag state must not return success until that state is being served.**
+  Returning when the change has been *accepted* rather than *applied* pushes a race onto every
+  caller, and the caller cannot close it: a suite has no way to distinguish "the backend has not
+  caught up yet" from "the provider resolved the wrong value", which is the exact question it
+  exists to answer. Readiness of the process is not readiness of the state — a backend whose health
+  probe reports ready as soon as a configuration has been *handed over* to be parsed will answer
+  `FLAG_NOT_FOUND` for flags the configuration plainly defines, and a provider that happens to
+  block during its own initialisation absorbs the window while a stateless one races it. The result
+  is a suite that flaps per provider rather than per backend, which is the most misleading shape a
+  conformance failure can take.
+
+  A suite must not paper over a backend that breaks this. A fixed delay after every control call
+  buys silence, not correctness: it hides the defect from the one consumer positioned to notice,
+  and it is un-tunable, because the window it covers is a property of the backend and not of the
+  suite. Where an adopter is stuck with such a backend, the wait belongs in **that adoption**, set
+  explicitly and citing the defect, so that it reads as a named workaround for a specific backend
+  and disappears when the backend is fixed — not as a constant buried in the shared harness where
+  every future adopter inherits it without knowing why.
 
 ## Capabilities: how a provider says what it cannot do
 
@@ -393,9 +411,12 @@ A TCK implementation is the language-specific harness around these three artifac
    inside the running stack through the control API, which is what `@stale` and `@unavailable`
    already require.
 
-   Wait for readiness by **asking the control API**, not by sleeping. A fixed delay after a control
-   call is a way of not noticing when the backend's own readiness contract breaks, and the suite
-   exists to notice.
+   Wait for the stack by **asking the control API** whether it is ready, bounded by the startup
+   timeout. After that, do not wait at all: a control endpoint that changes flag state owes the
+   caller that the state is being served before it returns, so a suite that adds a delay of its own
+   is covering for a backend that broke its side of the contract — see the control API's invariants.
+   If an adopter's backend does break it, the wait belongs in that adoption, named and with the
+   defect cited, and not in the shared harness.
 4. **Drive the backend only through the control API.** This is the part that makes the conformance
    claim portable: another language's TCK drives the same endpoints against the same stack and must
    get the same answers.

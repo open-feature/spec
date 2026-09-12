@@ -286,7 +286,18 @@ paths:
           * change the resolved value of the flag with key `changing-flag`;
           * do so without restarting the backend process, so that a provider sees
             a configuration-change signal rather than a reconnect;
-          * make the change durable until the next `/start` or `/reset`.
+          * make the change durable until the next `/start` or `/reset`;
+          * **not return until the new value is actually being served.**
+
+        That last point is the same promise `/start` makes, and it means the
+        backend, not the provider. A fresh evaluation against the backend MUST
+        resolve the new value once this returns; how long the *provider under
+        test* takes to notice is a property of its transport — streaming sees it
+        in milliseconds, a poller may need most of an interval — and that is what
+        the TCK's event timeout is for. The two must not be confused: a backend
+        that returns before it is serving the new value makes the provider's
+        detection latency unmeasurable, because the clock starts before there is
+        anything to detect.
 
         The implementation SHOULD toggle between exactly two known values so that
         repeated calls are meaningful and the test remains deterministic
@@ -314,6 +325,15 @@ paths:
         This is the preferred scenario-isolation primitive: unlike `/start` it
         causes no availability blip, so it cannot inject spurious lifecycle
         events into the next scenario.
+
+        **MUST NOT return until the restored baseline is actually being served**,
+        exactly as `/start` must not. This is worth stating separately because
+        `/reset` is the endpoint a TCK calls before *every* scenario: a window
+        here is re-rolled per scenario rather than once per suite, so a small
+        probability becomes a near-certainty over a few hundred scenarios, and
+        the failures land on scenarios chosen at random. Two runs of the same
+        suite then disagree about which scenarios failed, which reads as a flaky
+        provider and is the hardest shape of this defect to diagnose.
 
         **Scope.** This operation resets flag state only. It MUST NOT be
         expected to start a backend that is currently stopped — that is what
