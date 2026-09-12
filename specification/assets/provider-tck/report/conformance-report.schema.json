@@ -208,9 +208,12 @@
   },
   "$defs": {
     "knownDeviation": {
-      "description": "A gap the provider is known to have against something the specification does not treat as optional, with the gap tracked somewhere. It is distinct from an undeclared capability, which is a choice, and from a not-applicable one, which is impossible -- this is a defect that is acknowledged rather than hidden. Three of the four implementations needed it before it existed: flagd narrows floats to integers in two languages, and one Python scenario is marked as an expected failure against an SDK bug.",
+      "description": "A gap the provider is known to have against something the specification does not treat as optional. It is distinct from an undeclared capability, which is a choice, and from a not-applicable one, which is impossible -- this is a defect that is acknowledged rather than hidden. Three of the four implementations needed it before it existed: flagd narrows floats to integers in two languages, and one Python scenario is marked as an expected failure against an SDK bug. Appendix F states which of the two legitimate shapes to prefer: declaring the capability and letting the scenario fail, over withholding the capability so its scenarios skip.",
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "summary"
+      ],
       "properties": {
         "capability": {
           "description": "The capability the deviation concerns, if it maps to one. Omitted when the deviation is against a mandatory scenario, which belongs to no capability.",
@@ -218,11 +221,14 @@
           "pattern": "^@[a-z0-9-]+$"
         },
         "issue": {
+          "description": "Where the gap is tracked. Optional: an untracked deviation is still worth declaring, because naming the defect is what distinguishes it from a capability the provider chose to withhold. Prefer a tracked one as soon as there is somewhere to point at.",
           "type": "string",
           "format": "uri"
         },
         "summary": {
-          "type": "string"
+          "description": "What the gap is, for someone comparing providers. Required, because a deviation with no summary records that something is wrong without saying what, leaving a reader worse off than the bare skip or failure it accompanies.",
+          "type": "string",
+          "minLength": 1
         }
       }
     }
