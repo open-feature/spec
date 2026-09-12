@@ -452,6 +452,33 @@ answer actually matters. Nor is an absent value neutral: every run is one or the
 omitted value is not "no claim made", it is an unfalsifiable one. A control that cannot say which
 path it used is not finished.
 
+### Running the suite in CI
+
+Guidance rather than a rule — a repository's pipeline is its own business — but the reasoning is the
+same in every language, and leaving it unwritten produced four mechanisms and one unnoticed
+consequence.
+
+**An adoption suite is not a required gate while real gaps remain.** Its honest output is red: it
+fails on provider defects that are filed and unfixed, on backend fixtures that do not exist yet, and
+on capabilities the provider has not implemented. A red result is the suite working. Making it
+block a merge forces someone to silence it, and the cheapest way to silence a conformance suite is
+to stop asking the question — withdraw a capability, delete an assertion, or pin an older backend.
+
+So **exclude it from the default build, and make the exclusion explicit.** Two mistakes to avoid,
+both observed:
+
+- **An exclusion that something else undoes.** The question is not whether an exclusion exists but
+  whether any profile, target or job re-enables it. In one language a CI profile cleared the
+  adopter's own exclusion property; in another the suite ran under a build tag applied to every
+  module; in a third the default test task simply collected it. All four languages believed their
+  suites were excluded and all four were running them, red, unwatched.
+- **An exclusion nobody wrote down.** It is then indistinguishable from an oversight, and the next
+  person to touch the pipeline removes it or duplicates it. State it where an adopter will read it.
+
+Provide a single documented command that runs the suite deliberately, and keep the suite
+*compiling* in the default build even when it does not execute — a conformance suite that has
+quietly stopped building against its own harness is a worse failure than one that runs and fails.
+
 ## Extending the suite
 
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
@@ -534,6 +561,14 @@ belong here rather than in any one implementation:
   designated flag. Finer-grained flag manipulation would need new endpoints.
 - **Caching.** Whether a stale provider keeps serving last-known values during an outage depends on
   whether it holds a local copy of the ruleset. The `@caching` tag is reserved; no scenarios yet.
+
+  Worth knowing before writing them: a provider may cache on the client side and *rewrite the
+  reason* when it does. flagd's RPC resolver runs an LRU cache by default and reports `CACHED` on a
+  repeat evaluation of an unchanged flag. So any scenario that evaluates the same flag twice in one
+  scenario — the obvious shape for a caching test, and equally for a "value is stable" test — will
+  see a different reason the second time from a provider that is behaving correctly. This is why no
+  existing scenario evaluates a flag twice without a configuration change in between, and it is a
+  constraint on new scenarios rather than a defect in any provider.
 - **Coverage of the numbered requirements.** Mapped against
   [the provider requirements](./sections/02-providers.md), leaving out 2.8.5.1 (it constrains the SDK)
   and 2.2.8.1 (a language-binding property, not observable at runtime), the suite covers 10 of the
