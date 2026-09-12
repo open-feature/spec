@@ -416,7 +416,8 @@ of your own made the canonical ones optional would defeat the point of having a 
 **A run that did not execute the canonical set in full must fail.** This is the one that needs
 stating because it is not obvious, and because it was found by accident rather than by design: a
 test selector matching a single scenario name produced a green suite and a **well-formed conformance
-report describing one scenario out of twenty-nine**. A mis-wired extension filesystem does the same.
+report describing one scenario out of the whole canonical set**. A mis-wired extension
+filesystem does the same.
 There is no field in the report a consumer could read to notice — the schema is closed and the
 envelope carries no expected count — so failing the run is the only lever the implementation has.
 
