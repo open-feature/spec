@@ -123,7 +123,7 @@ vendors. The control API is a small HTTP surface the backend under test exposes 
 | --- | --- | --- |
 | `POST /start?config=<name>` | yes | start the backend, seeding flags to a named baseline |
 | `POST /stop` | yes | make the backend unreachable |
-| `POST /restart?seconds=<n>` | yes | simulate an outage of a bounded duration |
+| `POST /restart?seconds=<n>` | no | simulate a *bounded* outage, preserving flag state |
 | `POST /change` | yes | mutate flag configuration so the provider observes a change |
 | `POST /reset` | no | restore the baseline without an availability blip |
 | `GET /healthz` | no | readiness of the control API |
