@@ -245,6 +245,30 @@ exist. A false failure is the mirror image of a vacuous pass, and a reader canno
 from the outside. When a scenario fails, find the numbered requirement before concluding anything:
 check whether it is a `MUST`, a `SHOULD`, or explicitly optional.
 
+**A deviation is legitimate in two shapes, and the results already tell them apart.** Which one an
+adopter reaches for is the single most consequential thing about this field, so it is stated here
+rather than left to each implementation's documentation — four implementations left to themselves
+produced three different answers, and a consumer comparing their reports would read one field three
+ways.
+
+1. **The capability is declared, the scenario runs, and it fails.** The failure stays in the
+   results and the deviation says it is known, what it is, and where it is tracked.
+2. **The capability is withheld, and the scenarios it gates are skipped.** The deviation explains
+   the absence, so that a reader can tell a defect from a design decision. Both look identical
+   otherwise: scenarios skipped, reason recoverable from the declaration.
+
+**Prefer the first.** The second is honest only when the provider cannot attempt the behaviour at
+all, so that running the scenario would establish nothing. Where the provider does attempt it and
+gets it wrong, withdrawing the capability replaces a failing scenario with a skip and hides a defect
+behind something that looks deliberate — which is the outcome this field exists to prevent, not one
+of its uses. A conformance report is not improved by having fewer failures in it.
+
+**`summary` is required; `issue` is not.** A deviation whose summary is empty records that something
+is wrong without saying what, which leaves a reader worse off than the bare skip or failure it
+accompanies. An untracked deviation is worth declaring even so: naming the defect is what separates
+it from a withheld capability, and a declaration that merely omits the tag cannot say which of the
+two happened. Prefer a tracked one as soon as there is somewhere to point at.
+
 **The `reason` field is the deliberate exception, and it is stated here so it is a decision rather
 than an oversight.** [Requirement 2.2.5](./sections/02-providers.md#requirement-225) is also a
 `SHOULD`, and it goes further than 2.2.4 does: it lets a provider populate the field with one of the
@@ -352,6 +376,26 @@ A TCK implementation is the language-specific harness around these three artifac
 3. **Own the lifecycle** — start the backend stack once, register the provider under test with the
    SDK, await events, tear down — so that an adopting provider writes no test infrastructure. If a
    provider author finds themselves adding lifecycle code, that is a defect in the TCK.
+
+   **The container stack is part of that, and it is the part implementations get wrong.** An
+   adopter names a Docker Compose file, says which service and which container-internal ports the
+   provider connects to, and supplies a factory that builds a provider from a discovered endpoint.
+   Everything else — starting the stack, discovering the dynamically mapped host ports, building
+   the control client, waiting until the control API accepts commands, tearing down after the last
+   scenario — belongs to the TCK. Shipping only the control-API client and leaving orchestration to
+   the adopter satisfies the letter of this item and not its point: the orchestration is then
+   rewritten by every adopting provider, and it is the largest single piece of test infrastructure
+   in an adoption.
+
+   Start the stack **once** per suite and never restart it. Container runtimes assign host ports
+   dynamically and do not reliably preserve them across a restart, so a restart silently
+   invalidates every provider already pointed at the old port. Backend unavailability is simulated
+   inside the running stack through the control API, which is what `@stale` and `@unavailable`
+   already require.
+
+   Wait for readiness by **asking the control API**, not by sleeping. A fixed delay after a control
+   call is a way of not noticing when the backend's own readiness contract breaks, and the suite
+   exists to notice.
 4. **Drive the backend only through the control API.** This is the part that makes the conformance
    claim portable: another language's TCK drives the same endpoints against the same stack and must
    get the same answers.
