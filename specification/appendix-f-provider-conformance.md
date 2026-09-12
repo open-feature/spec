@@ -106,9 +106,13 @@ Two properties are load-bearing and easy to break by accident:
 
 - **`missing-flag` must not exist.** Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding
   it turns that scenario green for the wrong reason.
-- **Only `targeting-key-flag` has a targeting rule.** Every other flag resolves to its default variant
-  whatever the evaluation context, which is what lets the untargeted scenarios expect reason
-  `STATIC`. Seeding targeting onto any other flag breaks them in every language at once.
+- **Only `targeting-key-flag` has a targeting rule.** Every other enabled flag resolves to its
+  default variant whatever the evaluation context, which is what lets the untargeted scenarios
+  expect reason `STATIC`. Seeding targeting onto any other flag breaks them in every language at
+  once.
+- **The four `disabled-*` flags are the only ones whose state is not `ENABLED`.** They resolve to
+  nothing: the caller's default stands in. Every other scenario assumes a flag serves its own
+  value, so enabling one of these, or disabling anything else, breaks that assumption silently.
 
 ### The control API
 
@@ -154,6 +158,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@configuration-change` | detects configuration changes and emits `PROVIDER_CONFIGURATION_CHANGED` |
 | `@object` | supports structured flag values |
 | `@variants` | names the variant it resolved, which [Requirement 2.2.4](./sections/02-providers.md#requirement-224) makes a `SHOULD` and `types.md` types as optional |
+| `@disabled-flags` | resolves a flag disabled in the management system to the code default |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |

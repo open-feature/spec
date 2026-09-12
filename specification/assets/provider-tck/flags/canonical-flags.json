@@ -132,6 +132,51 @@
       },
       "defaultVariant": "one"
     },
+    "disabled-boolean-flag": {
+      "$comment": [
+        "The four disabled flags mirror boolean-flag, string-flag, integer-flag and float-flag",
+        "exactly, differing only in state. Each scenario's caller default differs from the",
+        "flag's configured value, so a provider that ignores the state returns the configured",
+        "value and is caught on the value alone.",
+        "",
+        "Names, variants and values are flagd-testbed's own, from flags/disabled-flags.json,",
+        "so a backend serving that harness already serves these.",
+        "",
+        "There is deliberately no disabled-object-flag. An Object resolution needs @object, and",
+        "a scenario needing both tags cannot be one row of a single outline -- the scalar rows",
+        "already establish the behaviour."
+      ],
+      "state": "DISABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
+    "disabled-string-flag": {
+      "state": "DISABLED",
+      "variants": {
+        "greeting": "hi",
+        "parting": "bye"
+      },
+      "defaultVariant": "greeting"
+    },
+    "disabled-integer-flag": {
+      "state": "DISABLED",
+      "variants": {
+        "one": 1,
+        "ten": 10
+      },
+      "defaultVariant": "ten"
+    },
+    "disabled-float-flag": {
+      "state": "DISABLED",
+      "variants": {
+        "tenth": 0.1,
+        "half": 0.5
+      },
+      "defaultVariant": "half"
+    },
     "targeting-key-flag": {
       "$comment": [
         "The one flag in this set with a targeting rule. Everything else resolves to its",
