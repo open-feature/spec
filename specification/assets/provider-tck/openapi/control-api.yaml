@@ -233,7 +233,7 @@ paths:
     post:
       tags: [availability]
       operationId: restart
-      summary: "[REQUIRED] Simulate an outage of a bounded duration"
+      summary: "[OPTIONAL] Simulate an outage of a bounded duration"
       description: |
         Makes the backend unreachable, waits `seconds`, then starts it again with
         the configuration currently in effect.
@@ -247,8 +247,24 @@ paths:
         blocking for the full duration; the TCK does not rely on the response
         being delayed. It awaits provider events instead.
 
-        The TCK uses this for the disconnect/reconnect scenarios: `STALE` →
-        `PROVIDER_STALE`, then back to `READY` → `PROVIDER_READY`.
+        **No shipped scenario reaches this endpoint**, and it is optional for
+        that reason. The disconnect/reconnect scenario — `PROVIDER_STALE`, then
+        back to `PROVIDER_READY` — is written as an *unbounded* outage (`the
+        connection is lost`, then `the connection is restored`), which a TCK
+        implements with `/stop` followed by `/start`. An earlier version of this
+        description claimed the TCK used `/restart` for those scenarios; it did
+        not, and requiring the endpoint on that basis asked every backend author
+        to implement something nothing called.
+
+        `/start` on reconnect also resets flag state, which `/restart` would
+        have preserved. That is acceptable today because the only scenario
+        involved asserts events and client state, never a resolved value. It
+        stops being acceptable the moment a scenario asserts what a stale
+        provider serves *during* an outage — last-known-value caching, which is
+        held behind the `@caching` capability and not yet written. Such a
+        scenario needs exactly this endpoint's state preservation, which is why
+        it remains specified rather than deleted: implement it if you want that
+        capability testable against your backend later.
       parameters:
         - name: seconds
           in: query
