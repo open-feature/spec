@@ -138,12 +138,16 @@ Feature: Provider flag evaluation
 
   @disabled-flags
   Scenario Outline: A disabled flag resolves to the code default
-    # Gated, because what a disabled flag resolves to is a property of where the substitution
-    # happens rather than of provider quality. A provider that evaluates locally — flagd's RPC
-    # and in-process resolvers, an in-memory provider — can substitute the value the caller
-    # passed in. A provider whose backend decides, such as one speaking OFREP, cannot: the
-    # server never sees the caller's default, so it has no way to return it. The same flag
-    # cannot behave the same way across those two architectures, and neither is wrong.
+    # Gated, because it takes a provider and its backend together. The backend has to
+    # distinguish a disabled flag at all — flagd says so with reason DISABLED and no variant,
+    # and OFREP's codeDefaultFlag schema carries the same signal by omitting `value` — and the
+    # provider then has to substitute the caller's default on the strength of that signal. A
+    # backend that instead serves the flag's configured value leaves nothing to detect, and a
+    # provider that does not substitute cannot pass however clear the signal was.
+    #
+    # Where evaluation happens is not the axis. flagd's RPC resolver is remote and passes, by
+    # substituting locally when the reason is DISABLED and no variant came back; an OFREP
+    # provider can and does pass on exactly the same reasoning.
     #
     # Nothing in the specification says what a provider owes a disabled flag. Requirement
     # 1.4.7 is about the SDK propagating whatever reason arrived, and 2.2.5 only lists
