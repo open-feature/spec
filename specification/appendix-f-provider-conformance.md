@@ -595,6 +595,24 @@ Provide a single documented command that runs the suite deliberately, and keep t
 *compiling* in the default build even when it does not execute — a conformance suite that has
 quietly stopped building against its own harness is a worse failure than one that runs and fails.
 
+**Give it a step of its own, rather than folding it into an existing end-to-end suite.** This holds
+whatever is decided about gating, and the reason is what the failure *says* rather than how long it
+takes. A dedicated step that goes red reports that **conformance** failed; the same scenarios inside
+a provider's own e2e suite report that a test failed, and a reader has to go and find out which kind.
+The two also differ in what a failure means: an e2e suite is expected green, so a failure is a
+regression, while a conformance suite carries failures by design — a declared `knownDeviation` fails
+its scenario deliberately, and that failure is correct output until the defect is fixed upstream.
+Sharing one signal between "you broke something" and "this is the known state" reliably ends with
+somebody silencing the informative half.
+
+> **The gating half of this section is provisional.** It rests on the premise that a conformance
+> run's output is unavoidably red, and therefore cannot be a required gate. That premise is under
+> discussion in [open-feature/spec#417](https://github.com/open-feature/spec/issues/417): if a run is
+> judged by whether its **results match its declaration** — every failure covered by a declared
+> deviation, every skip gated by an undeclared capability, and every declared deviation still
+> failing something — then a healthy adoption is green in its steady state, deviations included, and
+> the suite can be a required gate after all. The separation advice above is unaffected either way.
+
 ## Extending the suite
 
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
