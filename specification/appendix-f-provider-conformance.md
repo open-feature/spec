@@ -241,8 +241,28 @@ to decline.
 
 ### Rules for declaring
 
-The four rules below are stated rather than implied because each was discovered by four
+The five rules below are stated rather than implied because each was discovered by four
 implementations answering the same question differently. They are what makes two reports comparable.
+
+**A capability the language's SDK cannot express is refused by the implementation, not left to
+adopters.** Two exist today: `@large-integers` where the integer accessor is 32-bit, and
+`@numeric-coercion` where the language has a single numeric type. Neither says anything about a
+provider -- no provider in that language can satisfy them, and none ever will until the SDK changes.
+
+Leaving it to adopters means every adopter in that language has to know a fact about their language
+and remember to act on it. That is not hypothetical: in one implementation three separate suites
+each left the same capability undeclared, each with its own comment explaining the same property of
+the language. Three places to get it right, and a single wrong one puts a claim in a report that no
+scenario could have verified -- the exact failure the reserved-capability rules prevent, reached by
+another route.
+
+So the implementation refuses it at configuration time, as it refuses a reserved capability. **The
+two refusals are not the same thing and their skip reasons must differ.** A reserved capability is
+global and temporary: no scenario anywhere carries the tag, and the reservation expires the moment
+the specification adds one. An inexpressible capability is one language's and permanent: the
+scenarios exist and pass elsewhere. A reader who sees a capability absent from a report needs to know
+which of *"this provider declined"* and *"no provider in this language can be asked"* they are
+looking at, because only the first says anything about the provider.
 
 **A scenario is gated by every capability tag that applies to it, including tags inherited from its
 feature.** Tags compose: a tag on a `Feature` applies to every scenario in it, and a scenario
