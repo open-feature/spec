@@ -22,6 +22,7 @@ sidebar_position: 0
 - [Appendix C: OFREP](./appendix-c/index.md)
 - [Appendix D: Observability](./appendix-d-observability.md)
 - [Appendix E: Migrations](./appendix-e-migrations.md)
+- [Appendix F: Provider Conformance (TCK)](./appendix-f-provider-conformance.md)
 
 ## Conformance
 

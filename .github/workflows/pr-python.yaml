@@ -4,6 +4,11 @@ on:
   pull_request:
     branches:
       - main
+      # Temporary, for the duration of the provider conformance suite's review.
+      # This filter matches the pull request's BASE branch, so without it a pull
+      # request stacked on feat/provider-tck-appendix gets no checks at all.
+      # Remove once the chain has landed. See open-feature/spec#417.
+      - 'feat/provider-tck*'
 
 permissions:
   contents: read
