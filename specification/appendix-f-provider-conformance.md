@@ -418,6 +418,61 @@ provider on a 32-bit accessor leaves undeclared. Nothing above 2^53 − 1 is ask
 cannot represent it, and what a provider owes a value that does not fit the requested accessor is
 the open question in [open-feature/spec#430](https://github.com/open-feature/spec/issues/430).
 
+## The conformance report
+
+A run may emit a **conformance report**: a machine-readable document saying what was tested, what the
+provider claimed, and where the results are. Its shape is fixed by
+[`assets/provider-tck/report/conformance-report.schema.json`](./assets/provider-tck/report/conformance-report.schema.json),
+and it is deliberately a transcription of that schema in every language rather than whatever each
+language finds convenient, because the point of the format is that four implementations emit the
+same thing.
+
+Emitting one is optional. A developer running the suite locally wants a pass or a failure, not a
+document; CI publishing a claim wants the document. Nothing about a provider's conformance depends
+on whether a report was written.
+
+The report is an **envelope**. It identifies the run and points at the results; it does not contain
+them. The results are Cucumber Messages written alongside it, because per-scenario outcomes, tags,
+Scenario Outline row identity and the executed feature source are all already specified there.
+Restating them in a second format would create two places for the same fact to disagree.
+
+Two fields carry the interpretation the results cannot:
+
+- **`declaration.declared`** is every capability the configuration claims, as tags. It is an input to
+  reading the results rather than a summary of them: a skipped scenario says only that the question
+  was not put to this provider, and it is the declaration that says whether that is because the
+  provider declines the capability. Given the declaration and a scenario's tags, the reason for a
+  skip follows without being transported per scenario.
+- **`knownDeviations`** are the gaps the provider author acknowledges. It sits beside the declaration
+  rather than inside it because it is not a claim about capabilities: an entry may concern a declared
+  capability, or a mandatory scenario belonging to no capability at all. What it qualifies is which
+  of the declaration's absences were decisions and which were defects — a distinction the results
+  cannot carry, because a skip looks the same either way. Omitted when empty, which is silence rather
+  than a claim of having no known gaps.
+
+### Provenance
+
+`provenance` is optional and records where a report came from: `runUrl`, `commit`, `timestamp` and an
+optional signed `attestation`.
+
+It exists because **a report is a claim, not an audit**. Everything else in the document is what the
+provider says about itself, and a consumer comparing two providers' reports — or deciding whether to
+publish a badge from one — has no way to tell a report produced by a CI run against a tagged commit
+from one produced by hand on a laptop. `provenance` is what lets that consumer decide how much to
+trust the rest.
+
+It is optional rather than required because the facts in it are properties of the environment that
+ran the suite, not of the provider or the TCK. A TCK implementation cannot invent them: outside CI
+there is no run URL, and a working tree with uncommitted changes has no commit that describes what
+was actually executed. A report that filled the field in anyway would be worse than one that omits
+it, because the whole value of the field is that its contents can be checked.
+
+**No TCK implementation is required to emit it, and at the time of writing none does.** It is
+specified here so that the first one to need it does not invent a second shape for the same facts,
+and so that a reader who finds the field absent knows that means "not stated" rather than "this
+implementation calls it something else". Where a suite runs in CI and the information is available,
+populating it is encouraged; a consumer must treat its absence as unremarkable.
+
 ## Implementing the suite in a language
 
 A TCK implementation is the language-specific harness around these three artifacts. What it owns:

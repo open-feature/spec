@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openfeature.dev/schema/provider-tck/conformance-report-1.json",
+  "title": "OpenFeature provider conformance report",
+  "description": "The machine-readable result of one run of the provider conformance suite (Appendix F) against one provider in one configuration. This document is an envelope: it identifies what was tested, what the provider claims, and where the executed results are. The results themselves are a standard format (Cucumber Messages), not something this specification defines. See https://github.com/open-feature/spec/issues/424.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "provider",
+    "sdk",
+    "tck",
+    "backend",
+    "declaration",
+    "results"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "description": "The version of this schema the report conforms to. Integer-as-string so that a consumer can reject a report it does not understand rather than guessing.",
+      "type": "string",
+      "pattern": "^[1-9][0-9]*$"
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "language"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string"
+        },
+        "language": {
+          "enum": [
+            "go",
+            "java",
+            "javascript",
+            "dotnet",
+            "python",
+            "php",
+            "ruby",
+            "kotlin",
+            "swift",
+            "rust",
+            "other"
+          ]
+        },
+        "configuration": {
+          "description": "Which configuration of the provider was tested, when a provider has more than one materially different mode. One provider may therefore produce several reports, and they are not interchangeable: flagd's RPC and in-process resolvers differ in whether they emit PROVIDER_STALE, so a report keyed on provider name alone would have to pick one and misrepresent the other.",
+          "type": "string"
+        },
+        "repository": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "sdk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "tck": {
+      "description": "What asked the questions, and which questions. The spec revision is a property of the TCK artifact rather than an independent assertion: a given TCK build consumes exactly one revision of the assets.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementation",
+        "version",
+        "specRevision"
+      ],
+      "properties": {
+        "implementation": {
+          "description": "Which TCK implementation produced this, e.g. 'go-sdk-contrib/tools/provider-tck'.",
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "specRevision": {
+          "description": "The open-feature/spec commit the executed assets came from.\n\nFor the feature files this is corroborated rather than merely asserted, because a Cucumber Messages stream carries the executed source and a consumer can compare it. For the canonical flag set and the control API description it stands alone: the stream says nothing about either, and a scenario asserting that integer-flag resolves to 10 depends entirely on the flag set it was run against. An earlier draft carried a hash of the whole asset directory to close that gap; it was dropped because every TCK implementation either reads the assets from the submodule directly or regenerates and diffs its vendored copy in CI, so drift is caught where it happens rather than re-detected in every report.",
+          "type": "string",
+          "minLength": 7
+        },
+        "specRelease": {
+          "description": "A human-readable spec release tag, when one applies. A commit is precise; a tag is what a person can reason about.",
+          "type": "string"
+        }
+      }
+    },
+    "backend": {
+      "description": "What the provider was pointed at, and how the suite drove it. Present for every run: a provider with no backend still had its flag state manipulated somehow, and which of the two ways that was is the single most important thing a reader needs in order to know what the results are worth.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "controlApi"
+      ],
+      "properties": {
+        "description": {
+          "description": "A short description of what was being controlled, as the control itself reports it. Free text, for a person: a container image and tag, an in-memory store, a named environment.",
+          "type": "string"
+        },
+        "controlApi": {
+          "description": "How the backend was driven. 'http' means the normative control API, the contract that makes a conformance claim portable between languages; 'in-process' is the narrow allowance for providers with no backend, where the flag state is a data structure in the test process. A report claiming 'in-process' for a provider that does have a backend should be treated with suspicion -- the path it exercised is not the path the contract describes. Required, and required to come from the control rather than be inferred: nothing outside the control can tell which of the two it was, so a harness that guesses will eventually guess wrong about a custom control, and an absent value is not neutral -- every run is one or the other, so silence here reads as a claim that cannot be checked.",
+          "enum": [
+            "http",
+            "in-process"
+          ]
+        }
+      }
+    },
+    "declaration": {
+      "description": "The capability set this provider claims, as Gherkin tags including the leading at-sign. This is an INPUT to reading the results, not a summary of them, which is why it cannot be derived from the results payload and has to be stated here. A skipped scenario in the payload says the question was not put to this provider; only the declaration says whether that is because the provider declines the capability. Given the declaration and a scenario's tags, the reason for a skip follows without needing to be transported per scenario. A capability that cannot hold in a language at all -- @numeric-coercion where the language has a single numeric type, @large-integers on a 32-bit accessor -- is a property of the SDK rather than of the provider, and is recorded in Appendix F rather than restated in every report; in a run it is simply undeclared, and the skip carries the reason.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared"
+      ],
+      "properties": {
+        "declared": {
+          "description": "Capabilities the provider declares AND that the executed suite gates on. A scenario tagged with anything absent from this list is expected to be skipped in the results payload.\n\nA capability that no executed scenario carries MUST NOT appear here, even when the provider genuinely supports it. Such a capability cannot produce a skip, so it plays no part in interpreting the results -- and listing it invites a reader to believe it was verified when nothing examined it. That is the vacuous conformance claim the capability vocabulary exists to prevent, and it is easy to reintroduce: an adopter declaring 'everything except X' picks up every reserved tag in the vocabulary along the way.\n\nAn implementation that finds a declared capability the suite does not test should say so where the adopter will see it -- a warning or a failed run -- rather than quietly passing it through to the report. Silence in the report and silence to the adopter are not the same thing.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^@[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    "results": {
+      "description": "Where the executed results live, and in what format. The results themselves are deliberately NOT defined by this schema: per-scenario outcomes, tags, Scenario Outline row identity and the executed feature source are all already specified by Cucumber Messages, and defining them again here would create a second format to maintain and version and two places for the same fact to disagree.\n\nIt is referenced rather than inlined because a Messages stream carries the feature sources and so is far larger than this envelope, and because a consumer deciding whether it cares about a report should not have to download the whole run to find out.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "location"
+      ],
+      "properties": {
+        "format": {
+          "description": "The results format. 'cucumber-messages' is the ndjson protocol at https://github.com/cucumber/messages -- the expected value, and the only one that carries the executed feature source and an exact Scenario Outline row identity. The others are admitted because a runner may not emit Messages yet, and are lossier: 'cucumber-json' identifies outline rows only by line number, and 'junit-xml' carries no tags at all, which leaves the capability that gated a skip unrecoverable.\n\nOne thing to know before reading a Messages stream: a testCaseFinished message carries no status. A scenario's outcome is the most severe testStepResult among its steps, hooks included, on the ordering UNKNOWN < PASSED < SKIPPED < PENDING < UNDEFINED < AMBIGUOUS < FAILED. That ordering is what makes a capability skip visible -- a gate that aborts in a before-hook produces a SKIPPED hook result outranking the PASSED steps it prevented -- and a consumer reading only testCaseFinished will see no outcome at all.",
+          "enum": [
+            "cucumber-messages",
+            "cucumber-json",
+            "junit-xml"
+          ]
+        },
+        "formatVersion": {
+          "description": "The version of the results format, for a format that has versions. Cucumber Messages does: implementations pin different releases -- one TCK builds against messages v21 while another's runner ships a much later one -- and the message types differ between them. Without this a consumer validating a stream has to guess which schema to validate against, and guessing wrong is worse than not checking, because a later schema accepts messages an earlier producer could not have emitted and an earlier one rejects messages that are perfectly valid. Record what the producer actually built against.",
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "description": "Where to fetch the results: a URI, or a path relative to this document.",
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "description": "Digest over the results payload as 'sha256:<hex>', so a consumer can tell that what it fetched is what this envelope describes.",
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "knownDeviations": {
+      "description": "Deviations the provider acknowledges. Optional, and an empty list is not the same as an absent one: stating none is a claim, omitting the field is silence.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/knownDeviation"
+      }
+    },
+    "provenance": {
+      "description": "Where this report came from. A report is a claim, not an audit, and this is what lets a consumer decide how much to trust it.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "runUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "attestation": {
+          "description": "An optional signed attestation (e.g. sigstore bundle) covering this document.",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "knownDeviation": {
+      "description": "A gap the provider is known to have against something the specification does not treat as optional. It is distinct from an undeclared capability, which is a choice, and from a not-applicable one, which is impossible -- this is a defect that is acknowledged rather than hidden. Three of the four implementations needed it before it existed: flagd narrows floats to integers in two languages, and one Python scenario is marked as an expected failure against an SDK bug. Appendix F states which of the two legitimate shapes to prefer: declaring the capability and letting the scenario fail, over withholding the capability so its scenarios skip.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary"
+      ],
+      "properties": {
+        "capability": {
+          "description": "The capability the deviation concerns, if it maps to one. Omitted when the deviation is against a mandatory scenario, which belongs to no capability.",
+          "type": "string",
+          "pattern": "^@[a-z0-9-]+$"
+        },
+        "issue": {
+          "description": "Where the gap is tracked. Optional: an untracked deviation is still worth declaring, because naming the defect is what distinguishes it from a capability the provider chose to withhold. Prefer a tracked one as soon as there is somewhere to point at.",
+          "type": "string",
+          "format": "uri"
+        },
+        "summary": {
+          "description": "What the gap is, for someone comparing providers. Required, because a deviation with no summary records that something is wrong without saying what, leaving a reader worse off than the bare skip or failure it accompanies.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
