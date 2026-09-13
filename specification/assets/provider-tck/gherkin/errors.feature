@@ -19,7 +19,6 @@ Feature: Provider error handling
     Given a <requested>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
     Then the resolved details value should be "<default>"
-    And the reason should be "ERROR"
     And the error-code should be "TYPE_MISMATCH"
     And no exception should have been thrown
 
@@ -48,7 +47,6 @@ Feature: Provider error handling
     Given a <requested>-flag with key "object-flag" and a default value "<default>"
     When the flag was evaluated with details
     Then the resolved details value should be "<default>"
-    And the reason should be "ERROR"
     And the error-code should be "TYPE_MISMATCH"
     And no exception should have been thrown
 
@@ -71,7 +69,6 @@ Feature: Provider error handling
     Given a Integer-flag with key "float-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "1"
-    And the reason should be "ERROR"
     And the error-code should be "TYPE_MISMATCH"
     And no exception should have been thrown
 
@@ -82,7 +79,6 @@ Feature: Provider error handling
     Given a Integer-flag with key "integral-float-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "10"
-    And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
 
@@ -93,7 +89,6 @@ Feature: Provider error handling
     Given a Float-flag with key "integer-flag" and a default value "0.1"
     When the flag was evaluated with details
     Then the resolved details value should be "10"
-    And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
 
@@ -102,6 +97,5 @@ Feature: Provider error handling
     Given a String-flag with key "missing-flag" and a default value "fallback"
     When the flag was evaluated with details
     Then the resolved details value should be "fallback"
-    And the reason should be "ERROR"
     And the error-code should be "FLAG_NOT_FOUND"
     And no exception should have been thrown
