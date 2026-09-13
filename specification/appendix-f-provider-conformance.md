@@ -241,8 +241,27 @@ to decline.
 
 ### Rules for declaring
 
-The five rules below are stated rather than implied because each was discovered by four
+The six rules below are stated rather than implied because each was discovered by four
 implementations answering the same question differently. They are what makes two reports comparable.
+
+**Declare a capability when at least one scenario gating it can actually be put to the provider;
+withhold it only when none can.** The unit of this decision is the *scenario*, not the tag — which is
+the part that is easy to miss, and the part three implementations got wrong in three different
+directions.
+
+The case that forces it is a backend that does not serve a flag some scenario needs. `@large-integers`
+has exactly one scenario, and it asks for a flag the reference backend does not serve, so nothing
+about that capability can be established and withholding is right. `@numeric-coercion` has three, and
+a backend missing one flag can still be asked the other two — so withholding it hides two answers to
+save one failure. That is not hypothetical: declaring it is how one provider's two resolvers were
+found to *disagree with each other*, one coercing correctly and one not, which no amount of reading
+the source had revealed.
+
+Two consequences worth stating. A scenario that fails because the backend cannot serve its fixture is
+**not** a provider defect and must not be recorded as one — say so in the deviation's summary, or the
+report accuses the provider of the backend's gap. And a capability withheld for a backend gap is
+**temporary** in a way one withheld by choice is not: it should be revisited when the backend gains
+the fixture, so note why, or it will outlive its reason.
 
 **A capability the language's SDK cannot express is refused by the implementation, not left to
 adopters.** Two exist today: `@large-integers` where the integer accessor is 32-bit, and
