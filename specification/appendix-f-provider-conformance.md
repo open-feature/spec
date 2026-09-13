@@ -596,9 +596,15 @@ Provide a single documented command that runs the suite deliberately, and keep t
 quietly stopped building against its own harness is a worse failure than one that runs and fails.
 
 **Give it a step of its own, rather than folding it into an existing end-to-end suite.** This holds
-whatever is decided about gating, and the reason is what the failure *says* rather than how long it
-takes. A dedicated step that goes red reports that **conformance** failed; the same scenarios inside
-a provider's own e2e suite report that a test failed, and a reader has to go and find out which kind.
+whatever is decided about gating, and the reason is what a result *means* rather than how long it
+takes. A dedicated step reports on **conformance**; the same scenarios inside a provider's own e2e
+suite report that a test passed or failed, and a reader has to go and find out which kind.
+
+Note that this is about a build target, not a CI job, and the two are easy to conflate — a suite can
+have a step of its own that no pipeline invokes, which is the position every implementation is in
+while the gating question below is open. The step still earns its place: a maintainer running it by
+hand gets an unambiguous answer rather than a mixed one, and if gating is resolved in favour of
+running it, the thing to gate on already exists and is already scoped correctly.
 The two also differ in what a failure means: an e2e suite is expected green, so a failure is a
 regression, while a conformance suite carries failures by design — a declared `knownDeviation` fails
 its scenario deliberately, and that failure is correct output until the defect is fixed upstream.
