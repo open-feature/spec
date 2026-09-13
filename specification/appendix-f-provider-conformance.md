@@ -331,6 +331,20 @@ as readily as `STATIC` does -- two providers can disagree here and both conform.
 answers `DEFAULT` for a rule-less flag is not defective; it does not use the standard meanings, and
 should not declare the tag.
 
+`ERROR` is the row where this suite's subject is blurred, and it is asserted anyway. The other four
+rest on [Requirement 1.4.7](./sections/01-flag-evaluation.md#requirement-147), which makes the SDK
+propagate the provider's reason — but only *"in cases of normal execution"*. Abnormal execution is
+[1.4.9](./sections/01-flag-evaluation.md#requirement-149), a `SHOULD` on the **SDK** to "indicate an
+error", and nothing requires the provider's reason to survive. So a passing `ERROR` scenario
+establishes that the value reaching the application is coherent, not that the provider produced it.
+
+That is still worth asserting, because it is the pair that carries the meaning. The error code alone
+is already covered for every provider — 2.2.7 and
+[1.4.8](./sections/01-flag-evaluation.md#requirement-148) make it a `MUST`, it is a closed
+enumeration, and `errors.feature` asserts it ungated. The reason alone could have been written by the
+SDK. An evaluation reporting `FLAG_NOT_FOUND` with reason `STATIC` is incoherent whoever wrote it,
+and that is what the pairing catches.
+
 `SPLIT`, `UNKNOWN`, `CACHED` and `STALE` are not asserted. The first two have no scenario that
 produces them. `CACHED` needs a repeat evaluation, which nothing here performs without a
 configuration change in between -- see the caching entry under known gaps. `STALE` needs a scenario

@@ -55,9 +55,21 @@ Feature: Provider resolution reasons
       | integer-flag | Integer | 1       |
       | float-flag   | Float   | 0.1     |
 
+  # THE TWO ERROR SCENARIOS BELOW ASSERT AGREEMENT, not authorship, and the distinction is worth
+  # stating because it is the one place this file's subject is blurred.
+  #
+  # Every other scenario here rests on [Requirement 1.4.7](../../../sections/01-flag-evaluation.md),
+  # which makes the SDK propagate the provider's reason — but only "in cases of normal execution".
+  # Abnormal execution is 1.4.9, and that is a SHOULD on the *SDK* to "indicate an error"; nothing
+  # requires the provider's reason to survive. So a passing ERROR scenario does not establish that
+  # the provider set the reason, only that whatever reached the application is consistent.
+  #
+  # They are still worth running. The error code alone is already asserted in errors.feature, on a
+  # MUST, for every provider; the reason alone could be written by the SDK. Asserting the pair is
+  # the part neither field can satisfy on its own, and an evaluation that reports FLAG_NOT_FOUND
+  # with reason STATIC is incoherent whoever wrote it.
+
   Scenario: An unknown flag reports an error
-    # Paired with the error-code assertion in errors.feature, which is the MUST. This adds only that
-    # the reason agrees with the error code, which is what a consumer keying on reason alone needs.
     Given a String-flag with key "missing-flag" and a default value "fallback"
     When the flag was evaluated with details
     Then the reason should be "ERROR"
