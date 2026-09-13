@@ -605,6 +605,23 @@ have a step of its own that no pipeline invokes, which is the position every imp
 while the gating question below is open. The step still earns its place: a maintainer running it by
 hand gets an unambiguous answer rather than a mixed one, and if gating is resolved in favour of
 running it, the thing to gate on already exists and is already scoped correctly.
+
+**Keep the conformance suite separable from the provider's other suites, and do not select it by
+naming convention.** The unit does not matter — a directory, a module, a project, whatever the
+language's tooling selects on — but it should be possible to run the conformance suite, and only it,
+without enumerating or pattern-matching individual test names.
+
+Naming conventions work until a test is renamed, and then they fail in the direction that hides the
+problem: the suite stops being selected, the step goes green having run nothing, and the tally in a
+pull request keeps quoting numbers from the last time it did run. Every language that selected by
+name had to build something to defend the convention — an AST parser asserting that the set of tests
+calling the runner equals the set matching the name pattern, mutation-tested in both directions. The
+languages that selected by directory needed nothing, because a file is in it or it is not.
+
+Filing the conformance suite *inside* the provider's end-to-end directory is the same mistake one
+level down. It says the suite is a kind of end-to-end test, which is what a step of its own exists to
+deny — and where the end-to-end suite is its own module, it also drags the conformance suite's
+dependencies, container libraries and all, into tests that never use them.
 The two also differ in what a failure means: an e2e suite is expected green, so a failure is a
 regression, while a conformance suite carries failures by design — a declared `knownDeviation` fails
 its scenario deliberately, and that failure is correct output until the defect is fixed upstream.
