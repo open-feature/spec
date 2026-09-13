@@ -606,9 +606,25 @@ both observed:
 - **An exclusion nobody wrote down.** It is then indistinguishable from an oversight, and the next
   person to touch the pipeline removes it or duplicates it. State it where an adopter will read it.
 
-Provide a single documented command that runs the suite deliberately, and keep the suite
-*compiling* in the default build even when it does not execute — a conformance suite that has
-quietly stopped building against its own harness is a worse failure than one that runs and fails.
+Provide a single documented command that runs the suite deliberately, and **keep the adoption
+typechecked by something that runs ordinarily**, even though it does not execute — a conformance
+suite that has quietly stopped building against its own harness is a worse failure than one that
+runs and fails.
+
+"Something that runs ordinarily" rather than "the default build", because in at least one language
+the default build cannot do it and never will. Where the ordinary build compiles what gets
+*published*, it is configured for library code — no test globals, a different module target — and a
+conformance adoption calling the test framework's own functions can never join it. There the
+requirement is met by a typecheck scoped to the adoption instead, which is a further argument for
+giving it a directory of its own: a directory nothing else occupies is something a typecheck can be
+pointed at.
+
+Two ways to fail this, both observed, and they are opposites. Excluding the adoption by path can
+remove it from the build as well as from the run — silently, because nothing fails when nothing is
+compiled. Or the reverse: removing an exclusion can pull the adoption *into* a build that cannot
+compile it, which at least fails loudly. Whichever shape applies, assert it rather than assume it —
+the cheap check is to introduce a deliberate compile error in the adoption and confirm the ordinary
+build rejects it.
 
 **Give it a step of its own, rather than folding it into an existing end-to-end suite.** This holds
 whatever is decided about gating, and the reason is what a result *means* rather than how long it
