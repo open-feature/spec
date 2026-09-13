@@ -9,8 +9,10 @@
     "",
     "Two things are load-bearing and easy to get wrong:",
     "  * 'missing-flag' MUST NOT exist. Its absence is what the FLAG_NOT_FOUND scenario tests.",
-    "  * No flag here has targeting rules. Every scenario expects reason STATIC, because the TCK",
-    "    tests the provider's mapping of a response, not the backend's evaluation logic.",
+    "  * Only 'targeting-key-flag' has a targeting rule. Everything else resolves the same way",
+    "    whatever the context, because the TCK tests the provider's mapping of a response, not",
+    "    the backend's evaluation logic. That is also what lets a provider declaring",
+    "    @standard-reasons expect STATIC rather than TARGETING_MATCH for those flags.",
     "",
     "Three more are easy to lose in translation, because a seeding step that 'cleans up' values",
     "destroys exactly what they test:",
@@ -180,8 +182,8 @@
     "targeting-key-flag": {
       "$comment": [
         "The one flag in this set with a targeting rule. Everything else resolves to its",
-        "defaultVariant whatever the context, which is what lets every other scenario expect",
-        "reason STATIC.",
+        "defaultVariant whatever the context, which is what lets a provider declaring",
+        "@standard-reasons expect STATIC for those flags and TARGETING_MATCH or DEFAULT here.",
         "",
         "The rule is specified by its behaviour, not by this encoding: resolve variant 'hit'",
         "when the evaluation context's targeting key is exactly the uuid below, and 'miss'",
