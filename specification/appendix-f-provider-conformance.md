@@ -244,10 +244,17 @@ to decline.
 The six rules below are stated rather than implied because each was discovered by four
 implementations answering the same question differently. They are what makes two reports comparable.
 
-**Declare a capability when at least one scenario gating it can actually be put to the provider;
-withhold it only when none can.** The unit of this decision is the *scenario*, not the tag — which is
-the part that is easy to miss, and the part three implementations got wrong in three different
-directions.
+**Once a provider is attempting a capability, declare it when at least one scenario gating it can
+actually be put to the provider, and withhold only when none can.** The unit of this decision is the
+*scenario*, not the tag — which is the part that is easy to miss, and the part three implementations
+got wrong in three different directions.
+
+The opening clause is a real condition and not throat-clearing. This rule decides *whether the
+question is askable*; it does not decide whether the provider owes an answer, and that question comes
+first. Where the specification permits declining — `@numeric-coercion` is not defined by any
+requirement, so a provider may simply not coerce — withholding is the honest report however askable
+the scenarios are. Applying this rule to that case turns a permitted choice into a manufactured
+failure, which is the mirror image of the mistake it exists to prevent.
 
 The case that forces it is a backend that does not serve a flag some scenario needs. `@large-integers`
 has exactly one scenario, and it asks for a flag the reference backend does not serve, so nothing
