@@ -527,6 +527,21 @@ A TCK implementation is the language-specific harness around these three artifac
    inside the running stack through the control API, which is what `@stale` and `@unavailable`
    already require.
 
+   **Make it impossible to run the suite against assets you did not just fetch.** Three of four
+   implementations could, by three different routes, and one of them did: a full adoption suite ran
+   against the *previous* pin's feature files and reported a tally byte-identical to the run before
+   it — nothing failed, nothing warned, and it was caught only by someone comparing two numbers that
+   should have differed. The cause is the same everywhere a copy is involved: moving a pin updates
+   the recorded revision, not the working tree the build copies from, so the two disagree silently
+   and the copy wins.
+
+   Wire the fetch into the build so the suite cannot run without it, rather than relying on whoever
+   moves the pin to remember a second command. Where the assets arrive as an immutable, checksummed
+   dependency the problem does not arise at all, and that is worth preferring. A guard that catches
+   one symptom — a declared capability no scenario carries, say — is worth having and is not a
+   substitute: a pin that changes only the *content* of a scenario passes every such guard and still
+   tests the wrong thing.
+
    Wait for the stack by **asking the control API** whether it is ready, bounded by the startup
    timeout. After that, do not wait at all: a control endpoint that changes flag state owes the
    caller that the state is being served before it returns, so a suite that adds a delay of its own
