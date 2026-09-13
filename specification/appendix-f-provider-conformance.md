@@ -305,6 +305,19 @@ gets it wrong, withdrawing the capability replaces a failing scenario with a ski
 behind something that looks deliberate — which is the outcome this field exists to prevent, not one
 of its uses. A conformance report is not improved by having fewer failures in it.
 
+**A TCK implementation's own self-tests are the one place where withholding to stay green is
+acceptable**, and it is worth saying so because the rule above otherwise forbids it. Those suites run
+the conformance scenarios against an SDK's in-memory provider as a fixture for the harness; they are
+not an adoption and they produce no report about a third party. They also run in the implementation's
+ordinary build, where a permanently failing scenario is a broken build rather than a finding — and
+nobody downstream can act on it, because the defect belongs to the SDK and the fix is a release away.
+
+So a self-test may leave a capability undeclared for a defect it has identified, on one condition:
+**the defect is pinned by a test of its own**, so that the behaviour is still asserted and the skip
+is not the only record. Go's in-memory self-test does this for `@disabled-flags` against a
+`memprovider` defect fixed upstream but unreleased. An adoption has no such licence: it exists to
+report on a provider, and a skip there is a claim about that provider.
+
 **`summary` is required; `issue` is not.** A deviation whose summary is empty records that something
 is wrong without saying what, which leaves a reader worse off than the bare skip or failure it
 accompanies. An untracked deviation is worth declaring even so: naming the defect is what separates
@@ -418,9 +431,17 @@ therefore on the second.
 What remains true is that the observed behaviour is bad for users: flagd narrows `0.5` to `0` with no
 error code at all, in Go and in Java, in both resolvers, so an application receives a plausible value
 and no signal. That is being fixed in
-[open-feature/flagd#1996](https://github.com/open-feature/flagd/issues/1996). A provider withholding
-this capability should say which it is — a deliberate choice, or a tracked defect — and a conformance
-report has `knownDeviations` for the second.
+[open-feature/flagd#1996](https://github.com/open-feature/flagd/issues/1996). **A provider in that
+position should declare the capability and let the scenario fail**, with a `knownDeviations` entry
+beside it: it does coerce, and gets one direction wrong, which is precisely what a skip cannot
+express. An earlier revision of this paragraph said such a provider should withhold the capability
+and explain which it was, and that contradicted the known-deviation rule a few sections above — the
+one place a reader would look to learn the shape. Two of the four implementations followed it into
+exactly the combination that rule exists to discourage, so the wording is corrected here rather than
+worked around there.
+
+Withholding remains right for a provider that **cannot attempt** the behaviour — one whose SDK has a
+single numeric type, where the distinction does not exist to get wrong.
 
 Both halves of the rule have scenarios. The lossy half asks for `float-flag` (`0.5`) as an integer
 and expects `TYPE_MISMATCH`; the lossless half asks for `integral-float-flag` (`10.0`) as an integer
