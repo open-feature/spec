@@ -39,8 +39,9 @@ claims, and a language needs both suites to make both.
 
 **In scope — the provider contract:**
 
-- mapping backend responses onto typed resolution details: value, variant, reason, error code, and
-  no error message on a normal evaluation
+- mapping backend responses onto typed resolution details: value, variant, error code, and no error
+  message on a normal evaluation; the resolution reason where a provider claims the standard
+  vocabulary
 - the values most often mistaken for an absence — `false`, `0` and `""` — resolving as values
 - integer precision: a 32-bit maximum for every language, and 2^53 − 1 where the accessor allows it
 - keeping the integer and float types distinct rather than coercing between them
@@ -78,10 +79,12 @@ others breaks the suite in every language at once.
 
 ### Gherkin scenarios
 
-Five feature files:
+Six feature files:
 
 - [`evaluation.feature`](./assets/provider-tck/gherkin/evaluation.feature) — resolving each type with
-  the right value, variant and reason; falsy values; integer precision
+  the right value and variant; falsy values; integer precision
+- [`reason.feature`](./assets/provider-tck/gherkin/reason.feature) — the standard resolution reasons,
+  gated as a whole on `@standard-reasons`
 - [`errors.feature`](./assets/provider-tck/gherkin/errors.feature) — the type-mismatch matrix, numeric
   coercion and the unknown-flag case
 - [`events.feature`](./assets/provider-tck/gherkin/events.feature) — configuration change, and the
@@ -107,9 +110,9 @@ Two properties are load-bearing and easy to break by accident:
 - **`missing-flag` must not exist.** Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding
   it turns that scenario green for the wrong reason.
 - **Only `targeting-key-flag` has a targeting rule.** Every other enabled flag resolves to its
-  default variant whatever the evaluation context, which is what lets the untargeted scenarios
-  expect reason `STATIC`. Seeding targeting onto any other flag breaks them in every language at
-  once.
+  default variant whatever the evaluation context, which is what lets a provider declaring
+  `@standard-reasons` expect `STATIC` rather than `TARGETING_MATCH` for them. Seeding targeting onto
+  any other flag breaks them in every language at once.
 - **The four `disabled-*` flags are the only ones whose state is not `ENABLED`.** They resolve to
   nothing: the caller's default stands in. Every other scenario assumes a flag serves its own
   value, so enabling one of these, or disabling anything else, breaks that assumption silently.
@@ -182,6 +185,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
 | `@reinitialization` | can be initialised again after `shutdown`, which [Requirement 2.5.2](./sections/02-providers.md#requirement-252) permits rather than requires |
 | `@targeting` | resolves a flag differently for a matching evaluation context |
+| `@standard-reasons` | reports the standard resolution reasons, with the meanings given below |
 | `@caching` | reserved; **not declarable** -- no scenarios yet |
 
 Untagged scenarios are mandatory and always run.
@@ -287,24 +291,55 @@ accompanies. An untracked deviation is worth declaring even so: naming the defec
 it from a withheld capability, and a declaration that merely omits the tag cannot say which of the
 two happened. Prefer a tracked one as soon as there is somewhere to point at.
 
-**The `reason` field is the deliberate exception, and it is stated here so it is a decision rather
-than an oversight.** [Requirement 2.2.5](./sections/02-providers.md#requirement-225) is also a
-`SHOULD`, and it goes further than 2.2.4 does: it lets a provider populate the field with one of the
-listed values *"or some other string indicating the semantic reason for the returned flag value"*.
-The suite nonetheless requires a reason, and requires a specific one, in every scenario that asserts
-it. A provider whose backend reports vendor-specific reason strings will fail those scenarios.
+### `@standard-reasons`: a claim, not an exemption
 
-That is a narrowing of the specification, and it is accepted for now because the reason is the
-suite's cheapest diagnosis of a whole class of silent failure: a provider that quietly falls back to
-the code default reports a different reason, and the assertion names the problem where a value
-assertion alone only says the number was wrong. Gating it would mean a second capability, a second
-set of scenarios to keep in step, and a declaration nearly every provider would make anyway.
+[Requirement 2.2.5](./sections/02-providers.md#requirement-225) is a `SHOULD`, and it goes further
+than 2.2.4 does: it lets a provider populate `reason` with one of the listed values *"or some other
+string indicating the semantic reason for the returned flag value"*. A provider whose backend
+reports vendor-specific reasons is therefore conformant, and asserting an exact reason against it
+would fail it for something the specification permits.
 
-A reader comparing reports should therefore treat a reason failure differently from a value failure:
-the value assertions rest on `MUST` requirements, the reason assertions rest on a house rule. If a
-conformant provider is failed by one, that is this suite's narrowing and not that provider's defect
--- and the right response is to revisit this decision, not to record a deviation against the
-provider.
+An earlier revision of this suite did exactly that, in thirteen places across three feature files,
+and recorded the narrowing here as a deliberate exception. It is not one any more, for two reasons.
+It bought very little: every canonical flag resolves to a value distinct from the caller's default,
+so a provider that silently falls back is already caught by the value assertion, and the reason only
+said *why* it failed. And of the thirteen, five sat beside an error-code assertion that already
+carries the `MUST`, while the other eight asserted `STATIC` -- the one reason the specification
+genuinely leaves open.
+
+So the reasons now live in `reason.feature`, gated as a whole. **Declaring `@standard-reasons` is a
+provider saying "I use the standard vocabulary with the standard meanings", and that file is what
+checks the claim.** A provider that does not declare it loses nothing: its values, variants and error
+codes are asserted everywhere else, on `MUST` requirements. What the declaration adds is something a
+report's reader can act on -- anyone building telemetry, dashboards or debugging on `reason` can see
+that the vocabulary was verified rather than assumed.
+
+This also settles a question the specification does not, without asking it to. The meanings below are
+the content of an opt-in claim; they constrain nobody who does not make it.
+
+| Situation | Reason |
+| --- | --- |
+| The flag was resolved from configuration and carries no targeting rule | `STATIC` |
+| A targeting rule matched the evaluation context | `TARGETING_MATCH` |
+| A targeting rule exists and did not match | `DEFAULT` |
+| The flag is disabled in the management system | `DISABLED` |
+| The evaluation failed, and an error code is reported with it | `ERROR` |
+
+`STATIC` for the first row is the call worth flagging. `types.md` types `DEFAULT` as *"no dynamic
+evaluation occurred **or** dynamic evaluation yielded no result"*, which a rule-less flag satisfies
+as readily as `STATIC` does -- two providers can disagree here and both conform. A provider that
+answers `DEFAULT` for a rule-less flag is not defective; it does not use the standard meanings, and
+should not declare the tag.
+
+`SPLIT`, `UNKNOWN`, `CACHED` and `STALE` are not asserted. The first two have no scenario that
+produces them. `CACHED` needs a repeat evaluation, which nothing here performs without a
+configuration change in between -- see the caching entry under known gaps. `STALE` needs a scenario
+asserting what a provider serves *during* an outage, which is the same gap.
+
+**Tags compose, and here that is load-bearing.** `TARGETING_MATCH` cannot be observed without
+targeting, and `DISABLED` cannot be observed unless the backend distinguishes a disabled flag, so
+those scenarios carry `@targeting` and `@disabled-flags` as well. A provider declaring
+`@standard-reasons` alone runs the rest and skips those two with their reason.
 
 `@variants` is the clearest case, and it was found the hard way. Every evaluation scenario asserted
 a variant, which reads as obviously correct until a backend with no variant concept for a plain flag
@@ -572,8 +607,9 @@ belong here rather than in any one implementation:
 - **Coverage of the numbered requirements.** Mapped against
   [the provider requirements](./sections/02-providers.md), leaving out 2.8.5.1 (it constrains the SDK)
   and 2.2.8.1 (a language-binding property, not observable at runtime), the suite covers 10 of the
-  14 `MUST` requirements in scope, all 5 `SHOULD` — 2.2.4 only for a provider declaring `@variants`
-  — and 1 of 6 `MAY`. The `MUST` gaps are 2.3.1 (the provider hook mechanism, a compile-time
+  14 `MUST` requirements in scope, all 5 `SHOULD` — 2.2.4 only for a provider declaring `@variants`,
+  and 2.2.5 only for one declaring `@standard-reasons` — and 1 of 6 `MAY`. The `MUST` gaps are
+  2.3.1 (the provider hook mechanism, a compile-time
   property in typed languages with little to observe at runtime), 2.2.10 (flag metadata structure,
   blocked with 2.2.9 on the canonical flag set defining
   none), 2.4.4 (a domain-scoped provider accepts its bound domain, which is as much SDK as provider

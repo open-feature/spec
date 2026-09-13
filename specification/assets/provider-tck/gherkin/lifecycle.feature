@@ -42,7 +42,6 @@ Feature: Provider lifecycle
     Then the error event handler should have been executed within 10000ms
     When the flag was evaluated with details
     Then the resolved details value should be "false"
-    And the reason should be "ERROR"
     And no exception should have been thrown
 
   Scenario: Shutting down a provider twice has no further effect
@@ -76,7 +75,6 @@ Feature: Provider lifecycle
     And the provider is initialized again
     And the flag was evaluated with details
     Then the resolved details value should be "true"
-    And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
 

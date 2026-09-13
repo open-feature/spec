@@ -4,9 +4,11 @@ Feature: Provider flag evaluation
   #
   # This does NOT test the backend's evaluation logic. Every flag in the canonical set except
   # targeting-key-flag resolves to its default variant whatever the context, so what is under
-  # test is purely the provider's mapping of a backend response to a value, a variant and a
-  # reason. targeting-key-flag carries the one rule, only to show the context reached the
-  # backend.
+  # test is purely the provider's mapping of a backend response to a value and a variant.
+  # targeting-key-flag carries the one rule, only to show the context reached the backend.
+  #
+  # No scenario here asserts a resolution reason. The reasons are a provider's claim to use the
+  # standard vocabulary, checked in reason.feature behind @standard-reasons.
   #
   # Every success path also asserts that no error message was set (requirement 2.3.2). A
   # provider that reports a value AND an error message is sending two contradictory signals,
@@ -17,31 +19,29 @@ Feature: Provider flag evaluation
   Background:
     Given a stable provider
 
-  Scenario Outline: Resolve values with reason
+  Scenario Outline: Resolve values
     Given a <type>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
     Then the resolved details value should be "<value>"
-    And the reason should be "<reason>"
     And the error-code should be ""
     And the error message should be empty
     And no exception should have been thrown
 
     Examples:
-      | key          | type    | default | value | reason |
-      | boolean-flag | Boolean | false   | true  | STATIC |
-      | string-flag  | String  | bye     | hi    | STATIC |
-      | integer-flag | Integer | 1       | 10    | STATIC |
-      | float-flag   | Float   | 0.1     | 0.5   | STATIC |
+      | key          | type    | default | value |
+      | boolean-flag | Boolean | false   | true  |
+      | string-flag  | String  | bye     | hi    |
+      | integer-flag | Integer | 1       | 10    |
+      | float-flag   | Float   | 0.1     | 0.5   |
 
   Scenario Outline: A falsy value is a value, not an absence
     # false, 0 and "" are the values most likely to be mistaken for "nothing came back": a
     # `value || default` in JavaScript, a zero-value check in Go, an `if not value` in Python.
     # Each row's default differs from its resolved value, so a provider that falls back on a
-    # falsy result returns the wrong value AND the wrong reason, and is caught twice over.
+    # falsy result returns the wrong value and is caught by the value assertion alone.
     Given a <type>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
     Then the resolved details value should be "<value>"
-    And the reason should be "STATIC"
     And the error-code should be ""
     And the error message should be empty
     And no exception should have been thrown
@@ -68,8 +68,8 @@ Feature: Provider flag evaluation
     #
     # A provider whose backend names its variants declares this tag and these rows run. One
     # whose backend does not leaves it undeclared, and they are skipped with that reason rather
-    # than passed. Either way the value and reason assertions above are unaffected: they are
-    # untagged, and 2.2.3 makes the value a MUST.
+    # than passed. Either way the value assertions above are unaffected: they are untagged, and
+    # 2.2.3 makes the value a MUST.
     Given a <type>-flag with key "<key>" and a default value "<default>"
     When the flag was evaluated with details
     Then the variant should be "<variant>"
@@ -95,7 +95,6 @@ Feature: Provider flag evaluation
     Given a Integer-flag with key "large-integer-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "2147483647"
-    And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
 
@@ -113,7 +112,6 @@ Feature: Provider flag evaluation
     Given a Integer-flag with key "huge-integer-flag" and a default value "1"
     When the flag was evaluated with details
     Then the resolved details value should be "9007199254740991"
-    And the reason should be "STATIC"
     And the error-code should be ""
     And no exception should have been thrown
 
@@ -157,8 +155,9 @@ Feature: Provider flag evaluation
     # Asserts the value and the absence of an error, not the reason. Each row's caller default
     # differs from the flag's configured value, so a provider that ignores the state returns
     # the configured value and fails on the value alone — which rests on 2.2.3, a MUST.
-    # Pinning reason "DISABLED" would rest on 2.2.5, a SHOULD that permits "some other
-    # string".
+    # Pinning reason "DISABLED" here would rest on 2.2.5, a SHOULD that permits "some other
+    # string"; it is pinned in reason.feature instead, for providers that declare
+    # @standard-reasons and so opt into the standard meanings.
     #
     # No variant is asserted. A disabled flag has resolved no variant, so there is none to
     # name; this scenario and @variants deliberately do not compose.
@@ -180,8 +179,7 @@ Feature: Provider flag evaluation
   Scenario: Resolve a structured value
     Given a Object-flag with key "object-flag" and a default value "{}"
     When the flag was evaluated with details
-    Then the reason should be "STATIC"
-    And the error-code should be ""
+    Then the error-code should be ""
     And the error message should be empty
     And no exception should have been thrown
     And the resolved object value should contain
@@ -204,9 +202,8 @@ Feature: Provider flag evaluation
     #
     # Deliberately asserts the value and the absence of an error rather than the reason.
     # 2.2.3 makes the value a MUST and 2.2.6 forbids an error code in normal execution, while
-    # the reason is a SHOULD that 2.2.5 lets a provider populate with "some other string" —
-    # and with a context supplied and nothing matching, both "STATIC" and "DEFAULT" are
-    # defensible readings.
+    # the reason is a SHOULD that 2.2.5 lets a provider populate with "some other string".
+    # Reasons are asserted only in reason.feature, behind @standard-reasons.
     Given a String-flag with key "string-flag" and a default value "bye"
     And a context containing a targeting key with value "f20bd32d-703b-48b6-bc8e-79d53c85134a"
     When the flag was evaluated with details
@@ -227,10 +224,10 @@ Feature: Provider flag evaluation
     # expresses targeting. The flag, its variants and the uuid are flagd-testbed's own, so a
     # backend serving that harness already serves this one.
     #
-    # Asserts the value, not the reason. Elsewhere the suite does pin the reason, deliberately
-    # — see Appendix F. Here it cannot: flagd reports TARGETING_MATCH for this hit and DEFAULT
-    # for the miss below, and with a rule present but unmatched both readings are right, so
-    # there is no single value to pin. The resolved value carries the whole signal anyway.
+    # Asserts the value, not the reason: the resolved value carries the whole signal, and a
+    # provider that reports vendor-specific reasons is conformant. TARGETING_MATCH for this hit
+    # and DEFAULT for the miss below are asserted in reason.feature, which composes
+    # @standard-reasons with @targeting so that both must be declared.
     Given a String-flag with key "targeting-key-flag" and a default value "fallback"
     And a context containing a targeting key with value "5c3d8535-f81a-4478-a6d3-afaa4d51199e"
     When the flag was evaluated with details
