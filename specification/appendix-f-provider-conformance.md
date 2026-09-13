@@ -731,6 +731,16 @@ belong here rather than in any one implementation:
   The latter is cheaper and worth doing first, since attributes are where dropping is most likely.
 - **Setting and removing individual flags.** The control API can reset to a baseline and mutate one
   designated flag. Finer-grained flag manipulation would need new endpoints.
+- **`@stale` is exercised only against a real backend.** Every other capability has at least one
+  implementation covering it without containers — an in-memory or controllable provider standing in
+  for the backend — so a regression in the step definitions or the gate is caught in an ordinary
+  build. `@stale` is not covered that way anywhere, in any of the four implementations, because
+  simulating a provider that loses its backend and regains it needs a control that can disconnect,
+  and the in-process control paths deliberately refuse connection operations. So the stale/ready
+  transition is only ever exercised by a containerised adoption, which is also the suite most likely
+  to be excluded from a default build. A controllable provider able to fake a disconnect would close
+  it, and would need care not to become a mock that passes whatever the provider does.
+
 - **Caching.** Whether a stale provider keeps serving last-known values during an outage depends on
   whether it holds a local copy of the ruleset. The `@caching` tag is reserved; no scenarios yet.
 
