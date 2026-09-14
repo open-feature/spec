@@ -433,31 +433,28 @@ accompanies. An untracked deviation is worth declaring even so: naming the defec
 it from a withheld capability, and a declaration that merely omits the tag cannot say which of the
 two happened. Prefer a tracked one as soon as there is somewhere to point at.
 
+**Emit `knownDeviations` only when there is at least one.** An empty array and an absent field are
+not the same claim: stating none asserts that deviations were considered and none found, which no
+suite can know on the adopter's behalf. Omit the field when the list is empty, and never synthesise
+an empty one.
+
 ### `@standard-reasons`: a claim, not an exemption
 
-[Requirement 2.2.5](./sections/02-providers.md#requirement-225) is a `SHOULD`, and it goes further
-than 2.2.4 does: it lets a provider populate `reason` with one of the listed values *"or some other
-string indicating the semantic reason for the returned flag value"*. A provider whose backend
-reports vendor-specific reasons is therefore conformant, and asserting an exact reason against it
-would fail it for something the specification permits.
+[Requirement 2.2.5](./sections/02-providers.md#requirement-225) is a `SHOULD` that lets a provider
+populate `reason` with a listed value *"or some other string indicating the semantic reason"*. A
+provider reporting vendor-specific reasons is therefore conformant, and asserting an exact reason
+against it would fail it for something the specification permits. So the reasons live in
+`reason.feature`, gated as a whole, rather than asserted throughout. (An earlier revision asserted
+them in thirteen places and recorded the narrowing as a deliberate exception; it bought little, since
+every canonical flag resolves to a value distinct from the caller's default and the value assertion
+already catches a silent fallback.)
 
-An earlier revision of this suite did exactly that, in thirteen places across three feature files,
-and recorded the narrowing here as a deliberate exception. It is not one any more, for two reasons.
-It bought very little: every canonical flag resolves to a value distinct from the caller's default,
-so a provider that silently falls back is already caught by the value assertion, and the reason only
-said *why* it failed. And of the thirteen, five sat beside an error-code assertion that already
-carries the `MUST`, while the other eight asserted `STATIC` -- the one reason the specification
-genuinely leaves open.
-
-So the reasons now live in `reason.feature`, gated as a whole. **Declaring `@standard-reasons` is a
-provider saying "I use the standard vocabulary with the standard meanings", and that file is what
-checks the claim.** A provider that does not declare it loses nothing: its values, variants and error
-codes are asserted everywhere else, on `MUST` requirements. What the declaration adds is something a
-report's reader can act on -- anyone building telemetry, dashboards or debugging on `reason` can see
-that the vocabulary was verified rather than assumed.
-
-This also settles a question the specification does not, without asking it to. The meanings below are
-the content of an opt-in claim; they constrain nobody who does not make it.
+**Declaring `@standard-reasons` says "I use the standard vocabulary with the standard meanings", and
+`reason.feature` checks the claim.** A provider that does not declare it loses nothing — its values,
+variants and error codes are asserted elsewhere, on `MUST` requirements. What the declaration adds is
+something a report's reader can act on: anyone building telemetry or debugging on `reason` can see the
+vocabulary was verified rather than assumed. The meanings below are the content of an opt-in claim and
+constrain nobody who does not make it.
 
 | Situation | Reason |
 | --- | --- |
@@ -467,57 +464,47 @@ the content of an opt-in claim; they constrain nobody who does not make it.
 | The flag is disabled in the management system | `DISABLED` |
 | The evaluation failed, and an error code is reported with it | `ERROR` |
 
-`STATIC` for the first row is the call worth flagging. `types.md` types `DEFAULT` as *"no dynamic
-evaluation occurred **or** dynamic evaluation yielded no result"*, which a rule-less flag satisfies
-as readily as `STATIC` does -- two providers can disagree here and both conform. A provider that
-answers `DEFAULT` for a rule-less flag is not defective; it does not use the standard meanings, and
-should not declare the tag.
+`STATIC` for the first row is the call worth flagging: `types.md` types `DEFAULT` as *"no dynamic
+evaluation occurred **or** dynamic evaluation yielded no result"*, which a rule-less flag satisfies as
+readily. Two providers can disagree here and both conform. One answering `DEFAULT` is not defective —
+it does not use the standard meanings, and should not declare the tag.
 
-`ERROR` is the row where this suite's subject is blurred, and it is asserted anyway. The other four
-rest on [Requirement 1.4.7](./sections/01-flag-evaluation.md#requirement-147), which makes the SDK
-propagate the provider's reason — but only *"in cases of normal execution"*. Abnormal execution is
-[1.4.9](./sections/01-flag-evaluation.md#requirement-149), a `SHOULD` on the **SDK** to "indicate an
-error", and nothing requires the provider's reason to survive. So a passing `ERROR` scenario
-establishes that the value reaching the application is coherent, not that the provider produced it.
+**`ERROR` asserts agreement, not authorship.** The other four rows rest on
+[1.4.7](./sections/01-flag-evaluation.md#requirement-147), which makes the SDK propagate the
+provider's reason — but only *"in cases of normal execution"*. Abnormal execution is
+[1.4.9](./sections/01-flag-evaluation.md#requirement-149), a `SHOULD` on the **SDK**, and nothing
+requires the provider's reason to survive. So a passing `ERROR` scenario establishes that the value
+reaching the application is coherent, not that the provider produced it — which is still worth
+asserting, because the pair carries the meaning. The error code alone is already a `MUST` for every
+provider and asserted ungated; the reason alone could have been written by the SDK. `FLAG_NOT_FOUND`
+with reason `STATIC` is incoherent whoever wrote it, and the pairing is what catches it.
 
-That is still worth asserting, because it is the pair that carries the meaning. The error code alone
-is already covered for every provider — 2.2.7 and
-[1.4.8](./sections/01-flag-evaluation.md#requirement-148) make it a `MUST`, it is a closed
-enumeration, and `errors.feature` asserts it ungated. The reason alone could have been written by the
-SDK. An evaluation reporting `FLAG_NOT_FOUND` with reason `STATIC` is incoherent whoever wrote it,
-and that is what the pairing catches.
+`SPLIT`, `UNKNOWN`, `CACHED` and `STALE` are not asserted: the first two have no scenario producing
+them, and the last two need a repeat evaluation and an assertion about what a provider serves *during*
+an outage — both under known gaps.
 
-`SPLIT`, `UNKNOWN`, `CACHED` and `STALE` are not asserted. The first two have no scenario that
-produces them. `CACHED` needs a repeat evaluation, which nothing here performs without a
-configuration change in between -- see the caching entry under known gaps. `STALE` needs a scenario
-asserting what a provider serves *during* an outage, which is the same gap.
-
-**The "without a configuration change in between" is doing more work than it looks.** It is what
-keeps the reason assertions correct against a provider that caches, and it means the
-configuration-change scenarios silently depend on that provider's cache invalidation working: if it
-did not, the evaluation after the change would answer from the cache and the scenario would fail
-somewhere that says nothing about configuration change. No scenario tests invalidation directly, so
-an adoption against a caching provider is resting on it untested. Adoptions are not required to
-disable a client-side cache -- a provider evaluated as it ships is the more useful measurement --
-but an implementer should know the dependency is there before reading such a failure.
+**That "repeat evaluation" exclusion is load-bearing.** It is what keeps these assertions correct
+against a provider that caches, and it means the configuration-change scenarios silently depend on
+cache invalidation working: if it did not, the evaluation after the change would answer from the cache
+and fail somewhere that says nothing about configuration change. Nothing tests invalidation directly,
+so an adoption against a caching provider rests on it untested. Adoptions need not disable a
+client-side cache — a provider measured as it ships is more useful — but an implementer should know
+the dependency is there before reading such a failure.
 
 **Tags compose, and here that is load-bearing.** `TARGETING_MATCH` cannot be observed without
-targeting, and `DISABLED` cannot be observed unless the backend distinguishes a disabled flag, so
-those scenarios carry `@targeting` and `@disabled-flags` as well. A provider declaring
-`@standard-reasons` alone runs the rest and skips those two with their reason.
+targeting and `DISABLED` cannot be observed unless the backend distinguishes a disabled flag, so those
+scenarios also carry `@targeting` and `@disabled-flags`. A provider declaring `@standard-reasons`
+alone runs the rest and skips those two with their reason.
 
-`@variants` is the clearest case, and it was found the hard way. Every evaluation scenario asserted
-a variant, which reads as obviously correct until a backend with no variant concept for a plain flag
-is put under test: its evaluation response carries no such key, the provider never receives one, and
-no seeding can produce one. Ten scenarios failed a conformant provider for something its author
-could not fix, and nothing could be recorded as a known deviation because there was no capability to
-hang one on. [Requirement 2.2.4](./sections/02-providers.md#requirement-224) is a `SHOULD` and
-`types.md` types the field as optional; the suite was asserting a `MUST` neither of them states.
+`@variants` is the same shape, found the hard way: every evaluation scenario once asserted a variant,
+which reads as obviously correct until a backend with no variant concept is put under test — its
+response carries no such key, no seeding can produce one, and ten scenarios failed a conformant
+provider for something its author could not fix.
+[2.2.4](./sections/02-providers.md#requirement-224) is a `SHOULD` and `types.md` types the field
+optional; the suite was asserting a `MUST` neither states.
 
-**Emit `knownDeviations` only when there is at least one.** An empty array and an absent field are
-not the same claim: stating none asserts that deviations were considered and none found, which no
-suite can know on the adopter's behalf. Omit the field when the list is empty, and never synthesise
-an empty one.
+
+### `@numeric-coercion`: a borrowed rule, not a specified one
 
 `@numeric-coercion` deserves a note, because it is the one capability here that **the specification
 does not define**, and readers should not mistake it for one that does.
@@ -568,6 +555,8 @@ must satisfy all three — rejecting every float is an easy way to pass the firs
 are what stop it. A provider whose SDK has a single numeric type, such as JavaScript, cannot
 distinguish the cases at all, so it leaves the tag undeclared and the scenarios are reported as
 skipped with that reason.
+
+### Capabilities a language cannot express
 
 **Where a capability cannot hold in a language, this appendix is where that is recorded** — not a
 field in every report. `@numeric-coercion` in a single-numeric-type language and `@large-integers` on
@@ -708,46 +697,38 @@ path it used is not finished.
 
 ### Running the suite in CI
 
-Guidance rather than a rule — a repository's pipeline is its own business — but the reasoning is the
-same in every language, and leaving it unwritten produced four mechanisms and one unnoticed
-consequence.
+Guidance rather than a rule — a pipeline is a repository's own business — but leaving it unwritten
+produced four different mechanisms and one unnoticed consequence.
 
-**An adoption suite is not a required gate while real gaps remain.** Its honest output is red: it
-fails on provider defects that are filed and unfixed, on backend fixtures that do not exist yet, and
-on capabilities the provider has not implemented. A red result is the suite working. Making it
-block a merge forces someone to silence it, and the cheapest way to silence a conformance suite is
-to stop asking the question — withdraw a capability, delete an assertion, or pin an older backend.
+**An adoption suite is not a required gate while real gaps remain.** Its honest output is red — filed
+provider defects, missing backend fixtures, unimplemented capabilities — and a red result is the suite
+working. Making it block a merge forces someone to silence it, and the cheapest way to silence a
+conformance suite is to stop asking the question.
 
 So **exclude it from the default build, and make the exclusion explicit.** Two mistakes to avoid,
 both observed:
 
-- **An exclusion that something else undoes.** The question is not whether an exclusion exists but
-  whether any profile, target or job re-enables it. In one language a CI profile cleared the
-  adopter's own exclusion property; in another the suite ran under a build tag applied to every
-  module; in a third the default test task simply collected it. All four languages believed their
-  suites were excluded and all four were running them, red, unwatched.
-- **An exclusion nobody wrote down.** It is then indistinguishable from an oversight, and the next
-  person to touch the pipeline removes it or duplicates it. State it where an adopter will read it.
+- **An exclusion something else undoes.** The question is not whether one exists but whether any
+  profile, target or job re-enables it. All four languages believed their suites were excluded; all
+  four were running them, red and unwatched, by four different routes.
+- **An exclusion nobody wrote down**, which is indistinguishable from an oversight. State it where an
+  adopter will read it.
 
 Provide a single documented command that runs the suite deliberately, and **keep the adoption
 typechecked by something that runs ordinarily**, even though it does not execute — a conformance
 suite that has quietly stopped building against its own harness is a worse failure than one that
 runs and fails.
 
-"Something that runs ordinarily" rather than "the default build", because in at least one language
-the default build cannot do it and never will. Where the ordinary build compiles what gets
-*published*, it is configured for library code — no test globals, a different module target — and a
-conformance adoption calling the test framework's own functions can never join it. There the
-requirement is met by a typecheck scoped to the adoption instead, which is a further argument for
-giving it a directory of its own: a directory nothing else occupies is something a typecheck can be
-pointed at.
+"Something that runs ordinarily" rather than "the default build", because where that build compiles
+what gets *published* it is configured for library code — no test globals, a different module target —
+and an adoption calling the test framework's own functions can never join it. A typecheck scoped to
+the adoption meets the requirement instead, which is a further argument for the suite having a
+directory of its own: a directory nothing else occupies is something a typecheck can be pointed at.
 
-Two ways to fail this, both observed, and they are opposites. Excluding the adoption by path can
-remove it from the build as well as from the run — silently, because nothing fails when nothing is
-compiled. Or the reverse: removing an exclusion can pull the adoption *into* a build that cannot
-compile it, which at least fails loudly. Whichever shape applies, assert it rather than assume it —
-the cheap check is to introduce a deliberate compile error in the adoption and confirm the ordinary
-build rejects it.
+Two opposite failures, both observed: excluding by path can remove the adoption from the build as well
+as the run, silently, because nothing fails when nothing compiles; removing an exclusion can pull it
+*into* a build that cannot compile it, which at least fails loudly. Assert it rather than assume it —
+introduce a deliberate compile error and confirm the ordinary build rejects it.
 
 **Give it a step of its own, rather than folding it into an existing end-to-end suite.** This holds
 whatever is decided about gating, and the reason is what a result *means* rather than how long it
@@ -990,6 +971,9 @@ belong here rather than in any one implementation:
   context, and the failure is silent. It wants its own capability tag, and until the control API has
   an echo operation a scenario can show only that reconciliation was signalled, not that the values
   that follow are the new context's.
-- **Normative status.** Nothing in this appendix is currently expressed as a numbered requirement.
-  Whether the control API contract and the capability vocabulary should become normative sections is
-  a decision for the TSC.
+- **Normative status.** The obligations on a TCK implementation are stated as normative blockquotes,
+  in the style Appendix A uses, and deliberately carry no numbers: `specification.json` builds its
+  rules from the numbered sections only, so numbers here would be inert, and this appendix *tests*
+  numbered requirements — a second scheme beside them would put provider obligations and harness
+  obligations in one namespace. Whether the control API contract and the capability vocabulary should
+  instead be promoted to a numbered section remains a decision for the TSC.
