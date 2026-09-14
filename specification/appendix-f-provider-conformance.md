@@ -163,13 +163,16 @@ Two invariants are worth stating here because they are the ones a TCK implementa
   it is un-tunable, because the window it covers is a property of the backend and not of the suite.
 
   An earlier revision of this appendix said the wait belonged in the adoption, named and citing the
-  defect. That was wrong, and the reason is measurable. One backend's defect then becomes every
-  adoption's problem, solved N times in N languages; and the adoptions that implement the workaround
-  report stable results while the ones that do not report flapping ones, **against the same backend**.
-  The suite then reports a difference in harness behaviour as though it were a difference in provider
-  behaviour, which is the one thing a conformance suite must never do. It was observed exactly that
-  way: of two adoptions against one testbed, the one carrying a settle-wait looked clean and the ones
-  without it bounced between 2 and 28 failures.
+  defect. That was wrong. One backend's defect becomes every adoption's problem, solved once per
+  language; and an adoption that compensates cannot be compared with one that does not, against the
+  same backend — so the suite risks reporting a difference in harness behaviour as though it were a
+  difference in provider behaviour, which is the one thing a conformance suite must never do.
+
+  The one such workaround written under the old guidance turned out to buy nothing: removing it left
+  its suite on the same tally, four runs running, and faster for no longer polling. That is the
+  clearest argument against the shape. A compensating wait is hard to show is load-bearing, easy to
+  leave in place long after the defect it named is fixed, and certain to make two adoptions'
+  results incommensurable in the meantime.
 
   **So the wait belongs in the backend.** A backend that returns before it serves has a defect to be
   filed and fixed where the backend lives. Until it is, the suite fails, the failures are read
