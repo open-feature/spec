@@ -98,6 +98,12 @@ The step vocabulary is inherited from the
 [flagd test harness](https://github.com/open-feature/test-harness) wherever it was already
 provider-neutral, so an existing suite ports with a near-zero diff.
 
+Two steps were not neutral and were renamed, which is the whole of the diff: `Given a stable flagd
+provider` became `Given a stable provider`, and its unavailable counterpart the same. They are named
+here so that an implementer porting from the flagd harness knows the two places their existing step
+definitions will not match, and so that "wherever it was already provider-neutral" can be checked
+rather than taken on trust.
+
 ### The canonical flag set
 
 A backend under test must serve an equivalent set under the configuration named `default`. The file
