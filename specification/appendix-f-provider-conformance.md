@@ -783,9 +783,18 @@ Two failures are invisible from the results alone, so an implementation **MUST**
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
 a vendor's own segment rules — and no way to test it inside this suite. The alternative an adopter
 reaches for is a parallel harness that reimplements provider registration, the readiness wait and
-the per-scenario backend reset, and then drifts from the one here. So a TCK implementation **MAY**
+the per-scenario backend reset, and then drifts from the one here. So a TCK implementation **MUST**
 offer an extension point: the adopter supplies feature files and step definitions, and they run
-inside the same suite, against the same backend, in the same lifecycle.
+inside the same suite, against the same backend, and **in the same lifecycle phase** — one backend
+start and teardown covering canonical and extension scenarios alike.
+
+This is a requirement rather than a suggestion, and the reason is what happens when it is not. In a
+runner that resolves steps dynamically the extension point is nearly free; in one driven by
+declarative suite annotations it is not, and an implementation that skipped it would leave adopters
+unable to add a feature file without redeclaring the whole set. Those adopters do not then go
+without — they build the parallel harness, which is the outcome this section exists to prevent, and
+by the time it exists the cost of retrofitting the extension point is paid by someone else. Requiring
+it makes the cheap thing happen while it is still cheap.
 
 The mechanism is the implementation's own — a classpath scan, a `conftest.py`, two configuration
 fields — and this appendix does not prescribe one. What it does prescribe is the four properties that
