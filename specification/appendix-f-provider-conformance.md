@@ -714,6 +714,70 @@ somebody silencing the informative half.
 > failing something — then a healthy adoption is green in its steady state, deviations included, and
 > the suite can be a required gate after all. The separation advice above is unaffected either way.
 
+## The runner
+
+The vocabulary and the artifacts decide what is asked. This section decides whether two languages'
+answers mean the same thing. It is here because four implementations agreed on all of it and none of
+it was written down — they agreed because one author wrote them in parallel, which is not a mechanism
+a fifth implementation can rely on.
+
+### Steps the suite adds
+
+Most of the step vocabulary is inherited (see above). Seven steps are this suite's own, and four of
+them assert something other than what their wording first suggests. An implementation that binds them
+literally will produce results that are not comparable with anyone else's.
+
+| Step | What it asserts |
+| --- | --- |
+| `no exception should have been thrown` | That no failure **escaped** the evaluation to the caller — a thrown exception, or a panic in a language without them. Not that the evaluation succeeded: typed evaluation must absorb every error into the returned details, so an error scenario proves both halves, the right error code *and* nothing escaping. The lifecycle scenarios reuse it for a repeated `shutdown()` and for `initialize()` against a reachable backend. |
+| `the resolved value is remembered` | Records the current value for a later delta. |
+| `the resolved details value should have changed` | That re-evaluation differs from the remembered value — **a delta, not a value**. `POST /change` promises only that `changing-flag` resolves differently; which value it changes to is vendor-defined, so asserting an absolute would bind the scenario to one backend and to how many times it had run. |
+| `the connection is lost` / `the connection is restored` | An outage with an explicit start and end. The inherited harness has a self-healing `the connection is lost for {int}s`, which cannot express "assert the provider is stale, *then* reconnect" — the reconnect races the assertion. This is also why no shipped scenario reaches `POST /restart`. |
+| `the provider is shut down` / `the provider is initialized again` | Call the provider **directly**, not through the SDK. |
+| `the shutdown should have completed within {int}ms` | That shutdown **returned at all** rather than blocking on a backend that will never answer, which would hang the host application's own shutdown. The bound is deliberately generous; it is not a performance assertion. |
+
+### Timeouts
+
+These decide what "promptly" and "timed out" mean, so they decide comparability. An implementation
+**MUST** use these defaults and **MUST** let an adopter override each one.
+
+| | default | bounds |
+| --- | --- | --- |
+| event | **12 s** | waiting for a lifecycle event a scenario asserts |
+| ready | **30 s** | waiting for the provider to reach ready after registration |
+| startup | **60 s** | bringing the whole backend stack up, before any scenario runs |
+
+**An explicit `within {int}ms` in a step always wins over the event default.** The step states a bound
+the scenario is about; the default is only for steps that state none.
+
+### Registering the provider
+
+A **fresh provider per scenario**, registered under a **domain derived from the suite name** that the
+adopter never names, and replaced at the end of the scenario so the previous one is shut down and its
+connections released.
+
+Both halves matter. Registering once per suite would change what the lifecycle and reinitialisation
+scenarios establish, since they assert against a provider whose state they control. A fresh *domain*
+per scenario would leak: registering into a domain replaces and shuts down whatever was there, so a
+new domain each time leaves every previous provider registered and running — for a provider holding a
+network connection, one leaked connection per scenario.
+
+### Reaching the provider from an extension step
+
+An implementation that offers the extension point **MUST** also expose the client and provider under
+test to an adopter's steps. Without it the only way to evaluate a flag from an extension step is to
+build a second client, which resolves against a different provider — so the step tests the wiring and
+reports success having asked the provider under test nothing.
+
+### Run-integrity checks
+
+Two failures are invisible from the results alone, so an implementation **MUST** fail the run on each:
+
+- **A reserved tag reached a collected scenario.** The tag is reserved because nothing carries it; if
+  something now does, the reservation has expired and the vocabulary is stale.
+- **A declarable capability gates no collected scenario.** Either the assets are not the ones the
+  implementation thinks it shipped, or a capability has outlived its scenarios — and in both cases a
+  provider can declare it and be told nothing.
 ## Extending the suite
 
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
@@ -775,7 +839,7 @@ Two details of that check are worth recording, because both are easy to get wron
 
 ## Reference implementation
 
-The first implementation is `tools/provider-tck` in
+The first implementation is `tools/tck` in
 [open-feature/java-sdk-contrib](https://github.com/open-feature/java-sdk-contrib), adopted by the
 flagd provider for both its RPC and in-process resolvers. It is in review alongside this appendix.
 

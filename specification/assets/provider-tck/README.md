@@ -13,6 +13,7 @@ These validate a **provider** against a real backend. For assets that validate a
 | [`gherkin/events.feature`](./gherkin/events.feature) | configuration change, and the stale/ready transition across an outage |
 | [`gherkin/lifecycle.feature`](./gherkin/lifecycle.feature) | initialisation against a healthy backend and against an unreachable one; shutdown |
 | [`gherkin/metadata.feature`](./gherkin/metadata.feature) | the provider identifies itself by name |
+| [`gherkin/reason.feature`](./gherkin/reason.feature) | the standard resolution reasons, gated behind `@standard-reasons` |
 | [`flags/canonical-flags.json`](./flags/canonical-flags.json) | the flag set every scenario assumes |
 | [`openapi/control-api.yaml`](./openapi/control-api.yaml) | the HTTP surface a backend under test must expose |
 
