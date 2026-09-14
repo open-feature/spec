@@ -64,6 +64,44 @@ claims, and a language needs both suites to make both.
 - **The provider↔backend wire protocol.** How a provider talks to its backend is its own business.
 - **SDK behaviour.** That is Appendix B.
 
+## What an implementation must do
+
+Every obligation this appendix places on a TCK implementation, in one place. Each links to the
+section that explains it; the explanations are why, and none of them is a requirement.
+
+Nothing here is numbered. The numbered requirements in this specification are the provider contract —
+`2.2.1`, `2.4.1`, `5.1.1` — and this suite exists to test them. These are obligations on the *harness*,
+and giving them numbers beside the ones they test would put two different kinds of claim in one
+namespace.
+
+**Artifacts and lifecycle** — [Implementing the suite in a language](#implementing-the-suite-in-a-language)
+
+- Package the Gherkin, the flag set and the control API document with the library.
+- Make it impossible to run against assets the build did not fetch.
+- Own the lifecycle and the container stack, so an adopter writes no test infrastructure.
+- Start the stack once per suite; never restart it.
+- Wait for readiness by asking the control API, and never wait after a control call.
+- Drive the backend only through the control API.
+- Run scenarios serially.
+
+**Capabilities** — [Capabilities](#capabilities-how-a-provider-says-what-it-cannot-do)
+
+- Report a scenario gated on an undeclared capability as skipped with its reason, never as passed.
+- Refuse a reserved capability, and refuse one the language's SDK cannot express.
+- Fail the run when a reserved tag reaches a collected scenario, or when a declarable capability gates
+  none.
+
+**The runner** — [The runner](#the-runner)
+
+- Use the timeout defaults, and let an adopter override each.
+- Let an explicit `within {int}ms` take precedence over the event default.
+- Register a fresh provider per scenario under a suite-derived domain, and replace it at the end.
+
+**Extension** — [Extending the suite](#extending-the-suite)
+
+- Offer an extension point running in the same lifecycle phase.
+- Expose the client and provider under test to extension steps.
+- Keep extension scenarios distinguishable from canonical ones.
 ## The three artifacts
 
 Conformance rests on three files, and they **travel together by necessity**. A feature file that
@@ -210,7 +248,12 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 Untagged scenarios are mandatory and always run.
 
 A reserved tag is documented so the vocabulary has a place for the capability when scenarios exist,
-but it **must not be declared** and must not appear in a conformance report's declaration. No
+but it must not be declared.
+
+> A reserved capability **MUST NOT** be declared, and **MUST NOT** appear in a conformance report's
+> declaration. A TCK implementation **MUST** refuse one an adopter names.
+
+No
 scenario carries it, so declaring it cannot be verified, cannot produce a skip, and tells a reader
 only that something was claimed and nothing examined -- the vacuous conformance claim this whole
 vocabulary exists to prevent. `@caching` is the only reserved tag left.
@@ -318,6 +361,9 @@ each left the same capability undeclared, each with its own comment explaining t
 the language. Three places to get it right, and a single wrong one puts a claim in a report that no
 scenario could have verified -- the exact failure the reserved-capability rules prevent, reached by
 another route.
+
+> A TCK implementation **MUST** refuse a capability its language's SDK cannot express, rather than
+> leaving each adopter to withhold it.
 
 So the implementation refuses it at configuration time, as it refuses a reserved capability. **The
 two refusals are not the same thing and their skip reasons must differ.** A reserved capability is
@@ -547,60 +593,90 @@ the open question in [open-feature/spec#430](https://github.com/open-feature/spe
 
 ## Implementing the suite in a language
 
-A TCK implementation is the language-specific harness around these three artifacts. What it owns:
+A TCK implementation is the language-specific harness around these three artifacts. Each obligation
+below is stated first and explained after; the explanations are why, not what.
 
-1. **Ship the artifacts.** Package the Gherkin, the flag set and the control API document with the
-   library so that adopting providers need no submodule of their own.
-2. **Implement the step definitions** against the language's OpenFeature SDK, using its Cucumber (or
-   equivalent) runner.
-3. **Own the lifecycle** — start the backend stack once, register the provider under test with the
-   SDK, await events, tear down — so that an adopting provider writes no test infrastructure. If a
-   provider author finds themselves adding lifecycle code, that is a defect in the TCK.
+### Ship the artifacts
 
-   **The container stack is part of that, and it is the part implementations get wrong.** An
-   adopter names a Docker Compose file, says which service and which container-internal ports the
-   provider connects to, and supplies a factory that builds a provider from a discovered endpoint.
-   Everything else — starting the stack, discovering the dynamically mapped host ports, building
-   the control client, waiting until the control API accepts commands, tearing down after the last
-   scenario — belongs to the TCK. Shipping only the control-API client and leaving orchestration to
-   the adopter satisfies the letter of this item and not its point: the orchestration is then
-   rewritten by every adopting provider, and it is the largest single piece of test infrastructure
-   in an adoption.
+> A TCK implementation **MUST** package the Gherkin scenarios, the canonical flag set and the control
+> API document with the library, so that an adopting provider needs no submodule of its own.
 
-   Start the stack **once** per suite and never restart it. Container runtimes assign host ports
-   dynamically and do not reliably preserve them across a restart, so a restart silently
-   invalidates every provider already pointed at the old port. Backend unavailability is simulated
-   inside the running stack through the control API, which is what `@stale` and `@unavailable`
-   already require.
+> A TCK implementation **MUST** make it impossible to run the suite against assets the build did not
+> fetch.
 
-   **Make it impossible to run the suite against assets you did not just fetch.** Three of four
-   implementations could, by three different routes, and one of them did: a full adoption suite ran
-   against the *previous* pin's feature files and reported a tally byte-identical to the run before
-   it — nothing failed, nothing warned, and it was caught only by someone comparing two numbers that
-   should have differed. The cause is the same everywhere a copy is involved: moving a pin updates
-   the recorded revision, not the working tree the build copies from, so the two disagree silently
-   and the copy wins.
+Three of four implementations could run against stale assets, by three different routes, and one did:
+a full adoption suite ran against the *previous* pin's feature files and reported a tally
+byte-identical to the run before it — nothing failed, nothing warned, and it was caught only by
+someone comparing two numbers that should have differed. The cause is the same wherever a copy is
+involved: moving a pin updates the recorded revision, not the working tree the build copies from, so
+the two disagree silently and the copy wins.
 
-   Wire the fetch into the build so the suite cannot run without it, rather than relying on whoever
-   moves the pin to remember a second command. Where the assets arrive as an immutable, checksummed
-   dependency the problem does not arise at all, and that is worth preferring. A guard that catches
-   one symptom — a declared capability no scenario carries, say — is worth having and is not a
-   substitute: a pin that changes only the *content* of a scenario passes every such guard and still
-   tests the wrong thing.
+Wire the fetch into the build rather than relying on whoever moves the pin to remember a second
+command. Where the assets arrive as an immutable, checksummed dependency the problem does not arise,
+and that is worth preferring. A guard that catches one symptom — a declared capability no scenario
+carries, say — is worth having and is not a substitute: a pin that changes only the *content* of a
+scenario passes every such guard and still tests the wrong thing.
 
-   Wait for the stack by **asking the control API** whether it is ready, bounded by the startup
-   timeout. After that, do not wait at all: a control endpoint that changes flag state owes the
-   caller that the state is being served before it returns, so a suite that adds a delay of its own
-   is covering for a backend that broke its side of the contract — see the control API's invariants.
-   That holds for an adoption as much as for the shared harness: a backend that returns before it
-   serves is a defect to fix in the backend, and compensating for it anywhere in the suite makes that
-   adoption's results incomparable with every other adoption run against the same backend.
-4. **Drive the backend only through the control API.** This is the part that makes the conformance
-   claim portable: another language's TCK drives the same endpoints against the same stack and must
-   get the same answers.
-5. **Gate on capabilities** and report undeclared ones as skipped with a reason.
-6. **Run scenarios serially.** Backend state is global to the suite; concurrent scenarios corrupt
-   each other, and the symptom looks like a flaky provider rather than a broken test.
+### Implement the step definitions
+
+> A TCK implementation **MUST** implement the step definitions against its language's OpenFeature
+> SDK, using that language's Cucumber or equivalent runner.
+
+### Own the lifecycle
+
+> A TCK implementation **MUST** own the suite lifecycle — starting the backend stack, registering the
+> provider under test, awaiting events and tearing down — so that an adopting provider writes no test
+> infrastructure.
+
+If a provider author finds themselves adding lifecycle code, that is a defect in the TCK.
+
+> A TCK implementation **MUST** own the container stack: given a Compose file, a service name and the
+> container-internal ports the provider connects to, it starts the stack, discovers the dynamically
+> mapped host ports, builds the control client, waits until the control API accepts commands, and
+> tears down after the last scenario.
+
+This is the part implementations get wrong. Shipping only the control-API client and leaving
+orchestration to the adopter satisfies the letter of the previous requirement and not its point: the
+orchestration is then rewritten by every adopting provider, and it is the largest single piece of test
+infrastructure in an adoption.
+
+> A TCK implementation **MUST** start the backend stack once per suite and **MUST NOT** restart it.
+
+Container runtimes assign host ports dynamically and do not reliably preserve them across a restart,
+so a restart silently invalidates every provider already pointed at the old port. Backend
+unavailability is simulated inside the running stack through the control API, which is what `@stale`
+and `@unavailable` already require.
+
+> A TCK implementation **MUST** wait for the stack by asking the control API whether it is ready,
+> bounded by the startup timeout, and **MUST NOT** wait after any control call.
+
+> A TCK implementation **MUST NOT** add a delay to compensate for a backend that
+> returns before it serves, and an adoption **MUST NOT** either.
+
+A control endpoint that changes flag state owes the caller that the state is being served before it
+returns — see the control API's invariants. A backend that breaks that has a defect to fix in the
+backend, and compensating for it anywhere in the suite makes that adoption's results incomparable
+with every other adoption run against the same backend.
+
+### Drive the backend only through the control API
+
+> A TCK implementation **MUST** drive the backend only through the control API.
+
+This is what makes the conformance claim portable: another language's TCK drives the same endpoints
+against the same stack and must get the same answers.
+
+### Gate on capabilities
+
+> A TCK implementation **MUST** report a scenario gated on an undeclared capability as skipped with
+> its reason, and **MUST NOT** report it as passed.
+
+### Run scenarios serially
+
+> A TCK implementation **MUST** run scenarios serially.
+
+Backend state is global to the suite; concurrent scenarios corrupt each other, and the symptom looks
+like a flaky provider rather than a broken test.
+
 
 ### Providers with no backend
 
@@ -738,8 +814,10 @@ literally will produce results that are not comparable with anyone else's.
 
 ### Timeouts
 
-These decide what "promptly" and "timed out" mean, so they decide comparability. An implementation
-**MUST** use these defaults and **MUST** let an adopter override each one.
+These decide what "promptly" and "timed out" mean, so they decide comparability.
+
+> A TCK implementation **MUST** use these timeout defaults, and **MUST** let an adopter override each
+> one.
 
 | | default | bounds |
 | --- | --- | --- |
@@ -747,14 +825,15 @@ These decide what "promptly" and "timed out" mean, so they decide comparability.
 | ready | **30 s** | waiting for the provider to reach ready after registration |
 | startup | **60 s** | bringing the whole backend stack up, before any scenario runs |
 
-**An explicit `within {int}ms` in a step always wins over the event default.** The step states a bound
-the scenario is about; the default is only for steps that state none.
+> An explicit `within {int}ms` in a step **MUST** take precedence over the event timeout default.
+
+The step states a bound the scenario is about; the default is only for steps that state none.
 
 ### Registering the provider
 
-A **fresh provider per scenario**, registered under a **domain derived from the suite name** that the
-adopter never names, and replaced at the end of the scenario so the previous one is shut down and its
-connections released.
+> A TCK implementation **MUST** register a fresh provider for each scenario, under a domain derived
+> from the suite name, and **MUST** replace it at the end of the scenario so the previous provider is
+> shut down and its connections released.
 
 Both halves matter. Registering once per suite would change what the lifecycle and reinitialisation
 scenarios establish, since they assert against a provider whose state they control. A fresh *domain*
@@ -764,29 +843,38 @@ network connection, one leaked connection per scenario.
 
 ### Reaching the provider from an extension step
 
-An implementation that offers the extension point **MUST** also expose the client and provider under
-test to an adopter's steps. Without it the only way to evaluate a flag from an extension step is to
-build a second client, which resolves against a different provider — so the step tests the wiring and
-reports success having asked the provider under test nothing.
+> A TCK implementation **MUST** expose the client and the provider under test to an adopter's
+> extension step definitions.
+
+Without it the only way to evaluate a flag from an extension step is to build a second client, which
+resolves against a different provider — so the step tests the wiring and reports success having asked
+the provider under test nothing.
 
 ### Run-integrity checks
 
-Two failures are invisible from the results alone, so an implementation **MUST** fail the run on each:
+Two failures are invisible from the results alone.
 
-- **A reserved tag reached a collected scenario.** The tag is reserved because nothing carries it; if
-  something now does, the reservation has expired and the vocabulary is stale.
-- **A declarable capability gates no collected scenario.** Either the assets are not the ones the
-  implementation thinks it shipped, or a capability has outlived its scenarios — and in both cases a
-  provider can declare it and be told nothing.
+> A TCK implementation **MUST** fail the run when a reserved capability tag is carried by a collected
+> scenario.
+
+The tag is reserved because nothing carries it; if something now does, the reservation has expired and
+the vocabulary is stale.
+
+> A TCK implementation **MUST** fail the run when a declarable capability gates no collected scenario.
+
+Either the assets are not the ones the implementation thinks it shipped, or a capability has outlived
+its scenarios — and in both cases a provider can declare it and be told nothing.
 ## Extending the suite
 
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
 a vendor's own segment rules — and no way to test it inside this suite. The alternative an adopter
 reaches for is a parallel harness that reimplements provider registration, the readiness wait and
-the per-scenario backend reset, and then drifts from the one here. So a TCK implementation **MUST**
-offer an extension point: the adopter supplies feature files and step definitions, and they run
-inside the same suite, against the same backend, and **in the same lifecycle phase** — one backend
-start and teardown covering canonical and extension scenarios alike.
+the per-scenario backend reset, and then drifts from the one here.
+
+> A TCK implementation **MUST** offer an extension point, through which an adopter supplies feature
+> files and step definitions that run inside the same suite, against the same backend, and in the
+> same lifecycle phase — one backend start and teardown covering canonical and extension scenarios
+> alike.
 
 This is a requirement rather than a suggestion, and the reason is what happens when it is not. In a
 runner that resolves steps dynamically the extension point is nearly free; in one driven by
@@ -800,10 +888,11 @@ The mechanism is the implementation's own — a classpath scan, a `conftest.py`,
 fields — and this appendix does not prescribe one. What it does prescribe is the four properties that
 keep an extension from quietly becoming a conformance claim.
 
-**Extension scenarios must be distinguishable from canonical ones.** A results payload that mixes
-them with no way to tell which is which lets an adopter's own passing scenarios flatter the
-conformance result. Partitioning by path is enough, and it is what a consumer reads to separate the
-two:
+> Extension scenarios **MUST** be distinguishable from canonical ones in the results.
+
+A payload that mixes them with no way to tell which is which lets an adopter's own passing scenarios
+flatter the conformance result. Partitioning by path is enough, and it is what a consumer reads to
+separate the two:
 
 - a canonical feature is identified by its path **relative to this asset directory** —
   `gherkin/errors.feature`, not a path relative to the repository root;
