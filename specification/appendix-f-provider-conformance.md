@@ -238,6 +238,24 @@ requirement admits. It is worth keeping for the providers that do offer reuse, b
 client on shutdown while leaving an initialised flag set is easy to write and leaves the provider
 evaluating against a closed connection rather than failing outright.
 
+`@stale` is gated for the same reason, and it is worth stating because the tag's name reads like an
+obligation. [Requirement 5.1.1](./sections/05-events.md#requirement-511) offers two responses to a
+provider losing its backend, in consecutive sentences and with the same modal: one unable to evaluate
+flags *"can signal this by emitting a `PROVIDER_ERROR` event"*, and one that caches rule-sets or
+previously evaluated flags *"can signal this by emitting a `PROVIDER_STALE` event"*. **Can, twice.**
+A provider that goes straight to `ERROR` on connection loss is exercising the first option, not
+failing the second — and it is the safer of the two, since it is not quietly serving cached values
+while disconnected.
+
+So an absent `@stale` is a design choice and **must not be recorded as a known deviation**. The flagd
+provider is the worked example and it differs by transport: its in-process resolver emits
+`PROVIDER_STALE` on connection loss and escalates to `PROVIDER_ERROR` when a retry grace period
+expires, while at least one language's RPC resolver emits `PROVIDER_ERROR` directly and never
+`PROVIDER_STALE`. Both are conformant. That two transports of one provider answer differently is
+worth knowing — an application switching resolver stops receiving stale events — but it is a
+portability finding, not a conformance failure, and the report should carry it as an undeclared
+capability rather than a defect.
+
 The design rule behind this: **a conformance suite that quietly goes green on scenarios it did not
 run is worse than no suite at all** — and, learned later and at some cost, one that reports a
 permitted choice as a failure is not much better. A TCK implementation must report unsupported
