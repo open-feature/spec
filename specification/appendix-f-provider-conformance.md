@@ -415,6 +415,15 @@ produces them. `CACHED` needs a repeat evaluation, which nothing here performs w
 configuration change in between -- see the caching entry under known gaps. `STALE` needs a scenario
 asserting what a provider serves *during* an outage, which is the same gap.
 
+**The "without a configuration change in between" is doing more work than it looks.** It is what
+keeps the reason assertions correct against a provider that caches, and it means the
+configuration-change scenarios silently depend on that provider's cache invalidation working: if it
+did not, the evaluation after the change would answer from the cache and the scenario would fail
+somewhere that says nothing about configuration change. No scenario tests invalidation directly, so
+an adoption against a caching provider is resting on it untested. Adoptions are not required to
+disable a client-side cache -- a provider evaluated as it ships is the more useful measurement --
+but an implementer should know the dependency is there before reading such a failure.
+
 **Tags compose, and here that is load-bearing.** `TARGETING_MATCH` cannot be observed without
 targeting, and `DISABLED` cannot be observed unless the backend distinguishes a disabled flag, so
 those scenarios carry `@targeting` and `@disabled-flags` as well. A provider declaring
