@@ -111,11 +111,16 @@ info:
 
     ## Known gap — evaluation context passthrough
 
-    There is currently no operation for asserting that an evaluation context sent
-    by the provider actually reached the backend intact. Verifying that requires
-    an echo mechanism (e.g. `GET /last-evaluation` returning the most recent
-    request the backend received). Until such an operation exists, context
-    passthrough is out of scope for the TCK.
+    The **targeting key** is covered: the `@targeting` scenarios resolve
+    `targeting-key-flag` with a matching and a non-matching context and get
+    different variants back, so a provider that drops the context entirely fails
+    them.
+
+    What is still uncovered is **every other attribute**. A provider that forwards
+    the targeting key and silently discards the rest of the evaluation context
+    passes every scenario here. Closing that needs either an echo operation on
+    this API (e.g. `GET /last-evaluation`, returning the most recent request the
+    backend received) or a canonical flag whose rule keys on a custom attribute.
 
   license:
     name: Apache 2.0
