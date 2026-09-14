@@ -20,7 +20,7 @@ These validate a **provider** against a real backend. For assets that validate a
 
 A feature file that evaluates `boolean-flag` is meaningless without the flag definition, and a disconnect scenario is meaningless without the control endpoint that produces the disconnect. Changing one without the others breaks the suite in every language at once.
 
-## Four properties that are load-bearing
+## Five properties that are load-bearing
 
 - **`missing-flag` must not exist** in the flag set. Its absence is what the `FLAG_NOT_FOUND` scenario tests. Seeding it turns that scenario green for the wrong reason.
 - **Only `targeting-key-flag` has a targeting rule.** Every other enabled flag resolves to its default variant whatever the evaluation context, which is what lets the untargeted scenarios expect reason `STATIC`. Seeding targeting onto any other flag breaks them in every language at once. Its rule is specified by behaviour — resolve `hit` when the targeting key is exactly `5c3d8535-f81a-4478-a6d3-afaa4d51199e`, `miss` otherwise — so express it however your backend expresses targeting. The flag, its variants and the uuid are the ones [flagd-testbed's `targeting.feature`](https://github.com/open-feature/flagd-testbed) already uses, on the same reasoning as the zero flags: a backend serving that harness already serves this.
