@@ -158,13 +158,23 @@ Two invariants are worth stating here because they are the ones a TCK implementa
   is a suite that flaps per provider rather than per backend, which is the most misleading shape a
   conformance failure can take.
 
-  A suite must not paper over a backend that breaks this. A fixed delay after every control call
-  buys silence, not correctness: it hides the defect from the one consumer positioned to notice,
-  and it is un-tunable, because the window it covers is a property of the backend and not of the
-  suite. Where an adopter is stuck with such a backend, the wait belongs in **that adoption**, set
-  explicitly and citing the defect, so that it reads as a named workaround for a specific backend
-  and disappears when the backend is fixed — not as a constant buried in the shared harness where
-  every future adopter inherits it without knowing why.
+  A suite must not paper over a backend that breaks this, and **that includes an adoption**. A delay
+  buys silence, not correctness: it hides the defect from the one consumer positioned to notice, and
+  it is un-tunable, because the window it covers is a property of the backend and not of the suite.
+
+  An earlier revision of this appendix said the wait belonged in the adoption, named and citing the
+  defect. That was wrong, and the reason is measurable. One backend's defect then becomes every
+  adoption's problem, solved N times in N languages; and the adoptions that implement the workaround
+  report stable results while the ones that do not report flapping ones, **against the same backend**.
+  The suite then reports a difference in harness behaviour as though it were a difference in provider
+  behaviour, which is the one thing a conformance suite must never do. It was observed exactly that
+  way: of two adoptions against one testbed, the one carrying a settle-wait looked clean and the ones
+  without it bounced between 2 and 28 failures.
+
+  **So the wait belongs in the backend.** A backend that returns before it serves has a defect to be
+  filed and fixed where the backend lives. Until it is, the suite fails, the failures are read
+  against a documented floor, and a run is repeated before an extra failure is attributed to the
+  provider — a race hits a different scenario each time, a defect hits the same one.
 
 ## Capabilities: how a provider says what it cannot do
 
@@ -579,8 +589,9 @@ A TCK implementation is the language-specific harness around these three artifac
    timeout. After that, do not wait at all: a control endpoint that changes flag state owes the
    caller that the state is being served before it returns, so a suite that adds a delay of its own
    is covering for a backend that broke its side of the contract — see the control API's invariants.
-   If an adopter's backend does break it, the wait belongs in that adoption, named and with the
-   defect cited, and not in the shared harness.
+   That holds for an adoption as much as for the shared harness: a backend that returns before it
+   serves is a defect to fix in the backend, and compensating for it anywhere in the suite makes that
+   adoption's results incomparable with every other adoption run against the same backend.
 4. **Drive the backend only through the control API.** This is the part that makes the conformance
    claim portable: another language's TCK drives the same endpoints against the same stack and must
    get the same answers.
