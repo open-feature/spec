@@ -18,7 +18,7 @@
   <a href="https://github.com/open-feature/.github/blob/main/CONTRIBUTING.md">
     <img alt="Contributing" src="https://img.shields.io/static/v1?label=Contributing&message=guide&color=blue" />
   </a>
-  <a href="https://cloud-native.slack.com/archives/C0344AANLA1">
+  <a href="https://slack.cncf.io/">
     <img alt="Slack" src="https://img.shields.io/badge/slack-%40cncf%2Fopenfeature-brightgreen?style=flat&logo=slack"/>
   </a>
   <a href="https://bestpractices.coreinfrastructure.org/projects/6601">
