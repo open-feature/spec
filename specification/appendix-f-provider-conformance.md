@@ -102,6 +102,7 @@ namespace.
 - Offer an extension point running in the same lifecycle phase.
 - Expose the client and provider under test to extension steps.
 - Keep extension scenarios distinguishable from canonical ones.
+
 ## The three artifacts
 
 Conformance rests on three files, and they **travel together by necessity**. A feature file that
@@ -503,7 +504,6 @@ provider for something its author could not fix.
 [2.2.4](./sections/02-providers.md#requirement-224) is a `SHOULD` and `types.md` types the field
 optional; the suite was asserting a `MUST` neither states.
 
-
 ### `@numeric-coercion`: a borrowed rule, not a specified one
 
 `@numeric-coercion` deserves a note, because it is the one capability here that **the specification
@@ -665,7 +665,6 @@ against the same stack and must get the same answers.
 
 Backend state is global to the suite; concurrent scenarios corrupt each other, and the symptom looks
 like a flaky provider rather than a broken test.
-
 
 ### Providers with no backend
 
@@ -845,6 +844,7 @@ the vocabulary is stale.
 
 Either the assets are not the ones the implementation thinks it shipped, or a capability has outlived
 its scenarios — and in both cases a provider can declare it and be told nothing.
+
 ## Extending the suite
 
 A provider often has behaviour this specification does not describe — flagd's fractional targeting,
