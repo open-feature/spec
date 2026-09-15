@@ -240,6 +240,7 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@disabled-flags` | resolves a flag disabled in the management system to the code default |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
+| `@string-typing` | reports `TYPE_MISMATCH` for a non-string flag requested as a string, rather than its string representation |
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
 | `@reinitialization` | can be initialised again after `shutdown`, which [Requirement 2.5.2](./sections/02-providers.md#requirement-252) permits rather than requires |
 | `@targeting` | resolves a flag differently for a matching evaluation context |
@@ -555,6 +556,42 @@ must satisfy all three — rejecting every float is an easy way to pass the firs
 are what stop it. A provider whose SDK has a single numeric type, such as JavaScript, cannot
 distinguish the cases at all, so it leaves the tag undeclared and the scenarios are reported as
 skipped with that reason.
+
+### `@string-typing`: the same gap, one type further out
+
+`@string-typing` is the same question reached from the other direction, and it needs stating
+separately because it breaks the reasoning that had kept four scenarios mandatory.
+
+Every value has a string representation. A backend that stores flag values as strings — Flipt does,
+and so do some Flagsmith configurations — therefore satisfies the string accessor for **every** flag
+and has no mismatch to report. Its flags are strings;
+[Requirement 2.2.3](./sections/02-providers.md#requirement-223) asks it to populate `value` with the
+resolved flag value, and it did.
+
+Nothing in the specification contradicts that, because the specification never says what the type of
+a flag value **is**. `TYPE_MISMATCH` appears exactly once, as a row in the
+[error code table](./types.md), and no requirement obliges anyone to raise it. The only normative
+statement about value type is [Requirement 1.3.4](./sections/01-flag-evaluation.md#requirement-134) —
+a `SHOULD`, and on the **client** rather than the provider. The provider requirements do not mention
+type at all.
+
+So this tag sits upstream of [open-feature/spec#430](https://github.com/open-feature/spec/issues/430):
+that issue asks which accessor a number may satisfy, this one asks what a flag's type is when the
+backend has none. Until the specification answers it the rule is borrowed, exactly as the numeric one
+is, and **a provider that withholds the tag is not violating the specification**.
+
+Four scenarios moved out of the mandatory matrix to make that honest: `boolean-flag`, `integer-flag`
+and `float-flag` requested as strings, and `object-flag` requested as a string — the last tagged
+`@object` too, since a provider with no structured values cannot be asked at all. The matrix had
+justified keeping them on the grounds that *"is a string a boolean?"* has no defensible wrong answer.
+That holds for parsing a string into another type, which a provider chooses to do; it does not hold
+for rendering another type as a string, which an untyped backend does whether anyone chose it or not.
+The asymmetry was real and pointed the wrong way. The case came from a Flipt provider written against
+this suite, where those rows failed for a provider behaving reasonably.
+
+Withholding rather than a deviation is the right instrument, for the reason given under
+[Rules for declaring](#rules-for-declaring): a deviation records a required behaviour the provider
+lacks, and this behaviour is not required.
 
 ### Capabilities a language cannot express
 
