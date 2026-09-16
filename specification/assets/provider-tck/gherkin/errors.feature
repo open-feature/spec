@@ -95,9 +95,13 @@ Feature: Provider error handling
     # Every value has a string representation, so a backend that stores flag values as strings
     # satisfies the string accessor for every flag and has no mismatch to report. Its flags are
     # strings, and Requirement 2.2.3 asks it for the resolved flag value, which it returned.
+    # Whether that is wrong is not something this suite can assert -- see the appendix.
     #
-    # Whether that is wrong is not something this suite can assert -- see the appendix. A provider
-    # over an untyped backend withholds this tag and is not thereby non-conformant.
+    # These two rows are the ones a partially typed backend can still answer: a boolean and an
+    # integer are types such a store records natively. The float and structured cases are held
+    # separately behind @fully-typed-values, because a backend can lack a type for those while
+    # having one for these -- and one tag covering both would report a provider that fails these
+    # as merely untyped.
     Given a String-flag with key "<key>" and a default value "fallback"
     When the flag was evaluated with details
     Then the resolved details value should be "fallback"
@@ -108,13 +112,22 @@ Feature: Provider error handling
       | key          |
       | boolean-flag |
       | integer-flag |
-      | float-flag   |
 
-  @object @string-typing
+  @string-typing @fully-typed-values
+  Scenario: A float flag is not returned as its string representation
+    # Held apart from the two rows above because a store can record booleans and integers
+    # natively and still keep floats as text, which is what @fully-typed-values asks about.
+    Given a String-flag with key "float-flag" and a default value "fallback"
+    When the flag was evaluated with details
+    Then the resolved details value should be "fallback"
+    And the error-code should be "TYPE_MISMATCH"
+    And no exception should have been thrown
+
+  @object @string-typing @fully-typed-values
   Scenario: A structured flag is not returned as its JSON text
-    # The same property one type further out: a structure serialises to a string as readily as a
-    # scalar does. Tagged with both, because a provider with no structured values cannot be asked
-    # the question at all.
+    # The same property one type further out. Three tags: a provider with no structured values
+    # cannot be asked at all (@object), and a store that keeps structures as text has nothing
+    # to report a mismatch about (@fully-typed-values).
     Given a String-flag with key "object-flag" and a default value "fallback"
     When the flag was evaluated with details
     Then the resolved details value should be "fallback"

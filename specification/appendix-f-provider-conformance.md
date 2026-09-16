@@ -240,7 +240,8 @@ declares which capabilities it supports. Scenarios whose tag is not declared are
 | `@disabled-flags` | resolves a flag disabled in the management system to the code default |
 | `@unavailable` | reports an error state instead of hanging against a dead backend |
 | `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
-| `@string-typing` | reports `TYPE_MISMATCH` for a non-string flag requested as a string, rather than its string representation |
+| `@string-typing` | reports `TYPE_MISMATCH` for a boolean or integer flag requested as a string, rather than its string representation |
+| `@fully-typed-values` | records a native type for float and structured values too, so the same question can be asked of them |
 | `@large-integers` | resolves integers up to 2^53 − 1 exactly; undeclarable where the SDK's integer accessor is 32-bit |
 | `@reinitialization` | can be initialised again after `shutdown`, which [Requirement 2.5.2](./sections/02-providers.md#requirement-252) permits rather than requires |
 | `@targeting` | resolves a flag differently for a matching evaluation context |
@@ -575,7 +576,7 @@ statement about value type is [Requirement 1.3.4](./sections/01-flag-evaluation.
 a `SHOULD`, and on the **client** rather than the provider. The provider requirements do not mention
 type at all.
 
-So this tag sits upstream of [open-feature/spec#430](https://github.com/open-feature/spec/issues/430):
+So this tag sits upstream of [open-feature/spec#430](https://github.com/open-feature/spec/issues/430), and is tracked as [open-feature/spec#433](https://github.com/open-feature/spec/issues/433):
 that issue asks which accessor a number may satisfy, this one asks what a flag's type is when the
 backend has none. Until the specification answers it the rule is borrowed, exactly as the numeric one
 is, and **a provider that withholds the tag is not violating the specification**.
@@ -592,6 +593,31 @@ this suite, where those rows failed for a provider behaving reasonably.
 Withholding rather than a deviation is the right instrument, for the reason given under
 [Rules for declaring](#rules-for-declaring): a deviation records a required behaviour the provider
 lacks, and this behaviour is not required.
+
+#### Why this is two capabilities
+
+The first draft of this made it one tag over all four cases, and measurement showed that a single
+tag **hides defects inside a permitted absence**. Three providers were run against one Flagsmith
+backend:
+
+| requested as a string | Go | Java | JavaScript |
+| --- | --- | --- | --- |
+| `boolean-flag` | `TYPE_MISMATCH` | `TYPE_MISMATCH` | `"true"` |
+| `integer-flag` | `TYPE_MISMATCH` | `TYPE_MISMATCH` | `"10"` |
+| `float-flag` | stringified | stringified | stringified |
+| `object-flag` | stringified | stringified | stringified |
+
+The bottom two rows are the backend: Flagsmith records no native float or structure type, so no
+provider over it can report a mismatch, and the absence is permitted. The top two are not — that
+store does record booleans and integers, two providers answer them, and the third fails them
+because of its own code rather than the backend's shape. Under one tag that provider withholds and
+its defect is reported as a permitted absence, which is the worst of the available outcomes: the
+suite goes quiet on a real bug. Two tags separate the question the backend cannot answer from the
+question a provider got wrong.
+
+The general rule this is an instance of: **a capability coarser than the variation providers
+actually show will hide defects inside permitted absences.** When one tag would gate scenarios
+that fail for different reasons, it is the wrong unit of declaration.
 
 ### Capabilities a language cannot express
 
@@ -869,7 +895,8 @@ the provider under test nothing.
 
 ### Run-integrity checks
 
-Two failures are invisible from the results alone.
+Three failures are invisible from the results alone, and two rules below are about the checks
+themselves rather than about a provider.
 
 > A TCK implementation **MUST** fail the run when a reserved capability tag is carried by a collected
 > scenario.
@@ -881,6 +908,34 @@ the vocabulary is stale.
 
 Either the assets are not the ones the implementation thinks it shipped, or a capability has outlived
 its scenarios — and in both cases a provider can declare it and be told nothing.
+
+> A TCK implementation **MUST** fail the run when a collected scenario carries a capability tag the
+> implementation's vocabulary does not know.
+
+This is the previous check's own direction reversed, and it is the one that is easy to leave out. An
+unknown tag gates nothing, so its scenarios stay **mandatory for every adopter** — a suite that has
+not learned a new capability does not report a new capability, it silently keeps demanding the old
+behaviour. All four reference implementations ignored an unknown tag rather than failing, and the
+symptom is a provider that legitimately withholds the capability showing unexplained failures while
+every other provider stays green. Nothing in the results says why.
+
+> A TCK implementation **MUST** fail the run when a run-integrity check cannot be performed, rather
+> than skipping it.
+
+A check that reports nothing when it cannot do its job is absent exactly where it is needed. The
+revision check is the case in point: it can only compare the assets on disk against the pin when the
+pin is readable, and in an unpacked distribution or a linked worktree it is not — which is also
+where stale assets are most likely. One adoption ran a full suite against the previous revision's
+scenarios and produced entirely plausible numbers, because the check that would have caught it was
+skipping and the suite that runs it was not the suite that ran.
+
+That last point generalises past the check itself:
+
+> The revision check **MUST** be in force where the scenarios execute, not only in the TCK
+> implementation's own tests.
+
+An adopter runs the canonical scenarios from its own build. A guarantee that holds only in the
+implementation's test suite does not cover the run whose results are being published.
 
 ## Extending the suite
 
