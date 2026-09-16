@@ -923,11 +923,26 @@ every other provider stays green. Nothing in the results says why.
 > than skipping it.
 
 A check that reports nothing when it cannot do its job is absent exactly where it is needed. The
-revision check is the case in point: it can only compare the assets on disk against the pin when the
-pin is readable, and in an unpacked distribution or a linked worktree it is not — which is also
-where stale assets are most likely. One adoption ran a full suite against the previous revision's
-scenarios and produced entirely plausible numbers, because the check that would have caught it was
-skipping and the suite that runs it was not the suite that ran.
+revision check is the case in point: it compares the assets on disk against the pin, and where the
+pin could not be read it skipped — which was also where stale assets were most likely. One adoption
+ran a full suite against the previous revision's scenarios and produced entirely plausible numbers,
+because the check that would have caught it was skipping and the suite that runs it was not the
+suite that ran.
+
+**A check with nothing to check is not the same as a check that cannot be performed**, and this rule
+does not reach the first. An unpacked distribution has no pin, no repository, and no working tree
+that could have drifted from one: its assets are distribution content, produced by a sync that ran
+this check when the distribution was built. Failing there would accuse whoever unpacked it of a
+defect they cannot hold or fix. A linked worktree is the opposite case and looks similar only
+because git is silent in both — there the pin exists and the implementation was not reading it
+correctly, which is a check that must be made to work rather than allowed to skip. An implementation
+has to tell the two apart before it applies this rule.
+
+That distinction was argued back from an implementation rather than reasoned out here: an earlier
+revision of this section named the two cases in one breath, which would have required failing a
+downstream packager. It also produced the better fix for the second case — a worktree records its
+git directory as an absolute path, while a submodule's is relative, so the pin is readable from the
+submodule side and the condition disappears instead of being reported.
 
 That last point generalises past the check itself:
 
