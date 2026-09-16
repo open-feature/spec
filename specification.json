@@ -1007,7 +1007,7 @@
         {
             "id": "Requirement 4.4.8",
             "machine_id": "requirement_4_4_8",
-            "content": "If an error occurs in the `after` hooks, the default value MUST be returned.",
+            "content": "If an error occurs in the `after` hooks, it is considered abnormal execution, and the default value MUST be returned.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },

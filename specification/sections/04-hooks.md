@@ -347,7 +347,7 @@ Before hooks can impact evaluation by various means, such as mutating the `evalu
 
 #### Requirement 4.4.8
 
-> If an error occurs in the `after` hooks, the default value **MUST** be returned.
+> If an error occurs in the `after` hooks, it is considered abnormal execution, and the default value **MUST** be returned.
 
 After hooks can reject a resolution they consider invalid, which is what the validating hook pattern relies on. An error in the `after` hooks is therefore also abnormal execution, and the default should be returned.
 
