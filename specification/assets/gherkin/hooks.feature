@@ -47,3 +47,19 @@ Feature: Evaluation details through hooks
       | string    | variant    | null          |
       | string    | reason     | ERROR         |
       | string    | error_code | TYPE_MISMATCH |
+
+  @spec-4.4.8
+  Scenario: Error in after hook
+    Given a client with added hook
+    And the "after" hook returns an error
+    And a boolean-flag with key "boolean-flag" and a fallback value "false"
+    When the flag was evaluated with details
+    Then the "before" hook should have been executed
+    And the "error" hook should have been executed
+    And the "finally" hooks should be called with evaluation details
+      | data_type | key        | value        |
+      | string    | flag_key   | boolean-flag |
+      | boolean   | value      | false        |
+      | string    | variant    | null         |
+      | string    | reason     | ERROR        |
+      | string    | error_code | GENERAL      |
