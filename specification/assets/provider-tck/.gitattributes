@@ -1,0 +1,10 @@
+# These artifacts are consumed byte for byte by every language's provider TCK, and several
+# are copied verbatim into published build artifacts. Normalise to LF so a checkout on
+# Windows does not produce a different packaged file than one on Linux.
+*.feature text eol=lf
+*.json    text eol=lf
+*.yaml    text eol=lf
+
+# embed.go ships inside the Go module zip, whose checksum is content-addressed, so it too
+# must be identical whichever platform it is committed from.
+*.go      text eol=lf
