@@ -1,0 +1,11 @@
+url_path,views_total,views_unique
+/open-feature/spec,200,143
+/open-feature/spec/pulls,26,13
+/open-feature/spec/tree/main/specification,25,23
+/open-feature/spec/discussions/443,17,9
+/open-feature/spec/issues/329,17,1
+/open-feature/spec/issues,15,12
+/open-feature/spec/releases/tag/v0.8.0,13,8
+/open-feature/spec/pull/423,13,5
+/open-feature/spec/discussions,12,4
+/open-feature/spec/releases,10,7
