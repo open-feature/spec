@@ -244,7 +244,7 @@ Here are some standard strategies that come with the Multi-Provider:
 #### First Match Strategy
 
 Return the first result returned by a provider.
-Skip providers that indicate they had no value due to `FLAG_NOT_FOUND`.
+Skip providers that indicate they had no value due to `FLAG_NOT_FOUND`, or that the flag is intentionally disabled (`reason=DISABLED`).
 In all other cases, use the value returned by the provider.
 If any provider returns an error result other than `FLAG_NOT_FOUND`, the whole evaluation should error and "bubble up" the individual provider's error in the result.
 
@@ -255,14 +255,15 @@ As soon as a value is returned by a provider, the rest of the operation should s
 #### First Successful Strategy
 
 Similar to "First Match", except that errors from evaluated providers do not halt execution.
-Instead, it will return the first successful result from a provider. If no provider successfully responds, it will throw an error result.
+Instead, it will return the first successful result from a provider whose `reason` is not `DISABLED`. If no provider successfully responds, it will throw an error result.
 
 [See the refrence implementation](https://github.com/open-feature/js-sdk-contrib/blob/main/libs/providers/multi-provider/src/lib/strategies/FirstSuccessfulStrategy.ts)
 
 #### Comparison Strategy
 
 Require that all providers agree on a value.
-If every provider returns a non-error result, and the values do not agree, the Multi-Provider should return the result from a configurable "fallback" provider.
+Providers that return `FLAG_NOT_FOUND` or `reason=DISABLED` are excluded from the comparison.
+If every remaining provider returns a non-error result, and the values do not agree, the Multi-Provider should return the result from a configurable "fallback" provider.
 It will also call an optional "onMismatch" callback that can be used to monitor cases where mismatches of evaluation occurred.
 Otherwise the value of the result will be the result of the first provider in precedence order.
 
