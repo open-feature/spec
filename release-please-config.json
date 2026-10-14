@@ -21,6 +21,7 @@
       "include-component-in-tag": true,
       "changelog-path": "CHANGELOG.md",
       "bump-minor-pre-major": true,
+      "initial-version": "0.1.0",
       "versioning": "default",
       "extra-files": []
     }
