@@ -1,0 +1,227 @@
+{
+  "$comment": [
+    "The canonical flag set the TCK's feature files assume. A backend under test MUST serve an",
+    "equivalent set under the configuration named 'default'.",
+    "",
+    "Expressed in the flagd flag-definition format because that is the only widely implemented",
+    "vendor-neutral format today. The format is not what matters — the keys, types, variant",
+    "names and resolved values are. Seed them however your backend seeds flags.",
+    "",
+    "Two things are load-bearing and easy to get wrong:",
+    "  * 'missing-flag' MUST NOT exist. Its absence is what the FLAG_NOT_FOUND scenario tests.",
+    "  * Only 'targeting-key-flag' has a targeting rule. Everything else resolves the same way",
+    "    whatever the context, because the TCK tests the provider's mapping of a response, not",
+    "    the backend's evaluation logic. That is also what lets a provider declaring",
+    "    @standard-reasons expect STATIC rather than TARGETING_MATCH for those flags.",
+    "",
+    "Three more are easy to lose in translation, because a seeding step that 'cleans up' values",
+    "destroys exactly what they test:",
+    "  * 'boolean-zero-flag', 'integer-zero-flag' and 'string-zero-flag' resolve to false, 0 and",
+    "    \"\". They are values, not absences. A backend that drops them, or a provider that",
+    "    treats them as missing, is what the falsy-value scenarios catch.",
+    "  * 'large-integer-flag' and 'huge-integer-flag' resolve to 2147483647 (2^31 - 1) and",
+    "    9007199254740991 (2^53 - 1). Seed both as integers, not floats, and do not round them: a",
+    "    float32 round trip changes the first, and a 32-bit integer cannot hold the second.",
+    "  * 'integral-float-flag' resolves to 10.0, a float with no fractional part. It MUST be seeded",
+    "    as a float. A backend that stores it as the integer 10 makes the lossless-coercion scenario",
+    "    pass without coercing anything."
+  ],
+  "flags": {
+    "boolean-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
+    "string-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "greeting": "hi",
+        "parting": "bye"
+      },
+      "defaultVariant": "greeting"
+    },
+    "integer-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "ten": 10
+      },
+      "defaultVariant": "ten"
+    },
+    "float-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "tenth": 0.1,
+        "half": 0.5
+      },
+      "defaultVariant": "half"
+    },
+    "large-integer-flag": {
+      "$comment": "2^31 - 1, the largest 32-bit signed integer. Every language represents it exactly; a float32 round trip does not.",
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "max-int32": 2147483647
+      },
+      "defaultVariant": "max-int32"
+    },
+    "huge-integer-flag": {
+      "$comment": "2^53 - 1, the largest integer JavaScript represents exactly. Only asked for under @large-integers, because a 32-bit integer accessor cannot request it at all.",
+      "state": "ENABLED",
+      "variants": {
+        "one": 1,
+        "max-safe": 9007199254740991
+      },
+      "defaultVariant": "max-safe"
+    },
+    "integral-float-flag": {
+      "$comment": "A float with no fractional part, for the lossless half of @numeric-coercion. Seed as a float.",
+      "state": "ENABLED",
+      "variants": {
+        "tenth": 0.1,
+        "ten": 10.0
+      },
+      "defaultVariant": "ten"
+    },
+    "boolean-zero-flag": {
+      "$comment": "Resolves to false. The default in the scenario is true, so a provider that treats false as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "zero": false,
+        "non-zero": true
+      },
+      "defaultVariant": "zero"
+    },
+    "integer-zero-flag": {
+      "$comment": "Resolves to 0. The default in the scenario is 1, so a provider that treats 0 as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "zero": 0,
+        "non-zero": 1
+      },
+      "defaultVariant": "zero"
+    },
+    "string-zero-flag": {
+      "$comment": "Resolves to the empty string. The default in the scenario is 'fallback', so a provider that treats \"\" as missing is caught.",
+      "state": "ENABLED",
+      "variants": {
+        "zero": "",
+        "non-zero": "str"
+      },
+      "defaultVariant": "zero"
+    },
+    "object-flag": {
+      "state": "ENABLED",
+      "variants": {
+        "empty": {},
+        "template": {
+          "showImages": true,
+          "title": "Check out these pics!",
+          "imagesPerPage": 100
+        }
+      },
+      "defaultVariant": "template"
+    },
+    "wrong-flag": {
+      "$comment": "A string flag, evaluated as a boolean by the TYPE_MISMATCH scenario.",
+      "state": "ENABLED",
+      "variants": {
+        "one": "uno",
+        "two": "dos"
+      },
+      "defaultVariant": "one"
+    },
+    "disabled-boolean-flag": {
+      "$comment": [
+        "The four disabled flags mirror boolean-flag, string-flag, integer-flag and float-flag",
+        "exactly, differing only in state. Each scenario's caller default differs from the",
+        "flag's configured value, so a provider that ignores the state returns the configured",
+        "value and is caught on the value alone.",
+        "",
+        "Names, variants and values are flagd-testbed's own, from flags/disabled-flags.json,",
+        "so a backend serving that harness already serves these.",
+        "",
+        "There is deliberately no disabled-object-flag. An Object resolution needs @object, and",
+        "a scenario needing both tags cannot be one row of a single outline -- the scalar rows",
+        "already establish the behaviour."
+      ],
+      "state": "DISABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
+    "disabled-string-flag": {
+      "state": "DISABLED",
+      "variants": {
+        "greeting": "hi",
+        "parting": "bye"
+      },
+      "defaultVariant": "greeting"
+    },
+    "disabled-integer-flag": {
+      "state": "DISABLED",
+      "variants": {
+        "one": 1,
+        "ten": 10
+      },
+      "defaultVariant": "ten"
+    },
+    "disabled-float-flag": {
+      "state": "DISABLED",
+      "variants": {
+        "tenth": 0.1,
+        "half": 0.5
+      },
+      "defaultVariant": "half"
+    },
+    "targeting-key-flag": {
+      "$comment": [
+        "The one flag in this set with a targeting rule. Everything else resolves to its",
+        "defaultVariant whatever the context, which is what lets a provider declaring",
+        "@standard-reasons expect STATIC for those flags and TARGETING_MATCH or DEFAULT here.",
+        "",
+        "The rule is specified by its behaviour, not by this encoding: resolve variant 'hit'",
+        "when the evaluation context's targeting key is exactly the uuid below, and 'miss'",
+        "otherwise. Express that however your backend expresses targeting.",
+        "",
+        "Name, variants and uuid are the ones flagd-testbed's own targeting.feature already",
+        "uses, on the same reasoning as the zero flags: a backend serving that harness already",
+        "serves this, so adopting the canonical set costs it nothing.",
+        "",
+        "It is what makes context passthrough observable. A matching context resolves to a",
+        "different value, so a provider that drops the context on the floor is caught by the",
+        "resolved value itself rather than needing an echo endpoint."
+      ],
+      "state": "ENABLED",
+      "variants": {
+        "miss": "miss",
+        "hit": "hit"
+      },
+      "defaultVariant": "miss",
+      "targeting": {
+        "if": [
+          { "==": [{ "var": "targetingKey" }, "5c3d8535-f81a-4478-a6d3-afaa4d51199e"] },
+          "hit",
+          null
+        ]
+      }
+    },
+    "changing-flag": {
+      "$comment": [
+        "The flag POST /change mutates. The TCK asserts only that its resolved value differs",
+        "after the change, so which of the two variants you start from does not matter."
+      ],
+      "state": "ENABLED",
+      "variants": {
+        "foo": "foo",
+        "bar": "bar"
+      },
+      "defaultVariant": "foo"
+    }
+  }
+}

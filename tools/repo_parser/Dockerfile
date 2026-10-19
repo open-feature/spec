@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.15-slim
 
 LABEL org.opencontainers.image.title="repo_parser" \
       org.opencontainers.image.description="Parses OpenFeature SDK repos and reports spec compliance coverage" \
