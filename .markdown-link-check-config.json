@@ -1,10 +1,14 @@
 {
+  "retryOn429": true,
   "ignorePatterns": [
     {
       "pattern": ".*split.io.*"
     },
     {
       "pattern": ".*openfeature.dev/docs/reference/other-technologies/ofrep/openapi.*"
+    },
+    {
+      "pattern": ".*cloud-native\\.slack\\.com/archives/.*"
     }
   ]
 }
