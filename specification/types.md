@@ -32,7 +32,7 @@ A language primitive for representing a date and time, optionally including time
 
 ### Evaluation Details
 
-A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag resolution functions](./sections/01-flag-evaluation.md#14-detailed-flag-evaluation), containing the following fields:
+A structure representing the result of the [flag evaluation process](./glossary.md#evaluating-flag-values), and made available in the [detailed flag evaluation functions](./sections/01-flag-evaluation.md#14-detailed-flag-evaluation), containing the following fields:
 
 - flag key (string, required)
 - value (boolean | string | number | structure, required)
@@ -44,6 +44,10 @@ A structure representing the result of the [flag evaluation process](./glossary.
 
 > [!NOTE]  
 > Some type systems feature useful constraints that can enhance the ergonomics of the `evaluation details` structure. For example, in the case of an unsuccessful evaluation, `error code`, `reason`, and `error message` will be set, and `variant` will not. If the type system of the implementation supports the expression of such constraints, consider defining them.
+
+> [!NOTE]
+> `evaluation details` are the application-facing result returned from detailed flag evaluation.
+> They include the `flag key` supplied to the client, the evaluated value, and other fields derived from the provider's `resolution details` when available, such as `variant`, `reason`, `error code`, `error message`, and `flag metadata`.
 
 ### Resolution Details
 
@@ -91,7 +95,10 @@ enum Reason {
 let myReason = Reason::Other("my-reason".to_string());
 ```
 
-> [!NOTE] The `resolution details` structure is not exposed to the Application Author. It defines the data which Provider Authors must return when resolving the value of flags.
+> [!NOTE]
+> `resolution details` are the return structure providers send to the SDK.
+> Provider Authors return this structure when resolving a flag value.
+> Application Authors do not receive the actual `resolution details` object directly; instead, detailed flag evaluation functions return an `evaluation details` object built from the provider's `resolution details` when available, plus SDK-level fields such as `flag key`, default values, and error information.
 
 ### Error Code
 
