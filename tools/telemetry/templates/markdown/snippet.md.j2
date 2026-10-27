@@ -1,0 +1,42 @@
+{# The semconv markers select a resolved event refinement and documentation section. #}
+{%- set section = tag_filter[0] -%}
+{%- macro requirement(level) -%}
+{%- if level is string -%}
+{{ level | replace("_", " ") | title }}
+{%- elif level.conditionally_required is defined -%}
+Conditionally Required
+{%- elif level.recommended is defined -%}
+Recommended
+{%- elif level.opt_in is defined -%}
+Opt In
+{%- endif -%}
+{%- endmacro -%}
+{%- macro attribute_type(type) -%}
+{%- if type is string -%}
+{{ type }}
+{%- elif type.members[0].value is string -%}
+string
+{%- elif type.members[0].value is boolean -%}
+boolean
+{%- else -%}
+int
+{%- endif -%}
+{%- endmacro -%}
+{{- "\n" -}}
+{%- if section == "footnotes" -%}
+{%- for footnote in group.annotations.openfeature.footnotes -%}
+[^{{ footnote.id }}]: {{ footnote.text }}{{ "\n" }}
+{%- if not loop.last -%}
+{{ "\n" }}
+{%- endif -%}
+{%- endfor -%}
+{%- else -%}
+| Event Record Attribute | {{ group.annotations.openfeature.source_headings[section] }} | Requirement level | Type | Notes |
+| --- | --- | --- | --- | --- |
+{% for attr in group.attributes | attribute_sort -%}
+{% set mapping = (attr.annotations | default({})).openfeature | default({}) -%}
+{% if (mapping.section | default("evaluation")) == section -%}
+| `{{ attr.key }}` | {% if mapping.source is defined %}`{{ mapping.source }}`{% endif %} | `{{ requirement(mapping.recommendation | default(attr.requirement_level)) }}`{% if mapping.footnote is defined %} [^{{ mapping.footnote }}]{% endif %} | `{{ attribute_type(attr.type) }}` | {{ mapping.notes | default(attr.brief | trim | replace("\n", " ")) | replace("|", "&#124;") }} |
+{% endif -%}
+{% endfor -%}
+{%- endif -%}

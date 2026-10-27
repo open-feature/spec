@@ -9,6 +9,18 @@ sidebar_position: 5
 
 This document describes conventions for extracting data from the OpenFeature SDK for use in telemetry signals. It primarily focuses on providing recommendations for mapping well-known fields in OpenFeature to [OpenTelemetry feature-flag event records][otel-ff-events] and other semantic conventions.
 
+<!-- Generated sections are maintained by make telemetry-generate; do not edit their contents directly. -->
+
+<!-- weaver template:version.md.j2 .dependency_graph[.schema_url][] | select(startswith("https://opentelemetry.io/schemas/")) | {version: (split("/") | last)} -->
+
+The attribute mappings target [OpenTelemetry semantic conventions v1.44.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.44.0).
+
+<!-- endweaver -->
+
+This repository's telemetry registry (`telemetry/registry/feature_flags.yaml`) references the upstream event and adds OpenFeature source mappings and documentation guidance through annotations. The tables and footnotes below are generated from the resolved event refinement, including inherited attributes and requirements.
+
+The tables retain two OpenFeature recommendations that differ from this upstream version: an error message is conditionally required whenever evaluation fails, and including the result value is recommended when a variant is available. Upstream recommends an error message only when `error.type` is insufficient and treats the result value as opt-in when a variant is available. These documentation recommendations do not modify the event's machine-readable requirements.
+
 ## Evaluations
 
 Flag evaluation telemetry comprises data resolved from the provider resolution (evaluation details and flag metadata) as well as metadata about the provider itself. This is particularly relevant to telemetry-related [hooks](./sections/04-hooks.md).
@@ -17,14 +29,18 @@ Flag evaluation telemetry comprises data resolved from the provider resolution (
 
 The following describes how fields on the [evaluation details](types.md#evaluation-details) are mapped to feature flag event records:
 
+<!-- semconv refinements.events.feature_flag.evaluation(tag=evaluation) -->
+
 | Event Record Attribute | Source Field or Derived Value from Evaluation Details | Requirement level | Type | Notes |
 | --- | --- | --- | --- | --- |
 | `feature_flag.key` | `flag key` | `Required` | `string` | See: [flag key](./glossary.md#flag-key) |
+| `error.type` | `error code` | `Conditionally Required` [^3] | `string` | See: [error code](./types.md#error-code) |
+| `feature_flag.result.value` | `value` | `Conditionally Required` [^2] | `any` | See: [value](./glossary.md#values) |
 | `feature_flag.result.variant` | `variant` | `Conditionally Required` [^1] | `string` | See: [variant](./glossary.md#variant) |
-| `feature_flag.result.value` | `value` | `Conditionally Required` [^2] | `undefined` | See: [value](./glossary.md#values) |
+| `feature_flag.error.message` | `error message` | `Conditionally Required` [^3] | `string` | A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`. |
 | `feature_flag.result.reason` | `reason` | `Recommended` | `string` | See: [reason](./types.md#resolution-reason) |
-| `error.type` | `error code` | `Conditionally Required` [^3] | `string` | See: [error code](./types.md#error-code), |
-| `error.message` | `error message` | `Conditionally Required` [^3] | `string` | A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`. |
+
+<!-- endsemconv -->
 
 > [!NOTE] The `error.type` and `feature_flag.result.reason` enumerations use a lowercase "snake_case" convention (see [OpenTelemetry feature-flag event records][otel-ff-events]). OpenFeature [error codes](types.md#error-code) and [resolution reasons](./types.md#resolution-reason) should be transformed accordingly by integrations which include this data.
 
@@ -32,19 +48,27 @@ The following describes how fields on the [evaluation details](types.md#evaluati
 
 The following describes how keys in [flag metadata](types.md#flag-metadata) are mapped to feature flag event records:
 
+<!-- semconv refinements.events.feature_flag.evaluation(tag=flag_metadata) -->
+
 | Event Record Attribute | Flag Metadata Key | Requirement level | Type | Notes |
 | --- | --- | --- | --- | --- |
 | `feature_flag.context.id` | `contextId` | `Recommended` | `string` | The context identifier returned in the flag metadata uniquely identifies the subject of the flag evaluation. If not available, the [targeting key](./glossary.md#targeting-key) should be used. |
 | `feature_flag.set.id` | `flagSetId` | `Recommended` | `string` | A logical identifier for the [flag set](./glossary.md#flag-set). |
 | `feature_flag.version` | `version` | `Recommended` | `string` | A version string (format unspecified) for the flag or [flag set](./glossary.md#flag-set). |
 
+<!-- endsemconv -->
+
 > [!NOTE] Keys in flag metadata use the "camelCase" casing convention, while the OpenTelemetry standard uses a namespaced "snake_case" convention.
 
 ### Provider Metadata
 
+<!-- semconv refinements.events.feature_flag.evaluation(tag=provider_metadata) -->
+
 | Event Record Attribute | Provider Metadata Field | Requirement level | Type | Notes |
 | --- | --- | --- | --- | --- |
 | `feature_flag.provider.name` | `name` | `Recommended` | `string` | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
+
+<!-- endsemconv -->
 
 ## Telemetry Hook Implementation Guide
 
@@ -124,14 +148,19 @@ Feature flags in the OpenTelemetry semantic conventions are currently in develop
 | `feature_flag.evaluation.error.message` | `error.message` | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
 | `feature_flag.provider_name` | `feature_flag.provider.name` | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
 | `value` | `feature_flag.result.value` | [v1.34.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.34.0) |
+| `error.message` | `feature_flag.error.message` | [v1.40.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.40.0) |
 
 ## Footnotes
+
+<!-- semconv refinements.events.feature_flag.evaluation(tag=footnotes) -->
 
 [^1]: The `variant` field should be included whenever possible as it represents the symbolic name of the flag's returned value (e.g., "on"/"off", "control"/"treatment"). Only omit if the provider doesn't supply this information.
 
 [^2]: The `value` field is required when a `variant` is not available, and recommended when it is. Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.
 
-[^3]: Include `error.type` and `error.message`, if and only if an error occurred during a flag evaluation.
+[^3]: Include `error.type` and `feature_flag.error.message`, if and only if an error occurred during a flag evaluation.
+
+<!-- endsemconv -->
 
 [otel-ff-events]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
 [otel-span-event-deprecation-plan]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/4430-span-event-api-deprecation-plan.md
