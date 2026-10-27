@@ -21,6 +21,22 @@ make telemetry-check
 
 Do not edit generated tables, footnotes, or the snapshot directly. SDK code generation, runtime validation, and registry publication are not included in this workflow.
 
+## Consuming the Registry
+
+Codegen templates should read `.refinements.events`, which contains the resolved OpenFeature events, including inherited attributes. For example, use this template filter:
+
+```jq
+{
+  events: .refinements.events,
+  attributes: (
+    [.refinements.events[].attributes[]]
+    | unique_by(.key)
+  )
+}
+```
+
+The deduplicated `attributes` list is suitable for attribute-name constants. Read requirements and descriptions from each event's attributes, since those can be signal-specific.
+
 ## Files
 
 - [registry/manifest.yaml](../../telemetry/registry/manifest.yaml): upstream dependency and version pin.
