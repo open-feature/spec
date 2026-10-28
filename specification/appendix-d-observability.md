@@ -17,11 +17,97 @@ The attribute mappings target [OpenTelemetry semantic conventions v1.44.0](https
 
 <!-- endweaver -->
 
-This repository's telemetry registry (`telemetry/registry/feature_flags.yaml`) references the upstream event and adds OpenFeature source mappings and documentation guidance through annotations. The tables and footnotes below are generated from the resolved event refinement, including inherited attributes and requirements.
+This repository's telemetry registry (`telemetry/registry/feature_flags.yaml`) refines the upstream event with OpenFeature requirements and source mappings. The event reference and mapping tables below are generated from the same resolved definition, including inherited OpenTelemetry descriptions and notes.
 
-The tables retain two OpenFeature recommendations that differ from this upstream version: an error message is conditionally required whenever evaluation fails, and including the result value is recommended when a variant is available. Upstream recommends an error message only when `error.type` is insufficient and treats the result value as opt-in when a variant is available. These documentation recommendations do not modify the event's machine-readable requirements.
+## Feature Flag Evaluation Event
 
-## Evaluations
+<!-- semconv refinements.events.feature_flag.evaluation(tag=event) -->
+
+**Event name:** `feature_flag.evaluation`
+
+**Stability:** Release Candidate
+
+**Requirement level:** Recommended
+
+Defines feature flag evaluation as an event.
+
+A `feature_flag.evaluation` event SHOULD be emitted whenever a feature flag value is evaluated, which may happen many times over the course of an application lifecycle. For example, a website A/B testing different animations may evaluate a flag each time a button is clicked. A `feature_flag.evaluation` event is emitted on each evaluation even if the result is the same.
+
+| Attribute | Stability | Requirement Level | Type | Description | Example Values |
+| --- | --- | --- | --- | --- | --- |
+| `feature_flag.key` | Release Candidate | Required | `string` | The lookup key of the feature flag. | `["logo-color"]` |
+| `error.type` [^feature_flag.evaluation-error.type] | Stable | Conditionally Required | `string` | Describes a class of error the operation ended with. | `["provider_not_ready","targeting_key_missing","provider_fatal","general"]` |
+| `feature_flag.error.message` [^feature_flag.evaluation-feature_flag.error.message] | Release Candidate | Conditionally Required | `string` | A message providing more detail about an error that occurred during feature flag evaluation in human-readable form. | `["Unexpected input type: string","The user has exceeded their storage quota"]` |
+| `feature_flag.result.value` [^feature_flag.evaluation-feature_flag.result.value] | Release Candidate | Conditionally Required | `any` | The evaluated value of the feature flag. | `["#ff0000",true,3]` |
+| `feature_flag.result.variant` [^feature_flag.evaluation-feature_flag.result.variant] | Release Candidate | Conditionally Required | `string` | A semantic identifier for an evaluated flag value. | `["red","true","on"]` |
+| `feature_flag.context.id` | Release Candidate | Recommended | `string` | The unique identifier for the flag evaluation context. For example, the targeting key. | `["5157782b-2203-4c80-a857-dbbd5e7761db"]` |
+| `feature_flag.provider.name` | Release Candidate | Recommended | `string` | Identifies the feature flag provider. | `["Flag Manager"]` |
+| `feature_flag.result.reason` [^feature_flag.evaluation-feature_flag.result.reason] | Release Candidate | Recommended | `string` | The reason code which shows how a feature flag value was determined. | `["static","targeting_match","error","default"]` |
+| `feature_flag.set.id` | Release Candidate | Recommended | `string` | The identifier of the [flag set](https://openfeature.dev/specification/glossary/#flag-set) to which the feature flag belongs. | `["proj-1","ab98sgs","service1/dev"]` |
+| `feature_flag.version` | Release Candidate | Recommended | `string` | The version of the ruleset used during the evaluation. This may be any stable value which uniquely identifies the ruleset. | `["1","01ABCDEF"]` |
+
+[^feature_flag.evaluation-error.type]:
+    **Conditionally Required:** If and only if an error occurred during flag evaluation.
+
+    If one of these values applies, then it MUST be used; otherwise, a custom value MAY be used.
+
+    | Value | Description | Stability |
+    | --- | --- | --- |
+    | `flag_not_found` | The flag could not be found. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `invalid_context` | The evaluation context does not meet provider requirements. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `parse_error` | An error was encountered parsing data, such as a flag configuration. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `provider_fatal` | The provider has entered an irrecoverable error state. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `provider_not_ready` | The value was resolved before the provider was initialized. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `targeting_key_missing` | The provider requires a targeting key and one was not provided in the evaluation context. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `type_mismatch` | The type of the flag value does not match the expected type. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+    | `general` | The error was for a reason not enumerated above. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |
+
+    **Known values:**
+
+    | Value | Description |
+    | --- | --- |
+    | `"_OTHER"` | A fallback error value to be used when the instrumentation doesn't define a custom value. |
+
+[^feature_flag.evaluation-feature_flag.error.message]:
+    **Conditionally Required:** If and only if an error occurred during flag evaluation.
+
+    Should not simply duplicate the value of `error.type`, but should provide more context. For example, if `error.type` is `invalid_context` the `feature_flag.error.message` may enumerate which context keys are missing or invalid.
+
+[^feature_flag.evaluation-feature_flag.result.value]:
+    **Conditionally Required:** If a variant is not available. Otherwise, recommended.
+
+    With some feature flag providers, feature flag results can be quite large or contain private or sensitive details.
+    Because of this, `feature_flag.result.variant` is often the preferred attribute if it is available.
+
+    It may be desirable to redact or otherwise limit the size and scope of `feature_flag.result.value` if possible.
+    Because the evaluated flag value is unstructured and may be any type, it is left to the instrumentation author to determine how best to achieve this.
+
+[^feature_flag.evaluation-feature_flag.result.variant]:
+    **Conditionally Required:** If feature flag provider supplies a variant or equivalent concept.
+
+    A semantic identifier, commonly referred to as a variant, provides a means
+    for referring to a value without including the value itself. This can
+    provide additional context for understanding the meaning behind a value.
+    For example, the variant `red` maybe be used for the value `#c05543`.
+
+[^feature_flag.evaluation-feature_flag.result.reason]:
+    **Known values:**
+
+    | Value | Description |
+    | --- | --- |
+    | `"static"` | The resolved value is static (no dynamic evaluation). |
+    | `"default"` | The resolved value fell back to a pre-configured value (no dynamic evaluation occurred or dynamic evaluation yielded no result). |
+    | `"targeting_match"` | The resolved value was the result of a dynamic evaluation, such as a rule or specific user-targeting. |
+    | `"split"` | The resolved value was the result of pseudorandom assignment. |
+    | `"cached"` | The resolved value was retrieved from cache. |
+    | `"disabled"` | The resolved value was the result of the flag being disabled in the management system. |
+    | `"unknown"` | The reason for the resolved value could not be determined. |
+    | `"stale"` | The resolved value is non-authoritative or possibly out of date |
+    | `"error"` | The resolved value was the result of an error. |
+
+<!-- endsemconv -->
+
+## Attribute Mapping
 
 Flag evaluation telemetry comprises data resolved from the provider resolution (evaluation details and flag metadata) as well as metadata about the provider itself. This is particularly relevant to telemetry-related [hooks](./sections/04-hooks.md).
 
@@ -31,14 +117,14 @@ The following describes how fields on the [evaluation details](types.md#evaluati
 
 <!-- semconv refinements.events.feature_flag.evaluation(tag=evaluation) -->
 
-| Event Record Attribute | Source Field or Derived Value from Evaluation Details | Requirement level | Type | Notes |
-| --- | --- | --- | --- | --- |
-| `feature_flag.key` | `flag key` | `Required` | `string` | See: [flag key](./glossary.md#flag-key) |
-| `error.type` | `error code` | `Conditionally Required` [^3] | `string` | See: [error code](./types.md#error-code) |
-| `feature_flag.result.value` | `value` | `Conditionally Required` [^2] | `any` | See: [value](./glossary.md#values) |
-| `feature_flag.result.variant` | `variant` | `Conditionally Required` [^1] | `string` | See: [variant](./glossary.md#variant) |
-| `feature_flag.error.message` | `error message` | `Conditionally Required` [^3] | `string` | A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`. |
-| `feature_flag.result.reason` | `reason` | `Recommended` | `string` | See: [reason](./types.md#resolution-reason) |
+| Event Record Attribute | Source Field or Derived Value from Evaluation Details | OpenFeature Guidance |
+| --- | --- | --- |
+| `feature_flag.key` | `flag key` | See: [flag key](./glossary.md#flag-key) |
+| `error.type` | `error code` | See: [error code](./types.md#error-code) |
+| `feature_flag.error.message` | `error message` | For programmatic purposes, refer to [error code](./types.md#error-code). |
+| `feature_flag.result.value` | `value` | See: [value](./glossary.md#values) |
+| `feature_flag.result.variant` | `variant` | See: [variant](./glossary.md#variant) |
+| `feature_flag.result.reason` | `reason` | See: [reason](./types.md#resolution-reason) |
 
 <!-- endsemconv -->
 
@@ -50,11 +136,11 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 
 <!-- semconv refinements.events.feature_flag.evaluation(tag=flag_metadata) -->
 
-| Event Record Attribute | Flag Metadata Key | Requirement level | Type | Notes |
-| --- | --- | --- | --- | --- |
-| `feature_flag.context.id` | `contextId` | `Recommended` | `string` | The context identifier returned in the flag metadata uniquely identifies the subject of the flag evaluation. If not available, the [targeting key](./glossary.md#targeting-key) should be used. |
-| `feature_flag.set.id` | `flagSetId` | `Recommended` | `string` | A logical identifier for the [flag set](./glossary.md#flag-set). |
-| `feature_flag.version` | `version` | `Recommended` | `string` | A version string (format unspecified) for the flag or [flag set](./glossary.md#flag-set). |
+| Event Record Attribute | Flag Metadata Key | OpenFeature Guidance |
+| --- | --- | --- |
+| `feature_flag.context.id` | `contextId` | The context identifier returned in the flag metadata uniquely identifies the subject of the flag evaluation. If not available, the [targeting key](./glossary.md#targeting-key) should be used. |
+| `feature_flag.set.id` | `flagSetId` | A logical identifier for the [flag set](./glossary.md#flag-set). |
+| `feature_flag.version` | `version` | A version string (format unspecified) for the flag or [flag set](./glossary.md#flag-set). |
 
 <!-- endsemconv -->
 
@@ -64,9 +150,9 @@ The following describes how keys in [flag metadata](types.md#flag-metadata) are 
 
 <!-- semconv refinements.events.feature_flag.evaluation(tag=provider_metadata) -->
 
-| Event Record Attribute | Provider Metadata Field | Requirement level | Type | Notes |
-| --- | --- | --- | --- | --- |
-| `feature_flag.provider.name` | `name` | `Recommended` | `string` | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
+| Event Record Attribute | Provider Metadata Field | OpenFeature Guidance |
+| --- | --- | --- |
+| `feature_flag.provider.name` | `name` | The name of the provider as defined in the `provider metadata`, available in the `hook context`. |
 
 <!-- endsemconv -->
 
@@ -98,7 +184,7 @@ The `error` hook stage records exception information unless explicitly configure
 
 #### Finally Stage
 
-The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the attribute mapping tables above. It's also responsible for proper resource cleanup (like ending spans or closing connections).
+The `finally` hook stage is where telemetry signals are emitted with complete evaluation details. This stage should include all required and conditionally required attributes as defined in the event reference above. It's also responsible for proper resource cleanup (like ending spans or closing connections).
 
 ### Attribute Transformations
 
@@ -149,18 +235,6 @@ Feature flags in the OpenTelemetry semantic conventions are currently in develop
 | `feature_flag.provider_name` | `feature_flag.provider.name` | [v1.33.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.33.0) |
 | `value` | `feature_flag.result.value` | [v1.34.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.34.0) |
 | `error.message` | `feature_flag.error.message` | [v1.40.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.40.0) |
-
-## Footnotes
-
-<!-- semconv refinements.events.feature_flag.evaluation(tag=footnotes) -->
-
-[^1]: The `variant` field should be included whenever possible as it represents the symbolic name of the flag's returned value (e.g., "on"/"off", "control"/"treatment"). Only omit if the provider doesn't supply this information.
-
-[^2]: The `value` field is required when a `variant` is not available, and recommended when it is. Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.
-
-[^3]: Include `error.type` and `feature_flag.error.message`, if and only if an error occurred during a flag evaluation.
-
-<!-- endsemconv -->
 
 [otel-ff-events]: https://opentelemetry.io/docs/specs/semconv/feature-flags/feature-flags-logs/
 [otel-span-event-deprecation-plan]: https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/4430-span-event-api-deprecation-plan.md

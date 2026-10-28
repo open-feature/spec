@@ -6,20 +6,6 @@
     {
       "annotations": {
         "openfeature": {
-          "footnotes": [
-            {
-              "id": 1,
-              "text": "The `variant` field should be included whenever possible as it represents the symbolic name of the flag\u0027s returned value (e.g., \"on\"/\"off\", \"control\"/\"treatment\"). Only omit if the provider doesn\u0027t supply this information."
-            },
-            {
-              "id": 2,
-              "text": "The `value` field is required when a `variant` is not available, and recommended when it is. Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals."
-            },
-            {
-              "id": 3,
-              "text": "Include `error.type` and `feature_flag.error.message`, if and only if an error occurred during a flag evaluation."
-            }
-          ],
           "source_headings": {
             "evaluation": "Source Field or Derived Value from Evaluation Details",
             "flag_metadata": "Flag Metadata Key",
@@ -31,7 +17,6 @@
         {
           "annotations": {
             "openfeature": {
-              "footnote": 3,
               "notes": "See: [error code](./types.md#error-code)",
               "section": "evaluation",
               "source": "error code"
@@ -81,9 +66,7 @@
         {
           "annotations": {
             "openfeature": {
-              "footnote": 3,
-              "notes": "A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`.",
-              "recommendation": "conditionally_required",
+              "notes": "For programmatic purposes, refer to [error code](./types.md#error-code).",
               "section": "evaluation",
               "source": "error message"
             }
@@ -96,7 +79,7 @@
           "key": "feature_flag.error.message",
           "note": "Should not simply duplicate the value of `error.type`, but should provide more context. For example, if `error.type` is `invalid_context` the `feature_flag.error.message` may enumerate which context keys are missing or invalid.\n",
           "requirement_level": {
-            "recommended": "If and only if an error occurred during flag evaluation and `error.type` does not sufficiently describe the error."
+            "conditionally_required": "If and only if an error occurred during flag evaluation."
           },
           "stability": "release_candidate",
           "type": "string"
@@ -215,7 +198,6 @@
         {
           "annotations": {
             "openfeature": {
-              "footnote": 2,
               "notes": "See: [value](./glossary.md#values)",
               "section": "evaluation",
               "source": "value"
@@ -230,7 +212,7 @@
           "key": "feature_flag.result.value",
           "note": "With some feature flag providers, feature flag results can be quite large or contain private or sensitive details.\nBecause of this, `feature_flag.result.variant` is often the preferred attribute if it is available.\n\nIt may be desirable to redact or otherwise limit the size and scope of `feature_flag.result.value` if possible.\nBecause the evaluated flag value is unstructured and may be any type, it is left to the instrumentation author to determine how best to achieve this.\n",
           "requirement_level": {
-            "conditionally_required": "If and only if feature flag provider does not supply variant or equivalent concept. Otherwise, `feature_flag.result.value` should be treated as opt-in.\n"
+            "conditionally_required": "If a variant is not available. Otherwise, recommended."
           },
           "stability": "release_candidate",
           "type": "any"
@@ -238,7 +220,6 @@
         {
           "annotations": {
             "openfeature": {
-              "footnote": 1,
               "notes": "See: [variant](./glossary.md#variant)",
               "section": "evaluation",
               "source": "variant"

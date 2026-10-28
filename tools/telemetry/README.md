@@ -1,6 +1,6 @@
 # Telemetry Tooling
 
-Generate the mapping tables, footnotes, and target-version statement in [Appendix D](../../specification/appendix-d-observability.md) from the [telemetry registry](../../telemetry/registry/feature_flags.yaml).
+Generate the event reference, source mappings, and target-version statement in [Appendix D](../../specification/appendix-d-observability.md) from the [telemetry registry](../../telemetry/registry/feature_flags.yaml).
 
 ## Requirements
 
@@ -40,7 +40,7 @@ The deduplicated `attributes` list is suitable for attribute-name constants. Rea
 ## Files
 
 - [registry/manifest.yaml](../../telemetry/registry/manifest.yaml): upstream dependency and version pin.
-- [registry/feature_flags.yaml](../../telemetry/registry/feature_flags.yaml): event refinement and OpenFeature source mappings, notes, and footnotes.
+- [registry/feature_flags.yaml](../../telemetry/registry/feature_flags.yaml): event requirements and OpenFeature source mappings and guidance.
 - [registry/documentation.rego](../../telemetry/registry/documentation.rego): validation rules for documentation annotations.
 - [effective-events.json](../../telemetry/effective-events.json): generated snapshot of the full effective event definition.
 - [templates](./templates): Markdown and snapshot templates.

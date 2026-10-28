@@ -1,6 +1,6 @@
 file_format: definition/2
 
-# Annotations add OpenFeature documentation without overriding OTel requirements.
+# Native fields define the event; annotations describe OpenFeature source mappings.
 event_refinements:
   - id: feature_flag.evaluation
     ref: feature_flag.evaluation
@@ -10,16 +10,6 @@ event_refinements:
           evaluation: Source Field or Derived Value from Evaluation Details
           flag_metadata: Flag Metadata Key
           provider_metadata: Provider Metadata Field
-        footnotes:
-          - id: 1
-            text: >-
-              The `variant` field should be included whenever possible as it represents the symbolic name of the flag's returned value (e.g., "on"/"off", "control"/"treatment"). Only omit if the provider doesn't supply this information.
-          - id: 2
-            text: >-
-              The `value` field is required when a `variant` is not available, and recommended when it is. Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.
-          - id: 3
-            text: >-
-              Include `error.type` and `feature_flag.error.message`, if and only if an error occurred during a flag evaluation.
     attributes:
       - ref: feature_flag.key
         annotations:
@@ -33,14 +23,14 @@ event_refinements:
             section: evaluation
             source: variant
             notes: "See: [variant](./glossary.md#variant)"
-            footnote: 1
       - ref: feature_flag.result.value
+        requirement_level:
+          conditionally_required: If a variant is not available. Otherwise, recommended.
         annotations:
           openfeature:
             section: evaluation
             source: value
             notes: "See: [value](./glossary.md#values)"
-            footnote: 2
       - ref: feature_flag.result.reason
         annotations:
           openfeature:
@@ -53,17 +43,15 @@ event_refinements:
             section: evaluation
             source: error code
             notes: "See: [error code](./types.md#error-code)"
-            footnote: 3
       - ref: feature_flag.error.message
+        requirement_level:
+          conditionally_required: If and only if an error occurred during flag evaluation.
         annotations:
           openfeature:
             section: evaluation
             source: error message
-            # Display Appendix D's recommendation, not an event requirement override.
-            recommendation: conditionally_required
             notes: >-
-              A human-readable error message associated with a failed evaluation. For programmatic purposes, refer to `error code`.
-            footnote: 3
+              For programmatic purposes, refer to [error code](./types.md#error-code).
       - ref: feature_flag.context.id
         annotations:
           openfeature:
