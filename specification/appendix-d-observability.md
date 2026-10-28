@@ -76,19 +76,12 @@ A `feature_flag.evaluation` event SHOULD be emitted whenever a feature flag valu
 [^feature_flag.evaluation-feature_flag.result.value]:
     **Conditionally Required:** If a variant is not available. Otherwise, recommended.
 
-    With some feature flag providers, feature flag results can be quite large or contain private or sensitive details.
-    Because of this, `feature_flag.result.variant` is often the preferred attribute if it is available.
-
-    It may be desirable to redact or otherwise limit the size and scope of `feature_flag.result.value` if possible.
-    Because the evaluated flag value is unstructured and may be any type, it is left to the instrumentation author to determine how best to achieve this.
+    Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.
 
 [^feature_flag.evaluation-feature_flag.result.variant]:
     **Conditionally Required:** If feature flag provider supplies a variant or equivalent concept.
 
-    A semantic identifier, commonly referred to as a variant, provides a means
-    for referring to a value without including the value itself. This can
-    provide additional context for understanding the meaning behind a value.
-    For example, the variant `red` maybe be used for the value `#c05543`.
+    The `variant` field should be included whenever possible as it represents the symbolic name of the flag's returned value (e.g., "on"/"off", "control"/"treatment"). Only omit if the provider doesn't supply this information.
 
 [^feature_flag.evaluation-feature_flag.result.reason]:
     **Known values:**

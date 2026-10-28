@@ -210,7 +210,7 @@
             3
           ],
           "key": "feature_flag.result.value",
-          "note": "With some feature flag providers, feature flag results can be quite large or contain private or sensitive details.\nBecause of this, `feature_flag.result.variant` is often the preferred attribute if it is available.\n\nIt may be desirable to redact or otherwise limit the size and scope of `feature_flag.result.value` if possible.\nBecause the evaluated flag value is unstructured and may be any type, it is left to the instrumentation author to determine how best to achieve this.\n",
+          "note": "Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.",
           "requirement_level": {
             "conditionally_required": "If a variant is not available. Otherwise, recommended."
           },
@@ -232,7 +232,7 @@
             "on"
           ],
           "key": "feature_flag.result.variant",
-          "note": "A semantic identifier, commonly referred to as a variant, provides a means\nfor referring to a value without including the value itself. This can\nprovide additional context for understanding the meaning behind a value.\nFor example, the variant `red` maybe be used for the value `#c05543`.",
+          "note": "The `variant` field should be included whenever possible as it represents the symbolic name of the flag\u0027s returned value (e.g., \"on\"/\"off\", \"control\"/\"treatment\"). Only omit if the provider doesn\u0027t supply this information.",
           "requirement_level": {
             "conditionally_required": "If feature flag provider supplies a variant or equivalent concept."
           },

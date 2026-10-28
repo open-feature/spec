@@ -18,6 +18,8 @@ event_refinements:
             source: flag key
             notes: "See: [flag key](./glossary.md#flag-key)"
       - ref: feature_flag.result.variant
+        note: >-
+          The `variant` field should be included whenever possible as it represents the symbolic name of the flag's returned value (e.g., "on"/"off", "control"/"treatment"). Only omit if the provider doesn't supply this information.
         annotations:
           openfeature:
             section: evaluation
@@ -26,6 +28,8 @@ event_refinements:
       - ref: feature_flag.result.value
         requirement_level:
           conditionally_required: If a variant is not available. Otherwise, recommended.
+        note: >-
+          Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.
         annotations:
           openfeature:
             section: evaluation
