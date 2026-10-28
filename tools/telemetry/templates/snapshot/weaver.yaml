@@ -1,0 +1,14 @@
+templates:
+  - template: effective-events.json.j2
+    filter: >
+      {
+        schema_url: .schema_url,
+        dependencies: .dependency_graph[.schema_url],
+        events: (
+          .refinements.events
+          | map(del(.provenance) | .attributes |= (map(del(.provenance)) | sort_by(.key)))
+          | sort_by(.name)
+        )
+      }
+    application_mode: single
+    file_name: effective-events.json

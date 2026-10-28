@@ -1,0 +1,15 @@
+{# The semconv markers select a resolved event refinement and documentation section. #}
+{%- set section = tag_filter[0] -%}
+{%- if section == "event" -%}
+{%- include "event.md.j2" -%}
+{%- else -%}
+{{ "\n" -}}
+| Event Record Attribute | {{ group.annotations.openfeature.source_headings[section] }} | OpenFeature Guidance |
+| --- | --- | --- |
+{% for attr in group.attributes | attribute_sort -%}
+{% set mapping = (attr.annotations | default({})).openfeature | default({}) -%}
+{% if (mapping.section | default("evaluation")) == section -%}
+| `{{ attr.key }}` | {% if mapping.source is defined %}`{{ mapping.source }}`{% endif %} | {{ mapping.notes | default("") | replace("|", "&#124;") }} |
+{% endif -%}
+{% endfor -%}
+{%- endif -%}

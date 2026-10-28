@@ -1,0 +1,29 @@
+name: Telemetry registry
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/telemetry.yaml
+      - telemetry/**
+      - tools/telemetry/**
+      - specification/appendix-d-observability.md
+      - Makefile
+
+permissions:
+  contents: read
+
+jobs:
+  telemetry-synchronized:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Read Weaver version
+        id: weaver-version
+        run: echo "version=$(cat tools/telemetry/weaver-version.txt)" >> "$GITHUB_OUTPUT"
+      - uses: open-telemetry/weaver/.github/actions/setup-weaver@51a5bf95bdbb2e20fb6e16638e6bbe7dde911e93 # v0.28.0
+        with:
+          version: ${{ steps.weaver-version.outputs.version }}
+      - name: Validate registry, Markdown, and snapshot
+        run: make telemetry-check
