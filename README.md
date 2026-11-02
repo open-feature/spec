@@ -57,8 +57,8 @@ This specification complies with [RFC 2119](https://datatracker.ietf.org/doc/htm
 
 In accordance with this, some basic tooling (donated graciously by [Diego Hurtado](https://github.com/ocelotl)) has been employed to parse the specification and output a JSON structure of concise requirements, highlighting the particular `RFC 2119` verb in question.
 
-To parse the specification, simply type `make`.
-Please review the generated JSON files, which will appear as siblings to any of the markdown files in the `/specification` folder.
+To parse the specification, simply type `make` (`python` must be available on your `PATH`).
+Please review the generated `specification.json` file, which the `parse` target writes to the root of the repository.
 
 ### Style Guide
 
