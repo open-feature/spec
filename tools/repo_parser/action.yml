@@ -1,0 +1,83 @@
+name: OpenFeature Spec Compliance Check
+description: Checks an OpenFeature SDK repo for spec compliance using the repo_parser tool.
+
+inputs:
+  image-version:
+    description: Tag of the ghcr.io/open-feature/spec/repo_parser image to use.
+    required: false
+    default: latest
+
+outputs:
+  report:
+    description: Full JSON compliance report ({ missing, extra, different-text, good }).
+    value: ${{ steps.check.outputs.report }}
+  compliant:
+    description: "'true' if fully compliant with the spec, 'false' otherwise."
+    value: ${{ steps.check.outputs.compliant }}
+  missing:
+    description: JSON array of spec requirement IDs not covered by the repo (e.g. ["1.1.1","1.2.3"]).
+    value: ${{ steps.check.outputs.missing }}
+  extra:
+    description: JSON array of test reference IDs not found in the spec.
+    value: ${{ steps.check.outputs.extra }}
+  different-text:
+    description: JSON array of spec requirement IDs whose text does not match the spec.
+    value: ${{ steps.check.outputs.different_text }}
+  missing-count:
+    description: Number of spec requirements not covered by the repo.
+    value: ${{ steps.check.outputs.missing_count }}
+  extra-count:
+    description: Number of test references not found in the spec.
+    value: ${{ steps.check.outputs.extra_count }}
+  different-text-count:
+    description: Number of spec requirements with mismatched text.
+    value: ${{ steps.check.outputs.different_text_count }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check spec compliance
+      id: check
+      shell: bash
+      run: |
+        ARGS="--code-directory /appdir --json-report --refresh-spec --diff-output"
+
+        set +e
+        docker run \
+          --mount type=bind,src=${{ github.workspace }},target=/appdir \
+          -w /appdir \
+          ghcr.io/open-feature/spec/repo_parser:${{ inputs.image-version }} \
+          $ARGS
+        EXIT_CODE=$?
+        set -e
+
+        REPORT_FILE=$(ls "${{ github.workspace }}"/*-report.json 2>/dev/null | head -1)
+        if [[ -n "$REPORT_FILE" ]]; then
+          REPORT=$(cat "$REPORT_FILE")
+          rm "$REPORT_FILE"
+
+          DELIMITER=$(openssl rand -hex 8)
+          echo "report<<$DELIMITER" >> "$GITHUB_OUTPUT"
+          echo "$REPORT"           >> "$GITHUB_OUTPUT"
+          echo "$DELIMITER"        >> "$GITHUB_OUTPUT"
+
+          echo "missing=$(echo "$REPORT"       | jq -c '.missing')"        >> "$GITHUB_OUTPUT"
+          echo "extra=$(echo "$REPORT"         | jq -c '.extra')"          >> "$GITHUB_OUTPUT"
+          echo "different_text=$(echo "$REPORT" | jq -c '."different-text"')" >> "$GITHUB_OUTPUT"
+
+          echo "missing_count=$(echo "$REPORT"        | jq '.missing | length')"          >> "$GITHUB_OUTPUT"
+          echo "extra_count=$(echo "$REPORT"          | jq '.extra | length')"            >> "$GITHUB_OUTPUT"
+          echo "different_text_count=$(echo "$REPORT" | jq '."different-text" | length')" >> "$GITHUB_OUTPUT"
+        fi
+
+        echo "compliant=$([[ $EXIT_CODE -eq 0 ]] && echo 'true' || echo 'false')" >> "$GITHUB_OUTPUT"
+        exit $EXIT_CODE
+
+    - name: Log compliance summary
+      if: always()
+      shell: bash
+      run: |
+        echo "Compliant:       ${{ steps.check.outputs.compliant }}"
+        echo "Missing:         ${{ steps.check.outputs.missing }}"
+        echo "Extra:           ${{ steps.check.outputs.extra }}"
+        echo "Different text:  ${{ steps.check.outputs.different_text }}"
