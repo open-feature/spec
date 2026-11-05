@@ -35,3 +35,27 @@ markdown-toc: node_modules
 			echo markdown-toc: no TOC markers, skipping $$f; \
 		fi; \
 	done
+
+WEAVER ?= weaver
+TELEMETRY_FLAGS := --registry ./telemetry/registry --v2
+TELEMETRY_MARKDOWN_FLAGS := $(TELEMETRY_FLAGS) --templates ./tools/telemetry/templates --target markdown
+TELEMETRY_BUILD := $(CURDIR)/build/telemetry
+
+.PHONY: _check_weaver telemetry-generate telemetry-check
+_check_weaver:
+	@if ! command -v "$(WEAVER)" > /dev/null 2>&1; then \
+		echo "ERROR: Weaver must be available on PATH, or set WEAVER=/path/to/weaver." >&2; \
+		echo "Install version $$(cat tools/telemetry/weaver-version.txt); see tools/telemetry/README.md." >&2; \
+		exit 1; \
+	fi
+
+telemetry-generate: _check_weaver
+	"$(WEAVER)" registry check $(TELEMETRY_FLAGS)
+	"$(WEAVER)" registry update-markdown ./specification/appendix-d-observability.md $(TELEMETRY_MARKDOWN_FLAGS)
+	"$(WEAVER)" registry generate snapshot ./telemetry $(TELEMETRY_FLAGS) --templates ./tools/telemetry/templates
+
+telemetry-check: _check_weaver
+	"$(WEAVER)" registry check $(TELEMETRY_FLAGS)
+	"$(WEAVER)" registry update-markdown ./specification/appendix-d-observability.md $(TELEMETRY_MARKDOWN_FLAGS) --dry-run
+	"$(WEAVER)" registry generate snapshot "$(TELEMETRY_BUILD)/snapshot" $(TELEMETRY_FLAGS) --templates ./tools/telemetry/templates
+	diff -u ./telemetry/effective-events.json "$(TELEMETRY_BUILD)/snapshot/effective-events.json"
