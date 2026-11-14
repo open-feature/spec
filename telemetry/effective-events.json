@@ -1,0 +1,288 @@
+{
+  "dependencies": [
+    "https://opentelemetry.io/schemas/1.44.0"
+  ],
+  "events": [
+    {
+      "annotations": {
+        "openfeature": {
+          "source_headings": {
+            "evaluation": "Source Field or Derived Value from Evaluation Details",
+            "flag_metadata": "Flag Metadata Key",
+            "provider_metadata": "Provider Metadata Field"
+          }
+        }
+      },
+      "attributes": [
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "See: [error code](./types.md#error-code)",
+              "section": "evaluation",
+              "source": "error code"
+            }
+          },
+          "brief": "Describes a class of error the operation ended with.\n",
+          "examples": [
+            "provider_not_ready",
+            "targeting_key_missing",
+            "provider_fatal",
+            "general"
+          ],
+          "key": "error.type",
+          "note": "If one of these values applies, then it MUST be used; otherwise, a custom value MAY be used.\n\n| Value | Description | Stability |\n| --- | --- | --- |\n| `flag_not_found` | The flag could not be found. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `invalid_context` | The evaluation context does not meet provider requirements. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `parse_error` | An error was encountered parsing data, such as a flag configuration. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `provider_fatal` | The provider has entered an irrecoverable error state. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `provider_not_ready` | The value was resolved before the provider was initialized. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `targeting_key_missing` | The provider requires a targeting key and one was not provided in the evaluation context. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `type_mismatch` | The type of the flag value does not match the expected type. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n| `general` | The error was for a reason not enumerated above. | ![Release Candidate](https://img.shields.io/badge/-rc-mediumorchid) |\n",
+          "requirement_level": {
+            "conditionally_required": "If and only if an error occurred during flag evaluation."
+          },
+          "stability": "stable",
+          "type": {
+            "members": [
+              {
+                "brief": "A fallback error value to be used when the instrumentation doesn\u0027t define a custom value.\n",
+                "id": "other",
+                "stability": "stable",
+                "value": "_OTHER"
+              }
+            ]
+          }
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "The context identifier returned in the flag metadata uniquely identifies the subject of the flag evaluation. If not available, the [targeting key](./glossary.md#targeting-key) should be used.",
+              "section": "flag_metadata",
+              "source": "contextId"
+            }
+          },
+          "brief": "The unique identifier for the flag evaluation context. For example, the targeting key.\n",
+          "examples": [
+            "5157782b-2203-4c80-a857-dbbd5e7761db"
+          ],
+          "key": "feature_flag.context.id",
+          "requirement_level": "recommended",
+          "stability": "release_candidate",
+          "type": "string"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "For programmatic purposes, refer to [error code](./types.md#error-code).",
+              "section": "evaluation",
+              "source": "error message"
+            }
+          },
+          "brief": "A message providing more detail about an error that occurred during feature flag evaluation in human-readable form.\n",
+          "examples": [
+            "Unexpected input type: string",
+            "The user has exceeded their storage quota"
+          ],
+          "key": "feature_flag.error.message",
+          "note": "Should not simply duplicate the value of `error.type`, but should provide more context. For example, if `error.type` is `invalid_context` the `feature_flag.error.message` may enumerate which context keys are missing or invalid.\n",
+          "requirement_level": {
+            "conditionally_required": "If and only if an error occurred during flag evaluation."
+          },
+          "stability": "release_candidate",
+          "type": "string"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "See: [flag key](./glossary.md#flag-key)",
+              "section": "evaluation",
+              "source": "flag key"
+            }
+          },
+          "brief": "The lookup key of the feature flag.",
+          "examples": [
+            "logo-color"
+          ],
+          "key": "feature_flag.key",
+          "requirement_level": "required",
+          "stability": "release_candidate",
+          "type": "string"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "The name of the provider as defined in the `provider metadata`, available in the `hook context`.",
+              "section": "provider_metadata",
+              "source": "name"
+            }
+          },
+          "brief": "Identifies the feature flag provider.",
+          "examples": [
+            "Flag Manager"
+          ],
+          "key": "feature_flag.provider.name",
+          "requirement_level": "recommended",
+          "stability": "release_candidate",
+          "type": "string"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "See: [reason](./types.md#resolution-reason)",
+              "section": "evaluation",
+              "source": "reason"
+            }
+          },
+          "brief": "The reason code which shows how a feature flag value was determined.\n",
+          "examples": [
+            "static",
+            "targeting_match",
+            "error",
+            "default"
+          ],
+          "key": "feature_flag.result.reason",
+          "requirement_level": "recommended",
+          "stability": "release_candidate",
+          "type": {
+            "members": [
+              {
+                "brief": "The resolved value is static (no dynamic evaluation).",
+                "id": "static",
+                "stability": "release_candidate",
+                "value": "static"
+              },
+              {
+                "brief": "The resolved value fell back to a pre-configured value (no dynamic evaluation occurred or dynamic evaluation yielded no result).",
+                "id": "default",
+                "stability": "release_candidate",
+                "value": "default"
+              },
+              {
+                "brief": "The resolved value was the result of a dynamic evaluation, such as a rule or specific user-targeting.",
+                "id": "targeting_match",
+                "stability": "release_candidate",
+                "value": "targeting_match"
+              },
+              {
+                "brief": "The resolved value was the result of pseudorandom assignment.",
+                "id": "split",
+                "stability": "release_candidate",
+                "value": "split"
+              },
+              {
+                "brief": "The resolved value was retrieved from cache.",
+                "id": "cached",
+                "stability": "release_candidate",
+                "value": "cached"
+              },
+              {
+                "brief": "The resolved value was the result of the flag being disabled in the management system.",
+                "id": "disabled",
+                "stability": "release_candidate",
+                "value": "disabled"
+              },
+              {
+                "brief": "The reason for the resolved value could not be determined.",
+                "id": "unknown",
+                "stability": "release_candidate",
+                "value": "unknown"
+              },
+              {
+                "brief": "The resolved value is non-authoritative or possibly out of date",
+                "id": "stale",
+                "stability": "release_candidate",
+                "value": "stale"
+              },
+              {
+                "brief": "The resolved value was the result of an error.",
+                "id": "error",
+                "stability": "release_candidate",
+                "value": "error"
+              }
+            ]
+          }
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "See: [value](./glossary.md#values)",
+              "section": "evaluation",
+              "source": "value"
+            }
+          },
+          "brief": "The evaluated value of the feature flag.",
+          "examples": [
+            "#ff0000",
+            true,
+            3
+          ],
+          "key": "feature_flag.result.value",
+          "note": "Considerations should be made for large and/or sensitive values, which should be redacted or omitted prior to being captured in telemetry signals.",
+          "requirement_level": {
+            "conditionally_required": "If a variant is not available. Otherwise, recommended."
+          },
+          "stability": "release_candidate",
+          "type": "any"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "See: [variant](./glossary.md#variant)",
+              "section": "evaluation",
+              "source": "variant"
+            }
+          },
+          "brief": "A semantic identifier for an evaluated flag value.\n",
+          "examples": [
+            "red",
+            "true",
+            "on"
+          ],
+          "key": "feature_flag.result.variant",
+          "note": "The `variant` field should be included whenever possible as it represents the symbolic name of the flag\u0027s returned value (e.g., \"on\"/\"off\", \"control\"/\"treatment\"). Only omit if the provider doesn\u0027t supply this information.",
+          "requirement_level": {
+            "conditionally_required": "If feature flag provider supplies a variant or equivalent concept."
+          },
+          "stability": "release_candidate",
+          "type": "string"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "A logical identifier for the [flag set](./glossary.md#flag-set).",
+              "section": "flag_metadata",
+              "source": "flagSetId"
+            }
+          },
+          "brief": "The identifier of the [flag set](https://openfeature.dev/specification/glossary/#flag-set) to which the feature flag belongs.\n",
+          "examples": [
+            "proj-1",
+            "ab98sgs",
+            "service1/dev"
+          ],
+          "key": "feature_flag.set.id",
+          "requirement_level": "recommended",
+          "stability": "release_candidate",
+          "type": "string"
+        },
+        {
+          "annotations": {
+            "openfeature": {
+              "notes": "A version string (format unspecified) for the flag or [flag set](./glossary.md#flag-set).",
+              "section": "flag_metadata",
+              "source": "version"
+            }
+          },
+          "brief": "The version of the ruleset used during the evaluation. This may be any stable value which uniquely identifies the ruleset.\n",
+          "examples": [
+            "1",
+            "01ABCDEF"
+          ],
+          "key": "feature_flag.version",
+          "requirement_level": "recommended",
+          "stability": "release_candidate",
+          "type": "string"
+        }
+      ],
+      "brief": "Defines feature flag evaluation as an event.\n",
+      "id": "feature_flag.evaluation",
+      "name": "feature_flag.evaluation",
+      "note": "A `feature_flag.evaluation` event SHOULD be emitted whenever a feature flag value is evaluated, which may happen many times over the course of an application lifecycle. For example, a website A/B testing different animations may evaluate a flag each time a button is clicked. A `feature_flag.evaluation` event is emitted on each evaluation even if the result is the same.\n",
+      "stability": "release_candidate"
+    }
+  ],
+  "schema_url": "https://openfeature.dev/schemas/0.1.0"
+}
