@@ -1,12 +1,6 @@
 # Provider Conformance Assets
 
-Test assets for the provider conformance suite tracked in
-[open-feature/spec#417](https://github.com/open-feature/spec/issues/417).
-
-**These assets ship ahead of their normative description.** Appendix F, which states what a TCK
-implementation must do and what each capability asserts, is a separate pull request. Until it
-lands this file is the reference for the capability vocabulary, and everything here is
-**experimental**: the scenario set is a representative subset and the vocabulary may still change.
+Test assets for the provider conformance suite described in [Appendix F](../../appendix-f-provider-conformance.md).
 
 These validate a **provider** against a real backend. For assets that validate an **SDK**, see [`../gherkin/`](../gherkin/README.md) and [Appendix B](../../appendix-b-gherkin-suites.md).
 
@@ -23,42 +17,14 @@ These validate a **provider** against a real backend. For assets that validate a
 | [`flags/canonical-flags.json`](./flags/canonical-flags.json) | the flag set every scenario assumes |
 | [`openapi/control-api.yaml`](./openapi/control-api.yaml) | the HTTP surface a backend under test must expose |
 
-## Capabilities: how a provider says what it cannot do
+## Capabilities
 
-Not every provider implements every optional part of the contract. A scenario exercising one carries
-a tag; a provider declares the tags it supports, and a scenario gated on an undeclared tag is reported
-**skipped, with the reason** — never as passed. A suite that quietly goes green on scenarios it did
-not run is worse than no suite at all, so this rule is the centre of the design rather than a detail.
-
-Tags compose: a scenario carrying two tags runs only if both are declared.
-
-| Tag | Meaning |
-| --- | --- |
-| `@events` | emits lifecycle events at all |
-| `@lifecycle` | performs an initialisation that reaches its backend, with an observable outcome |
-| `@stale` | enters `STALE` and emits `PROVIDER_STALE` on backend loss |
-| `@configuration-change` | detects configuration changes and emits `PROVIDER_CONFIGURATION_CHANGED` |
-| `@object` | supports structured flag values |
-| `@variants` | names the variant it resolved |
-| `@disabled-flags` | resolves a flag disabled in the management system to the code default |
-| `@unavailable` | reports an error state instead of hanging against a dead backend |
-| `@numeric-coercion` | coerces between integer and float only when lossless, else `TYPE_MISMATCH` |
-| `@string-typing` | reports `TYPE_MISMATCH` for a boolean or integer flag requested as a string, rather than its string representation |
-| `@fully-typed-values` | records a native type for float and structured values too, so the same question can be asked of them |
-| `@large-integers` | resolves integers up to 2^53 − 1 exactly |
-| `@reinitialization` | can be initialised again after `shutdown` |
-| `@targeting` | resolves a flag differently for a matching evaluation context |
-| `@standard-reasons` | reports the standard resolution reasons |
-| `@caching` | reserved; **not declarable** — no scenarios carry it yet |
-
-Untagged scenarios are mandatory and always run.
-
-**Withholding a tag is not an admission of a defect.** Some of these describe behaviour the
-specification does not require — `@numeric-coercion` borrows its rule from flagd's coercion ADR, and
-`@string-typing` and `@fully-typed-values` sit on a question the specification does not answer at all
-([#433](https://github.com/open-feature/spec/issues/433), [#430](https://github.com/open-feature/spec/issues/430)).
-A provider that withholds one of those is not violating the specification, and this suite must not be
-read as saying it is.
+Not every provider implements every optional part of the contract. A scenario exercising one
+carries a tag; a provider declares what it supports, and a scenario gated on an undeclared tag is
+reported **skipped, with the reason** — never as passed. The tag vocabulary and what each tag
+asserts are in
+[Appendix F](../../appendix-f-provider-conformance.md#capabilities-how-a-provider-says-what-it-cannot-do),
+which owns them; repeating the table here would give it two homes that can disagree.
 
 ## These three travel together
 
