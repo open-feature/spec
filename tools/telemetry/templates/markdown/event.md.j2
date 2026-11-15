@@ -1,0 +1,70 @@
+{%- macro requirement(level) -%}
+{%- if level is string -%}
+{{ level | replace("_", " ") | title }}
+{%- else -%}
+{% for name in level %}{{ name | replace("_", " ") | title }}{% endfor %}
+{%- endif -%}
+{%- endmacro -%}
+{%- macro attribute_type(type) -%}
+{%- if type is string -%}
+{{ type }}
+{%- elif type.members[0].value is string -%}
+string
+{%- elif type.members[0].value is boolean -%}
+boolean
+{%- else -%}
+int
+{%- endif -%}
+{%- endmacro -%}
+{%- macro cell(text) -%}
+{{ text | default("") | trim | replace("\n", " ") | replace("|", "&#124;") }}
+{%- endmacro -%}
+{%- macro enum_values(type) -%}
+| Value | Description |
+| --- | --- |
+{% for member in type.members -%}
+| `{{ member.value | tojson | replace("|", "&#124;") }}` | {{ cell(member.brief) }}{% if member.note is defined %} {{ cell(member.note) }}{% endif %} |
+{% endfor -%}
+{%- endmacro -%}
+{%- macro attribute_notes(attr) -%}
+{%- set blocks = namespace(items=[]) -%}
+{%- if attr.requirement_level is mapping -%}
+{%- for level, condition in attr.requirement_level | items -%}
+{%- set blocks.items = blocks.items + ["**" ~ (level | replace("_", " ") | title) ~ ":** " ~ (condition | trim)] -%}
+{%- endfor -%}
+{%- endif -%}
+{%- if attr.note is defined and (attr.note | trim) -%}
+{%- set blocks.items = blocks.items + [attr.note | trim] -%}
+{%- endif -%}
+{%- if attr.type is mapping -%}
+{%- set blocks.items = blocks.items + ["**Known values:**\n\n" ~ (enum_values(attr.type) | trim)] -%}
+{%- endif -%}
+{{- blocks.items | join("\n\n") -}}
+{%- endmacro -%}
+{%- set notes = namespace(items=[]) -%}
+{{- "\n" -}}
+**Event name:** `{{ group.name }}`
+
+**Stability:** {{ group.stability | replace("_", " ") | title }}
+
+**Requirement level:** {{ requirement(group.requirement_level | default("recommended")) }}
+
+{{ group.brief | trim }}
+{%- if group.note is defined and group.note -%}
+{{ "\n\n" }}{{ group.note | trim }}
+{%- endif -%}
+{{ "\n\n" -}}
+| Attribute | Stability | Requirement Level | Type | Description | Example Values |
+| --- | --- | --- | --- | --- | --- |
+{% for attr in group.attributes | attribute_sort -%}
+{% set note = attribute_notes(attr) -%}
+{% set id = group.name ~ "-" ~ attr.key -%}
+{% if note -%}
+{% set notes.items = notes.items + [{"id": id, "text": note}] -%}
+{% endif -%}
+| `{{ attr.key }}`{% if note %} [^{{ id }}]{% endif %} | {{ attr.stability | replace("_", " ") | title }} | {{ requirement(attr.requirement_level) }} | `{{ attribute_type(attr.type) }}` | {{ cell(attr.brief) }} | {% if attr.examples is defined %}`{{ attr.examples | tojson | replace("|", "&#124;") }}`{% endif %} |
+{% endfor -%}
+{% for note in notes.items -%}
+{{ "\n" }}[^{{ note.id }}]:
+{{ note.text | indent(4, true) }}{{ "\n" }}
+{%- endfor -%}

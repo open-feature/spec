@@ -9,5 +9,38 @@
   "semanticCommits": "enabled",
   "labels": [
     "renovate"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^telemetry/registry/manifest\\.yaml$/"],
+      "matchStrings": [
+        "schema_url: https://opentelemetry\\.io/schemas/(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "registry_path: https://github\\.com/open-telemetry/semantic-conventions@v(?<currentValue>\\d+\\.\\d+\\.\\d+)\\[model\\]"
+      ],
+      "depNameTemplate": "open-telemetry/semantic-conventions",
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^v(?<version>.*)$",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^tools/telemetry/weaver-version\\.txt$/"],
+      "matchStrings": ["(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "open-telemetry/weaver",
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^v(?<version>.*)$",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDepNames": [
+        "open-telemetry/semantic-conventions",
+        "open-telemetry/weaver",
+        "open-telemetry/weaver/.github/actions/setup-weaver"
+      ],
+      "automerge": false
+    }
   ]
 }
