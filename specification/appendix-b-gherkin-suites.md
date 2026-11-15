@@ -11,6 +11,9 @@ This section contains a set of language-agnostic end-to-end tests (defined in gh
 These tests can be used to validate the behavior of an OpenFeature implementation.
 "Features" (test suites) can be used in conjunction with an [in-memory provider](./appendix-a-included-utilities.md#in-memory-provider) and a cucumber test-runner for the language in question.
 
+The suites below validate an **SDK**, using an in-memory provider as a stand-in for a real one.
+To validate a **provider** against a real backend instead, see [Appendix F: Provider Conformance (TCK)](./appendix-f-provider-conformance.md).
+
 ## Evaluation Feature
 
 The [evaluation feature](./assets/gherkin/evaluation.feature) contains tests for the basic functionality of the [Evaluation API](./sections/01-flag-evaluation.md).
