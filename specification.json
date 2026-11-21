@@ -395,6 +395,13 @@
             "children": []
         },
         {
+            "id": "Requirement 2.1.2",
+            "machine_id": "requirement_2_1_2",
+            "content": "Implementations of the same provider in different languages SHOULD use the same `name` in their `metadata`, and the `name` SHOULD NOT contain the word \"provider\".",
+            "RFC 2119 keyword": "SHOULD",
+            "children": []
+        },
+        {
             "id": "Requirement 2.2.1",
             "machine_id": "requirement_2_2_1",
             "content": "The `feature provider` interface MUST define methods to resolve flag values, with parameters `flag key` (string, required), `default value` (boolean | number | string | structure, required) and `evaluation context` (optional), which returns a `resolution details` structure.",
