@@ -230,6 +230,13 @@ The evaluation details passed to the `finally` stage matches the evaluation deta
 
 > Instead of `finally`, `finallyAfter` **SHOULD** be used.
 
+#### Requirement 4.3.10
+
+> The `evaluation context` in the `hook context` of every hook that runs after a `before` hook, including subsequent `before` hooks and the `after`, `error`, and `finally` hooks, **MUST** include the `evaluation context` returned by that `before` hook, merged as described in Requirement 4.3.5.
+
+Requirement 4.3.5 defines the context the flag is resolved with, but not what later hooks see.
+This requirement makes them see the same context, so that, for example, a logging or telemetry hook in the `after` or `finally` stage reports the attributes a `before` hook added.
+
 ### 4.4. Hook registration & ordering
 
 #### Requirement 4.4.1

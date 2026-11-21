@@ -63,3 +63,12 @@ Feature: Evaluation details through hooks
       | string    | variant    | null         |
       | string    | reason     | ERROR        |
       | string    | error_code | GENERAL      |
+
+  @spec-4.3.10
+  Scenario: Context added by a before hook is visible to later hooks
+    Given a client with added hook
+    And the "before" hook adds a context entry with key "hook-key" and value "hook-value"
+    And a boolean-flag with key "boolean-flag" and a fallback value "false"
+    When the flag was evaluated with details
+    Then the "before" hook should have been executed
+    And the "after, finally" hooks should be called with a context entry with key "hook-key" and value "hook-value"
