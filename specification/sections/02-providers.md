@@ -28,8 +28,14 @@ flowchart LR
 > The provider interface **MUST** define a `metadata` member or accessor, containing a `name` field or accessor of type string, which identifies the provider implementation.
 
 ```typescript
-provider.getMetadata().getName(); // "my-custom-provider"
+provider.getMetadata().getName(); // "flagd"
 ```
+
+#### Requirement 2.1.2
+
+> Implementations of the same provider in different languages **SHOULD** use the same `name` in their `metadata`, and the `name` **SHOULD NOT** contain the word "provider".
+
+The provider `name` appears in events, telemetry and logs, so a consistent name lets the same provider be recognized across services written in different languages. Since the value always identifies a provider, adding "provider" to it is redundant: for example, `flagd` rather than `FlagdProvider` or `flagd-provider`.
 
 ### 2.2 Flag Value Resolution
 
