@@ -134,6 +134,39 @@ ResolutionDetails<MyStruct> resolveStructureValue(string flagKey, MyStruct defau
 
 > `flag metadata` **MUST** be a structure supporting the definition of arbitrary properties, with keys of type `string`, and values of type `boolean | string | number`.
 
+#### Condition 2.2.11
+
+> The `feature provider` interface defines separate methods for integer and floating-point flag resolution.
+
+The specification defines a single numeric type, but many languages split it into integer and floating-point accessors.
+A provider can then be asked for a flag through an accessor whose type differs from the value it resolved, like the float `0.5` requested as an integer.
+
+##### Conditional Requirement 2.2.11.1
+
+> If the resolved numeric value cannot be represented exactly in the requested numeric type, the `provider` **MUST** indicate an error with error code `TYPE_MISMATCH`.
+
+A value can't be represented exactly when it has a fractional part and an integer was requested, or when it falls outside the range of the requested type.
+Rounding, truncating or wrapping it would hand the application a plausible value with no sign that anything was lost, so the provider reports a mismatch and the client returns the default value.
+
+```typescript
+// 'float-flag' resolves to 0.5
+resolveIntegerValue('float-flag', 1, context); // error code TYPE_MISMATCH
+```
+
+##### Conditional Requirement 2.2.11.2
+
+> If the resolved numeric value can be represented exactly in the requested numeric type, the `provider` **SHOULD** return it converted to that type.
+
+Many flag management systems and wire formats have a single number type, and flag authors don't usually distinguish `10` from `10.0`.
+Converting without loss keeps those flags usable through either accessor.
+
+```typescript
+// 'integral-float-flag' resolves to 10.0
+resolveIntegerValue('integral-float-flag', 1, context); // value 10
+// 'integer-flag' resolves to 10
+resolveFloatValue('integer-flag', 0.1, context); // value 10.0
+```
+
 ### 2.3. Provider hooks
 
 A `provider hook` exposes a mechanism for `provider authors` to register [`hooks`](./04-hooks.md) to tap into various stages of the flag evaluation lifecycle. These hooks can be used to perform side effects and mutate the context for purposes of the provider. Provider hooks are not configured or controlled by the `application author`.

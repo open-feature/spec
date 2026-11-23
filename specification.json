@@ -481,6 +481,28 @@
             "children": []
         },
         {
+            "id": "Condition 2.2.11",
+            "machine_id": "condition_2_2_11",
+            "content": "The `feature provider` interface defines separate methods for integer and floating-point flag resolution.",
+            "RFC 2119 keyword": null,
+            "children": [
+                {
+                    "id": "Conditional Requirement 2.2.11.1",
+                    "machine_id": "conditional_requirement_2_2_11_1",
+                    "content": "If the resolved numeric value cannot be represented exactly in the requested numeric type, the `provider` MUST indicate an error with error code `TYPE_MISMATCH`.",
+                    "RFC 2119 keyword": "MUST",
+                    "children": []
+                },
+                {
+                    "id": "Conditional Requirement 2.2.11.2",
+                    "machine_id": "conditional_requirement_2_2_11_2",
+                    "content": "If the resolved numeric value can be represented exactly in the requested numeric type, the `provider` SHOULD return it converted to that type.",
+                    "RFC 2119 keyword": "SHOULD",
+                    "children": []
+                }
+            ]
+        },
+        {
             "id": "Requirement 2.3.1",
             "machine_id": "requirement_2_3_1",
             "content": "The provider interface MUST define a `provider hook` mechanism which can be optionally implemented in order to add `hook` instances to the evaluation life-cycle.",
