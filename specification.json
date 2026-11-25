@@ -958,7 +958,7 @@
         {
             "id": "Requirement 4.3.10",
             "machine_id": "requirement_4_3_10",
-            "content": "The `evaluation context` in the `hook context` of every hook that runs after a `before` hook, including subsequent `before` hooks and the `after`, `error`, and `finally` hooks, MUST include the `evaluation context` returned by that `before` hook, merged as described in Requirement 4.3.5.",
+            "content": "The `evaluation context` in the `hook context` of every hook that runs after one or more `before` hooks, including subsequent `before` hooks and the `after`, `error`, and `finally` hooks, MUST include the `evaluation context` returned by each of those `before` hooks, merged in hook execution order (later hooks take precedence) as described in Requirement 4.3.5.",
             "RFC 2119 keyword": "MUST",
             "children": []
         },
