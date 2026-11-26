@@ -182,7 +182,7 @@ Providers in `NOT_READY` or `FATAL` states are automatically skipped for trackin
 Key features of tracking support include:
 
 - **Error Resilience**: Individual provider tracking failures do not break the overall tracking flow - errors are logged but do not throw exceptions
-- **Status Awareness**: Providers in `NOT_READY` or `FATAL` status will not recieve tracking events.
+- **Status Awareness**: Providers in `NOT_READY` or `FATAL` status will not receive tracking events.
 - **Strategy Integration**: Custom strategies can control which providers receive tracking calls using the `shouldTrackWithThisProvider` method
 - **Graceful Degradation**: Providers that don't implement the `track` method are skipped
 
@@ -349,7 +349,7 @@ abstract class BaseEvaluationStrategy {
   - The function must return a `FinalResult` object which contains the final `ResolutionDetails` and the provider that they correspond to, or an array of `errors` in the case of a non-successful result, with the provider that created each error.
 
 - **`shouldTrackWithThisProvider`**: function is called when the `track()` method is called on the SDK.
-  - This function can be used to decide which providers should recieve `track()` events.
+  - This function can be used to decide which providers should receive `track()` events.
   - Return `true` to send the tracking event to the provider, `false` to skip it.
 
 To see [reference implementations](https://github.com/open-feature/js-sdk-contrib/tree/main/libs/providers/multi-provider/src/lib/strategies) of the above-mentioned strategies.
