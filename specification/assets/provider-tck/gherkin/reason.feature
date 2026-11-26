@@ -77,7 +77,9 @@ Feature: Provider resolution reasons
     And no exception should have been thrown
 
   Scenario: A type mismatch reports an error
-    Given a String-flag with key "boolean-flag" and a default value "fallback"
+    # Uses an unconditional mismatch from errors.feature rather than requesting a non-string flag
+    # as a String, so providers declaring @standard-reasons without @string-typing are not failed.
+    Given a Boolean-flag with key "string-flag" and a default value "false"
     When the flag was evaluated with details
     Then the reason should be "ERROR"
     And the error-code should be "TYPE_MISMATCH"
